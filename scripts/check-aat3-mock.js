@@ -166,10 +166,45 @@ function sit(unitKey, how) {
 /* ── 1. The paper is the right length, and every question is a real one ──── */
 {
   const r = sit('tpfb', 'blank');
-  ok(r.seen.length === 24, `a mock is 24 questions long (got ${r.seen.length})`);
+  /* The paper is drawn to the assessment's shape — 8 tasks and 80 marks — not
+     to a question count, so its LENGTH varies with what the fill draws. What
+     must hold is that it is long enough to be that paper and not open-ended. */
+  ok(r.seen.length >= 20 && r.seen.length <= 60,
+    `a mock is a paper's worth of questions (got ${r.seen.length})`);
+  const paperTasks = r.seen.filter(x => x.q && x.q.type === 'task').length;
+  ok(paperTasks === 8, `a mock is 8 tasks, as the assessment is (got ${paperTasks})`);
   ok(r.seen.every(s => s.q), 'every question on the paper is one from the bank');
   const ids = r.seen.map(s => s.q.id);
   ok(new Set(ids).size === ids.length, 'no question appears twice on one paper');
+}
+
+/* ── 1a. A bank with no tasks still produces a paper ─────────────────────── */
+/* THE BUG THIS EXISTS FOR. The paper is drawn as "tasks first, then fill to the
+   marks", and the fill picks whichever outcome is furthest below its share —
+   a share computed as questions-so-far over the paper length. With no tasks in
+   the bank the paper starts empty, that division is 0 / 0, and every comparison
+   against NaN is false: no outcome is ever picked, the loop breaks on its first
+   pass, and the reader is handed a paper of NOTHING under a 90-minute clock.
+   Found by check-retire noticing a one-question mock, which is a long way from
+   where the fault was. A unit whose tasks have not been written yet is the
+   ordinary case that would hit it. */
+{
+  const store = D.fakeStore();
+  const M = D.loadUI(store);
+  M.AAT3_PRACTICE = {
+    QUESTIONS: (M.AAT3_PRACTICE.QUESTIONS || []).filter(q => q.type !== 'task'),
+  };
+  const el = D.fakeEl();
+  M.AAT3_UI.reset('practice', 'tpfb');
+  M.AAT3_UI.mount(el);
+  D.click(el, 'startmock');
+  let n = 0;
+  for (let k = 0; k < 80; k++) {
+    n++;
+    if (!D.nodes(el, 'mocknext').length) break;
+    D.click(el, 'mocknext');
+  }
+  ok(n >= 10, `a bank with no tasks still draws a full paper (got ${n})`);
 }
 
 /* ── 2. Nothing is revealed while the paper is being sat ─────────────────── */
@@ -574,15 +609,21 @@ function countOf(html, re) { return (html.match(re) || []).length; }
       `Outcome ${o.n} is ${got.toFixed(1)}% of a mock against an exam weighting of ${target}%`);
   });
 
-  /* Tasks drawn at random would be about a twentieth of a paper. Taking them
-     first inside each outcome's allocation should put every one of them on
-     every paper — which is the point of drawing that way, and is worth
-     asserting rather than assuming. */
+  /* WHAT THIS USED TO ASSERT, AND WHY IT WAS WRONG. It required every task in
+     the bank to appear on every paper — true when six tasks filled six of a
+     24-question paper, and a description of a DEFECT rather than a property:
+     it meant the mock's composition moved with however much content had been
+     written, and that after one sitting the hardest quarter of the paper was
+     memorised. The bank now holds more tasks than a paper has room for, so the
+     property worth asserting is the opposite one: a fixed number of tasks, and
+     a different selection each time. */
   const bankTasks = BANK.filter(q => q.unitKey === 'tpfb' && q.type === 'task').length;
   const perPaper = tasks / papers;
   console.log(`  ${DIM}Tasks per paper: ${perPaper.toFixed(2)} of ${bankTasks} in the bank${RESET}`);
-  ok(perPaper === bankTasks,
-    `every one of the ${bankTasks} tasks appears on every paper (averaged ${perPaper.toFixed(2)})`);
+  ok(Math.abs(perPaper - 8) < 0.001,
+    `every paper carries 8 tasks (averaged ${perPaper.toFixed(2)})`);
+  ok(bankTasks > 8,
+    `the bank holds more tasks than one paper can use, so the draw can vary (${bankTasks})`);
 }
 
 /* ── 6. Sitting a mock records it, and its best score ────────────────────── */
@@ -596,8 +637,10 @@ function countOf(html, re) { return (html.match(re) || []).length; }
   /* Every answer still reaches the per-outcome counters and the per-question
      memory, so a mock feeds the mistakes list like anything else. */
   const attempted = Object.keys(rec.los).reduce((a, k) => a + rec.los[k].attempted, 0);
-  ok(attempted === 24, `all 24 answers reach the outcome counters (got ${attempted})`);
-  ok(Object.keys(rec.qs || {}).length === 24, 'and all 24 reach the per-question record');
+  ok(attempted === r.seen.length,
+    `every one of the ${r.seen.length} answers reaches the outcome counters (got ${attempted})`);
+  ok(Object.keys(rec.qs || {}).length === r.seen.length,
+    `and all ${r.seen.length} reach the per-question record`);
 }
 
 /* ── 6a. What was recorded survives a reload ─────────────────────────────── */

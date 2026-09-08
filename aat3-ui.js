@@ -3353,8 +3353,8 @@
       '<span class="a3-mockpanel-tx">' +
         '<span class="a3-mockpanel-k">Timed mock · ' + mockMinutes(activeUnit()) + ' min</span>' +
         '<span class="a3-mockpanel-t">Sit a full paper</span>' +
-        '<span class="a3-mockpanel-m">' + MOCK_LEN +
-          ' questions drawn to the exam weighting. Nothing is revealed until the end.</span>' +
+        '<span class="a3-mockpanel-m">' + TASKS_PER_MOCK + ' tasks and ' + MOCK_MARKS +
+          ' marks, drawn to the exam weighting. Nothing is revealed until the end.</span>' +
       '</span>' +
       (mrec.mocks
         ? '<span class="a3-mockpanel-best"><b>' + mrec.mockBest + '%</b>' +
@@ -3834,6 +3834,85 @@
     return shuffle(out);
   }
 
+  /* Draws the mock: the assessment's tasks first, then whatever else the
+     weighting asks for until the paper is worth its marks.
+
+     WHY THE FILL IS WEIGHTED TOO. Taking the tasks to weighting and then
+     topping up at random would let the top-up undo the weighting it was
+     drawn to — Outcome 5 is a tenth of the paper, and eight tasks cannot
+     express a tenth on their own. The fill is drawn the same way, minus the
+     questions already on the paper. */
+  function drawMockPaper(unitKey) {
+    var chosen = drawWeighted(unitKey, TASKS_PER_MOCK, true, true, true)
+      .filter(function (q) { return q.type === 'task'; });
+    var seen = {};
+    chosen.forEach(function (q) { seen[q.id] = true; });
+
+    /* TOPPING UP THE TASKS, and why the weighting has to give way here. Eight
+       seats shared out at 25/30/20/15/10 asks Outcome 3 for 1.6 tasks and
+       Outcome 5 for 0.8 — and an outcome cannot hand over a task it does not
+       have. Weighting the tasks alone would then quietly deliver a seven-task
+       paper whenever the thinner outcomes ran dry. The paper's SHAPE is the
+       promise being kept; the fill below restores the weighting across the
+       paper as a whole. Once every outcome carries enough tasks this loop
+       stops finding anything to do. */
+    if (chosen.length < TASKS_PER_MOCK) {
+      var spare = shuffle(practiceBank(unitKey).filter(function (q) {
+        return q.type === 'task' && !seen[q.id];
+      }));
+      for (var t = 0; t < spare.length && chosen.length < TASKS_PER_MOCK; t++) {
+        seen[spare[t].id] = true;
+        chosen.push(spare[t]);
+      }
+    }
+
+    /* THE FILL CORRECTS THE WEIGHTING, it does not just extend the paper.
+       Topping up the tasks above had to ignore the weighting to keep the paper
+       at eight, which leaves the thin outcomes short — Outcome 3 came out at
+       16.7% against an exam share of 20%. So the fill is greedy on the DEFICIT:
+       each question goes to whichever outcome is furthest below its share right
+       now. Drawing the fill to the weighting instead would preserve the skew
+       the top-up introduced, because a proportional draw cannot undo one. */
+    var outs = outcomes(unitKey).filter(function (o) { return o.weighting; });
+    var wTotal = outs.reduce(function (a, o) { return a + o.weighting; }, 0);
+    var byLo = {};
+    outs.forEach(function (o) {
+      byLo[o.n] = shuffle(practiceBank(unitKey).filter(function (q) {
+        return q.lo === o.n && q.type !== 'task' && q.type !== 'written' && !seen[q.id];
+      }));
+    });
+
+    /* GUARDED AGAINST AN EMPTY PAPER. A bank with no tasks in it — a stubbed
+       one in a check, or a unit whose tasks have yet to be written — leaves
+       `chosen` empty here, and c / 0 is NaN. Every comparison against NaN is
+       false, so no outcome is ever picked, the loop breaks on its first pass
+       and the reader is handed a paper of nothing. */
+    function shareOf(n) {
+      if (!chosen.length) return 0;
+      var c = 0;
+      chosen.forEach(function (q) { if (q.lo === n) c++; });
+      return c / chosen.length;
+    }
+
+    var marks = chosen.reduce(function (a, q) { return a + maxMarks(q); }, 0);
+    var guard = 0;
+    while (marks < MOCK_MARKS && chosen.length < MOCK_MAX_QS && guard++ < MOCK_MAX_QS * 2) {
+      var pick = null, worst = Infinity;
+      outs.forEach(function (o) {
+        if (!byLo[o.n].length) return;
+        var gap = shareOf(o.n) - (o.weighting / wTotal);
+        if (gap < worst) { worst = gap; pick = o.n; }
+      });
+      if (pick === null) break;
+      var q = byLo[pick].shift();
+      seen[q.id] = true;
+      chosen.push(q);
+      marks += maxMarks(q);
+    }
+
+    return shuffle(chosen);
+  }
+
   /* ── The timed mock ────────────────────────────────────────────────────────
      Everything a practice run is not. It runs to the clock the assessment
      actually allows, draws to the assessment's own weighting, reveals nothing
@@ -3854,7 +3933,24 @@
      LENGTH. The assessment's own duration, and enough questions that a reader
      has to pace themselves; a mock that can be finished in twenty minutes
      rehearses nothing about the ninety. */
-  var MOCK_LEN = 24;
+  /* THE PAPER'S SHAPE, taken from the assessment rather than from a round
+     number. TPFB is 8 tasks and 80 marks in 90 minutes.
+
+     WHY BOTH NUMBERS, AND NOT JUST A QUESTION COUNT. A count cannot describe
+     this paper. When the bank held six tasks, "24 questions, tasks first" gave
+     six of them and about 66 marks; the moment the bank grew to twelve, the
+     same rule handed over twelve tasks and 85 marks, because tasks-first has
+     no ceiling in it. The composition of the mock was quietly a function of how
+     much content had been written, which is the one thing it must not be.
+
+     So the paper is drawn to the assessment's own two numbers: TASKS_PER_MOCK
+     tasks, then non-task questions until the paper is worth MOCK_MARKS. Adding
+     content now changes WHICH tasks are drawn and never how many. */
+  var TASKS_PER_MOCK = 8;
+  var MOCK_MARKS = 80;
+  /* A ceiling on the fill loop, not a target: without one, a bank that ran out
+     of unused questions would spin. */
+  var MOCK_MAX_QS = 60;
 
   function mockMinutes(unitKey) {
     var u = unitMeta(unitKey);
@@ -3864,7 +3960,7 @@
   function startMock() {
     S.practiceUnit = activeUnit();
     S.practiceLo = 'mock';
-    S.practiceQs = drawWeighted(S.practiceUnit, MOCK_LEN, true, true, true);
+    S.practiceQs = drawMockPaper(S.practiceUnit);
     S.practiceMissed = [];
     S.mockResults = [];
     S.mockMarks = 0;

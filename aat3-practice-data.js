@@ -2194,15 +2194,9 @@
     },
     {
       id: 'P-2-97', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.3.5', 'TPFB-2.1.3'],
-      type: 'mcq',
+      type: 'numeric',
       q: 'A business makes standard-rated supplies of £120,000, zero-rated supplies of £40,000 and exempt supplies of £30,000 in a year. What is its taxable turnover?',
-      opts: [
-        '£160,000',
-        '£190,000',
-        '£120,000',
-        '£150,000',
-      ],
-      ans: 0,
+      answer: 160000, unit: '£',
       exp: 'Taxable turnover is standard-rated plus reduced-rated plus zero-rated: £120,000 + £40,000 = £160,000. Exempt supplies are excluded, which rules out £190,000. Excluding the zero-rated supplies as well would give £120,000 and is the more damaging error, since it understates turnover against the registration threshold.',
     },
     {
@@ -3966,15 +3960,9 @@
     },
     {
       id: 'P-4-67', unitKey: 'tpfb', lo: 4, criteria: ['TPFB-4.2.8'],
-      type: 'mcq',
+      type: 'numeric',
       q: 'An employer with 30 employees files its FPS late for the third time in a tax year. What is the monthly late filing penalty?',
-      opts: [
-        money(T.payroll.penalties.lateFiling.byEmployees['10to49']),
-        money(T.payroll.penalties.lateFiling.byEmployees['1to9']),
-        money(T.payroll.penalties.lateFiling.byEmployees['50to249']),
-        money(T.payroll.penalties.lateFiling.byEmployees['250plus']),
-      ],
-      ans: 0,
+      answer: T.payroll.penalties.lateFiling.byEmployees['10to49'], unit: '£',
       exp: 'The penalty is set by headcount: ' + money(T.payroll.penalties.lateFiling.byEmployees['10to49']) + ' a month for 10 to 49 employees. The other bands are 1 to 9, 50 to 249, and 250 or more. The FIRST late filing in a tax year is not penalised, so a third failure is the second chargeable one — and a return still outstanding after three months attracts a further penalty of 5% of the tax that should have been reported.',
     },
     {
@@ -4219,15 +4207,10 @@
     },
     {
       id: 'P-1-18', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.4.2'],
-      type: 'mcq',
+      type: 'numeric', recall: true,
+      
       q: 'A business on annual accounting makes nine monthly interim payments. What percentage of the previous year’s liability is each one?',
-      opts: [
-        '10%',
-        '25%',
-        '9%',
-        '11.1%',
-      ],
-      ans: 0,
+      answer: 10, unit: '%',
       exp: 'Nine monthly instalments of 10% each, due at the end of months 4 to 12. The alternative is three quarterly instalments of 25%, due at the end of months 4, 7 and 10. Either way a balancing payment follows with the annual return.',
     },
     {
@@ -5510,6 +5493,630 @@
         },
       ],
       exp: 'A finance manager asking what is due next month wants the answer for next month. Every row of the table carries its own deadline, and only one of the payments lands in May — so the figure that matters is not the total of the table, and not even the total of the payments, but the one row whose date falls in the month asked about.',
+    },
+    /* ── More dataset tasks ──────────────────────────────────────────────────
+       WHY THESE ARRIVED. Six tasks existed, and the mock takes tasks first
+       inside each outcome's allocation so that none is crowded out — which
+       meant every mock drew ALL SIX, every time. A quarter of every paper was
+       the same six tasks from the second sitting onwards, and the tasks are
+       the part that carries the difficulty. Depth here is what makes the draw
+       mean anything.
+
+       WHAT MAKES ONE OF THESE HARDER THAN A QUESTION. Not longer arithmetic:
+       SELECTION. Every dataset below carries rows the answer does not want —
+       exempt supplies in a taxable-turnover total, wages in a purchases day
+       book, a payment that falls in the wrong month — because deciding what to
+       leave out is the skill the assessment tests and a stem that hands over
+       exactly the right figures cannot test it at all. */
+    {
+      id: 'T-1-02', unitKey: 'tpfb', lo: 1,
+      criteria: ['TPFB-1.2.1', 'TPFB-1.2.3', 'TPFB-1.1.3'],
+      type: 'task',
+      q: 'Advise whether this business can leave the VAT register.',
+      brief: 'Trading has fallen away and the owner has asked about deregistering. All figures are monthly and **exclusive of VAT**.',
+      datasets: [
+        {
+          title: 'Supplies for the twelve months to 30 September',
+          headers: ['Month', 'Standard £', 'Zero £', 'Exempt £', 'Outside the scope £'],
+          rows: [
+            ['Oct', '7,200.00', '1,000.00', '1,200.00', '500.00'],
+            ['Nov', '6,800.00', '800.00', '1,200.00', '500.00'],
+            ['Dec', '7,500.00', '950.00', '1,200.00', '500.00'],
+            ['Jan', '6,900.00', '900.00', '1,200.00', '500.00'],
+            ['Feb', '7,100.00', '850.00', '1,200.00', '500.00'],
+            ['Mar', '6,400.00', '1,100.00', '1,200.00', '500.00'],
+            ['Apr', '5,900.00', '750.00', '1,200.00', '500.00'],
+            ['May', '6,200.00', '900.00', '1,200.00', '500.00'],
+            ['Jun', '5,800.00', '800.00', '1,200.00', '500.00'],
+            ['Jul', '6,600.00', '950.00', '1,200.00', '500.00'],
+            ['Aug', '7,000.00', '900.00', '1,200.00', '500.00'],
+            ['Sep', '6,300.00', '900.00', '1,200.00', '500.00'],
+          ],
+        },
+      ],
+      parts: [
+        {
+          label: 'Taxable turnover for the twelve months',
+          type: 'numeric', unit: '£', answer: 90500,
+          exp: 'Standard-rated £79,700.00 plus zero-rated £10,800.00 = £90,500.00. Zero-rated supplies are TAXABLE supplies charged at 0%, so they belong in taxable turnover; exempt supplies of £14,400.00 and outside-the-scope supplies of £6,000.00 do not. Leaving the zero-rated column out gives £79,700.00 — and that is the figure that would send you to the wrong answer below.',
+        },
+        {
+          label: 'The zero-rated column belongs in that total because',
+          type: 'choice',
+          options: [
+            'zero-rated supplies are taxable supplies charged at 0%',
+            'no VAT is charged on them, so they are excluded',
+            'only standard-rated supplies count towards the threshold',
+            'they count only when they exceed the exempt supplies',
+          ],
+          answer: 0,
+          exp: 'Zero-rated and exempt are not two words for the same thing. A zero-rated supply is taxable at a rate of nil, counts towards both thresholds, and leaves input tax recoverable. An exempt supply is outside the tax altogether, counts towards neither, and blocks recovery. That single distinction decides this task.',
+        },
+        {
+          label: 'To deregister voluntarily the business must show that',
+          type: 'choice',
+          options: [
+            'taxable turnover for the NEXT 12 months is expected to fall below £' + T.registration.deregistrationThreshold.value.toLocaleString() + '',
+            'taxable turnover for the LAST 12 months was below £' + T.registration.deregistrationThreshold.value.toLocaleString() + '',
+            'taxable turnover for the next 12 months is expected to fall below £' + T.registration.threshold.value.toLocaleString() + '',
+            'it has stopped making taxable supplies altogether',
+          ],
+          answer: 0,
+          exp: 'Voluntary deregistration is a forward-looking test against the £' + T.registration.deregistrationThreshold.value.toLocaleString() + ' deregistration threshold, not a backward-looking one — the twelve months just gone are evidence for the expectation, never the test itself. The last option is COMPULSORY deregistration, which is a different thing with a different effective date.',
+        },
+        {
+          label: 'By how much does the twelve-month figure exceed the deregistration threshold',
+          type: 'numeric', unit: '£', answer: 2500,
+          exp: '£90,500.00 − £' + T.registration.deregistrationThreshold.value.toLocaleString() + '.00 = £2,500.00. The deregistration threshold sits £2,000 below the registration threshold of £' + T.registration.threshold.value.toLocaleString() + ' on purpose, so a business trading around the line is not made to register and deregister repeatedly.',
+        },
+        {
+          label: 'If HMRC accepts a voluntary deregistration request, it takes effect',
+          type: 'choice',
+          options: [
+            'on the date HMRC receives the request, or a later date agreed with them',
+            'on the date the business decided to deregister',
+            'at the end of the VAT period in which the request is made',
+            'on the date taxable turnover first fell below the threshold',
+          ],
+          answer: 0,
+          exp: 'Voluntary deregistration cannot be backdated. That is the asymmetry with compulsory deregistration, which takes effect from the date of cessation itself — so a business that stopped trading in March is deregistered from March however late it tells HMRC, while one that merely wants to leave gets no earlier date than the day it asks.',
+        },
+      ],
+      exp: 'Two traps, one in each direction. The zero-rated column looks excludable because no VAT is charged on it, and dropping it takes £90,500.00 down to £79,700.00 — below the threshold, and the wrong answer. And the twelve months in the table do not themselves decide anything: the voluntary test looks FORWARD. A business whose last year was £90,500.00 may still deregister if the coming year is genuinely expected to be under £' + T.registration.deregistrationThreshold.value.toLocaleString() + '.00.',
+    },
+    {
+      id: 'T-1-03', unitKey: 'tpfb', lo: 1,
+      criteria: ['TPFB-1.5.3', 'TPFB-1.5.5', 'TPFB-1.3.1'],
+      type: 'task',
+      q: 'Work out what the late returns and late payments have cost.',
+      brief: 'The business files **quarterly** and began the year with no penalty points. Every return below is for the current year.',
+      datasets: [
+        {
+          title: 'Returns and payments',
+          headers: ['Period ended', 'Due date', 'Date filed', 'VAT due £', 'Date paid'],
+          rows: [
+            ['31 Mar', '7 May', '3 May', '12,400.00', '3 May'],
+            ['30 Jun', '7 Aug', '19 Aug', '9,850.00', '19 Aug'],
+            ['30 Sep', '7 Nov', '11 Nov', '15,600.00', '12 Dec'],
+            ['31 Dec', '7 Feb', '5 Feb', '7,200.00', '5 Feb'],
+          ],
+        },
+      ],
+      parts: [
+        {
+          label: 'Penalty points at the end of the year',
+          type: 'numeric', unit: 'points', answer: 2,
+          exp: 'One point per late RETURN, and 2 of the 4 were late: the June quarter filed 19 August against a 7 August deadline, and the September quarter filed 11 November against 7 November. The March and December returns were both early. Late payment earns no points at all — that is a separate regime with its own charges, and merging the two is the commonest way this goes wrong.',
+        },
+        {
+          label: 'Is the £' + T.penalties.lateSubmission.penalty.value + ' late submission penalty charged',
+          type: 'choice',
+          options: [
+            'No — a quarterly filer reaches the threshold at 4 points',
+            'Yes — the penalty is charged on the first late return',
+            'Yes — two late returns in one year always reach the threshold',
+            'No — the penalty applies only to annual filers',
+          ],
+          answer: 0,
+          exp: 'The threshold depends on how often the business files: 2 points for an annual filer, 4 for a quarterly one, 5 for a monthly one. At 2 points this business is halfway there and has been charged nothing. The £' + T.penalties.lateSubmission.penalty.value + ' arrives at the fourth point, and again on every late return after it.',
+        },
+        {
+          label: 'The June quarter payment attracts',
+          type: 'choice',
+          options: [
+            'no late payment penalty — it was paid within 15 days of the due date',
+            'a 3% penalty, because it was paid after the due date',
+            'a 3% penalty, because the return was also late',
+            'a 6% penalty, being both filed and paid late',
+          ],
+          answer: 0,
+          exp: 'Due 7 August and paid 19 August is 12 days late, and the first late payment penalty does not bite until day 15. Being late is not the trigger; being FIFTEEN days late is. The return was late and earned a point, but the payment cost nothing.',
+        },
+        {
+          label: 'Fixed late payment penalties on the September quarter',
+          type: 'numeric', unit: '£', answer: 936,
+          exp: 'Due 7 November and paid 12 December is 35 days. Still unpaid at day 15, so 3% of £15,600.00 = £468.00. Still unpaid at day 30, so a further 3% of £15,600.00 = £468.00. Together £936.00. A second, daily penalty at 10% a year also runs from day 31 until payment, on top of these two.',
+        },
+        {
+          label: 'How the two points will disappear',
+          type: 'choice',
+          options: [
+            '12 months of returns all filed on time, plus every return for the preceding 24 months submitted',
+            '24 months of returns all filed on time',
+            'paying the outstanding VAT in full',
+            'They expire on their own, 24 months after the month each late return was due',
+          ],
+          answer: 3,
+          exp: 'BELOW the threshold each point simply expires on its own, 24 months after the month the late return was due, and nothing has to be served. The first option is the reset that applies AT the threshold — a period of compliance, 12 months for a quarterly filer, plus all outstanding returns for the preceding 24 months. Two mechanisms, and this business is under the threshold, so it gets the automatic one.',
+        },
+      ],
+      exp: 'Two regimes running side by side on the same four rows. Late FILING earns points and, at the threshold, £' + T.penalties.lateSubmission.penalty.value + '. Late PAYMENT earns percentages of the tax and cares only about how many days elapsed. The June quarter shows they come apart: a point for the return, nothing for the payment.',
+    },
+    {
+      id: 'T-1-04', unitKey: 'tpfb', lo: 1,
+      criteria: ['TPFB-1.4.1', 'TPFB-1.4.3', 'TPFB-1.2.1'],
+      type: 'task',
+      q: 'Advise which special schemes this business may use.',
+      brief: 'The business is registered, files quarterly, and sells standard-rated services. Its sector flat rate percentage is **12%**.',
+      datasets: [
+        {
+          title: 'Figures for the coming year',
+          headers: ['Item', '£'],
+          rows: [
+            ['Taxable turnover expected, excluding VAT', '142,000.00'],
+            ['Total turnover expected, including VAT', '170,400.00'],
+            ['Standard-rated purchases expected, excluding VAT', '21,000.00'],
+            ['Trade debtors over 90 days at today', '18,400.00'],
+            ['VAT-inclusive turnover for the quarter just ended', '42,000.00'],
+          ],
+        },
+      ],
+      parts: [
+        {
+          label: 'May the business join the flat rate scheme',
+          type: 'choice',
+          options: [
+            'Yes — taxable turnover excluding VAT is expected to be under £' + T.schemes.flatRate.joinThreshold.value.toLocaleString() + '',
+            'No — turnover including VAT is over £' + T.schemes.flatRate.joinThreshold.value.toLocaleString() + '',
+            'No — it is above the £' + T.registration.threshold.value.toLocaleString() + ' registration threshold',
+            'Yes — but only once turnover exceeds £' + T.schemes.flatRate.joinThreshold.value.toLocaleString() + '',
+          ],
+          answer: 0,
+          exp: 'The joining test is taxable turnover EXCLUDING VAT expected in the next 12 months, against £' + T.schemes.flatRate.joinThreshold.value.toLocaleString() + '. At £142,000.00 the business qualifies. The £170,400.00 including VAT is the figure the LEAVING test uses, against £' + T.schemes.flatRate.leaveThreshold.value.toLocaleString() + ' — two different figures against two different limits, and reading the inclusive one against the joining limit is the trap this row is here for.',
+        },
+        {
+          label: 'May the business join the cash accounting scheme',
+          type: 'choice',
+          options: [
+            'Yes — estimated taxable turnover is far below £' + T.schemes.cashAccounting.joinThreshold.value.toLocaleString() + '',
+            'No — cash accounting and the flat rate scheme cannot both be considered',
+            'No — its debtors are too old',
+            'Yes — but only if it stops offering credit',
+          ],
+          answer: 0,
+          exp: 'The cash accounting joining threshold is £' + T.schemes.cashAccounting.joinThreshold.value.toLocaleString() + ' of estimated taxable turnover excluding VAT, so £142,000.00 clears it comfortably. The £18,400.00 of old debtors is not a bar — it is the reason the scheme would help, because output tax on those invoices would not be payable until the customers actually paid.',
+        },
+        {
+          label: 'VAT due for the quarter just ended under the flat rate scheme',
+          type: 'numeric', unit: '£', answer: 5040,
+          exp: '£42,000.00 × 12% = £5,040.00. The flat rate applies to VAT-INCLUSIVE turnover, which is why the percentage is so far below 20%. Applying 12% to a VAT-exclusive figure, or 20% to anything here, both miss what the scheme does.',
+        },
+        {
+          label: 'Under the flat rate scheme the £21,000.00 of purchases',
+          type: 'choice',
+          options: [
+            'generates no separate claim — the percentage already allows for it',
+            'generates a claim of £4,200.00, exactly as on the normal scheme',
+            'generates a claim only in the quarter the supplier is paid',
+            'is added to turnover before the flat rate percentage is applied',
+          ],
+          answer: 0,
+          exp: 'The flat rate is a NET figure standing in for output tax less input tax, not for output tax alone — which is precisely why a sector rate of 12% can replace a 20% charge and still leave HMRC paid. Reclaiming input tax on top would be counting the same relief twice. A business with heavy input tax is usually worse off on the scheme for exactly this reason.',
+        },
+        {
+          label: 'The business must leave the flat rate scheme when',
+          type: 'choice',
+          options: [
+            'total turnover including VAT exceeds £' + T.schemes.flatRate.leaveThreshold.value.toLocaleString() + '',
+            'taxable turnover excluding VAT exceeds £' + T.schemes.flatRate.joinThreshold.value.toLocaleString() + '',
+            'total turnover including VAT exceeds £' + T.schemes.flatRate.joinThreshold.value.toLocaleString() + '',
+            'taxable turnover excluding VAT exceeds £' + T.schemes.cashAccounting.joinThreshold.value.toLocaleString() + '',
+          ],
+          answer: 0,
+          exp: 'Joining and leaving use different figures against different limits: in at £' + T.schemes.flatRate.joinThreshold.value.toLocaleString() + ' excluding VAT, out at £' + T.schemes.flatRate.leaveThreshold.value.toLocaleString() + ' including VAT. The gap between them is deliberate, so a business that grows a little past the joining limit is not thrown straight out of a scheme it has only just entered.',
+        },
+      ],
+      exp: 'The table gives turnover twice, once excluding VAT and once including it, because the schemes ask for different ones. Match the wrong figure to the wrong limit and every answer here changes. The debtors row matters for the second part and nowhere else, and the purchases row is there to be left out of the flat rate calculation entirely.',
+    },
+    {
+      id: 'T-2-03', unitKey: 'tpfb', lo: 2,
+      criteria: ['TPFB-2.3.6', 'TPFB-2.3.5', 'TPFB-2.3.13'],
+      type: 'task',
+      q: 'Work out how much input tax this partly exempt business can recover.',
+      brief: 'The business makes both taxable and exempt supplies. Input tax that cannot be attributed to either is **residual**, and is apportioned on the taxable share of turnover. Figures are for the **quarter**.',
+      datasets: [
+        {
+          title: 'Turnover for the quarter, excluding VAT',
+          headers: ['Category', '£'],
+          rows: [
+            ['Standard-rated supplies', '186,000.00'],
+            ['Zero-rated supplies', '54,000.00'],
+            ['Exempt supplies', '60,000.00'],
+          ],
+        },
+        {
+          title: 'Input tax for the quarter',
+          headers: ['Attribution', '£'],
+          rows: [
+            ['Wholly attributable to taxable supplies', '21,400.00'],
+            ['Wholly attributable to exempt supplies', '1,180.00'],
+            ['Residual — cannot be attributed to either', '4,500.00'],
+          ],
+        },
+      ],
+      parts: [
+        {
+          label: 'The taxable percentage used to apportion residual input tax',
+          type: 'numeric', unit: '%', answer: 80,
+          exp: 'Taxable supplies are standard-rated AND zero-rated: £186,000.00 + £54,000.00 = £240,000.00, against total supplies of £300,000.00. That is 80%. Zero-rated supplies are taxable, so they go on the taxable side — treating them as exempt would give 62% and pull every figure below it out of shape.',
+        },
+        {
+          label: 'Residual input tax attributed to exempt supplies',
+          type: 'numeric', unit: '£', answer: 900,
+          exp: '£4,500.00 × 20% = £900.00. The exempt share is what is left after the taxable 80%, and it is this figure — not the whole residual pot — that joins the directly attributable exempt input tax in the de minimis test.',
+        },
+        {
+          label: 'Total input tax attributable to exempt supplies',
+          type: 'numeric', unit: '£', answer: 2080,
+          exp: '£1,180.00 directly attributable plus £900.00 of the residual = £2,080.00. Both halves count: a business that tested only its directly attributable exempt input tax would clear the limit far too easily.',
+        },
+        {
+          label: 'Does the business pass the de minimis test',
+          type: 'choice',
+          options: [
+            'No — £2,080.00 is above the £' + T.partialExemption.deMinimisPerQuarter.value.toLocaleString() + '.00 quarterly limit',
+            'Yes — £2,080.00 is under half of total input tax',
+            'Yes — exempt supplies are only 20% of turnover',
+            'No — its exempt supplies exceed £' + T.partialExemption.deMinimisPerQuarter.value.toLocaleString() + '.00',
+          ],
+          answer: 0,
+          exp: 'BOTH limbs have to be met and this fails the first. Exempt input tax must average no more than £' + T.partialExemption.deMinimisPerMonth.value + ' a month — £' + T.partialExemption.deMinimisPerQuarter.value.toLocaleString() + '.00 in a quarter — AND be no more than half of total input tax. At £2,080.00 the first limb fails, so it does not matter that the second passes comfortably: £2,080.00 out of £27,080.00 is well under half. Passing one limb is not passing the test.',
+        },
+        {
+          label: 'Input tax recoverable for the quarter',
+          type: 'numeric', unit: '£', answer: 25000,
+          exp: '£21,400.00 wholly taxable plus 80% of the £4,500.00 residual, which is £3,600.00, gives £25,000.00. Having failed de minimis the business cannot recover the £2,080.00 attributable to exempt supplies. Had it passed, it would have recovered all £27,080.00 — which is what the test is worth.',
+        },
+      ],
+      exp: 'Three places to go wrong and each one changes the answer. Zero-rated supplies belong with the taxable, not the exempt. The de minimis test uses direct AND apportioned exempt input tax together. And both limbs must be satisfied — the one that fails here is the money limit, while the 50% limb passes easily, which is exactly the combination that tempts a reader to call it de minimis.',
+    },
+    {
+      id: 'T-2-04', unitKey: 'tpfb', lo: 2,
+      criteria: ['TPFB-2.3.9', 'TPFB-2.3.4', 'TPFB-2.3.14'],
+      type: 'task',
+      q: 'Work out the adjustments to output tax for the quarter.',
+      brief: 'The quarter ended **30 June**. All invoice amounts are **excluding VAT** and all supplies are standard-rated. The business is not on the cash accounting scheme.',
+      datasets: [
+        {
+          title: 'Unpaid sales invoices at 30 June',
+          headers: ['Invoice date', 'Customer', 'Payment due', 'Net £', 'Status'],
+          rows: [
+            ['14 Aug last year', 'Marlow Ltd', '13 Sep last year', '4,800.00', 'Written off in the VAT account'],
+            ['02 Nov last year', 'Naylor & Sons', '01 Dec last year', '6,200.00', 'Written off in the VAT account'],
+            ['19 Mar', 'Ordish Ltd', '18 Apr', '3,100.00', 'Written off in the VAT account'],
+            ['05 Feb', 'Pettifer plc', '07 Mar', '9,400.00', 'Sold to a debt factor'],
+          ],
+        },
+        {
+          title: 'Invoice issued with a prompt payment discount',
+          headers: ['Invoice date', 'Customer', 'Net £', 'Discount offered', 'Outcome'],
+          rows: [
+            ['11 May', 'Quinton Ltd', '8,000.00', '3% if paid in 14 days', 'Paid within 14 days'],
+          ],
+        },
+      ],
+      parts: [
+        {
+          label: 'Bad debt relief claimable on the Marlow invoice',
+          type: 'numeric', unit: '£', answer: 960,
+          exp: '£4,800.00 × 20% = £960.00. Payment was due 13 September last year, so by 30 June the debt is more than six months overdue, it has been written off in the VAT account, and the claim is well inside the four years and six months allowed.',
+        },
+        {
+          label: 'Bad debt relief claimable on the Ordish invoice',
+          type: 'choice',
+          options: [
+            'None yet — payment fell due on 18 April, so six months have not passed',
+            '£620.00 — it has been written off in the VAT account',
+            'None — the invoice is dated within the same quarter',
+            '£620.00, but only once the customer is formally insolvent',
+          ],
+          answer: 0,
+          exp: 'The debt must be at least SIX MONTHS overdue, measured from the later of the due date and the date of supply. Due 18 April, it becomes eligible on 18 October — the next quarter but one. Writing a debt off in the accounts does not accelerate that, and insolvency is not a condition at all.',
+        },
+        {
+          label: 'Bad debt relief claimable on the Pettifer invoice',
+          type: 'choice',
+          options: [
+            'None — the debt has been sold to a factor',
+            '£1,880.00 — the age and write-off conditions are met',
+            'None — the invoice is under six months old',
+            '£1,880.00, shared with the factor',
+          ],
+          answer: 0,
+          exp: 'A debt that has been sold is not a loss the business has suffered — the factor paid for it. Relief on it would be relief for a loss that has moved to somebody else. The six-month point is not what decides this one, which is why the age of the invoice is given.',
+        },
+        {
+          label: 'Total bad debt relief claimable this quarter',
+          type: 'numeric', unit: '£', answer: 2200,
+          exp: 'Marlow £960.00 plus Naylor £1,240.00 = £2,200.00. Naylor fell due 1 December, so it passed six months overdue on 1 June, inside the quarter. Ordish is too recent and Pettifer has been sold, so neither adds anything — two of the four rows are here to be left out.',
+        },
+        {
+          label: 'Output tax on the Quinton invoice',
+          type: 'numeric', unit: '£', answer: 1552,
+          exp: 'The discount was taken, so VAT follows the amount actually paid: £8,000.00 less 3% is £7,760.00, and £7,760.00 × 20% = £1,552.00. Had the customer not taken it, output tax would have stayed at £1,600.00 on the full £8,000.00. VAT follows the money, not the offer.',
+        },
+      ],
+      exp: 'Four unpaid invoices and only one qualifies. Age is measured from the DUE DATE, not the invoice date, and it is six months OVERDUE rather than six months old. A factored debt never qualifies whatever its age. And the prompt payment discount is a separate adjustment in the opposite direction — it reduces output tax, where bad debt relief increases the input side.',
+    },
+    {
+      id: 'T-2-05', unitKey: 'tpfb', lo: 2,
+      criteria: ['TPFB-2.3.7', 'TPFB-2.3.8', 'TPFB-2.3.13'],
+      type: 'task',
+      q: 'Work out the recoverable input tax and the fuel scale charge.',
+      brief: 'All amounts are **excluding VAT** unless the row says otherwise, and all purchases are standard-rated. The company car has CO2 emissions of **172 g/km** and the quarterly fuel scale charge for its band is **£396** including VAT.',
+      datasets: [
+        {
+          title: 'Purchases for the quarter ended 31 December',
+          headers: ['Date', 'Description', 'Net £'],
+          rows: [
+            ['08 Oct', 'Raw materials', '18,600.00'],
+            ['15 Oct', 'Entertaining UK customers', '1,250.00'],
+            ['29 Oct', 'Car leased for a sales manager, available for private use', '2,400.00'],
+            ['12 Nov', 'Van bought outright, wholly business use', '16,000.00'],
+            ['23 Nov', 'Entertaining overseas customers', '900.00'],
+            ['04 Dec', 'Road fuel, all vehicles', '3,200.00'],
+            ['18 Dec', 'Staff wages', '31,000.00'],
+          ],
+        },
+      ],
+      parts: [
+        {
+          label: 'Input tax recoverable on the two entertaining rows',
+          type: 'numeric', unit: '£', answer: 180,
+          exp: 'Only the overseas customers: £900.00 × 20% = £180.00. Input tax on entertaining UK customers is blocked outright, so the £1,250.00 contributes nothing. Overseas customers are the one exception to the block, which is why both rows are here.',
+        },
+        {
+          label: 'Input tax recoverable on the leased car',
+          type: 'numeric', unit: '£', answer: 240,
+          exp: '£2,400.00 × 20% = £480.00, of which exactly half is recoverable: £240.00. The 50% restriction on a hired or leased car is a fixed proportion, not an estimate of private use — it does not move with mileage and no log will change it.',
+        },
+        {
+          label: 'Input tax recoverable on the van',
+          type: 'choice',
+          options: [
+            'All of it — the block is on cars, and this is a van',
+            'Half of it, as on the leased car above',
+            'None — input tax on vehicles is always blocked',
+            'All of it, but only once the van has been paid for',
+          ],
+          answer: 0,
+          exp: 'The block is on CARS, and it is about private use being available rather than actually happening. A van bought outright and used wholly for business falls outside it entirely, so all £3,200.00 is recoverable. Putting the van beside a leased car is the whole point of these two rows.',
+        },
+        {
+          label: 'Total input tax recoverable for the quarter',
+          type: 'numeric', unit: '£', answer: 7980,
+          exp: 'Raw materials £3,720.00, overseas entertaining £180.00, leased car £240.00, van £3,200.00 and road fuel £640.00 = £7,980.00. UK entertaining is blocked and wages are outside the scope of VAT altogether, so neither appears. The fuel is reclaimed in full here and the private use is dealt with by the scale charge instead.',
+        },
+        {
+          label: 'Output tax added by the fuel scale charge',
+          type: 'numeric', unit: '£', answer: 66,
+          exp: 'The charge is set by CO2 band and 172 g/km rounds DOWN to the 170 band, which is why £396.00 is the figure and not the 175 one. It is VAT-INCLUSIVE, so the tax in it is £396.00 × 1/6 = £66.00, and that is what goes into Box 1. Treating the £396.00 as net and charging 20% would give £79.20, and putting the whole £396.00 in the box would be six times the answer.',
+        },
+      ],
+      exp: 'Seven rows, and three of them are not recoverable input tax at all: UK entertaining is blocked, wages are outside the scope, and half the leased car is disallowed. The fuel is the pair to the scale charge — reclaim all the input tax on fuel, then add back an output tax figure for the private motoring rather than trying to split the fuel bill.',
+    },
+    {
+      id: 'T-3-02', unitKey: 'tpfb', lo: 3,
+      criteria: ['TPFB-3.1.2', 'TPFB-3.1.3', 'TPFB-3.1.5'],
+      type: 'task',
+      q: 'Decide how each error must be corrected.',
+      brief: 'Four errors have come to light while preparing the return for the quarter ended 30 June. **Box 6 for that quarter is £940,000.** None of the errors was deliberate.',
+      datasets: [
+        {
+          title: 'Errors found',
+          headers: ['Ref', 'Period it belongs to', 'Effect on VAT', '£'],
+          rows: [
+            ['A', 'Quarter ended 30 Sep, two years ago', 'Output tax understated', '7,400.00'],
+            ['B', 'Quarter ended 31 Dec, last year', 'Input tax overclaimed', '4,900.00'],
+            ['C', 'Quarter ended 31 Mar, six years ago', 'Output tax understated', '2,300.00'],
+            ['D', 'Quarter ended 30 Jun, three years ago', 'Input tax understated', '1,100.00'],
+          ],
+        },
+      ],
+      parts: [
+        {
+          label: 'The net error on the corrections that are still in time',
+          type: 'numeric', unit: '£', answer: 11200,
+          exp: 'A, B and D are inside the four-year limit; C is six years old and cannot be corrected at all. Errors that INCREASE the VAT due are added and one that decreases it is deducted: £7,400.00 + £4,900.00 − £1,100.00 = £11,200.00. Understated input tax works in the business’s favour, so it comes off the net error rather than on to it.',
+        },
+        {
+          label: 'Error C is',
+          type: 'choice',
+          options: [
+            'out of time — errors may only be corrected within four years',
+            'correctable on the next return, being under £' + T.errorCorrection.netErrorLimit.value.toLocaleString() + '',
+            'separately notifiable, being more than four years old',
+            'correctable, because output tax was understated',
+          ],
+          answer: 0,
+          exp: 'Four years is a cut-off, not a threshold to be measured against: past it there is nothing to correct by either method. Its size is irrelevant, which is why £2,300.00 — comfortably inside every limit — is the figure given.',
+        },
+        {
+          label: 'Against the two-limb test the net error is',
+          type: 'choice',
+          options: [
+            'over £' + T.errorCorrection.netErrorLimit.value.toLocaleString() + ' AND over 1% of Box 6, so it must be notified separately',
+            'over £' + T.errorCorrection.netErrorLimit.value.toLocaleString() + ' but within 1% of Box 6, so it may go on the next return',
+            'within £' + T.errorCorrection.netErrorLimit.value.toLocaleString() + ', so it may go on the next return',
+            'within 1% of Box 6, so it may go on the next return',
+          ],
+          answer: 0,
+          exp: '£11,200.00 is over the £' + T.errorCorrection.netErrorLimit.value.toLocaleString() + ' limit, so the first limb fails and the second decides it: 1% of Box 6 is £9,400.00 — and £11,200.00 is MORE than that. So this is separately notifiable after all, on form VAT652. Both limbs have to be read, and reading only the first is what makes the wrong option here tempting.',
+        },
+        {
+          label: 'The method that must be used',
+          type: 'choice',
+          options: [
+            'Method 2 — notify HMRC separately on form VAT652',
+            'Method 1 — adjust the VAT account and correct it on the next return',
+            'Either, at the business’s choice',
+            'Neither — the errors are out of time',
+          ],
+          answer: 0,
+          exp: 'The net error exceeds both £' + T.errorCorrection.netErrorLimit.value.toLocaleString() + ' and 1% of Box 6, so Method 1 is not available and Method 2 is required. Method 2 may always be used voluntarily, but here there is no choice about it.',
+        },
+        {
+          label: 'If instead the net error had been £8,000 and corrected on the next return, it would',
+          type: 'choice',
+          options: [
+            'increase Box 1, because the VAT is owed to HMRC',
+            'increase Box 4, because it is an adjustment to input tax',
+            'be entered in Box 6 with the turnover it relates to',
+            'be split between Box 1 and Box 4 in the proportions of the errors',
+          ],
+          answer: 0,
+          exp: 'A Method 1 correction goes in one place and it depends on which way the money runs: VAT owed TO HMRC is added to Box 1, VAT owed BY HMRC to Box 4. The net error here is money owed to HMRC, so it lands in Box 1 whether the individual errors were about output tax or input tax.',
+        },
+      ],
+      exp: 'The four-year limit is applied first and takes one error out entirely. Then the direction of each remaining error matters — an understated input tax reduces the net error — and only then the two-limb test, where the 1% of Box 6 does the work that £' + T.errorCorrection.netErrorLimit.value.toLocaleString() + ' alone would get wrong.',
+    },
+    {
+      id: 'T-4-02', unitKey: 'tpfb', lo: 4,
+      criteria: ['TPFB-4.1.6', 'TPFB-4.1.11', 'TPFB-4.1.12'],
+      type: 'task',
+      q: 'Work through this employee’s pay for the month.',
+      brief: 'One employee, paid monthly. The pension contribution is under a scheme that is deducted **before** tax is worked out; the union subscription and the season ticket loan repayment are not.',
+      datasets: [
+        {
+          title: 'Pay and deductions for the month',
+          headers: ['Item', '£'],
+          rows: [
+            ['Basic salary', '3,200.00'],
+            ['Overtime', '410.00'],
+            ['Bonus', '250.00'],
+            ['Employee pension contribution', '180.00'],
+            ['Income tax', '512.00'],
+            ['Employee National Insurance', '246.00'],
+            ['Union subscription', '15.00'],
+            ['Season ticket loan repayment', '90.00'],
+            ['Employer National Insurance', '498.00'],
+          ],
+        },
+      ],
+      parts: [
+        {
+          label: 'Gross pay',
+          type: 'numeric', unit: '£', answer: 3860,
+          exp: '£3,200.00 + £410.00 + £250.00 = £3,860.00. Gross pay is everything EARNED before any deduction. The employer’s National Insurance is a cost to the employer and never part of what the employee earns, so it stays out of this figure and out of every figure below it except the last.',
+        },
+        {
+          label: 'Taxable gross pay',
+          type: 'numeric', unit: '£', answer: 3680,
+          exp: '£3,860.00 − £180.00 = £3,680.00. Only the pension comes off before tax is worked out. The union subscription and the loan repayment are taken from pay that has ALREADY been taxed, so they change what the employee receives without changing what they are taxed on.',
+        },
+        {
+          label: 'Total deductions from gross pay',
+          type: 'numeric', unit: '£', answer: 1043,
+          exp: '£180.00 pension + £512.00 tax + £246.00 National Insurance + £15.00 union + £90.00 loan = £1,043.00. Statutory and non-statutory deductions alike come out of the employee’s pay; what separates them is whether the employer must make them, not whether they reduce net pay.',
+        },
+        {
+          label: 'Net pay',
+          type: 'numeric', unit: '£', answer: 2817,
+          exp: '£3,860.00 − £1,043.00 = £2,817.00 — the figure that reaches the employee’s bank account. It reconciles the other way too: taxable gross pay £3,680.00 less tax £512.00, National Insurance £246.00, union £15.00 and loan £90.00 gives the same £2,817.00.',
+        },
+        {
+          label: 'Total payable to HMRC for the month',
+          type: 'numeric', unit: '£', answer: 1256,
+          exp: '£512.00 income tax + £246.00 employee National Insurance + £498.00 employer National Insurance = £1,256.00. HMRC gets both halves of the National Insurance, which is why the employer’s share matters here and nowhere above. The pension, the union and the loan are owed to other people entirely.',
+        },
+      ],
+      exp: 'Nine rows and each figure wants a different subset. Employer National Insurance belongs only to the last part. The pension is the only deduction that changes taxable pay. And the union subscription and loan repayment reduce what is paid out without touching what is taxed — which is the distinction between gross, taxable gross and net that this task exists to draw.',
+    },
+    {
+      id: 'T-5-02', unitKey: 'tpfb', lo: 5,
+      criteria: ['TPFB-5.1.3', 'TPFB-5.1.4', 'TPFB-5.1.6'],
+      type: 'task',
+      q: 'Tell the finance manager what has to be paid, and when.',
+      brief: 'Today is **10 April**. The business files VAT quarterly and pays HMRC electronically. The manager wants to know what leaves the bank account this month.',
+      datasets: [
+        {
+          title: 'Amounts outstanding',
+          headers: ['Liability', 'Period it covers', 'Amount £'],
+          rows: [
+            ['VAT', 'Quarter ended 28 February', '14,600.00'],
+            ['PAYE and National Insurance', 'Tax month ended 5 April', '3,940.00'],
+            ['VAT', 'Quarter ended 31 May', 'not yet known'],
+            ['Class 1A National Insurance', 'Tax year ended 5 April', '1,260.00'],
+            ['Corporation tax', 'Year ended 31 December', '22,000.00'],
+          ],
+        },
+      ],
+      parts: [
+        {
+          label: 'The VAT for the quarter ended 28 February is due by',
+          type: 'choice',
+          options: [
+            '7 April',
+            '31 March',
+            '22 April',
+            '30 April',
+          ],
+          answer: 0,
+          exp: 'One calendar month and seven days after the end of the period: 28 February plus one month is 31 March, plus seven days is 7 April. Today being 10 April, it is already late — which is the first thing the manager needs to hear.',
+        },
+        {
+          label: 'The PAYE for the tax month ended 5 April is due by',
+          type: 'choice',
+          options: [
+            '22 April, paying electronically',
+            '19 April, paying electronically',
+            '5 May',
+            '7 May',
+          ],
+          answer: 0,
+          exp: 'The PAYE month runs 6th to 5th, and payment is due by the 22nd of the following month when made electronically — the 19th only for a non-electronic payment. This business pays electronically, so the three extra days are its to use.',
+        },
+        {
+          label: 'Total that must actually leave the account during April',
+          type: 'numeric', unit: '£', answer: 18540,
+          exp: '£14,600.00 of VAT, already overdue on 7 April, plus £3,940.00 of PAYE due on 22 April = £18,540.00. The Class 1A National Insurance is not due until 22 July, the May quarter’s VAT is not yet known, and the corporation tax has its own deadline nine months and a day after the year end. Adding the whole table gives £41,800.00 and answers a question nobody asked.',
+        },
+        {
+          label: 'What the manager most needs telling first',
+          type: 'choice',
+          options: [
+            'that the February quarter VAT is already overdue',
+            'that corporation tax is the largest single amount',
+            'that the May quarter VAT cannot yet be estimated',
+            'that Class 1A National Insurance falls due in July',
+          ],
+          answer: 0,
+          exp: 'Reporting is not just totalling. A payment that passed its deadline three days ago is accruing a penalty and interest now, and every other item on the table can wait. Leading with the biggest number instead of the most urgent one is a failure of reporting rather than of arithmetic.',
+        },
+        {
+          label: 'Paying the February VAT on 25 April would attract',
+          type: 'choice',
+          options: [
+            'a 3% penalty, the payment being more than 15 days late',
+            'no penalty, the payment being within 30 days',
+            'a 6% penalty, being more than 15 days late',
+            'no penalty, because the return itself was filed on time',
+          ],
+          answer: 0,
+          exp: 'Due 7 April and paid 25 April is 18 days, so the first late payment penalty of 3% bites at day 15. The second 3% only follows if it is still unpaid at day 30, which would be 7 May. Filing on time protects against penalty POINTS and does nothing about late payment — two separate regimes.',
+        },
+      ],
+      exp: 'The table holds five liabilities and only two fall in April. The rest is there because a finance manager’s question — what leaves the account this month — is answered by dates, not by the size of the numbers, and the largest figure on the table is one of the ones that does not belong.',
     },
     /* ── The two table types ─────────────────────────────────────────────────
        WHY THEY ARE HERE, AND WHY THEY ARRIVED LATE. This bank was 441 questions
