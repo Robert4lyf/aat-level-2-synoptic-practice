@@ -5167,7 +5167,7 @@
           type: 'choice',
           options: ['February', 'December', 'January', 'March'],
           answer: 0,
-          exp: 'The rolling total reaches 85,150.00 at the end of January and 92,250.00 at the end of February, so February is the month it is crossed. December is what you get by counting the van: the proceeds of a capital asset are excluded from the test, and including them puts the total over at 92,400.00 two months early.',
+          exp: 'The rolling total reaches 85,150.00 at the end of January and 92,250.00 at the end of February, so February is the month it is crossed. December is what you get by counting the asset: the proceeds of a capital asset are excluded from the test, and including them puts the total over at 92,400.00 two months early.',
         },
         {
           label: 'By what date must HMRC be notified?',
@@ -5184,7 +5184,7 @@
           exp: 'Registration takes effect from the first day of the second month after the threshold was exceeded — February, then March, then 1 April. Notifying and being registered are two different dates, and VAT must be accounted for from the second even if the first was met late.',
         },
       ],
-      exp: 'Three decisions sit behind one threshold: what counts as taxable turnover, when the rolling total crossed it, and which of the two dates that follow is which. The van is the trap — a capital asset is excluded from the test, and counting it moves the crossing two months earlier and every date with it.',
+      exp: 'Three decisions sit behind one threshold: what counts as taxable turnover, when the rolling total crossed it, and which of the two dates that follow is which. The Assets column is the trap — a capital asset is excluded from the test, and counting it moves the crossing two months earlier and every date with it.',
     },
     {
       id: 'T-2-01', unitKey: 'tpfb', lo: 2,
@@ -5657,7 +5657,7 @@
       criteria: ['TPFB-1.4.1', 'TPFB-1.4.3', 'TPFB-1.2.1'],
       type: 'task',
       q: 'Advise which special schemes this business may use.',
-      brief: 'The business is registered, files quarterly, and sells standard-rated services. Its sector flat rate percentage is **12%**.',
+      brief: 'The business is registered, files quarterly, sells standard-rated services and is past its first year of registration. Its sector flat rate percentage is **12%**.',
       datasets: [
         {
           title: 'Figures for the coming year',
@@ -5689,7 +5689,7 @@
           type: 'choice',
           options: [
             'Yes — estimated taxable turnover is far below £' + T.schemes.cashAccounting.joinThreshold.value.toLocaleString() + '',
-            'No — cash accounting and the flat rate scheme cannot both be considered',
+            'No — the scheme is open only to businesses below the registration threshold',
             'No — its debtors are too old',
             'Yes — but only if it stops offering credit',
           ],
@@ -5856,14 +5856,14 @@
           exp: 'The discount was taken, so VAT follows the amount actually paid: £8,000.00 less 3% is £7,760.00, and £7,760.00 × 20% = £1,552.00. Had the customer not taken it, output tax would have stayed at £1,600.00 on the full £8,000.00. VAT follows the money, not the offer.',
         },
       ],
-      exp: 'Four unpaid invoices and only one qualifies. Age is measured from the DUE DATE, not the invoice date, and it is six months OVERDUE rather than six months old. A factored debt never qualifies whatever its age. And the prompt payment discount is a separate adjustment in the opposite direction — it reduces output tax, where bad debt relief increases the input side.',
+      exp: 'Four unpaid invoices and only two qualify. Age is measured from the DUE DATE, not the invoice date, and it is six months OVERDUE rather than six months old. A factored debt never qualifies whatever its age. And the prompt payment discount is a separate adjustment in the opposite direction — it reduces output tax, where bad debt relief increases the input side.',
     },
     {
       id: 'T-2-05', unitKey: 'tpfb', lo: 2,
       criteria: ['TPFB-2.3.7', 'TPFB-2.3.8', 'TPFB-2.3.13'],
       type: 'task',
       q: 'Work out the recoverable input tax and the fuel scale charge.',
-      brief: 'All amounts are **excluding VAT** unless the row says otherwise, and all purchases are standard-rated. The company car has CO2 emissions of **172 g/km** and the quarterly fuel scale charge for its band is **£396** including VAT.',
+      brief: 'All amounts are **excluding VAT** unless the row says otherwise, all purchases are standard-rated, and the business accounts for VAT on the invoice basis. The company car has CO2 emissions of **172 g/km** and the quarterly fuel scale charge for its band is **£396** including VAT.',
       datasets: [
         {
           title: 'Purchases for the quarter ended 31 December',
