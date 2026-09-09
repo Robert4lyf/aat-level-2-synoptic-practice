@@ -364,7 +364,12 @@ console.log(`${DIM}the value reaches grading${RESET}`);
    first box on the screen. */
 if (someTask) {
   const q = Object.assign({}, someTask, { unitKey: 'tpfb', lo: someTask.lo || 1 });
-  const typed = q.parts.map((p, i) => (p.type === 'choice' ? -1 : i)).filter(i => i >= 0);
+  /* GRID PARTS ARE NOT TYPED BOXES. A task can carry an entry grid, which has
+     no `taskinput` of its own — it renders a cell per figure. Counted as a
+     typed part, this looked for a box at its index, found nothing, and reported
+     the calculator broken when what had changed was the question. The grid gets
+     its own case below. */
+  const typed = q.parts.map((p, i) => (p.type === 'choice' || p.type === 'grid' ? -1 : i)).filter(i => i >= 0);
   if (typed.length > 1) {
     const el = openWith([q]);
     const second = D.nodes(el, 'taskinput').find(n => n.getAttribute('data-p') === String(typed[1]));
@@ -377,12 +382,73 @@ if (someTask) {
     ok(box2 && box2.attrs.value === '99', `the figure goes to the box last typed in (got ${box2 && box2.attrs.value})`);
     ok(box1 && box1.attrs.value === '', 'and not to the first box on the screen');
   }
-  /* Untouched, it goes to the first box still empty. */
+  /* Untouched, it goes to the first thing on the task the reader could fill —
+     IN PART ORDER, which is a grid's first cell when the task opens with one.
+     "First typed box" was the old wording and it quietly meant the same thing
+     while nothing but boxes existed. */
   const el2 = openWith([q]);
   tap(el2, ['7', '7']);
   D.click(el2, 'calcuse');
-  const first = D.nodes(el2, 'taskinput').find(n => n.getAttribute('data-p') === String(typed[0]));
-  ok(first && first.attrs.value === '77', 'untouched, it fills the first empty box');
+  if (q.parts[0] && q.parts[0].type === 'grid') {
+    const cell = D.nodes(el2, 'egcell').find(n => n.getAttribute('data-c') === '0:0');
+    ok(cell && cell.attrs.value === '77', `untouched, it fills the first cell of the grid (got ${cell && cell.attrs.value})`);
+  } else {
+    const first = D.nodes(el2, 'taskinput').find(n => n.getAttribute('data-p') === String(typed[0]));
+    ok(first && first.attrs.value === '77', 'untouched, it fills the first empty box');
+  }
+}
+
+/* ── A task that carries a grid: the figure reaches the CELL the reader was in,
+   and reaches grading from there. Two stores are in play — `taskInputs` for the
+   boxes and `egCells` for the table — and the whole risk of the second one is a
+   figure that lands in a store the marking never reads. ─────────────────────── */
+{
+  const gridTask = questions.find(q => q.type === 'task' && (q.parts || []).some(p => p.type === 'grid'));
+  ok(!!gridTask, 'there is a task carrying a grid for the pad to fill');
+  if (gridTask) {
+    const q = Object.assign({}, gridTask, { unitKey: 'tpfb', lo: gridTask.lo || 1 });
+    const el = openWith([q]);
+    /* A TYPED BOX IS TOUCHED FIRST, deliberately. Coming to the grid from a
+       clean question, `calcPart` is already null and clearing it is a no-op —
+       so a version that never cleared it passed. Touching a box first puts a
+       stale part index in the way, which is the state a reader is actually in
+       when they work down a task and reach the table last. */
+    const warmIdx = q.parts.findIndex(p => p.type !== 'choice' && p.type !== 'grid');
+    if (warmIdx >= 0) {
+      const warm = D.nodes(el, 'taskinput').find(n => n.getAttribute('data-p') === String(warmIdx));
+      warm.value = '3'; warm.fire('input');
+    }
+    /* The reader is in the second row of the grid. */
+    const second = D.nodes(el, 'egcell').find(n => n.getAttribute('data-c') === '1:0');
+    second.value = '1'; second.fire('input');
+    tap(el, ['9', '9']);
+    D.click(el, 'calcuse');
+    const cells = D.nodes(el, 'egcell');
+    const c2 = cells.find(n => n.getAttribute('data-c') === '1:0');
+    const c1 = cells.find(n => n.getAttribute('data-c') === '0:0');
+    ok(c2 && c2.attrs.value === '99', `the figure goes to the cell last typed in (got ${c2 && c2.attrs.value})`);
+    ok(c1 && c1.attrs.value === '', 'and not to the first cell of the table');
+    if (warmIdx >= 0) {
+      const warmed = D.nodes(el, 'taskinput').find(n => n.getAttribute('data-p') === String(warmIdx));
+      ok(warmed && warmed.attrs.value === '3',
+        `and not back into the box touched before it (got ${warmed && warmed.attrs.value})`);
+    }
+
+    /* AND A TYPED BOX STILL WINS AFTER IT. The two stores clear each other's
+       marker, so touching a box after a cell must move the target back — get
+       that wrong and every figure for the rest of the task lands in the table. */
+    const typedIdx = warmIdx;
+    if (typedIdx >= 0) {
+      const box = D.nodes(el, 'taskinput').find(n => n.getAttribute('data-p') === String(typedIdx));
+      box.value = '2'; box.fire('input');
+      tap(el, ['clear', '5', '5']);
+      D.click(el, 'calcuse');
+      const after = D.nodes(el, 'taskinput').find(n => n.getAttribute('data-p') === String(typedIdx));
+      ok(after && after.attrs.value === '55', `a box touched after a cell takes the next figure (got ${after && after.attrs.value})`);
+      const c2b = D.nodes(el, 'egcell').find(n => n.getAttribute('data-c') === '1:0');
+      ok(c2b && c2b.attrs.value === '99', 'and the cell keeps what it already had');
+    }
+  }
 }
 
 /* ── 6. The display resets between questions, memory does not ─────────────── */

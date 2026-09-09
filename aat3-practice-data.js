@@ -5153,9 +5153,40 @@
       ],
       parts: [
         {
-          label: 'Taxable turnover for the twelve months to 31 March',
-          type: 'numeric', unit: '£', answer: 102100,
-          exp: 'Standard-rated and zero-rated income both count, and nothing else does: 89,600.00 + 12,500.00 = £102,100.00. Zero-rated supplies are taxable at ' + T.rates.zero.value + '%, so they push a business towards registration even though they carry no VAT.',
+          /* THE RUNNING TOTAL IS THE WORKING, and the reader does it, exactly
+             as they do on the AAT paper: the assessment prints the monthly
+             figures and leaves the cumulative column blank. Filling it is how
+             the crossing month is found, and both decisions the question tests
+             — zero-rated income counts in, the capital asset stays out — bite
+             here rather than in the multiple choice two parts down. Printing
+             the column instead would hand the reader both.
+
+             It REPLACES the part that asked for the twelve-month total on its
+             own. That figure is the last cell of this column, and asking for it
+             again below would be a mark for copying. */
+          label: 'Complete the running total of taxable turnover, month by month',
+          type: 'grid',
+          entrygrid: {
+            title: 'Rolling taxable turnover to the end of each month',
+            rowHeader: 'Month end',
+            hint: 'Enter the total taxable turnover for the twelve months ending with each month.',
+            columns: ['Cumulative taxable turnover £'],
+            rows: [
+              { label: 'April', col: 0, amount: 7100 },
+              { label: 'May', col: 0, amount: 14000 },
+              { label: 'June', col: 0, amount: 22200 },
+              { label: 'July', col: 0, amount: 30400 },
+              { label: 'August', col: 0, amount: 39200 },
+              { label: 'September', col: 0, amount: 47350 },
+              { label: 'October', col: 0, amount: 55000 },
+              { label: 'November', col: 0, amount: 65500 },
+              { label: 'December', col: 0, amount: 78400 },
+              { label: 'January', col: 0, amount: 85150 },
+              { label: 'February', col: 0, amount: 92250 },
+              { label: 'March', col: 0, amount: 102100 },
+            ],
+          },
+          exp: 'Standard-rated and zero-rated income both count towards the running total, and nothing else does. April is 6,200.00 + 900.00 = 7,100.00, and each month is added to the one before. The twelve months to 31 March come to £102,100.00. Zero-rated supplies are taxable at ' + T.rates.zero.value + '%, so they push a business towards registration even though they carry no VAT. The exempt rent is not a taxable supply at all, and the proceeds of a capital asset are left out of the threshold test.',
         },
         {
           label: 'Exempt income for the same twelve months',

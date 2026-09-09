@@ -176,6 +176,123 @@ ok(authored >= 10, `${authored} questions of these two types are authored across
   });
 }
 
+/* ── 2b. What the renderer PRINTS, cell by cell ───────────────────────────── */
+/* Everything above is about the data and the grading. These are about the
+   markup, and every one of them was written after a mutation survived: the
+   review rendering had no coverage at all, so a grid could mark itself wrong
+   however well the reader did and nothing would say so.
+
+   Driven straight through `entryHtml`, because the point is what that function
+   emits — going through a player would test the player's plumbing as well and
+   report the same failure from three places. */
+{
+  const showAnswers = (q, cells) => G.entryHtml(q, {
+    prefix: 'a3', attr: 'data-a3', cells, showAnswers: true,
+  });
+
+  /* A GRID WITH A PRINTED FIGURE IN IT. `given` names a column that is shown
+     rather than asked, and grading has always skipped those. The REVIEW did
+     not: a given cell renders no input, so nothing is ever typed into it, and
+     comparing the nothing against the printed figure made every row carrying
+     one read as wrong. Nothing shipped uses `given` yet, which is the only
+     reason it went unseen. */
+  const withGiven = {
+    type: 'entrygrid',
+    entrygrid: {
+      title: 'A day book with its net column printed',
+      rowHeader: 'Invoice',
+      columns: ['Net £', 'VAT £', 'Gross £'],
+      rows: [
+        { label: 'Inv 1001', given: [0], cells: { 0: 400, 1: 80, 2: 480 } },
+        { label: 'Inv 1002', given: [0], cells: { 0: 200, 1: 40, 2: 240 } },
+      ],
+    },
+  };
+  const bothRight = showAnswers(withGiven, { '0:1': '80', '0:2': '480', '1:1': '40', '1:2': '240' });
+  ok((bothRight.match(/a3-eg-row is-right/g) || []).length === 2,
+    'a row whose ASKED cells are all right reads as right, though its given cell was never typed into');
+  ok(!/a3-eg-row is-wrong/.test(bothRight),
+    'and no row carrying a printed figure is marked wrong for it');
+  ok((bothRight.match(/a3-eg-given/g) || []).length === 2,
+    'both printed cells render as printed rather than as boxes');
+  ok(/400\.00/.test(bothRight) && /200\.00/.test(bothRight),
+    'a printed figure is printed as money');
+
+  const oneWrong = showAnswers(withGiven, { '0:1': '80', '0:2': '480', '1:1': '99', '1:2': '240' });
+  ok((oneWrong.match(/a3-eg-row is-wrong/g) || []).length === 1,
+    'and a row the reader actually got wrong still reads as wrong');
+
+  /* THE KEY IS SHOWN AS MONEY. A reader told "85150" against a table written
+     85,150.00 has to translate the verdict before they can trace it, which is
+     the whole reason the key is shown. */
+  const money = showAnswers({
+    type: 'entrygrid',
+    entrygrid: {
+      rowHeader: 'Month', columns: ['Cumulative £', 'Note £'],
+      rows: [{ label: 'January', cells: { 0: 85150, 1: 200 } }],
+    },
+  }, { '0:0': '1', '0:1': '200' });
+  ok(/a3-eg-key">85,150\.00</.test(money),
+    `the figure a reader missed is shown grouped and to the penny (got ${(money.match(/a3-eg-key">[^<]*/) || [''])[0]})`);
+
+  /* THE HINT IS THE GRID'S OWN when it has one. The default is about placement
+     — "leave the other columns empty" — which is advice about a table the
+     reader is not looking at when the grid has one column. */
+  const hinted = G.entryHtml({
+    entrygrid: {
+      rowHeader: 'Month', columns: ['Cumulative £'], hint: 'Enter the running total.',
+      rows: [{ label: 'January', col: 0, amount: 100 }, { label: 'February', col: 0, amount: 200 }],
+    },
+  }, { prefix: 'a3', attr: 'data-a3', cells: {} });
+  ok(/a3-eg-hint">Enter the running total\.</.test(hinted), 'a grid can carry its own hint');
+  ok(!/leave the others empty/.test(hinted), 'and the placement hint is not printed beside it');
+  const unhinted = G.entryHtml({
+    entrygrid: {
+      rowHeader: 'Account', columns: ['Debit £', 'Credit £'],
+      rows: [{ label: 'Bank', col: 0, amount: 100 }, { label: 'Sales', col: 1, amount: 100 }],
+    },
+  }, { prefix: 'a3', attr: 'data-a3', cells: {} });
+  ok(/leave the others empty/.test(unhinted), 'a grid without one still gets the placement hint');
+}
+
+/* ── 2c. The column floor, and what lowering it is allowed to do ──────────── */
+/* `problems` takes a `minColumns` option so a grid EMBEDDED IN A TASK can have
+   one column: the task prints its own table above it, so the reader's work is
+   reading across that table rather than choosing between columns. The floor is
+   a parameter and parameters drift, so both settings are asserted here — a
+   default quietly lowered to 1 would let a one-column grid ship as a standalone
+   question, which is a numeric box wearing a table. */
+{
+  const oneCol = {
+    type: 'entrygrid',
+    entrygrid: {
+      rowHeader: 'Month', columns: ['Cumulative £'],
+      rows: [{ label: 'January', col: 0, amount: 100 }, { label: 'February', col: 0, amount: 300 }],
+    },
+  };
+  const byDefault = G.problems(oneCol, 'X');
+  ok(byDefault.some(m => /at least 2 columns/.test(m)),
+    `a one-column grid is refused by default (got ${JSON.stringify(byDefault)})`);
+  ok(G.problems(oneCol, 'X', { minColumns: 1 }).length === 0,
+    'and accepted only when the caller lowers the floor on purpose');
+
+  /* THE OTHER HALF OF THE SAME RULE. "Every figure lands in one column" is the
+     same objection as "there is only one column" — there is nothing to place —
+     so it has to fall with the floor and hold without it. Two columns declared,
+     every figure in the first. */
+  const oneUsed = {
+    type: 'entrygrid',
+    entrygrid: {
+      rowHeader: 'Account', columns: ['Debit £', 'Credit £'],
+      rows: [{ label: 'Bank', col: 0, amount: 100 }, { label: 'Sales', col: 0, amount: 300 }],
+    },
+  };
+  ok(G.problems(oneUsed, 'Y').some(m => /no placement decision/.test(m)),
+    'a grid whose figures all land in one column is refused by default');
+  ok(!G.problems(oneUsed, 'Y', { minColumns: 1 }).some(m => /no placement decision/.test(m)),
+    'and that complaint falls with the floor, rather than firing on a task grid the floor was lowered for');
+}
+
 /* ── 3. The whole loop, on each player ────────────────────────────────────── */
 console.log(`${DIM}each player${RESET}`);
 
