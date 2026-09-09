@@ -409,6 +409,69 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
   .a3-streak.is-sparkling::before,
   .a3-streak.is-sparkling::after { animation: none; opacity: 1; transform: none; }
 }
+
+/* ── The two milestone tiers the badge KEEPS ──────────────────────────────────
+   Ten is gold and twenty-five sparkles, and both are the same badge with more
+   on it. Fifty and a hundred are not: the overlay that marks them is gone in
+   four seconds, so what the reader has to show for the milestone afterwards is
+   this — and "the same badge, brighter" is what made it feel like nothing.
+
+   SO THE BADGE CHANGES SHAPE, FILL AND WORD, not just colour. It stops being a
+   pale chip with gold text and becomes a solid gold plate with the number
+   knocked out of it, and the label under the number stops saying "streak".
+   Three things a reader notices at a glance, none of which is a hue. */
+body[data-subject="aat3"] .a3-streak.is-blazing {
+  background: linear-gradient(160deg, var(--a3-gold), #8a6a12);
+  border-color: #6f5410;
+  transform: scale(1.14);
+  box-shadow: 0 6px 18px -6px rgba(176,137,27,.85), 0 0 0 3px var(--a3-gold-wash);
+}
+body[data-subject="aat3"] .a3-streak.is-blazing .a3-streak-n,
+body[data-subject="aat3"] .a3-streak.is-blazing .a3-streak-l { color: #fff; }
+body[data-subject="aat3"] .a3-streak.is-blazing .a3-streak-n { font-size: 22px; }
+/* The sparkles it earned at twenty-five turn white so they read against the
+   plate rather than disappearing into it. */
+body[data-subject="aat3"] .a3-streak.is-blazing::before,
+body[data-subject="aat3"] .a3-streak.is-blazing::after { background: #fff; }
+
+/* A HUNDRED IS A DIFFERENT OBJECT AGAIN: a dark plate ringed by a gold halo
+   that turns, with the number in gold. Where fifty inverted the badge, this
+   inverts it back and puts something in orbit around it — so the two tiers are
+   told apart at a glance and not by reading the word. */
+body[data-subject="aat3"] .a3-streak.is-legendary {
+  position: relative;
+  background: linear-gradient(160deg, #241c05, #0f0c02);
+  border-color: var(--a3-gold);
+  transform: scale(1.2);
+  box-shadow: 0 8px 26px -6px rgba(176,137,27,.9);
+}
+body[data-subject="aat3"] .a3-streak.is-legendary .a3-streak-n { color: var(--a3-gold); }
+body[data-subject="aat3"] .a3-streak.is-legendary .a3-streak-l { color: #f5d47a; }
+/* The halo is a third element rather than a border, because a border cannot
+   rotate independently of the box it is on. It is drawn on an inserted span so
+   the two sparkle pseudo-elements keep their corners. */
+body[data-subject="aat3"] .a3-streak.is-legendary { overflow: visible; }
+body[data-subject="aat3"] .a3-streak.is-legendary .a3-streak-n::after {
+  content: ''; position: absolute; inset: -6px; padding: 3px;
+  border-radius: calc(var(--a3-r-sm) + 6px);
+  background: conic-gradient(from 0deg, transparent 0 52%, var(--a3-gold) 70%, #f5d47a 82%, transparent 92%);
+  /* A TRUE ROUNDED-RECT RING, by masking the gradient down to its own padding
+     edge. The first version used a radial mask and `border-radius: inherit` —
+     inherited from the SPAN, which has none — so the conic came out as a wedge
+     spilling past the badge instead of a ring around it. */
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  animation: a3-streak-halo 3.4s linear infinite;
+  pointer-events: none;
+}
+@keyframes a3-streak-halo { to { transform: rotate(1turn); } }
+@media (prefers-reduced-motion: reduce) {
+  /* Held still rather than removed: the halo IS the tier's mark, and a reader
+     who stopped the motion should still see they reached a hundred. */
+  body[data-subject="aat3"] .a3-streak.is-legendary .a3-streak-n::after { animation: none; }
+}
+
 .a3-lessonbar-p-endless span {
   background: linear-gradient(90deg, var(--a3-gold), var(--a3-brand-2));
 }
@@ -1945,51 +2008,98 @@ body[data-subject="aat3"] .a3-soundrow-s.is-on::after { transform: translateX(17
    deliberately accountancy-flavoured of the six, and the only one of them that
    moves in a straight line. */
 body[data-subject="aat3"] .aat-cel-a3 .aat-cel-t {
-  background: var(--a3-gold-wash); color: var(--a3-gold);
-  box-shadow: 0 10px 40px -14px rgba(176,137,27,.6);
-  font-family: var(--a3-display); letter-spacing: -.01em;
+  /* Solid colour under the gradient — see the Level 2 banner for why. */
+  background-color: var(--a3-gold);
+  background-image: linear-gradient(135deg, var(--a3-gold), #8a6a12);
+  color: #fff;
+  box-shadow: 0 22px 64px -14px rgba(176,137,27,.85);
+  font-family: var(--a3-display); letter-spacing: -.02em;
+}
+body[data-subject="aat3"] .aat-cel-a3 .aat-cel-flash {
+  background: radial-gradient(circle at 50% 50%, rgba(176,137,27,.45), rgba(176,137,27,0) 62%);
+  animation: a3-cel-gild 1s ease-out both;
+}
+@keyframes a3-cel-gild {
+  0%   { opacity: 0; transform: scale(.45); }
+  20%  { opacity: 1; }
+  100% { opacity: 0; transform: scale(1.65); }
+}
+
+/* FIFTY RULES A LEDGER, and now it rules it hard. Forty-six gold lines strike
+   in from alternating edges and stack the whole screen, with three rings
+   opening behind them. Still the only one of the six that moves in straight
+   lines — that is this level's character — but a page being ruled off rather
+   than a few tidy underlines. */
+body[data-subject="aat3"] .aat-cel-a3.aat-cel-50 .aat-cel-w {
+  top: 50%; left: 50%; width: 120px; height: 120px; margin: -60px 0 0 -60px;
+  border: 4px solid rgba(176,137,27,.55);
+  animation: a3-cel-frame 1.8s cubic-bezier(.15,.85,.25,1) both;
+  animation-delay: calc(var(--i) * 190ms);
+}
+@keyframes a3-cel-frame {
+  0%   { opacity: 0; transform: scale(.2) rotate(0deg); }
+  14%  { opacity: .9; }
+  100% { opacity: 0; transform: scale(11) rotate(22deg); }
 }
 body[data-subject="aat3"] .aat-cel-a3.aat-cel-50 .aat-cel-p {
-  left: 0; top: calc(6% + var(--i) * 88% / var(--n));
-  height: 3px; width: 100%; border-radius: 2px;
-  background: linear-gradient(90deg, rgba(176,137,27,0), var(--a3-gold) 18%, var(--a3-gold) 82%, rgba(176,137,27,0));
-  transform-origin: 0 50%;
-  animation: a3-cel-rule 2.3s cubic-bezier(.16,.8,.24,1) both;
-  animation-delay: calc(var(--i) * 45ms);
+  left: 0; top: calc(3% + var(--i) * 94% / var(--n));
+  height: calc(3px + var(--s) * 0.05px); width: 100%; border-radius: 2px;
+  background: linear-gradient(90deg, rgba(176,137,27,0), var(--a3-gold) 16%, #f5d47a 50%, var(--a3-gold) 84%, rgba(176,137,27,0));
+  /* Alternating origin, so the lines strike in from both edges rather than
+     wiping the screen one way like a loading bar. */
+  transform-origin: calc(var(--i) * 100%) 50%;
+  animation: a3-cel-rule 2.4s cubic-bezier(.1,.9,.2,1) both;
+  animation-delay: calc(var(--i) * 16ms);
 }
 @keyframes a3-cel-rule {
   0%   { opacity: 0; transform: scaleX(0); }
-  30%  { opacity: .85; transform: scaleX(1); }
-  70%  { opacity: .7; }
-  100% { opacity: 0; transform: scaleX(1); }
+  18%  { opacity: 1; transform: scaleX(1); }
+  62%  { opacity: .9; }
+  100% { opacity: 0; transform: scaleX(1) translateX(calc((var(--r) - 50) * 0.4vw)); }
 }
 
-/* A HUNDRED is a seal. One ring presses down over the banner while short ticks
-   strike outward around it — the gesture of a document being signed off, which
-   is what a hundred correct in a row deserves and what this unit is about. */
-body[data-subject="aat3"] .aat-cel-a3.aat-cel-100 .aat-cel-p {
-  top: 50%; left: 50%; width: 4px; height: 34px; margin: -17px 0 0 -2px;
-  border-radius: 4px; background: var(--a3-gold);
-  transform-origin: 50% 50%;
-  animation: a3-cel-tick 2.4s cubic-bezier(.2,.9,.25,1) both;
-  animation-delay: calc(120ms + var(--i) * 12ms);
+/* A HUNDRED IS THE SEAL PRESSED. Five rings slam down over the banner, ninety-six
+   ticks strike outward around it, and the page itself shakes — the gesture of a
+   document signed off, which is what this unit is about and what a hundred
+   correct in a row deserves. */
+body[data-subject="aat3"] .aat-cel-a3.aat-cel-100 .aat-cel-flash {
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255,251,235,.95), rgba(255,251,235,0) 36%),
+    radial-gradient(circle at 50% 50%, rgba(176,137,27,.6), rgba(120,90,10,0) 74%);
+  animation: a3-cel-strike 1.25s ease-out both;
 }
-@keyframes a3-cel-tick {
-  0%   { opacity: 0; transform: rotate(calc(var(--i) * 1turn / var(--n))) translateY(0) scaleY(.2); }
-  25%  { opacity: 1; transform: rotate(calc(var(--i) * 1turn / var(--n))) translateY(-34vh) scaleY(1); }
-  100% { opacity: 0; transform: rotate(calc(var(--i) * 1turn / var(--n))) translateY(-40vh) scaleY(.7); }
+@keyframes a3-cel-strike {
+  0%   { opacity: 0; transform: scale(.1); }
+  6%   { opacity: 1; }
+  32%  { opacity: .7; }
+  100% { opacity: 0; transform: scale(2.3); }
 }
-/* The ring itself, pressed rather than drawn. */
-body[data-subject="aat3"] .aat-cel-a3.aat-cel-100 .aat-cel-t::before {
-  content: ''; position: absolute; inset: -34px;
-  border: 4px solid var(--a3-gold); border-radius: 999px;
-  animation: a3-cel-seal 2.4s cubic-bezier(.2,1.1,.3,1) both;
+body[data-subject="aat3"] .aat-cel-a3.aat-cel-100 .aat-cel-w {
+  top: 50%; left: 50%; width: 220px; height: 220px; margin: -110px 0 0 -110px;
+  border: 7px solid var(--a3-gold); border-radius: 999px;
+  animation: a3-cel-seal 2.6s cubic-bezier(.2,1.15,.3,1) both;
+  animation-delay: calc(var(--i) * 130ms);
 }
 @keyframes a3-cel-seal {
-  0%   { opacity: 0; transform: scale(2.4) rotate(-14deg); }
-  22%  { opacity: 1; transform: scale(1) rotate(0deg); }
-  80%  { opacity: .9; }
-  100% { opacity: 0; transform: scale(1.06); }
+  0%   { opacity: 0; transform: scale(3.2) rotate(-20deg); }
+  20%  { opacity: 1; transform: scale(1) rotate(0deg); }
+  70%  { opacity: .85; transform: scale(1.04) rotate(0deg); }
+  100% { opacity: 0; transform: scale(2.6) rotate(10deg); }
+}
+body[data-subject="aat3"] .aat-cel-a3.aat-cel-100 .aat-cel-p {
+  top: 50%; left: 50%;
+  width: calc(3px + var(--s) * 0.03px); height: calc(26px + var(--s) * 0.3px);
+  margin: -17px 0 0 -2px;
+  border-radius: 4px;
+  background: linear-gradient(180deg, #f5d47a, var(--a3-gold));
+  transform-origin: 50% 50%;
+  animation: a3-cel-tick 2.7s cubic-bezier(.12,.9,.2,1) both;
+  animation-delay: calc(140ms + var(--i) * 7ms);
+}
+@keyframes a3-cel-tick {
+  0%   { opacity: 0; transform: rotate(calc(var(--i) * 1turn / var(--n))) translateY(0) scaleY(.1); }
+  20%  { opacity: 1; transform: rotate(calc(var(--i) * 1turn / var(--n))) translateY(-38vh) scaleY(1.3); }
+  100% { opacity: 0; transform: rotate(calc(var(--i) * 1turn / var(--n))) translateY(-52vh) scaleY(.6); }
 }
 
 /* ── Room under the advance button ────────────────────────────────────────────

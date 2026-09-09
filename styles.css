@@ -828,6 +828,50 @@ body.dark .q-counter-endless {
 body.dark .mode-card.mode-endless { border-color: rgba(167,139,250,.30); }
 body.dark .mode-card.mode-endless .mode-card-icon { background: rgba(167,139,250,.14); color: #a78bfa; }
 
+
+/* ── The two milestone tiers the endless counter KEEPS ────────────────────────
+   Level 2's counter had no tiers at all: it looked the same at one as at a
+   hundred, so the celebration at fifty was the only thing that ever marked the
+   milestone and it was gone in seconds. Fifty fills it solid violet and knocks
+   the number out; a hundred turns it dark with a turning halo. The two are
+   told apart by shape and fill, not by reading the word under the number. */
+.q-counter-endless.is-blazing {
+  background: linear-gradient(160deg, #7c3aed, #4f46e5);
+  border-color: #4338ca; color: #fff;
+  transform: scale(1.12);
+  box-shadow: 0 6px 18px -6px rgba(124,58,237,.85);
+}
+.q-counter-endless.is-blazing b { font-size: 1.2rem; }
+.q-counter-endless.is-blazing i { opacity: 1; }
+.q-counter-endless.is-legendary {
+  position: relative; overflow: visible;
+  background: linear-gradient(160deg, #1a1140, #0a0720);
+  border-color: #a78bfa; color: #c4b5fd;
+  transform: scale(1.18);
+  box-shadow: 0 8px 26px -6px rgba(167,139,250,.9);
+}
+.q-counter-endless.is-legendary b { color: #a78bfa; }
+.q-counter-endless.is-legendary b::after {
+  content: ''; position: absolute; inset: -6px; padding: 3px;
+  border-radius: 15px;
+  background: conic-gradient(from 0deg, transparent 0 52%, #a78bfa 70%, #e9d5ff 82%, transparent 92%);
+  /* A TRUE ROUNDED-RECT RING, by masking the gradient down to its own padding
+     edge. The first version used a radial mask and `border-radius: inherit` —
+     inherited from the SPAN, which has none — so the conic came out as a wedge
+     spilling past the badge instead of a ring around it. */
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  animation: aat-streak-halo 3.4s linear infinite;
+  pointer-events: none;
+}
+@keyframes aat-streak-halo { to { transform: rotate(1turn); } }
+body.dark .q-counter-endless.is-blazing { background: linear-gradient(160deg, #a78bfa, #6366f1); color: #0b1020; }
+body.dark .q-counter-endless.is-blazing i { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .q-counter-endless.is-legendary b::after { animation: none; }
+}
+
 .mode-card.mode-mock { border-color: rgba(234,88,12,.25); }
 .mode-card.mode-mock:hover { border-color: #ea580c; }
 .mode-card.mode-mock .mode-card-icon { background: rgba(234,88,12,.10); }
@@ -6472,68 +6516,144 @@ body.dark .diag-result { background:rgba(255,255,255,.03); }
    The overlay, its position and its exit belong here because they are the same
    on every level. What each celebration LOOKS like belongs in that level's own
    stylesheet — see aat1-styles.css and aat3-styles.css, and the Level 2 rules
-   just below. The pieces carry --i, --n and --r from celebrate.js so a
+   just below. The pieces carry --i, --n, --r and --s from celebrate.js so a
    stylesheet can fan them out without that file knowing which direction is up
-   in a given design. */
+   in a given design.
+
+   FOUR LAYERS. `.aat-cel-flash` is one full-bleed element at the back,
+   `.aat-cel-w` is a small set of shockwave rings, `.aat-cel-p` are the pieces,
+   and `.aat-cel-t` is the banner. Each level moves all four its own way. */
 .aat-cel {
   position: fixed; inset: 0; z-index: 9000;
   pointer-events: none;            /* the run continues underneath */
   display: flex; align-items: center; justify-content: center;
   overflow: hidden;
 }
+.aat-cel-flash, .aat-cel-w { position: absolute; display: block; }
+/* Full-bleed by default; a level may override the box entirely. */
+.aat-cel-flash { inset: 0; }
 .aat-cel-p { position: absolute; display: block; }
 .aat-cel-t {
-  position: relative; z-index: 2;
-  font-weight: 800; font-size: clamp(24px, 7vw, 40px);
-  letter-spacing: -.02em; text-align: center;
-  padding: 14px 26px; border-radius: 999px;
-  animation: aat-cel-banner 2.6s cubic-bezier(.2,.8,.3,1) both;
+  position: relative; z-index: 3;
+  font-weight: 900; font-size: clamp(34px, 12vw, 76px);
+  letter-spacing: -.045em; text-align: center; line-height: 1;
+  padding: 18px 34px; border-radius: 999px;
+  animation: aat-cel-banner 1.1s cubic-bezier(.16,1.4,.3,1) both;
 }
+/* THE BANNER ARRIVES HARD AND STAYS. It used to fade out with the pieces over
+   2.6s, which made the words the least emphatic thing on a screen full of
+   motion. It now lands with an overshoot and holds until the overlay is
+   removed, so the number is what the reader is left looking at. */
 @keyframes aat-cel-banner {
-  0%   { opacity: 0; transform: scale(.86); }
-  10%  { opacity: 1; transform: scale(1.04); }
-  18%  { transform: scale(1); }
-  80%  { opacity: 1; }
-  100% { opacity: 0; transform: scale(.98); }
+  0%   { opacity: 0; transform: scale(.3) rotate(-6deg); }
+  55%  { opacity: 1; transform: scale(1.18) rotate(2deg); }
+  75%  { transform: scale(.96) rotate(-1deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0); }
 }
-/* Motion removed, meaning kept: the banner still says what was reached. */
+/* THE SCREEN SHAKES AT A HUNDRED, and only there. celebrate.js puts the class
+   on <body> because the overlay is what the reader looks through — shaking
+   that moves nothing they can see. */
+body.aat-cel-quake { animation: aat-cel-quake 620ms cubic-bezier(.36,.07,.19,.97) both; }
+@keyframes aat-cel-quake {
+  0%, 100% { transform: translate3d(0,0,0); }
+  10%  { transform: translate3d(-9px, 4px, 0) rotate(-.5deg); }
+  25%  { transform: translate3d(8px, -6px, 0) rotate(.45deg); }
+  40%  { transform: translate3d(-7px, 5px, 0) rotate(-.35deg); }
+  55%  { transform: translate3d(6px, -4px, 0) rotate(.28deg); }
+  70%  { transform: translate3d(-4px, 3px, 0) rotate(-.18deg); }
+  85%  { transform: translate3d(2px, -2px, 0) rotate(.08deg); }
+}
+/* Motion removed, meaning kept: the banner still says what was reached, and
+   celebrate.js has already dropped every moving layer and the shake. */
 @media (prefers-reduced-motion: reduce) {
   .aat-cel-t { animation: aat-cel-fade 2.6s linear both; }
   @keyframes aat-cel-fade { 0%,85% { opacity: 1; } 100% { opacity: 0; } }
+  body.aat-cel-quake { animation: none; }
 }
 
 /* ── Level 2: violet, the colour its endless mode already uses ───────────────
-   FIFTY is a ripple — rings opening outward from the centre, one after another,
-   the quietest of the six because it is the first milestone and will be seen
-   most often. */
-.aat-cel-aat .aat-cel-t { background: rgba(124,58,237,.14); color: #7c3aed; }
-.dark .aat-cel-aat .aat-cel-t { background: rgba(124,58,237,.22); color: #c4b5fd; }
+   FIFTY is a SHOCKWAVE. Rings punch outward from the centre while chips are
+   thrown after them on the same bearings — the first milestone, and the
+   quieter of the two, but no longer a polite ripple. */
+.aat-cel-aat .aat-cel-t {
+  /* A SOLID COLOUR UNDER THE GRADIENT. `background:` with only a gradient
+     leaves background-color transparent, so a banner whose gradient does not
+     paint — an old engine, a forced-colours mode — is white text on nothing. */
+  background-color: #7c3aed;
+  background-image: linear-gradient(135deg, #7c3aed, #4f46e5);
+  color: #fff; box-shadow: 0 18px 50px -12px rgba(124,58,237,.75);
+}
+.dark .aat-cel-aat .aat-cel-t {
+  background-color: #a78bfa;
+  background-image: linear-gradient(135deg, #a78bfa, #6366f1);
+  color: #0b1020; box-shadow: 0 18px 50px -10px rgba(167,139,250,.6);
+}
+.aat-cel-aat .aat-cel-flash {
+  background: radial-gradient(circle at 50% 50%, rgba(124,58,237,.42), rgba(124,58,237,0) 62%);
+  animation: aat-cel-aat-bloom 900ms ease-out both;
+}
+@keyframes aat-cel-aat-bloom {
+  0%   { opacity: 0; transform: scale(.4); }
+  18%  { opacity: 1; }
+  100% { opacity: 0; transform: scale(1.6); }
+}
+.aat-cel-aat .aat-cel-w {
+  top: 50%; left: 50%; width: 90px; height: 90px; margin: -45px 0 0 -45px;
+  border: 5px solid rgba(124,58,237,.7); border-radius: 50%;
+  animation: aat-cel-aat-wave 1.5s cubic-bezier(.1,.8,.25,1) both;
+  animation-delay: calc(var(--i) * 150ms);
+}
+@keyframes aat-cel-aat-wave {
+  0%   { opacity: 0; transform: scale(.1); border-width: 10px; }
+  10%  { opacity: .95; }
+  100% { opacity: 0; transform: scale(16); border-width: 1px; }
+}
 .aat-cel-aat.aat-cel-50 .aat-cel-p {
-  top: 50%; left: 50%; width: 26px; height: 26px; margin: -13px 0 0 -13px;
-  border: 2px solid rgba(124,58,237,.55); border-radius: 50%;
-  animation: aat-cel-ripple 2.2s cubic-bezier(.15,.7,.3,1) both;
-  animation-delay: calc(var(--i) * 90ms);
+  top: 50%; left: 50%;
+  width: calc(8px + var(--s) * 0.12px); height: calc(8px + var(--s) * 0.12px);
+  margin: -6px 0 0 -6px; border-radius: 3px;
+  background: hsl(calc(258 + var(--r) * 0.4), 85%, 62%);
+  animation: aat-cel-aat-burst 1.6s cubic-bezier(.12,.75,.24,1) both;
+  animation-delay: calc(var(--i) * 9ms);
 }
-@keyframes aat-cel-ripple {
+@keyframes aat-cel-aat-burst {
+  0%   { opacity: 0; transform: rotate(calc(var(--i) * 1turn / var(--n))) translateY(0) scale(.2); }
+  12%  { opacity: 1; }
+  100% { opacity: 0;
+         transform: rotate(calc(var(--i) * 1turn / var(--n)))
+                    translateY(calc(30vh + var(--r) * 0.35vh)) scale(1) rotate(720deg); }
+}
+/* A HUNDRED is a FIREWORK OVER A WHITE-OUT: the screen flares, five rings go
+   out, and a hundred streaks are thrown on their own bearings while the page
+   itself shakes. Unmistakably a different event rather than the same one
+   repeated. */
+.aat-cel-aat.aat-cel-100 .aat-cel-flash {
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255,255,255,.9), rgba(255,255,255,0) 40%),
+    radial-gradient(circle at 50% 50%, rgba(124,58,237,.55), rgba(79,70,229,0) 70%);
+  animation: aat-cel-aat-whiteout 1.2s ease-out both;
+}
+@keyframes aat-cel-aat-whiteout {
   0%   { opacity: 0; transform: scale(.2); }
-  12%  { opacity: .85; }
-  100% { opacity: 0; transform: scale(22); }
+  8%   { opacity: 1; }
+  30%  { opacity: .7; }
+  100% { opacity: 0; transform: scale(2.2); }
 }
-/* A HUNDRED is a firework: thin streaks thrown outward and fading, each on its
-   own bearing. Louder than the ripple, and unmistakably a different event
-   rather than the same one repeated. */
 .aat-cel-aat.aat-cel-100 .aat-cel-p {
-  top: 50%; left: 50%; width: 3px; height: 46px; margin: -23px 0 0 -1.5px;
-  border-radius: 3px;
-  background: linear-gradient(180deg, #7c3aed, rgba(59,98,227,0));
+  top: 50%; left: 50%;
+  width: 4px; height: calc(40px + var(--s) * 0.7px); margin: -20px 0 0 -2px;
+  border-radius: 4px;
+  background: linear-gradient(180deg, hsl(calc(250 + var(--r) * 0.5), 92%, 66%), rgba(59,98,227,0));
   transform-origin: 50% 0;
-  animation: aat-cel-streak 1.9s cubic-bezier(.1,.75,.25,1) both;
-  animation-delay: calc(var(--i) * 14ms);
+  animation: aat-cel-aat-comet 2.2s cubic-bezier(.08,.8,.2,1) both;
+  animation-delay: calc(var(--i) * 7ms);
 }
-@keyframes aat-cel-streak {
-  0%   { opacity: 0; transform: rotate(calc(var(--i) * 1turn / var(--n))) translateY(0) scaleY(.3); }
-  15%  { opacity: 1; }
-  100% { opacity: 0; transform: rotate(calc(var(--i) * 1turn / var(--n))) translateY(calc(38vh + var(--r) * 0.1vh)) scaleY(1); }
+@keyframes aat-cel-aat-comet {
+  0%   { opacity: 0; transform: rotate(calc(var(--i) * 1turn / var(--n))) translateY(0) scaleY(.2); }
+  10%  { opacity: 1; }
+  100% { opacity: 0;
+         transform: rotate(calc(var(--i) * 1turn / var(--n)))
+                    translateY(calc(52vh + var(--r) * 0.24vh)) scaleY(1.5); }
 }
 
 /* ── The calculator on a narrow screen ────────────────────────────────────────

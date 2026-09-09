@@ -2096,6 +2096,25 @@
      little; ten is worth reaching and twenty-five is worth marking again. */
   var STREAK_GOLD = 10;
   var STREAK_SPARKLE = 25;
+  /* AND THE TWO MILESTONES THE RUN CELEBRATES. The overlay at fifty and a
+     hundred passes in seconds and the badge used to go back to looking exactly
+     as it had at twenty-five, so a reader had nothing to show for it a minute
+     later. These are the tiers the badge KEEPS, and they are the same numbers
+     AATCelebrate fires on. Level 3 carries the identical pair. */
+  var STREAK_BLAZE = 50;
+  var STREAK_LEGEND = 100;
+
+  function streakClass(n) {
+    return (n >= STREAK_GOLD ? ' is-hot' : '') +
+      (n >= STREAK_SPARKLE ? ' is-sparkling' : '') +
+      (n >= STREAK_BLAZE ? ' is-blazing' : '') +
+      (n >= STREAK_LEGEND ? ' is-legendary' : '');
+  }
+  function streakWord(n) {
+    if (n >= STREAK_LEGEND) return 'legend';
+    if (n >= STREAK_BLAZE) return 'on fire';
+    return 'streak';
+  }
 
   function renderPractice() {
     var bank = practiceBank();
@@ -2252,11 +2271,13 @@
           '<div class="a1-lessonbar-t"><span class="a1-inf" aria-hidden="true">∞</span>Keep going</div>' +
           '<div class="a1-lessonbar-m">' + done + ' answered · ' + S.score + ' right</div>' +
         '</div>' +
-        '<div class="a1-streak' + (S.streak >= STREAK_GOLD ? ' is-hot' : '') +
-          (S.streak >= STREAK_SPARKLE ? ' is-sparkling' : '') + '" ' +
+        /* The aria-label says "Current streak N" at every tier: the word
+           under the number is decoration, and a reader who cannot see it needs
+           the number and what it counts, not the adjective. */
+        '<div class="a1-streak' + streakClass(S.streak) + '" ' +
           'aria-label="Current streak ' + S.streak + '">' +
           '<span class="a1-streak-n">' + S.streak + '</span>' +
-          '<span class="a1-streak-l">streak</span>' +
+          '<span class="a1-streak-l">' + streakWord(S.streak) + '</span>' +
         '</div>' +
         '</div>' +
         '<div class="a1-lessonbar-p a1-lessonbar-p-endless"><span style="width:' + meter + '%"></span></div>';

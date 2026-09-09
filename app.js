@@ -1793,6 +1793,26 @@
      time — so each milestone fires on the answer that reaches it and never
      again on the way past. The milestones are AATCelebrate's, so the three
      levels cannot come to disagree about which streaks are worth marking. */
+  /* WHAT THE COUNTER KEEPS. The overlay at fifty and a hundred is over in
+     seconds; without a lasting mark the reader has nothing to show for the
+     milestone a minute later. The two numbers are AATCelebrate's own, so the
+     counter cannot come to disagree with the celebration about what counts —
+     check-streak-milestones.js asserts they are the same pair. Levels 1 and 3
+     carry the identical tiers under their own class names. */
+  const STREAK_BLAZE = 50;
+  const STREAK_LEGEND = 100;
+  function streakTier(n) {
+    return (n >= STREAK_BLAZE ? ' is-blazing' : '') + (n >= STREAK_LEGEND ? ' is-legendary' : '');
+  }
+  /* The aria-label keeps "Current streak N" at every tier: the word under the
+     number is decoration, and a reader who cannot see it needs the number and
+     what it counts, not the adjective. */
+  function streakWord(n) {
+    if (n >= STREAK_LEGEND) return 'legend';
+    if (n >= STREAK_BLAZE) return 'on fire';
+    return 'streak';
+  }
+
   function markStreak() {
     if (!State.endless || typeof AATCelebrate === 'undefined') return;
     if (AATCelebrate.AT.indexOf(State.streak) === -1) return;
@@ -5145,7 +5165,7 @@
               <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.streak || 0}" aria-valuemin="0" aria-valuemax="${best}"><div class="progress-bar" style="width:${meter}%"></div></div>
               <div class="progress-label">${done} answered · ${State.score} right</div>
             </div>
-            <span class="q-counter q-counter-endless" aria-label="Current streak ${State.streak || 0}"><b>${State.streak || 0}</b><i>streak</i></span>`;
+            <span class="q-counter q-counter-endless${streakTier(State.streak || 0)}" aria-label="Current streak ${State.streak || 0}"><b>${State.streak || 0}</b><i>${streakWord(State.streak || 0)}</i></span>`;
     }
     return `<div class="progress-wrap">
               <div class="progress-bar-bg" role="progressbar" aria-valuenow="${State.current + 1}" aria-valuemin="0" aria-valuemax="${total}"><div class="progress-bar" style="width:${pct}%"></div></div>

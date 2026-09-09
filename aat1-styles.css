@@ -800,6 +800,52 @@ body[data-subject="aat1"] #app { background: var(--a1-paper); }
   .a1-streak.is-sparkling::before,
   .a1-streak.is-sparkling::after { animation: none; opacity: 1; transform: none; }
 }
+
+/* ── The two milestone tiers the badge KEEPS ──────────────────────────────────
+   The same idea as Level 3, in this level's warmth: fifty fills the badge
+   solid and knocks the number out of it, a hundred turns it dark with a
+   turning halo. Shape, fill and word change together — "the same badge in a
+   brighter colour" is what made the old milestone feel like nothing. */
+body[data-subject="aat1"] .a1-streak.is-blazing {
+  background: linear-gradient(160deg, var(--a1-accent), #b45309);
+  border-color: #92400e;
+  transform: scale(1.14);
+  box-shadow: 0 6px 18px -6px rgba(166,91,16,.85), 0 0 0 3px var(--a1-accent-wash);
+}
+body[data-subject="aat1"] .a1-streak.is-blazing .a1-streak-n,
+body[data-subject="aat1"] .a1-streak.is-blazing .a1-streak-l { color: #fff; }
+body[data-subject="aat1"] .a1-streak.is-blazing .a1-streak-n { font-size: 1.35rem; }
+body[data-subject="aat1"] .a1-streak.is-blazing::before,
+body[data-subject="aat1"] .a1-streak.is-blazing::after { background: #fff; }
+
+body[data-subject="aat1"] .a1-streak.is-legendary {
+  position: relative; overflow: visible;
+  background: linear-gradient(160deg, #2b1605, #140a02);
+  border-color: var(--a1-accent);
+  transform: scale(1.2);
+  box-shadow: 0 8px 26px -6px rgba(232,168,92,.9);
+}
+body[data-subject="aat1"] .a1-streak.is-legendary .a1-streak-n { color: var(--a1-accent); }
+body[data-subject="aat1"] .a1-streak.is-legendary .a1-streak-l { color: #fcd9a4; }
+body[data-subject="aat1"] .a1-streak.is-legendary .a1-streak-n::after {
+  content: ''; position: absolute; inset: -6px; padding: 3px;
+  border-radius: 16px;
+  background: conic-gradient(from 0deg, transparent 0 52%, var(--a1-accent) 70%, #fcd9a4 82%, transparent 92%);
+  /* A TRUE ROUNDED-RECT RING, by masking the gradient down to its own padding
+     edge. The first version used a radial mask and `border-radius: inherit` —
+     inherited from the SPAN, which has none — so the conic came out as a wedge
+     spilling past the badge instead of a ring around it. */
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  animation: a1-streak-halo 3.4s linear infinite;
+  pointer-events: none;
+}
+@keyframes a1-streak-halo { to { transform: rotate(1turn); } }
+@media (prefers-reduced-motion: reduce) {
+  body[data-subject="aat1"] .a1-streak.is-legendary .a1-streak-n::after { animation: none; }
+}
+
 .a1-lessonbar-p-endless span { background: linear-gradient(90deg, var(--a1-accent), var(--a1-brand)); }
 .a1-sheet-endless { border-color: var(--a1-accent); }
 
@@ -1614,39 +1660,92 @@ body[data-subject="aat1"] .a1-soundrow-s.is-on::after { transform: translateX(17
    near the top: slow, soft, nothing sudden. This is the entry level, and the
    first milestone many readers will ever hit. */
 body[data-subject="aat1"] .aat-cel-a1 .aat-cel-t {
-  background: var(--a1-accent-wash); color: var(--a1-accent-ink);
-  box-shadow: 0 8px 32px -12px rgba(166,91,16,.55);
+  /* Solid colour under the gradient — see the Level 2 banner for why. */
+  background-color: var(--a1-accent);
+  background-image: linear-gradient(135deg, var(--a1-accent), #d97706);
+  color: #fff;
+  box-shadow: 0 20px 60px -14px rgba(166,91,16,.8);
 }
-body[data-subject="aat1"] .aat-cel-a1.aat-cel-50 .aat-cel-p {
-  bottom: -30px; left: calc(var(--i) * 100% / var(--n));
-  width: 10px; height: 10px; border-radius: 50%;
-  background: var(--a1-accent); opacity: 0;
-  animation: a1-cel-ember 2.4s ease-out both;
-  animation-delay: calc(var(--i) * 55ms);
+/* THE HEAT BEHIND IT. Fifty and a hundred share the bloom because on this
+   level both milestones are the same fire at different sizes — the scale is
+   what separates them, and it is set on each. */
+body[data-subject="aat1"] .aat-cel-a1 .aat-cel-flash {
+  background: radial-gradient(circle at 50% 62%, rgba(232,168,92,.55), rgba(232,168,92,0) 60%);
+  animation: a1-cel-heat 1s ease-out both;
 }
-@keyframes a1-cel-ember {
-  0%   { opacity: 0; transform: translateY(0) scale(.5); }
-  15%  { opacity: .9; }
-  70%  { opacity: .7; }
-  100% { opacity: 0; transform: translateY(-88vh) translateX(calc((var(--r) - 50) * 0.4vw)) scale(1.15); }
+@keyframes a1-cel-heat {
+  0%   { opacity: 0; transform: scale(.5); }
+  20%  { opacity: 1; }
+  100% { opacity: 0; transform: scale(1.7); }
+}
+body[data-subject="aat1"] .aat-cel-a1 .aat-cel-w {
+  bottom: -60px; left: 50%; width: 120px; height: 120px; margin-left: -60px;
+  border: 6px solid rgba(232,168,92,.6); border-radius: 50%;
+  animation: a1-cel-updraft 1.7s cubic-bezier(.2,.75,.3,1) both;
+  animation-delay: calc(var(--i) * 170ms);
+}
+@keyframes a1-cel-updraft {
+  0%   { opacity: 0; transform: scale(.2) translateY(0); }
+  15%  { opacity: .8; }
+  100% { opacity: 0; transform: scale(9) translateY(-30vh); }
 }
 
-/* A HUNDRED is a sunburst: tapered rays thrown out from behind the banner and
-   held for a beat before they fade. Radial where fifty was vertical, and bright
-   where fifty was soft — the same warmth, turned up. */
-body[data-subject="aat1"] .aat-cel-a1.aat-cel-100 .aat-cel-p {
-  top: 50%; left: 50%; width: 6px; height: 30vh; margin-left: -3px;
-  border-radius: 6px 6px 0 0;
-  background: linear-gradient(180deg, rgba(232,168,92,0), var(--a1-accent));
-  transform-origin: 50% 100%;
-  animation: a1-cel-ray 2.5s cubic-bezier(.2,.75,.3,1) both;
+/* FIFTY is a FIRESTORM rising from the foot of the screen — embers thrown up
+   in their dozens, tumbling as they go, with three updraft rings behind them.
+   It was a slow drift of eighteen and read as almost nothing; the warmth is
+   the same, the quantity is not. */
+body[data-subject="aat1"] .aat-cel-a1.aat-cel-50 .aat-cel-p {
+  bottom: -40px; left: calc(var(--i) * 100% / var(--n));
+  width: calc(7px + var(--s) * 0.16px); height: calc(7px + var(--s) * 0.16px);
+  border-radius: 50%;
+  background: hsl(calc(28 + var(--r) * 0.18), 92%, calc(52% + var(--s) * 0.12%));
+  box-shadow: 0 0 14px rgba(232,168,92,.9);
+  opacity: 0;
+  animation: a1-cel-ember 2.6s cubic-bezier(.25,.6,.3,1) both;
   animation-delay: calc(var(--i) * 22ms);
 }
+@keyframes a1-cel-ember {
+  0%   { opacity: 0; transform: translateY(0) scale(.3) rotate(0); }
+  10%  { opacity: 1; }
+  70%  { opacity: .85; }
+  100% { opacity: 0;
+         transform: translateY(-105vh)
+                    translateX(calc((var(--r) - 50) * 0.9vw))
+                    scale(1.4) rotate(540deg); }
+}
+
+/* A HUNDRED is an ERUPTION: the screen flares white-hot, five rings blow out,
+   and a hundred tapered rays are thrown from behind the banner while the page
+   shakes. Radial where fifty was vertical, and violent where fifty was warm. */
+body[data-subject="aat1"] .aat-cel-a1.aat-cel-100 .aat-cel-flash {
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255,247,237,.95), rgba(255,247,237,0) 38%),
+    radial-gradient(circle at 50% 50%, rgba(217,119,6,.6), rgba(217,119,6,0) 72%);
+  animation: a1-cel-flare 1.3s ease-out both;
+}
+@keyframes a1-cel-flare {
+  0%   { opacity: 0; transform: scale(.15); }
+  7%   { opacity: 1; }
+  35%  { opacity: .75; }
+  100% { opacity: 0; transform: scale(2.4); }
+}
+body[data-subject="aat1"] .aat-cel-a1.aat-cel-100 .aat-cel-p {
+  top: 50%; left: 50%;
+  width: calc(4px + var(--s) * 0.05px); height: calc(24vh + var(--s) * 0.22vh);
+  margin-left: -3px;
+  border-radius: 6px 6px 0 0;
+  background: linear-gradient(180deg, rgba(232,168,92,0), hsl(calc(24 + var(--r) * 0.2), 95%, 60%));
+  transform-origin: 50% 100%;
+  animation: a1-cel-ray 2.8s cubic-bezier(.1,.85,.2,1) both;
+  animation-delay: calc(var(--i) * 9ms);
+}
 @keyframes a1-cel-ray {
-  0%   { opacity: 0; transform: translateY(-100%) rotate(calc(var(--i) * 1turn / var(--n))) scaleY(.1); }
-  22%  { opacity: .8; transform: translateY(-100%) rotate(calc(var(--i) * 1turn / var(--n))) scaleY(1); }
-  62%  { opacity: .6; }
-  100% { opacity: 0; transform: translateY(-100%) rotate(calc(var(--i) * 1turn / var(--n) + 0.06turn)) scaleY(1.25); }
+  0%   { opacity: 0; transform: translateY(-100%) rotate(calc(var(--i) * 1turn / var(--n))) scaleY(.05); }
+  14%  { opacity: 1; transform: translateY(-100%) rotate(calc(var(--i) * 1turn / var(--n))) scaleY(1.25); }
+  60%  { opacity: .75; }
+  100% { opacity: 0;
+         transform: translateY(-100%)
+                    rotate(calc(var(--i) * 1turn / var(--n) + 0.12turn)) scaleY(1.6); }
 }
 
 /* ── Room under the advance button ────────────────────────────────────────────

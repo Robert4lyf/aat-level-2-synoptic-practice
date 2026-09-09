@@ -3432,6 +3432,28 @@
      it is how the two drift apart, and the same pair is used on Level 1. */
   var STREAK_GOLD = 10;
   var STREAK_SPARKLE = 25;
+  /* AND THE TWO MILESTONES THE RUN CELEBRATES. The overlay at fifty and a
+     hundred lasts four seconds and then the badge went back to looking exactly
+     as it had at twenty-five — so the reader had nothing to show for the
+     milestone a minute later. These two tiers are what the badge KEEPS. They
+     are the same numbers AATCelebrate fires on, and asserted to be. */
+  var STREAK_BLAZE = 50;
+  var STREAK_LEGEND = 100;
+
+  /* The badge's classes and its label, in one place because they move together:
+     the label is part of what makes the top tiers read as different rather than
+     as the same badge in a brighter colour. */
+  function streakClass(n) {
+    return (n >= STREAK_GOLD ? ' is-hot' : '') +
+      (n >= STREAK_SPARKLE ? ' is-sparkling' : '') +
+      (n >= STREAK_BLAZE ? ' is-blazing' : '') +
+      (n >= STREAK_LEGEND ? ' is-legendary' : '');
+  }
+  function streakWord(n) {
+    if (n >= STREAK_LEGEND) return 'legend';
+    if (n >= STREAK_BLAZE) return 'on fire';
+    return 'streak';
+  }
 
   function renderPractice() {
     var bank = practiceBank();
@@ -3594,11 +3616,13 @@
           '<div class="a3-lessonbar-m">' + done + (done === 1 ? ' answered' : ' answered') +
             ' · ' + S.score + ' right</div>' +
         '</div>' +
-        '<div class="a3-streak' + (S.streak >= STREAK_GOLD ? ' is-hot' : '') +
-          (S.streak >= STREAK_SPARKLE ? ' is-sparkling' : '') + '" ' +
+        /* The aria-label still says "Current streak N" at every tier: the
+           word under the number is decoration, and a reader who cannot see it
+           needs the number and what it counts, not the adjective. */
+        '<div class="a3-streak' + streakClass(S.streak) + '" ' +
           'aria-label="Current streak ' + S.streak + '">' +
           '<span class="a3-streak-n">' + S.streak + '</span>' +
-          '<span class="a3-streak-l">streak</span>' +
+          '<span class="a3-streak-l">' + streakWord(S.streak) + '</span>' +
         '</div>' +
         '</div>' +
         '<div class="a3-lessonbar-p a3-lessonbar-p-endless"><span style="width:' + meter + '%"></span></div>';
