@@ -2791,15 +2791,31 @@
     {
       id: 'P-3-35', unitKey: 'tpfb', lo: 3, criteria: ['TPFB-3.2.5'],
       type: 'mcq',
-      q: 'A wholly standard-rated trader reports Box 6 of £240,000 and Box 1 of £40,000. What does the review show?',
+      /* THE FIGURES USED TO MAKE TWO ANSWERS TRUE, and a reader found it.
+         Box 6 £240,000 against Box 1 £40,000 is EXACTLY the gross-for-net
+         mistake: £40,000 of VAT belongs to £200,000 of net sales, whose gross
+         is £240,000 to the pound. So "Box 6 is overstated" fitted the data
+         perfectly, and the distractor saying so was false only because it
+         ended "£200,000 including VAT" when £200,000 is the figure EXCLUDING
+         it. One word in a subordinate clause decided the question, and it
+         punished the reader who spotted the stronger pattern.
+
+         Two changes. Box 1 is now £44,000, which breaks the coincidence —
+         nothing about £240,000 suggests it is a gross figure any more. And
+         Box 6 is agreed to the sales ledger in the stem, so which side the
+         error is on is settled by evidence rather than by convention. The
+         distractor is now wrong for a reason a reader can name: six times
+         Box 1 is the test you would use if Box 6 were stated gross, and it
+         never is. */
+      q: 'A wholly standard-rated trader reports Box 6 of £240,000, agreed to the sales ledger, and Box 1 of £44,000. What does the review show?',
       opts: [
         'Output tax is understated — £240,000 at the standard rate is £48,000',
         'The return is consistent, because Box 1 need not relate to Box 6',
-        'Box 6 is overstated — £40,000 of VAT implies sales of £200,000 including VAT',
+        'Box 6 is understated — Box 6 should be six times Box 1, or £264,000',
         'Nothing can be concluded without the input tax figure',
       ],
       ans: 0,
-      exp: 'For a wholly standard-rated trader Box 1 should be a fifth of Box 6, so £48,000 is expected against the £40,000 reported. The £8,000 gap is the finding; whether it is missing sales or a mis-rated batch is the next question.',
+      exp: 'For a wholly standard-rated trader Box 1 should be a fifth of Box 6, so £48,000 is expected against the £44,000 reported. Box 6 has been agreed to the ledger, so the £4,000 gap is in the tax: a mis-rated batch, or a sale left out of the VAT calculation. Six times Box 1 is the wrong test — that would be right if Box 6 were stated gross, and Box 6 is always net of VAT.',
     },
     {
       id: 'P-3-36', unitKey: 'tpfb', lo: 3, criteria: ['TPFB-3.2.5'],
