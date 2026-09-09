@@ -95,11 +95,25 @@ function answerRight(el, q) {
     box.value = String(q.answer); box.fire('input');
   } else if (t === 'task') {
     q.parts.forEach((p, pi) => {
-      if (p.type === 'choice') hit('taskpick', { 'data-p': pi, 'data-o': p.answer });
-      else {
-        const box = D.nodes(el, 'taskinput').find(n => n.getAttribute('data-p') === String(pi));
-        box.value = String(p.answer); box.fire('input');
+      if (p.type === 'choice') { hit('taskpick', { 'data-p': pi, 'data-o': p.answer }); return; }
+      /* A grid part has no input of its own — it renders a cell per figure, and
+         the paper is only worth its full marks if every one of them is filled.
+         Answered as a typed box instead, this threw on a box that was never
+         there, which is how a task growing a grid announced itself here. */
+      if (p.type === 'grid') {
+        const cols = GRID.entryCols(p);
+        GRID.entryRows(p).forEach((r, ri) => cols.forEach((c, ci) => {
+          if (GRID.isGiven(r, ci)) return;
+          const cell = D.nodes(el, 'egcell').find(n => n.getAttribute('data-c') === `${ri}:${ci}`);
+          if (!cell) return;
+          const key = GRID.cellKey(r, ci);
+          cell.value = key == null ? '' : String(key);
+          cell.fire('input');
+        }));
+        return;
       }
+      const box = D.nodes(el, 'taskinput').find(n => n.getAttribute('data-p') === String(pi));
+      box.value = String(p.answer); box.fire('input');
     });
   } else if (t === 'picklist') {
     /* BY THE ROW ON SCREEN, NOT BY THE BANK'S ORDER. Pick-list rows are
@@ -462,6 +476,48 @@ function countOf(html, re) { return (html.match(re) || []).length; }
   ok(/class="a3-revblank"/.test(first) && /You left this one blank/.test(first),
     'and says so on the question itself, where it is the only thing separating a blank from a right answer');
   ok(/class="a3-revverdict is-wrong"/.test(first), 'and marks it wrong');
+}
+
+/* 4c-ii. A TASK ANSWERED ONLY IN ITS GRID IS NOT A BLANK. A task can carry an
+   entry grid, and the reader who completes a twelve-row running total and then
+   runs out of clock has done the longest piece of work on the paper. Counting
+   only the typed boxes and the pills, the review told them they had left the
+   question blank and threw the only work they did on it away. */
+{
+  const ctx = openMock('tpfb');
+  let found = null;
+  for (let i = 0; i < 60; i++) {
+    const q = onScreen(ctx.el);
+    if (!q) break;
+    if (!found && q.type === 'task' && (q.parts || []).some(p => p.type === 'grid')) {
+      /* THE GRID ONLY. Every box and pill on the task is left alone, so the
+         only thing separating this from a blank is what went into the table. */
+      const p = q.parts.find(x => x.type === 'grid');
+      const cols = GRID.entryCols(p);
+      GRID.entryRows(p).forEach((r, ri) => cols.forEach((c, ci) => {
+        if (GRID.isGiven(r, ci)) return;
+        const cell = D.nodes(ctx.el, 'egcell').find(n => n.getAttribute('data-c') === `${ri}:${ci}`);
+        if (!cell) return;
+        const key = GRID.cellKey(r, ci);
+        cell.value = key == null ? '' : String(key);
+        cell.fire('input');
+      }));
+      found = { q, at: i };
+    }
+    if (!D.nodes(ctx.el, 'mocknext').length) break;
+    D.click(ctx.el, 'mocknext');
+  }
+  ok(!!found, 'a mock paper carries a task with a grid on it');
+  if (found) {
+    D.click(ctx.el, 'review');
+    const rows = D.nodes(ctx.el, 'reviewq').length;
+    const blanks = countOf(ctx.el.innerHTML, /left blank/g);
+    ok(blanks === rows - 1,
+      `the task answered only in its grid is not listed as left blank (${blanks} blanks of ${rows} rows)`);
+    const shown = openReview(ctx, found.at);
+    ok(!/You left this one blank/.test(shown),
+      'and the question itself does not tell the reader they left it alone');
+  }
 }
 
 /* 4d. A partly-right paper: the tally, the filter, the arrows, and the way out. */

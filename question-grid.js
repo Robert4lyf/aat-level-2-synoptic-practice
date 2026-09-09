@@ -271,6 +271,11 @@
     });
   }
 
+  /* One figure, printed the way a ledger prints it. */
+  function money(v) {
+    return Number(v).toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
   function entryHtml(q, o) {
     var g = (q && q.entrygrid) || {};
     var rows = g.rows || [];
@@ -283,7 +288,19 @@
     var head = '<thead><tr><th>' + esc(g.rowHeader || 'Account') + '</th>' +
       cols.map(function (c) { return '<th>' + esc(c) + '</th>'; }).join('') + '</tr></thead>';
     var body = rows.map(function (r, ri) {
+      /* GIVEN CELLS ARE SKIPPED HERE TOO. `gradeEntry` has always skipped
+         them; this line did not, and a given cell renders no input, so `cells`
+         never holds a value for it — `cellOk(null, 3200)` is false and every
+         row carrying a printed figure marked itself wrong however well the
+         reader did.
+
+         THIS WAS LIVE, not latent. P4-113, P4-137 and P4-144 on Level 1 use
+         `given`, and a reader who answered any of them perfectly was SCORED
+         RIGHT and shown a table of red rows — the score and the review flatly
+         contradicting each other, which is the worst thing a marked answer can
+         do. Grading and review must read the rules from the same place. */
       var rowRight = cols.every(function (c, ci) {
+        if (isGiven(r, ci)) return true;
         return cellOk(amount(cells[ri + ':' + ci]), cellKey(r, ci));
       });
       var cls = done ? (rowRight ? ' is-right' : ' is-wrong') : '';
@@ -294,14 +311,20 @@
            because it reads the same either way — it was never in question. */
         if (isGiven(r, ci)) {
           return '<td class="' + C.egCell + ' ' + C.egGiven + '">' +
-            esc(key == null ? '' : Number(key).toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 })) +
-            '</td>';
+            esc(key == null ? '' : money(key)) + '</td>';
         }
         if (done) {
           var thisOk = cellOk(amount(val), key);
           return '<td class="' + C.egCell + (thisOk ? '' : ' is-wrong') + '">' +
             '<span class="' + C.egSaid + '">' + esc(val == null || val === '' ? '—' : val) + '</span>' +
-            (thisOk ? '' : '<span class="' + C.egKey + '">' + esc(key == null ? '—' : key) + '</span>') +
+            /* THE KEY IS PRINTED AS MONEY, the way the table it came from
+               prints it. A reader shown "85150" against a column of figures
+               written 85,150.00 has to translate the verdict back before they
+               can find where it came from, and the point of showing the key at
+               all is that they can trace it. The given cell two branches up has
+               always done this; the marked one did not, which nobody saw while
+               grids were small and their keys were round. */
+            (thisOk ? '' : '<span class="' + C.egKey + '">' + esc(key == null ? '—' : money(key)) + '</span>') +
             '</td>';
         }
         return '<td class="' + C.egCell + '">' +
@@ -315,7 +338,12 @@
       (g.title ? '<div class="' + C.egTitle + '">' + esc(g.title) + '</div>' : '') +
       '<div class="' + C.egScroll + '"><table class="' + C.egTable + '">' +
         head + '<tbody>' + body + '</tbody></table></div>' +
-      '<p class="' + C.egHint + '">Put each amount in the column it belongs in, and leave the others empty.</p>' +
+      /* THE HINT IS OVERRIDABLE because the default one is about placement —
+         "which column does this belong in" — and a grid with a single column
+         has no placement to get wrong. Telling a reader completing one running
+         total to leave the other columns empty is advice about a table they
+         are not looking at, which reads as a misprint. */
+      '<p class="' + C.egHint + '">' + esc(g.hint || 'Put each amount in the column it belongs in, and leave the others empty.') + '</p>' +
       '</div>';
   }
 
@@ -326,8 +354,25 @@
 
      `where` is the caller's label for the question, because a gate that says
      "a row is out of range" without saying whose has made the reader search. */
-  function problems(q, where) {
+  function problems(q, where, opts) {
     var out = [];
+    /* HOW MANY COLUMNS MAKE A GRID, and why it is a parameter rather than a
+       constant. Two is the floor for a grid that stands on its own: with one
+       column there is no placement decision left, and the question is a column
+       of numeric boxes that the player has a plainer type for.
+
+       A grid EMBEDDED IN A TASK is the exception, and the only one. There the
+       task prints its own table above the grid, so the reader's work is reading
+       across that table and deciding what belongs in the running total — the
+       decision a second column would otherwise have carried. The caller lowers
+       the floor deliberately and asserts the condition it stands for;
+       check-aat3-task.js §7 is where that happens.
+
+       IT GOVERNS BOTH HALVES OF THE SAME RULE. "Fewer than two columns" and
+       "every figure lands in the same column" are one objection stated twice —
+       there is nothing to place — so lowering the floor has to lower both, or a
+       task grid would pass the first and fail the second for the same reason. */
+    var minCols = (opts && opts.minColumns) || 2;
     var t = (q && q.type) || '';
     if (t === 'picklist') {
       var p = q.picklist;
@@ -374,7 +419,9 @@
     if (t !== 'entrygrid') return out;
     var g = q.entrygrid;
     if (!g || !Array.isArray(g.rows) || g.rows.length < 2) return [where + ': an entry grid needs at least 2 rows.'];
-    if (!Array.isArray(g.columns) || g.columns.length < 2) return [where + ': an entry grid needs at least 2 columns.'];
+    if (!Array.isArray(g.columns) || g.columns.length < minCols) {
+      return [where + ': an entry grid needs at least ' + minCols + ' column' + (minCols === 1 ? '' : 's') + '.'];
+    }
     g.rows.forEach(function (r, ri) {
       var at = where + ' row ' + (ri + 1);
       if (!r.label) out.push(at + ': no label.');
@@ -431,12 +478,13 @@
       if (d === 0) out.push(where + ': nothing is entered on either side.');
     }
     /* EVERY COLUMN IS USED. A grid whose figures all land in one column asks the
-       reader to place nothing, and is a numeric question wearing a table. */
+       reader to place nothing, and is a numeric question wearing a table.
+       Skipped when the caller has lowered the column floor — see minCols. */
     var used = {};
     g.rows.forEach(function (r) {
       g.columns.forEach(function (c, ci) { if (cellKey(r, ci) != null) used[ci] = 1; });
     });
-    if (Object.keys(used).length < 2) {
+    if (minCols >= 2 && Object.keys(used).length < 2) {
       out.push(where + ': every figure goes in the same column — there is no placement decision to make.');
     }
 
@@ -464,7 +512,8 @@
     amount: amount, sameMoney: sameMoney,
     picklistHtml: picklistHtml, gradePicklist: gradePicklist, picklistRows: picklistRows,
     entryHtml: entryHtml, gradeEntry: gradeEntry, entryRows: entryRows, entryCols: entryCols,
-    cellKey: cellKey, cellOk: cellOk, columnTotals: columnTotals, problems: problems,
+    cellKey: cellKey, cellOk: cellOk, isGiven: isGiven,
+    columnTotals: columnTotals, problems: problems,
   };
 
   root.AATGrid = API;

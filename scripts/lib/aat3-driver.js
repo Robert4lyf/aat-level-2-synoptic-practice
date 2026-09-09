@@ -128,6 +128,11 @@ function answerCurrent(el, choose) {
      choice parts with an offered pill — rather than stopping at the first. */
   if (nodes(el, 'tasksubmit').length) {
     nodes(el, 'taskinput').forEach(n => { n.value = '0'; n.fire('input'); });
+    /* A TASK CAN CARRY A GRID, and its cells are part of "every part filled".
+       Left out, the submit does nothing, the sweep sees no Next button and
+       stops — and a run that ends early reports as a run of nine, which is what
+       check-aat3-weighting.js caught the first time a task grew one. */
+    nodes(el, 'egcell').forEach(n => { n.value = '0'; n.fire('input'); });
     const byPart = new Map();
     nodes(el, 'taskpick').forEach(n => {
       const p = n.getAttribute('data-p');

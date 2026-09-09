@@ -197,6 +197,13 @@ function taskErrors(q, where) {
       if (keyReason && otherReasons === 0 && p.options.length > 2) {
         out.push(`${pw}: only the correct option carries a "because…" clause.`);
       }
+    } else if (t === 'grid') {
+      /* A grid part is held to the SHARED grid rules, so a table inside a task
+         cannot be looser than the same table standing on its own. The one
+         column it is allowed is bought in check-aat3-task.js §7, which asserts
+         the task prints a table with a choice to make on it. */
+      const probs = GRID.problems({ type: 'entrygrid', entrygrid: p.entrygrid }, pw, { minColumns: 1 });
+      probs.forEach(x => out.push(x));
     } else {
       out.push(`${pw}: unknown part type "${t}".`);
     }
@@ -246,17 +253,33 @@ function taskErrors(q, where) {
       if (vals.length > 1) colTotals.push(vals.reduce((a, b) => a + b, 0));
     }
   });
-  const numericParts = parts.filter(p => (p.type || 'numeric') === 'numeric' && Number.isFinite(p.answer));
+  /* EVERY FIGURE THE TASK ASKS FOR, whether it is typed into a box or into a
+     cell of a grid. A grid part asks for one figure per cell, and leaving them
+     out let a task satisfy the rule below with a single numeric part while the
+     twelve figures that carry its real work went unexamined — which is exactly
+     backwards. */
+  const asked = parts
+    .filter(p => (p.type || 'numeric') === 'numeric' && Number.isFinite(p.answer))
+    .map(p => p.answer);
+  parts.forEach(p => {
+    if (p.type !== 'grid') return;
+    const cols = GRID.entryCols(p);
+    GRID.entryRows(p).forEach(r => cols.forEach((c, ci) => {
+      if (GRID.isGiven(r, ci)) return;
+      const k = GRID.cellKey(r, ci);
+      if (Number.isFinite(k)) asked.push(k);
+    }));
+  });
   /* Both rules below are about figures, so both are scoped to tasks that ask
      for one. A task made entirely of choice parts — which deadline applies to
      which obligation, say — is a legitimate shape with no arithmetic in it, and
      demanding amounts of it would be demanding the wrong thing. */
-  if (numericParts.length && !amountCells) {
+  if (asked.length && !amountCells) {
     out.push(`${where}: a figure is asked for but no dataset cell is an amount — there is nothing for the reader to work from.`);
     return out;
   }
-  const needsSelection = numericParts.filter(p => !colTotals.some(t => Math.abs(t - p.answer) < 0.005));
-  if (numericParts.length && !needsSelection.length) {
+  const needsSelection = asked.filter(a => !colTotals.some(t => Math.abs(t - a) < 0.005));
+  if (asked.length && !needsSelection.length) {
     out.push(`${where}: every figure asked for is the plain total of a dataset column, so the task can be answered by adding everything up without deciding what counts. Ask for at least one figure that requires rows to be included or excluded.`);
   }
   return out;

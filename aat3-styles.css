@@ -2065,6 +2065,13 @@ body[data-subject="aat3"] .a3-eg-in {
   border-radius: var(--a3-r-sm);
 }
 body[data-subject="aat3"] .a3-eg-in:focus-visible { outline: 3px solid var(--a3-brand); outline-offset: 2px; }
+/* A GRID WITH A SINGLE AMOUNT COLUMN — a running total inside a task. With no
+   second column to share the table with, the box stretches the whole width of
+   the page, and a nine-character figure sits in a field wide enough for a
+   sentence. Capped so it still reads as an amount column. The selector matches
+   a data cell that is both the first and the last of its row, which is exactly
+   the one-column case and nothing else. */
+body[data-subject="aat3"] .a3-eg-table td:first-of-type:last-of-type .a3-eg-in { max-width: 220px; }
 body[data-subject="aat3"] .a3-eg-hint {
   margin: var(--a3-2) 0 0; font-size: var(--a3-t-label); color: var(--a3-ink-3);
 }

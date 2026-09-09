@@ -1888,13 +1888,44 @@
     return keys[0];
   }
 
+  /* Everything on a task that "Use this value" could fill, IN THE ORDER THE
+     READER MEETS IT — typed boxes and, since a task can now carry an entry
+     grid, that grid's cells too. Two stores, so a target says which it is:
+     `{part: i}` or `{cell: "ri:ci"}`. */
+  function taskTargets(q) {
+    var G = root.AATGrid, out = [];
+    ((q && q.parts) || []).forEach(function (p, i) {
+      if (p.type === 'choice') return;
+      if (p.type === 'grid') {
+        if (!G) return;
+        gridCells(p).forEach(function (k) { out.push({ cell: k }); });
+        return;
+      }
+      out.push({ part: i });
+    });
+    return out;
+  }
+
   function taskTarget(q) {
-    var parts = (q && q.parts) || [];
-    var typed = [];
-    parts.forEach(function (p, i) { if (p.type !== 'choice') typed.push(i); });
-    if (!typed.length) return null;
-    if (S.calcPart != null && typed.indexOf(S.calcPart) !== -1) return S.calcPart;
-    return typed[0];
+    var all = taskTargets(q), i;
+    if (!all.length) return null;
+    /* LAST TOUCHED WINS, across both stores, and it takes exactly one clear to
+       make that true rather than two. A cell wins while `calcCell` is set;
+       touching a typed box clears `calcCell`, so the only way it survives is
+       that no box was touched after it. Clearing `calcPart` from the cell
+       handler as well was written first and was dead: `calcCell` is read here
+       before `calcPart`, so a stale part index can never be reached while a
+       cell is current, and removing the line changed nothing any check could
+       see. Untouched, the figure goes to the first thing on the task, which is
+       where someone starting it is — the first CELL when the task opens with a
+       grid, not the first typed box further down. */
+    if (S.calcCell != null) {
+      for (i = 0; i < all.length; i++) if (all[i].cell === S.calcCell) return all[i];
+    }
+    if (S.calcPart != null) {
+      for (i = 0; i < all.length; i++) if (all[i].part === S.calcPart) return all[i];
+    }
+    return all[0];
   }
 
   /* The value goes into STATE, and the screen is repainted from it — rather
@@ -1915,10 +1946,10 @@
     var q = currentQuestions()[S.qIdx];
     if (!calcOffered(q)) return;
     if ((q.type || 'mcq') === 'task') {
-      var p = taskTarget(q);
-      if (p == null) return;
-      S.taskInputs[p] = v;
-      S.calcPart = p;
+      var t = taskTarget(q);
+      if (t == null) return;
+      if (t.cell != null) { S.egCells[t.cell] = v; S.calcCell = t.cell; S.calcPart = null; }
+      else { S.taskInputs[t.part] = v; S.calcPart = t.part; S.calcCell = null; }
     } else if ((q.type || 'mcq') === 'entrygrid') {
       var k = entryTarget(q);
       if (k == null) return;
@@ -2347,6 +2378,22 @@
           return '<button class="a3-pill' + c + '" data-a3="taskpick" data-p="' + pi + '" data-o="' + oi + '"' +
             (graded ? ' disabled' : '') + '>' + esc(p.options[oi]) + '</button>';
         }).join('') + '</div>';
+      } else if (p.type === 'grid') {
+        /* THE SAME RENDERER THE STANDALONE ENTRY GRIDS USE, handed the part
+           itself: a grid part carries `entrygrid`, which is exactly what
+           entryHtml reads. A second copy of that table living here would be a
+           second place for the blank-versus-zero rule and the review colouring
+           to drift from the grading, which is the whole reason question-grid.js
+           exists.
+
+           The cells live in `S.egCells`, shared with the standalone type. A
+           question is a task or an entry grid and never both, and resetQState
+           clears the store between questions, so the two cannot collide — and
+           check-aat3-task.js §7 holds a task to ONE grid part, because two
+           would key their cells identically and silently share them. */
+        h += root.AATGrid ? root.AATGrid.entryHtml(p, {
+          prefix: 'a3', attr: 'data-a3', cells: S.egCells, showAnswers: graded,
+        }) : '';
       } else {
         h += '<div class="a3-part-in">' +
           '<input class="a3-input" inputmode="decimal" data-a3="taskinput" data-p="' + pi + '"' +
@@ -2356,8 +2403,14 @@
       }
 
       if (graded) {
+        /* A grid has no one answer to print. Every cell the reader got wrong
+           is already showing its own keyed figure in the table above, so the
+           verdict points at that rather than repeating twelve numbers on one
+           line where none of them line up with the row they belong to. */
         h += '<div class="a3-part-v">' +
-          (right ? 'Correct' : 'Answer — ' + esc(partAnswerText(p))) + '</div>';
+          (right ? 'Correct'
+                 : p.type === 'grid' ? 'Answer — the right figure is shown against each row you missed'
+                 : 'Answer — ' + esc(partAnswerText(p))) + '</div>';
         if (p.exp) h += '<p class="a3-part-exp">' + md(p.exp) + '</p>';
       }
       h += '</div>';
@@ -2379,8 +2432,34 @@
     return h;
   }
 
+  /* Every cell of a grid part that the reader is asked for, as "ri:ci" keys.
+     Given cells are printed rather than asked, so they are not the reader's to
+     fill and do not count towards a blank part. */
+  function gridCells(p) {
+    var G = root.AATGrid, out = [];
+    if (!G) return out;
+    var cols = G.entryCols(p);
+    G.entryRows(p).forEach(function (r, ri) {
+      cols.forEach(function (c, ci) { if (!G.isGiven(r, ci)) out.push(ri + ':' + ci); });
+    });
+    return out;
+  }
+
   function partAnswered(p, pi) {
-    return p.type === 'choice' ? S.taskPicks[pi] !== undefined : num(S.taskInputs[pi]) !== null;
+    if (p.type === 'choice') return S.taskPicks[pi] !== undefined;
+    /* A GRID IS ANSWERED WHEN EVERY CELL OF IT IS. A running total with a hole
+       in it is not a partly-given answer, it is an abandoned one — and the
+       blank-part nudge exists to say "you have not finished", which a half-full
+       table is exactly a case of. */
+    if (p.type === 'grid') {
+      var G = root.AATGrid;
+      if (!G) return false;
+      var cells = gridCells(p);
+      return cells.length > 0 && cells.every(function (k) {
+        return G.amount(S.egCells[k]) !== null;
+      });
+    }
+    return num(S.taskInputs[pi]) !== null;
   }
   /* Money is printed the way the dataset prints it — grouped, to the penny —
      rather than as the bare number the answer is keyed to. A reader told the
@@ -2399,6 +2478,14 @@
   }
   function partCorrect(p, pi) {
     if (p.type === 'choice') return S.taskPicks[pi] === p.answer;
+    /* Graded by the shared grader, all-or-nothing, and worth the one mark every
+       other part is worth. A twelve-cell running total marked per cell would be
+       worth twelve marks and would swamp a paper that is exactly eighty; marked
+       as one, it costs what any other wrong working costs. The reader still
+       sees which cell went wrong — the table says so, cell by cell. */
+    if (p.type === 'grid') {
+      return !!(root.AATGrid && root.AATGrid.gradeEntry(p, S.egCells).right);
+    }
     var g = num(S.taskInputs[pi]);
     return g !== null && Math.abs(g - p.answer) < 0.005;
   }
@@ -2545,8 +2632,13 @@
     if (t === 'gapfill') return Object.keys(a.gaps || {}).length > 0;
     if (t === 'numeric') return num(a.num) !== null;
     if (t === 'task') {
+      /* THE GRID CELLS COUNT TOO. A task can carry an entry grid, and a reader
+         who completed the running total and ran out of clock before the parts
+         below it has answered something — reporting that paper as "never
+         reached" would throw away the only work they did on it. */
       return Object.keys(a.taskPick || {}).length > 0 ||
-        Object.keys(a.taskIn || {}).some(function (k) { return num(a.taskIn[k]) !== null; });
+        Object.keys(a.taskIn || {}).some(function (k) { return num(a.taskIn[k]) !== null; }) ||
+        Object.keys(a.eg || {}).some(function (k) { return num(a.eg[k]) !== null; });
     }
     if (t === 'picklist') return Object.keys(a.pl || {}).length > 0;
     /* A cell holding only spaces is not an answer. `num` returns null for it,
@@ -4706,10 +4798,14 @@
                well as on focus, because a soft keyboard can put a caret in a
                field without the focus order a desktop would give. */
             S.calcPart = pi;
+            S.calcCell = null;
           }
         });
         if (act === 'taskinput') {
-          n.addEventListener('focus', function () { S.calcPart = +n.getAttribute('data-p'); });
+          n.addEventListener('focus', function () {
+            S.calcPart = +n.getAttribute('data-p');
+            S.calcCell = null;
+          });
         }
         n.addEventListener('keydown', function (e) {
           if (e.key === 'Enter') {

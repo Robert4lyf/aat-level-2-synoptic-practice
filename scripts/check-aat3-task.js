@@ -25,6 +25,7 @@
 'use strict';
 
 const D = require('./lib/aat3-driver.js');
+const G = require('../question-grid.js');
 const CONTENT = require('./lib/aat3-content.js');
 const { groups, questions } = CONTENT.load();
 
@@ -94,6 +95,22 @@ function fillPart(el, q, pi, right) {
     if (pick) pick.fire('click');
     return;
   }
+  if (p.type === 'grid') {
+    /* A grid part is filled cell by cell, and made wrong in exactly ONE cell.
+       Spoiling the whole column would still fail the part, and would say
+       nothing about whether the grader reads every cell or only the first. */
+    const cols = G.entryCols(p);
+    G.entryRows(p).forEach((r, ri) => cols.forEach((c, ci) => {
+      if (G.isGiven(r, ci)) return;
+      const box = D.nodes(el, 'egcell').find(n => n.getAttribute('data-c') === `${ri}:${ci}`);
+      if (!box) return;
+      const key = G.cellKey(r, ci);
+      const spoil = !right && ri === 0 && ci === 0;
+      box.value = spoil ? String((key == null ? 0 : key) + 1) : (key == null ? '' : String(key));
+      box.fire('input');
+    }));
+    return;
+  }
   const box = D.nodes(el, 'taskinput').find(n => n.getAttribute('data-p') === String(pi));
   if (!box) return;
   box.value = String(right ? p.answer : p.answer + 1);
@@ -126,6 +143,17 @@ tasks.forEach(entry => {
   const wantPills = q.parts.filter(p => p.type === 'choice').length;
   ok(inputs === wantInputs, `${entry.where}: ${wantInputs} typed parts render an input each (found ${inputs})`);
   ok(pillParts === wantPills, `${entry.where}: ${wantPills} choice parts render their pills (found ${pillParts})`);
+
+  /* A grid part renders one box per cell it asks for. Counted rather than
+     merely looked for: a table that paints its header and half its rows looks
+     right in a screenshot and is unanswerable. */
+  const gridParts = q.parts.filter(p => p.type === 'grid');
+  const wantCells = gridParts.reduce((a, p) => {
+    const cols = G.entryCols(p);
+    return a + G.entryRows(p).reduce((b, r) => b + cols.filter((c, ci) => !G.isGiven(r, ci)).length, 0);
+  }, 0);
+  const cells = D.nodes(el, 'egcell').length;
+  ok(cells === wantCells, `${entry.where}: ${wantCells} grid cells render a box each (found ${cells})`);
 
   ok(!/undefined|\[object Object\]|NaN/.test(html),
     `${entry.where}: nothing renders as undefined, NaN or [object Object]`);
@@ -186,6 +214,26 @@ tasks.forEach(entry => {
     ok(val === String(q.parts[numIdx].answer),
       `${entry.where}: the figure typed before a pill click is still in its box afterwards (found "${val}")`);
   });
+
+  /* AND THE SAME FOR A GRID CELL, which is a second store and therefore a
+     second chance to lose everything typed. The renderer has to be handed the
+     live cells; handed an empty map it paints twelve blank boxes on the next
+     repaint while the figures sit in state, so the reader watches their work
+     vanish and the grading still says they got it right. */
+  const gridded = tasks.filter(t => t.q.parts.some(p => p.type === 'grid')
+                                 && t.q.parts.some(p => p.type === 'choice'));
+  ok(gridded.length > 0, 'there is a task with both a grid and a choice part to check');
+  gridded.forEach(entry => {
+    const q = entry.q;
+    const el = open(entry);
+    const cell = D.nodes(el, 'egcell').find(n => n.getAttribute('data-c') === '0:0');
+    cell.value = '1234'; cell.fire('input');
+    fillPart(el, q, q.parts.findIndex(p => p.type === 'choice'), true);   // repaint
+    const after = D.nodes(el, 'egcell').find(n => n.getAttribute('data-c') === '0:0');
+    const v = after ? String(after.getAttribute('value')) : '';
+    ok(v === '1234',
+      `${entry.where}: the figure typed into a grid cell before a pill click is still there afterwards (found "${v}")`);
+  });
 }
 
 /* ── 5. A blank part blocks the grade, and is pointed at ─────────────────── */
@@ -200,6 +248,31 @@ tasks.forEach(entry => {
   const missing = (html.match(/class="a3-part is-missing"/g) || []).length;
   ok(missing === 1, `${entry.where}: only the blank part is marked (found ${missing})`);
   ok(/a3-part-status/.test(html), `${entry.where}: the reader is told how many answers are still blank`);
+});
+
+/* ── 5b. A grid with ONE cell left blank is not a finished answer ─────────── */
+/* An empty grid is caught by §5 above, and an empty grid is the easy case: any
+   rule at all catches it. The rule that matters is the partly-filled one — a
+   running total with a hole in it is abandoned work, not a partial answer, and
+   a task that grades on it hands the reader a mark for a table they did not
+   complete. */
+tasks.filter(t => t.q.parts.some(p => p.type === 'grid')).forEach(entry => {
+  const q = entry.q;
+  const gi = q.parts.findIndex(p => p.type === 'grid');
+  const el = open(entry);
+  q.parts.forEach((_, pi) => { if (pi !== gi) fillPart(el, q, pi, true); });
+  fillPart(el, q, gi, true);
+  /* Then empty ONE cell again — the last one, so it is not the one a
+     "check the first cell" rule would happen to look at. */
+  const cells = D.nodes(el, 'egcell');
+  const last = cells[cells.length - 1];
+  last.value = ''; last.fire('input');
+  D.click(el, 'tasksubmit');
+  const html = el.innerHTML;
+  ok(!/data-a3="nextq"/.test(html),
+    `${entry.where}: a grid with one cell still blank does not grade`);
+  ok((html.match(/class="a3-part is-missing"/g) || []).length === 1,
+    `${entry.where}: and the unfinished grid is the part marked missing`);
 });
 
 /* ── 6. Nothing leaks into the next question ─────────────────────────────── */
@@ -227,7 +300,20 @@ tasks.forEach(entry => {
     id: 'FOLLOW', unitKey: 'tpfb', lo: 1, type: 'task',
     q: 'A second task, to catch anything the first one left behind.',
     datasets: [{ title: 'Extract', headers: ['Item', 'Net £'], rows: [['Sales', '100.00'], ['Spare', '900.00']] }],
-    parts: entry.q.parts.map((p, i) => (p.type === 'choice'
+    parts: entry.q.parts.map((p, i) => (p.type === 'grid'
+      /* A GRID IS MIRRORED BY A GRID of the same shape, for the same reason the
+         choice parts keep their option count: the cells are keyed "row:col", so
+         a leak only shows where the second grid has a cell at the same address.
+         Mirrored as a numeric box instead, a task grid could carry its figures
+         into the next task and nothing here would ever see it. */
+      ? { label: `Mirror of part ${i + 1}`, type: 'grid',
+          entrygrid: {
+            title: 'Mirror grid', rowHeader: 'Row',
+            columns: G.entryCols(p).map((c, ci) => `Column ${ci + 1}`),
+            rows: G.entryRows(p).map((r, ri) => ({ label: `Row ${ri + 1}`, col: 0, amount: 100 + ri })),
+          },
+          exp: 'Mirrors a grid part of the task before it, so a leaked cell would show.' }
+      : p.type === 'choice'
       ? { label: `Mirror of part ${i + 1}`, type: 'choice',
           /* Same OPTION COUNT as well as the same index. With two options
              against the original's four, a leaked selection of option 3 lands
@@ -273,10 +359,212 @@ tasks.forEach(entry => {
     .filter(v => v !== '');
   ok(filled.length === 0,
     `the second task arrives with empty boxes — nothing typed into the first is still there (found ${JSON.stringify(filled)})`);
+  const filledCells = D.nodes(el, 'egcell')
+    .map(n => String(n.getAttribute('value') || ''))
+    .filter(v => v !== '');
+  ok(filledCells.length === 0,
+    `the second task arrives with an empty grid — nothing typed into the first one's is still there (found ${JSON.stringify(filledCells)})`);
   ok(!/class="a3-pill on"/.test(html), 'no pill arrives already selected');
   ok(!/a3-part is-right|a3-part is-wrong/.test(html), 'the second task arrives ungraded');
   ok(!/a3-part is-missing/.test(html), 'the second task does not arrive carrying the first one\'s blank-part marks');
   ok(/data-a3="tasksubmit"/.test(html), 'the second task offers its own submit');
+}
+
+/* ── 7. A grid part is well formed, and its figures come from the table ──── */
+/* The player is happy to render any grid. These are the rules the DATA has to
+   keep, and the last of them is the one worth having: a running total that the
+   reader is asked to reproduce must actually be reproducible from the table
+   printed above it. An arithmetic slip in one of twelve cells looks exactly
+   like a correct one, and every reader who did the sum right would be marked
+   wrong against it.
+
+   WHAT IT CANNOT SEE, said plainly. A step of ZERO always passes, because the
+   empty subset sums to zero — and that is not a hole to be plugged but a case
+   the rule genuinely cannot judge. A month whose every column is excluded from
+   the total adds nothing, correctly; a month whose figure was simply left out
+   adds nothing too, and the two are the same arithmetic. Requiring a non-empty
+   subset would fail the first, which is a real shape: a month of exempt income
+   only. So a running total that stops growing is caught by a reader, not here.
+   The specimen that proved this was written expecting a catch and did not get
+   one; it is recorded rather than quietly dropped. */
+
+/* Every money figure on one row of a task's dataset. Money means a figure
+   written as money — with pence, or a thousands separator, or a £ — which is
+   what separates 6,200.00 from the "Apr" and the "—" beside it. */
+const MONEY = /^\(?£?\s?\d[\d,]*(?:\.\d{2})?\)?$/;
+function rowMoney(cells) {
+  const out = [];
+  (cells || []).forEach(c => {
+    const t = String(c == null ? '' : c).trim();
+    if (!MONEY.test(t)) return;
+    if (!/[.,£]/.test(t)) return;          // a bare integer is a week or an invoice number
+    const n = Number(t.replace(/[£,()\s]/g, ''));
+    if (!isNaN(n)) out.push(/^\(/.test(t) ? -n : n);
+  });
+  return out;
+}
+
+/* Can `want` be made by adding up some of `nums`? Small by construction — a
+   dataset row carries a handful of money columns — so every subset is tried
+   rather than reasoned about. Returns the subset, so a failure can say what it
+   did find. */
+function subsetTo(nums, want) {
+  const target = Math.round(want * 100);
+  for (let mask = 0; mask < (1 << nums.length); mask++) {
+    let sum = 0;
+    for (let i = 0; i < nums.length; i++) if (mask & (1 << i)) sum += Math.round(nums[i] * 100);
+    if (sum === target) {
+      return nums.filter((n, i) => mask & (1 << i));
+    }
+  }
+  return null;
+}
+
+/* The rule itself, lifted out so the specimens below can be run THROUGH IT
+   rather than through a second copy of it that could agree with a broken one.
+   Returns a list of complaints about one grid part against one dataset. */
+function cumulativeProblems(part, dataset, where) {
+  const out = [];
+  const cols = G.entryCols(part);
+  const rows = G.entryRows(part);
+  cols.forEach((c, ci) => {
+    if (!/cumulative|running total/i.test(String(c))) return;
+    if (rows.length !== (dataset.rows || []).length) {
+      out.push(`${where}: the ${c} column has ${rows.length} rows and the table beside it has ${(dataset.rows || []).length}.`);
+      return;
+    }
+    let prev = 0;
+    rows.forEach((r, ri) => {
+      const key = G.cellKey(r, ci);
+      if (key == null) { out.push(`${where} ${r.label}: no figure keyed in a cumulative column.`); return; }
+      const step = Math.round((key - prev) * 100) / 100;
+      if (step < 0) {
+        out.push(`${where} ${r.label}: the running total falls from ${prev} to ${key}.`);
+      } else if (!subsetTo(rowMoney(dataset.rows[ri]), step)) {
+        out.push(`${where} ${r.label}: the running total rises by ${step}, and no combination of that row's figures (${rowMoney(dataset.rows[ri]).join(', ') || 'none'}) adds up to it.`);
+      }
+      prev = key;
+    });
+  });
+  return out;
+}
+
+{
+  let gridParts = 0;
+  tasks.forEach(entry => {
+    const q = entry.q;
+    const grids = q.parts.filter(p => p.type === 'grid');
+    /* ONE GRID PER TASK. Cells are keyed "row:col" into a single store, so a
+       second grid on the same task would address the same cells as the first
+       and the two would silently share every figure typed into either. */
+    ok(grids.length <= 1, `${entry.where}: at most one grid part (has ${grids.length})`);
+
+    grids.forEach(p => {
+      gridParts++;
+      /* The shared well-formedness rules, so a task grid cannot be held to a
+         looser standard than a standalone one. */
+      /* ONE COLUMN IS ALLOWED HERE AND NOWHERE ELSE, and the assertion below
+         is the condition that buys it. A standalone grid needs two columns
+         because with one there is no "which column does this belong in" left to
+         get right. A task grid trades that decision for a harder one: the
+         reader reads across the task's own table and decides which of ITS
+         columns belong in the figure. So a one-column task grid is sound only
+         while the task prints a table with a choice to make on it — which is
+         asserted, not assumed. */
+      const probs = G.problems({ type: 'entrygrid', entrygrid: p.entrygrid }, entry.where, { minColumns: 1 });
+      ok(probs.length === 0, `${entry.where}: the grid part is well formed${probs.length ? ' — ' + probs.join(' ') : ''}`);
+      if (G.entryCols(p).length < 2) {
+        const widest = (q.datasets || []).reduce(
+          (a, d) => Math.max(a, ...(d.rows || []).map(r => rowMoney(r).length)), 0);
+        ok(widest >= 2,
+          `${entry.where}: a one-column grid sits beside a table with a choice to make on it (widest row shows ${widest} money columns)`);
+      }
+      ok(G.entryRows(p).length >= 2,
+        `${entry.where}: the grid asks for more than one row — one row is a typed box with extra chrome`);
+      ok(!!p.exp, `${entry.where}: the grid part explains itself when the task is marked`);
+
+      /* THE FIGURES MUST BE REACHABLE. A grid inside a task shows no money of
+         its own — every box is empty — so the money it is built from has to be
+         on the task's own tables, or the reader is guessing. */
+      const money = (q.datasets || []).reduce((a, d) => a + d.rows.reduce((b, r) => b + rowMoney(r).length, 0), 0);
+      ok(money > 0, `${entry.where}: the task shows money for its grid to be worked out from (found ${money} figures)`);
+
+      (q.datasets || []).forEach(d => {
+        const probs2 = cumulativeProblems(p, d, `${entry.where} against "${d.title}"`);
+        /* Only complains where the row counts line up, so a task with a second,
+           unrelated table is not reported against it. */
+        if (probs2.length && probs2[0].indexOf('rows and the table beside it') !== -1) return;
+        ok(probs2.length === 0,
+          `${entry.where}: every cumulative figure is the running total of "${d.title}"${probs2.length ? ' — ' + probs2.join(' ') : ''}`);
+      });
+    });
+  });
+  ok(gridParts > 0, 'there is at least one task grid part for these rules to be about');
+
+  /* WHY ONE GRID PER TASK IS A RULE AND NOT A PREFERENCE. The assertion above
+     is a bare number, and a bare number can be raised by anyone who finds it
+     inconvenient. This drives a task with TWO grids through the real player and
+     shows what happens: cells are keyed "row:col" into one store, so both grids
+     address the same cells and a figure typed into one appears in the other.
+
+     IT ASSERTS THE BROKEN BEHAVIOUR ON PURPOSE. The day someone gives the cells
+     a per-part key this check goes red — and that is the signal that the rule
+     above can be relaxed, rather than a failure to paper over. */
+  {
+    const gridOfTwo = i => ({
+      label: `Grid ${i + 1}`, type: 'grid',
+      entrygrid: {
+        title: `Grid ${i + 1}`, rowHeader: 'Row', hint: 'Specimen.',
+        columns: ['Amount £'],
+        rows: [{ label: 'One', col: 0, amount: 100 }, { label: 'Two', col: 0, amount: 200 }],
+      },
+      exp: 'A specimen grid, to show that two of them share one set of cells.',
+    });
+    const el = open({ where: 'two-grid specimen', q: {
+      id: 'TWOGRID', unitKey: 'tpfb', lo: 1, type: 'task',
+      q: 'A task carrying two grids, which the rule above forbids.',
+      datasets: [{ title: 'Extract', headers: ['Item', 'Net £'], rows: [['Sales', '100.00'], ['More', '200.00']] }],
+      parts: [gridOfTwo(0), gridOfTwo(1)],
+      exp: 'Exists only to show why one grid per task is a rule.',
+    } });
+    const boxes = D.nodes(el, 'egcell').filter(n => n.getAttribute('data-c') === '0:0');
+    ok(boxes.length === 2, `two grids render two cells at the same address (found ${boxes.length})`);
+    if (boxes.length === 2) {
+      boxes[0].value = '4321'; boxes[0].fire('input');
+      /* Submitting repaints without grading — a cell is still blank, so the
+         nudge fires — which is the cheapest way to redraw both tables from the
+         one store they share. */
+      D.click(el, 'tasksubmit');
+      const repainted = D.nodes(el, 'egcell').filter(n => n.getAttribute('data-c') === '0:0');
+      ok(String(repainted[1].getAttribute('value')) === '4321',
+        'and a figure typed into the first appears in the second — which is why a task may carry only one');
+    }
+  }
+
+  /* THE CONTROLS. Run through cumulativeProblems itself, so the rule that
+     passes the bank above is the rule being proved here — a second copy could
+     agree with a broken one. */
+  const spec = {
+    rows: [['Apr', '100.00', '50.00'], ['May', '200.00', '25.00'], ['Jun', '300.00', '10.00']],
+    title: 'Specimen',
+  };
+  const gridOf = amounts => ({ entrygrid: {
+    columns: ['Cumulative £'],
+    rows: amounts.map((a, i) => ({ label: `R${i + 1}`, col: 0, amount: a })),
+  } });
+  ok(cumulativeProblems(gridOf([150, 375, 685]), spec, 'sound').length === 0,
+    'control: a column that really is the running total passes');
+  ok(cumulativeProblems(gridOf([150, 375, 686]), spec, 'slip').length === 1,
+    'a single figure out by one is caught');
+  const falls = cumulativeProblems(gridOf([150, 100, 400]), spec, 'falls');
+  ok(falls.length === 1 && /falls from/.test(falls[0]),
+    `a running total that goes backwards is caught (got ${JSON.stringify(falls)})`);
+  /* The rule is a SUBSET rule, not a "sum the whole row" one, because a table
+     carries columns the total deliberately leaves out — the exempt rent and the
+     capital asset in T-1-01 are the point of that question. So a column that
+     counts only the first figure of each row must pass. */
+  ok(cumulativeProblems(gridOf([100, 300, 600]), spec, 'one column').length === 0,
+    'control: a total that counts only some of each row\'s columns passes');
 }
 
 restore();
