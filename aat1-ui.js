@@ -2096,6 +2096,25 @@
      little; ten is worth reaching and twenty-five is worth marking again. */
   var STREAK_GOLD = 10;
   var STREAK_SPARKLE = 25;
+  /* AND THE TWO MILESTONES THE RUN CELEBRATES. The overlay at fifty and a
+     hundred passes in seconds and the badge used to go back to looking exactly
+     as it had at twenty-five, so a reader had nothing to show for it a minute
+     later. These are the tiers the badge KEEPS, and they are the same numbers
+     AATCelebrate fires on. Level 3 carries the identical pair. */
+  var STREAK_BLAZE = 50;
+  var STREAK_LEGEND = 100;
+
+  function streakClass(n) {
+    return (n >= STREAK_GOLD ? ' is-hot' : '') +
+      (n >= STREAK_SPARKLE ? ' is-sparkling' : '') +
+      (n >= STREAK_BLAZE ? ' is-blazing' : '') +
+      (n >= STREAK_LEGEND ? ' is-legendary' : '');
+  }
+  function streakWord(n) {
+    if (n >= STREAK_LEGEND) return 'legend';
+    if (n >= STREAK_BLAZE) return 'on fire';
+    return 'streak';
+  }
 
   function renderPractice() {
     var bank = practiceBank();
@@ -2252,11 +2271,13 @@
           '<div class="a1-lessonbar-t"><span class="a1-inf" aria-hidden="true">∞</span>Keep going</div>' +
           '<div class="a1-lessonbar-m">' + done + ' answered · ' + S.score + ' right</div>' +
         '</div>' +
-        '<div class="a1-streak' + (S.streak >= STREAK_GOLD ? ' is-hot' : '') +
-          (S.streak >= STREAK_SPARKLE ? ' is-sparkling' : '') + '" ' +
+        /* The aria-label says "Current streak N" at every tier: the word
+           under the number is decoration, and a reader who cannot see it needs
+           the number and what it counts, not the adjective. */
+        '<div class="a1-streak' + streakClass(S.streak) + '" ' +
           'aria-label="Current streak ' + S.streak + '">' +
           '<span class="a1-streak-n">' + S.streak + '</span>' +
-          '<span class="a1-streak-l">streak</span>' +
+          '<span class="a1-streak-l">' + streakWord(S.streak) + '</span>' +
         '</div>' +
         '</div>' +
         '<div class="a1-lessonbar-p a1-lessonbar-p-endless"><span style="width:' + meter + '%"></span></div>';
@@ -2906,11 +2927,21 @@
   function calcOffered(q) {
     if (!Calc() || !q || S.answered !== null) return false;
     if (q.recall) return false;
-    var t = q.type || 'mcq';
-    /* A DAY BOOK IS ARITHMETIC. Its columns are VAT at 20% and a gross total,
-       worked out line by line and then cast down — the same sums a numeric
-       question asks for, only several of them. A pick list is not: it asks
-       which book or which side, and there is nothing in it to compute. */
+    /* EVERY TYPE. This used to turn on the shape of the answer BOX — numeric or
+       entry grid — which is the wrong thing to read: the pad is for the sum,
+       not for the box. A multiple choice asking for the VAT in £3,120 is the
+       same division whether the reader types the answer or picks it, and
+       withholding the keypad there tells them there is nothing to work out.
+       Level 3 carries the same rule and the same reasoning. */
+    return true;
+  }
+
+  /* Whether "Use this value" has a box to fill. Deliberately separate from
+     whether the pad is offered: a multiple choice gets the keys to work with
+     and no paste button, because there is nowhere for the figure to go and a
+     button that silently drops it would be worse than the sum it saves. */
+  function calcPastes(q) {
+    var t = (q && q.type) || 'mcq';
     return t === 'numeric' || t === 'entrygrid';
   }
 
@@ -2937,7 +2968,7 @@
      scrim — the page behind it is the reason it is open, so it stays readable
      and scrollable. Closed by default: a sheet that opens on arrival has taken
      the screen away before the reader asked for it. */
-  function calcHtml() {
+  function calcHtml(pastes) {
     var C = Calc();
     if (!C) return '';
     var keys = (root.AATCalc.KEYS || []).map(function (k) {
@@ -2967,8 +2998,10 @@
                 'id="a1CalcDisplay" role="status" aria-live="polite">' + esc(C.display) + '</div>' +
             '</div>' +
             '<div class="a1-calc-keys">' + keys + '</div>' +
-            '<button class="a1-calc-use" type="button" data-a1="calcuse">' +
-              '&#8627; Use this value</button>' +
+            (pastes
+              ? '<button class="a1-calc-use" type="button" data-a1="calcuse">' +
+                  '&#8627; Use this value</button>'
+              : '') +
           '</div>'
         : '');
   }
@@ -2980,7 +3013,8 @@
      fixed`. Inside the root the button anchors to the card and lands wherever
      the card happens to be; outside it, it anchors to the viewport. */
   function calcSurface() {
-    if (tryItOffered()) return calcHtml();
+    /* The try-it has a box, so it keeps the paste button. */
+    if (tryItOffered()) return calcHtml(true);
     /* 'quiz' only. This also admitted 'practice' — the PICKER, which has no
        question on it — so leaving a run on an unanswered numeric question
        painted the calculator, and sometimes the whole open keypad sheet, over
@@ -2988,7 +3022,8 @@
        nobody could see. */
     if (S.screen !== 'quiz') return '';
     var qs = currentQuestions();
-    return calcOffered(qs && qs[S.qIdx]) ? calcHtml() : '';
+    var q = qs && qs[S.qIdx];
+    return calcOffered(q) ? calcHtml(calcPastes(q)) : '';
   }
 
   /* The value goes into STATE and the screen is repainted from it, rather than

@@ -1781,9 +1781,36 @@
   function calcOffered(q) {
     if (!Calc() || !q || S.answered !== null) return false;
     if (q.recall) return false;
-    var t = q.type || 'mcq';
-    /* An entry grid is a table of amount boxes, so it needs the pad as much
-       as a numeric question does. A picklist has no arithmetic in it. */
+    /* EVERY TYPE, and the argument above is the reason. Gating this on the
+       shape of the ANSWER BOX — numeric, task, entry grid — was reading the
+       wrong thing: the pad is for the sum, not for the box. "A supply has a
+       gross value of £3,120 including VAT. What is the VAT?" is £3,120 ÷ 6
+       whether the reader types 520 or picks it from four options, and a reader
+       reported doing that division in their head because the multiple choice
+       offered no pad.
+
+       AND THE TELL RUNS BOTH WAYS. The paragraph above hides the pad from a
+       recall question because its presence "tells the reader there is a sum to
+       do". Its ABSENCE says the opposite just as loudly, and it was saying it
+       on 604 multiple-choice questions: no keypad, so do not bother computing.
+       The real assessment carries a calculator on every question and therefore
+       leaks nothing either way, which is the behaviour to copy. */
+    return true;
+  }
+
+  /* Whether "Use this value" has anywhere to put the figure. NOT the same
+     question as whether the pad is offered, and keeping them apart is the whole
+     point: a multiple choice has a sum to do and no box to do it in, so it gets
+     the keys and not the paste button. Offering a button that silently drops
+     the figure would be worse than the arithmetic it saves.
+
+     THE RENDER IS THE ONLY GUARD, deliberately. A second check inside
+     calcUse() reads as prudent and is unreachable: the button it protects
+     against is never drawn on those types, so no mutation of it changes
+     anything any check can see. One place decides, and it is the one the
+     reader can actually see the result of. */
+  function calcPastes(q) {
+    var t = (q && q.type) || 'mcq';
     return t === 'numeric' || t === 'task' || t === 'entrygrid';
   }
 
@@ -1820,7 +1847,7 @@
      CLOSED BY DEFAULT, for the same reason it is fixed: a sheet that opens over
      the question on arrival has taken the screen away from the reader before
      they asked for it. */
-  function calcHtml() {
+  function calcHtml(pastes) {
     var C = Calc();
     if (!C) return '';
     var keys = (root.AATCalc.KEYS || []).map(function (k) {
@@ -1850,8 +1877,10 @@
                 'id="a3CalcDisplay" role="status" aria-live="polite">' + esc(C.display) + '</div>' +
             '</div>' +
             '<div class="a3-calc-keys">' + keys + '</div>' +
-            '<button class="a3-calc-use" type="button" data-a3="calcuse">' +
-              '&#8627; Use this value</button>' +
+            (pastes
+              ? '<button class="a3-calc-use" type="button" data-a3="calcuse">' +
+                  '&#8627; Use this value</button>'
+              : '') +
           '</div>'
         : '');
   }
@@ -3403,6 +3432,28 @@
      it is how the two drift apart, and the same pair is used on Level 1. */
   var STREAK_GOLD = 10;
   var STREAK_SPARKLE = 25;
+  /* AND THE TWO MILESTONES THE RUN CELEBRATES. The overlay at fifty and a
+     hundred lasts four seconds and then the badge went back to looking exactly
+     as it had at twenty-five — so the reader had nothing to show for the
+     milestone a minute later. These two tiers are what the badge KEEPS. They
+     are the same numbers AATCelebrate fires on, and asserted to be. */
+  var STREAK_BLAZE = 50;
+  var STREAK_LEGEND = 100;
+
+  /* The badge's classes and its label, in one place because they move together:
+     the label is part of what makes the top tiers read as different rather than
+     as the same badge in a brighter colour. */
+  function streakClass(n) {
+    return (n >= STREAK_GOLD ? ' is-hot' : '') +
+      (n >= STREAK_SPARKLE ? ' is-sparkling' : '') +
+      (n >= STREAK_BLAZE ? ' is-blazing' : '') +
+      (n >= STREAK_LEGEND ? ' is-legendary' : '');
+  }
+  function streakWord(n) {
+    if (n >= STREAK_LEGEND) return 'legend';
+    if (n >= STREAK_BLAZE) return 'on fire';
+    return 'streak';
+  }
 
   function renderPractice() {
     var bank = practiceBank();
@@ -3565,11 +3616,13 @@
           '<div class="a3-lessonbar-m">' + done + (done === 1 ? ' answered' : ' answered') +
             ' · ' + S.score + ' right</div>' +
         '</div>' +
-        '<div class="a3-streak' + (S.streak >= STREAK_GOLD ? ' is-hot' : '') +
-          (S.streak >= STREAK_SPARKLE ? ' is-sparkling' : '') + '" ' +
+        /* The aria-label still says "Current streak N" at every tier: the
+           word under the number is decoration, and a reader who cannot see it
+           needs the number and what it counts, not the adjective. */
+        '<div class="a3-streak' + streakClass(S.streak) + '" ' +
           'aria-label="Current streak ' + S.streak + '">' +
           '<span class="a3-streak-n">' + S.streak + '</span>' +
-          '<span class="a3-streak-l">streak</span>' +
+          '<span class="a3-streak-l">' + streakWord(S.streak) + '</span>' +
         '</div>' +
         '</div>' +
         '<div class="a3-lessonbar-p a3-lessonbar-p-endless"><span style="width:' + meter + '%"></span></div>';
@@ -3620,7 +3673,8 @@
      back: nothing between it and the page root is ever transformed. */
   function calcSurface() {
     if (S.screen === 'quiz' || (S.screen === 'lesson' && S.phase === 'check')) {
-      return calcOffered(currentQuestions()[S.qIdx]) ? calcHtml() : '';
+      var q = currentQuestions()[S.qIdx];
+      return calcOffered(q) ? calcHtml(calcPastes(q)) : '';
     }
     if (S.screen === 'lesson' && S.phase === 'teach') {
       var l = lessonById(S.lessonId);
@@ -3628,7 +3682,8 @@
       var w = c.worked;
       /* The try-it appears only once every step has been revealed, and goes
          once it has been marked. */
-      if (w && w.tryIt && S.revealed >= (w.steps || []).length && S.tryResult === null) return calcHtml();
+      /* The try-it has a box, so it keeps the paste button. */
+      if (w && w.tryIt && S.revealed >= (w.steps || []).length && S.tryResult === null) return calcHtml(true);
     }
     return '';
   }

@@ -101,6 +101,43 @@ ok(quiet.children.some(c => c.className === 'aat-cel-t'),
 Cel.clear();
 global.matchMedia = () => ({ matches: false });
 
+/* THE LAYERS THE STYLESHEETS HAVE TO WORK WITH. A celebration built from one
+   layer can only ever be one kind of noise, which is what made the first
+   version disappointing. These counts are the budget every level draws on, so
+   a level that stops using a layer is a level whose celebration got smaller. */
+Cel.clear();
+const layered = Cel.fire('a3', 100, '100 in a row');
+const kids = c => layered.children.filter(x => x.className === c).length;
+ok(kids('aat-cel-flash') === 1, 'a celebration carries one full-bleed flash');
+ok(kids('aat-cel-w') === Cel.WAVES[100], `and ${Cel.WAVES[100]} shockwave rings at a hundred`);
+ok(Cel.WAVES[100] > Cel.WAVES[50], 'a hundred throws more rings than fifty does');
+ok(Cel.PIECES[50] >= 40 && Cel.PIECES[100] >= 80,
+  `and enough pieces to read as an event (${Cel.PIECES[50]} / ${Cel.PIECES[100]})`);
+ok(Cel.LIFE[100] > Cel.LIFE[50],
+  'a hundred is held on screen longer than fifty — an equal exit reads as an equal event');
+
+/* THE SCREEN SHAKES AT A HUNDRED AND NOWHERE ELSE, and the class comes off
+   again. A shake left behind would move every page in the app afterwards. */
+const cls = [];
+document.body.classList = {
+  add(c) { cls.push(c); }, remove(c) { const i = cls.indexOf(c); if (i !== -1) cls.splice(i, 1); },
+};
+Cel.clear();
+Cel.fire('a3', 50, '50');
+ok(cls.indexOf(Cel.QUAKE) === -1, 'fifty does not shake the screen');
+Cel.fire('a3', 100, '100');
+ok(cls.indexOf(Cel.QUAKE) !== -1, 'a hundred does');
+Cel.clear();
+ok(cls.indexOf(Cel.QUAKE) === -1, 'and clearing takes the shake off again');
+/* Never when the reader asked for stillness — the one case where a shake is
+   not a flourish but a problem. */
+global.matchMedia = () => ({ matches: true });
+Cel.fire('a3', 100, '100');
+ok(cls.indexOf(Cel.QUAKE) === -1, 'and it never shakes under prefers-reduced-motion');
+Cel.clear();
+global.matchMedia = () => ({ matches: false });
+delete document.body.classList;
+
 /* ── 2. Each level's celebration is its own ───────────────────────────────── */
 console.log(`${DIM}three looks, not one${RESET}`);
 
@@ -147,6 +184,18 @@ for (let i = 0; i < keys.length; i++) {
       `${keys[i]} and ${keys[j]} do not share an animation (${shared.join(',') || 'none'})`);
   }
 }
+
+/* EVERY LEVEL USES THE NEW LAYERS. celebrate.js draws a flash and a set of
+   rings for all six celebrations; a level that styles neither is throwing away
+   two thirds of what it was given and is back to a scatter of pieces. Read per
+   THEME rather than per milestone, because a level may legitimately share one
+   bloom across both of its milestones and vary the scale. */
+THEMES.forEach(t => {
+  ok(new RegExp(`aat-cel-${t}[^{]*\\.aat-cel-flash`).test(SHEETS[t]),
+    `${t} styles the flash layer`);
+  ok(new RegExp(`aat-cel-${t}[^{]*\\.aat-cel-w`).test(SHEETS[t]),
+    `${t} styles the shockwave rings`);
+});
 
 /* An animation named in a rule but never defined is a celebration that does
    nothing at all — the shape of defect a class-name check sails past. */
@@ -269,7 +318,9 @@ TIERS.forEach(L => {
     return m ? m[1] : null;
   };
   const at = {};
-  for (let n = 1; n <= 26; n++) {
+  /* PAST A HUNDRED, because the top two tiers are the point of this section
+     now and a loop that stopped at twenty-six could not see either of them. */
+  for (let n = 1; n <= 101; n++) {
     const opts = D.nodes(el, 'ans');
     const right = opts.find(x => x.getAttribute('data-i') === '0');
     if (!right) break;
@@ -298,6 +349,39 @@ TIERS.forEach(L => {
     `${L.name}: and is still gold at twenty-five (got "${at[25]}")`);
   ok(at[26] !== null && at[26].indexOf('is-sparkling') !== -1,
     `${L.name}: and stays sparkling past it (got "${at[26]}")`);
+
+  /* THE TWO MILESTONE TIERS, BOTH BOUNDARIES FROM BOTH SIDES. These are what
+     the reader has to show for a milestone once the overlay has gone, so they
+     are read at the answer before and the answer that lands on it exactly as
+     the lower two are. */
+  ok(at[49] !== null && at[49].indexOf('is-blazing') === -1,
+    `${L.name}: forty-nine is not yet blazing (got "${at[49]}")`);
+  ok(at[50] !== null && at[50].indexOf('is-blazing') !== -1,
+    `${L.name}: fifty blazes (got "${at[50]}")`);
+  ok(at[99] !== null && at[99].indexOf('is-legendary') === -1,
+    `${L.name}: ninety-nine is blazing but not legendary (got "${at[99]}")`);
+  ok(at[100] !== null && at[100].indexOf('is-legendary') !== -1,
+    `${L.name}: a hundred is legendary (got "${at[100]}")`);
+  /* Additive all the way up, like the lower tiers: a badge that swapped one
+     class for another would lose the gold and the sparkles it had earned. */
+  ok(at[100] !== null && ['is-hot', 'is-sparkling', 'is-blazing']
+      .every(c => at[100].indexOf(c) !== -1),
+    `${L.name}: and still carries every tier below it (got "${at[100]}")`);
+  ok(at[101] !== null && at[101].indexOf('is-legendary') !== -1,
+    `${L.name}: and stays legendary past it (got "${at[101]}")`);
+
+  /* THE WORD UNDER THE NUMBER CHANGES TOO. Colour alone was the complaint —
+     "the same badge, brighter" is what made the milestone feel like nothing —
+     so the label is part of the tier and is checked as part of it. */
+  const word = () => {
+    const m = new RegExp('<span class="' + L.theme + '-streak-l">([^<]*)<').exec(el.innerHTML);
+    return m ? m[1] : null;
+  };
+  ok(word() === 'legend', `${L.name}: at a hundred the label reads "legend" (got "${word()}")`);
+  /* And the accessible name does NOT change with it: a reader who cannot see
+     the badge needs the number and what it counts, not the adjective. */
+  ok(/aria-label="Current streak 101"/.test(el.innerHTML),
+    `${L.name}: the accessible name still says what the number counts`);
 });
 
 /* The thresholds are named in the renderer rather than written into the markup,
@@ -306,7 +390,44 @@ TIERS.forEach(L => {
   const src = fs.readFileSync(path.join(ROOT, f), 'utf8');
   ok(/var STREAK_GOLD = 10;/.test(src), `${f}: names the gold threshold`);
   ok(/var STREAK_SPARKLE = 25;/.test(src), `${f}: names the sparkle threshold`);
+  ok(/var STREAK_BLAZE = 50;/.test(src), `${f}: names the blaze threshold`);
+  ok(/var STREAK_LEGEND = 100;/.test(src), `${f}: names the legend threshold`);
 });
+
+/* THE BADGE'S TOP TIERS ARE THE CELEBRATION'S OWN MILESTONES, and this is the
+   assertion that keeps them so. The overlay fires at AATCelebrate.AT; if the
+   badge changed at some other pair, a reader would be congratulated at fifty
+   and see the badge change at forty — or worse, reach a milestone with nothing
+   to show for it, which is the whole defect being fixed. */
+['aat3-ui.js', 'aat1-ui.js', 'app.js'].forEach(f => {
+  const src = fs.readFileSync(path.join(ROOT, f), 'utf8');
+  Cel.AT.forEach(m => {
+    const named = new RegExp(`STREAK_(BLAZE|LEGEND) = ${m};`).test(src);
+    ok(named, `${f}: has a badge tier at ${m}, the milestone AATCelebrate fires on`);
+  });
+});
+
+/* LEVEL 2 HAS THEM TOO. Its counter is a different element with a different
+   class, and it had NO tiers at all — the same at one as at a hundred — so the
+   celebration was the only thing that ever marked a milestone there and it was
+   gone in seconds. Read off the renderer's own template rather than driven,
+   because app.js builds this string inline. */
+{
+  const src = fs.readFileSync(path.join(ROOT, 'app.js'), 'utf8');
+  ok(/q-counter-endless\$\{streakTier\(/.test(src),
+    'app.js: the endless counter takes a tier class');
+  ok(/<i>\$\{streakWord\(/.test(src), 'app.js: and its label changes with the tier');
+  ok(/aria-label="Current streak \$\{State\.streak \|\| 0\}"/.test(src),
+    'app.js: while the accessible name still says what the number counts');
+  const sheet = SHEETS.aat;
+  ['is-blazing', 'is-legendary'].forEach(c => {
+    /* A WORD BOUNDARY, NOT A SUBSTRING. `indexOf` was the first version and a
+       selector renamed to `.is-legendary-x` still contained it — the tier went
+       unstyled and this said nothing. */
+    ok(new RegExp('\\.q-counter-endless\\.' + c + '(?![a-z0-9-])').test(sheet),
+      `styles.css: the Level 2 counter styles ${c}`);
+  });
+}
 
 /* ── 4. The six actually paint, in a real browser ─────────────────────────────
    Reading the stylesheet proves a rule was written. It does not prove the rule
@@ -424,6 +545,54 @@ function finish() {
        stretch the badge, pushing the endless bar apart at exactly the moment a
        reader is being congratulated. They are positioned absolutely to prevent
        that, and this measures that it worked. */
+    /* LEVEL 2'S COUNTER, PAINTED. Its tiers were only ever read out of the
+       stylesheet, which proves a rule was written and not that it does
+       anything — the same gap this section exists to close for the other two.
+       styles.css is the page's own sheet, so nothing has to be loaded. */
+    {
+      const l2 = await page.evaluate(() => {
+        const host = document.createElement('div');
+        document.body.appendChild(host);
+        const make = extra => {
+          const s = document.createElement('span');
+          s.className = 'q-counter q-counter-endless' + (extra ? ' ' + extra : '');
+          s.innerHTML = '<b>100</b><i>legend</i>';
+          host.appendChild(s);
+          return s;
+        };
+        const plain = make('');
+        const blaze = make('is-blazing');
+        const legend = make('is-blazing is-legendary');
+        const cs = (el, p) => getComputedStyle(el, p || null);
+        const out = {
+          plainBg: cs(plain).backgroundImage,
+          blazeBg: cs(blaze).backgroundImage,
+          blazeTransform: cs(blaze).transform,
+          legendBg: cs(legend).backgroundImage,
+          halo: cs(legend.querySelector('b'), '::after').animationName,
+          haloContent: cs(legend.querySelector('b'), '::after').content,
+          haloComposite: cs(legend.querySelector('b'), '::after').maskComposite ||
+                         cs(legend.querySelector('b'), '::after').webkitMaskComposite,
+          plainH: plain.offsetHeight, legendH: legend.offsetHeight,
+        };
+        host.remove();
+        return out;
+      });
+      ok(/gradient/.test(l2.blazeBg) && l2.blazeBg !== l2.plainBg,
+        `aat: fifty fills the Level 2 counter (got ${l2.blazeBg})`);
+      ok(l2.blazeTransform !== 'none', 'aat: and the counter grows');
+      ok(/gradient/.test(l2.legendBg) && l2.legendBg !== l2.blazeBg,
+        'aat: a hundred is a different fill again');
+      ok(l2.haloContent && l2.haloContent !== 'none', 'aat: a hundred draws a halo');
+      ok(l2.halo && l2.halo !== 'none', `aat: and the halo turns (got ${l2.halo})`);
+      /* IT IS A RING, NOT A WEDGE. The conic gradient is masked down to its
+         own padding edge; drop the composite and it fills the whole box and
+         spills past the counter as a solid fan — which is exactly what the
+         first version did, and only a screenshot caught it. */
+      ok(/exclude|xor/.test(String(l2.haloComposite)),
+        `aat: and it is masked to a ring rather than a filled wedge (got ${l2.haloComposite})`);
+    }
+
     for (const [theme, subject, sheet] of [['a3', 'aat3', 'aat3-styles.css'], ['a1', 'aat1', 'aat1-styles.css']]) {
       const tier = await page.evaluate(async ([theme, subject, sheet]) => {
         if (!document.querySelector(`link[href="${sheet}"]`)) {
@@ -447,6 +616,8 @@ function finish() {
         const plain = make('');
         const hot = make('is-hot');
         const spark = make('is-hot is-sparkling');
+        const blaze = make('is-hot is-sparkling is-blazing');
+        const legend = make('is-hot is-sparkling is-blazing is-legendary');
         /* The pseudo-element argument is the whole point of the reads below:
            getComputedStyle(el) with the second argument dropped silently
            answers about the ELEMENT, which reported position:relative and
@@ -463,10 +634,57 @@ function finish() {
           afterPos: cs(spark, '::after').position,
           beforeContent: cs(spark, '::before').content,
           plainBox: box(plain), hotBox: box(hot), sparkBox: box(spark),
+          blazeBg: cs(blaze).backgroundImage,
+          blazeNum: cs(blaze.querySelector('span')).color,
+          sparkNum: cs(spark.querySelector('span')).color,
+          blazeTransform: cs(blaze).transform,
+          legendBg: cs(legend).backgroundImage,
+          legendHalo: cs(legend.querySelector('span'), '::after').animationName,
+          legendHaloContent: cs(legend.querySelector('span'), '::after').content,
+          legendHaloComposite: cs(legend.querySelector('span'), '::after').maskComposite ||
+                               cs(legend.querySelector('span'), '::after').webkitMaskComposite,
+          blazeBox: box(blaze), legendBox: box(legend),
         };
         host.remove();
         return out;
       }, [theme, subject, sheet]);
+
+      /* ── The two milestone tiers, painted ────────────────────────────────
+         The complaint that started this was that reaching fifty left nothing
+         behind. So what is asserted is that the badge becomes a DIFFERENT
+         OBJECT, not a brighter one: it takes a gradient fill where the lower
+         tiers have a flat wash, the number inverts against it, and a hundred
+         puts a turning halo in orbit that fifty does not have. Colour alone
+         would satisfy none of these. */
+      ok(/gradient/.test(tier.blazeBg),
+        `${theme}: fifty fills the badge rather than tinting it (got ${tier.blazeBg})`);
+      ok(tier.blazeNum !== tier.sparkNum,
+        `${theme}: and the number inverts against the fill (${tier.sparkNum} → ${tier.blazeNum})`);
+      ok(tier.blazeTransform !== 'none',
+        `${theme}: and the badge grows (got ${tier.blazeTransform})`);
+      ok(/gradient/.test(tier.legendBg) && tier.legendBg !== tier.blazeBg,
+        `${theme}: a hundred is a different fill again, not the same one brighter`);
+      ok(tier.legendHaloContent && tier.legendHaloContent !== 'none',
+        `${theme}: a hundred draws a halo (content ${tier.legendHaloContent})`);
+      ok(tier.legendHalo && tier.legendHalo !== 'none',
+        `${theme}: and the halo turns (got ${tier.legendHalo})`);
+      /* A RING, NOT A WEDGE — see the Level 2 note above. */
+      ok(/exclude|xor/.test(String(tier.legendHaloComposite)),
+        `${theme}: and it is masked to a ring (got ${tier.legendHaloComposite})`);
+      /* THE SAME HEIGHT ARGUMENT AS THE SPARKLES. The halo is an absolutely
+         positioned pseudo-element on the NUMBER, not a flex item on the badge:
+         in flow it would stack under the number and stretch the endless bar at
+         the moment the reader is being congratulated.
+
+         MEASURED AGAINST THE BLAZE TIER, NOT THE SPARKLE ONE. A first version
+         compared it with sparkle and failed by 3px — correctly, but for the
+         wrong reason: `is-blazing` deliberately sets a larger number, and the
+         legend badge carries that class too. Against blaze the only difference
+         left is the halo, which is what this is about. */
+      ok(tier.legendBox.h === tier.blazeBox.h,
+        `${theme}: and the halo does not stretch the badge (${tier.blazeBox.h}px → ${tier.legendBox.h}px)`);
+      ok(tier.blazeBox.h >= tier.sparkBox.h,
+        `${theme}: the blaze tier is at least as tall as the one below it`);
 
       ok(tier.hotBg !== tier.plainBg,
         `${theme}: the gold tier changes the badge (${tier.plainBg} → ${tier.hotBg})`);

@@ -291,10 +291,58 @@ if (someTask) {
 /* ── 4. And where it is not ───────────────────────────────────────────────── */
 console.log(`${DIM}and where it is not${RESET}`);
 
+/* THE PAD IS ON EVERY TYPE, AND THE PASTE BUTTON IS NOT. These three used to
+   assert the opposite — no calculator at all on a multiple choice — and a
+   reader reported doing "£3,120 ÷ 6" in their head because of it. Gating on the
+   shape of the answer box read the wrong thing: the pad is for the sum, and a
+   multiple choice can carry exactly the same sum as the numeric question next
+   to it. Worse, withholding it is a tell in its own right — no keypad, so
+   nothing to compute — which is the very objection the recall rule below is
+   built on, pointed the other way.
+
+   What these types genuinely lack is somewhere to PUT the figure, so they get
+   the keys without "Use this value". A paste button that silently dropped the
+   result would be worse than the arithmetic it saved. */
 [['multiple choice', MCQ], ['true or false', TF], ['gap-fill', GAP]].forEach(([label, q]) => {
   const el = openWith([q]);
-  ok(D.nodes(el, 'calctoggle').length === 0, `a ${label} question does not offer a calculator at all`);
+  ok(D.nodes(el, 'calctoggle').length === 1, `a ${label} question offers the calculator`);
+  const opened = openCalc(el);
+  ok(D.nodes(opened, 'calckey').length === KEYS.length,
+    `a ${label} question opens the full keypad (found ${D.nodes(opened, 'calckey').length})`);
+  ok(D.nodes(opened, 'calcuse').length === 0,
+    `a ${label} question offers no "Use this value" — it has no box to fill`);
 });
+
+/* AND THE PAD SURVIVES THE MOVE ONTO ONE. The sheet deliberately stays open
+   across questions, the way a desk calculator stays on the desk, so a reader
+   working out a numeric answer and pressing Next lands on the NEXT question
+   with the pad already up. That is the reachable path onto a multiple choice
+   with an open pad, and the paste button has to be gone by the time they get
+   there — it filled a box that no longer exists. */
+{
+  /* WHICHEVER WAS DEALT FIRST. A run shuffles, so the pair is answered by what
+     is on screen rather than by the order they were written in — an earlier
+     version assumed the numeric one came first and threw on a box that was not
+     there, which said nothing about the calculator. */
+  const el = openCalc(openWith([NUMERIC, MCQ]));
+  const numericFirst = D.nodes(el, 'numinput').length === 1;
+  ok(D.nodes(el, 'calcuse').length === (numericFirst ? 1 : 0),
+    `the ${numericFirst ? 'numeric question offers' : 'multiple choice withholds'} "Use this value"`);
+  if (numericFirst) {
+    const box = D.nodes(el, 'numinput')[0];
+    box.value = '240'; box.fire('input');
+    D.click(el, 'numsubmit');
+  } else {
+    D.click(el, 'ans');
+  }
+  D.click(el, 'nextq');
+  ok(D.nodes(el, 'calckey').length === KEYS.length,
+    'the pad is still open on the question that follows');
+  ok(D.nodes(el, 'calcuse').length === (numericFirst ? 0 : 1),
+    numericFirst
+      ? 'and on the multiple choice its "Use this value" is gone, rather than pointing at a box that is not there'
+      : 'and on the numeric question its "Use this value" has appeared');
+}
 
 /* A NUMERIC QUESTION THAT ASKS THE READER TO REMEMBER, not to work anything
    out. "For how many months must an annual filer submit on time to reset its
@@ -311,6 +359,13 @@ console.log(`${DIM}and where it is not${RESET}`);
     ok(D.nodes(el, 'numinput').length === 1, `${q.id}: still asks for a typed answer`);
     ok(D.nodes(el, 'calctoggle').length === 0, `${q.id}: a recall question offers no calculator`);
     ok(D.nodes(el, 'calcuse').length === 0, `${q.id}: and no "Use this value"`);
+    /* THE ONE REMAINING TELL, recorded rather than left to be discovered. Now
+       that every other question carries the pad, these eight are the only ones
+       without it, and a reader who noticed would know they were being asked to
+       remember rather than to work something out. It is eight questions in
+       roughly eight hundred, against an author's deliberate decision that a
+       keypad beside "how many months?" implies a sum that is not there. The
+       trade is stated here so whoever revisits it is choosing, not guessing. */
   });
   /* The flag must be doing work, not sitting on everything: a computational
      numeric question still gets its pad. Without this the whole feature could
@@ -611,10 +666,20 @@ function l1Tap(el, seq) {
     `every element opened before the button is closed before it (${opens} opened, ${closes} closed)`);
 }
 
-/* Where it is NOT offered. */
+/* Offered here too, and without the paste button — the same rule as Level 3,
+   for the same reason: the pad is for the sum, and withholding it says there
+   is no sum to do. */
 [['multiple choice', L1_MCQ], ['true or false', L1_TF]].forEach(([label, q]) => {
   const el = l1Open([q]);
-  ok(D1.nodes(el, 'calctoggle').length === 0, `a Level 1 ${label} question offers no calculator`);
+  ok(D1.nodes(el, 'calctoggle').length === 1, `a Level 1 ${label} question offers the calculator`);
+  /* OPENED FIRST. "calcuse is absent" is trivially true while the sheet is
+     shut — the first version of this line asserted it on a closed pad and
+     passed against a build that showed the paste button on every type. */
+  const opened = l1OpenCalc(l1Open([q]));
+  ok(D1.nodes(opened, 'calckey').length === KEYS.length,
+    `a Level 1 ${label} question opens the full keypad`);
+  ok(D1.nodes(opened, 'calcuse').length === 0,
+    `a Level 1 ${label} question offers no "Use this value"`);
 });
 {
   const el = l1Open([L1_NUMERIC]);
@@ -774,8 +839,18 @@ function gridQ(px) {
  ['Level 3', D, openWith, tap, 'a3-try-verdict']].forEach(([name, Drv, open, type, verdict]) => {
   const Q = gridQ(name === 'Level 1' ? 'a1' : 'a3');
 
-  ok(Drv.nodes(open([Q.pl]), 'calctoggle').length === 0,
-    `a ${name} pick list offers no calculator`);
+  /* A PICK LIST GETS THE PAD TOO. It was the one type whose exclusion still
+     read as reasonable — "which book, which side" has nothing to compute — but
+     the rule that decides has to be the same one everywhere, or the pad's
+     presence goes back to telling the reader what kind of question this is.
+     It gets no paste button: a <select> is not a box a figure goes into. */
+  ok(Drv.nodes(open([Q.pl]), 'calctoggle').length === 1,
+    `a ${name} pick list offers the calculator`);
+  const plOpen = name === 'Level 1' ? l1OpenCalc(open([Q.pl])) : openCalc(open([Q.pl]));
+  ok(Drv.nodes(plOpen, 'calckey').length === KEYS.length,
+    `a ${name} pick list opens the full keypad`);
+  ok(Drv.nodes(plOpen, 'calcuse').length === 0,
+    `a ${name} pick list offers no "Use this value" — a select is not a box a figure goes into`);
 
   const el = open([Q.eg]);
   ok(Drv.nodes(el, 'calctoggle').length === 1, `a ${name} entry grid offers the calculator`);
