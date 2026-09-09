@@ -6573,6 +6573,122 @@ body.aat-cel-quake { animation: aat-cel-quake 620ms cubic-bezier(.36,.07,.19,.97
   body.aat-cel-quake { animation: none; }
 }
 
+/* ── The fifty-in-a-row chicken ──────────────────────────────────────────────
+   Shared, not per level: a chicken is a chicken, and the six celebrations are
+   already told apart by everything around it. It sits below the banner, in
+   front of the confetti and behind the words.
+
+   FIVE PARTS AT FOUR RATES, which is what makes it read as a dance rather than
+   as a picture being wobbled. The hop, the body's squash and the head's bob all
+   run on the same 620ms beat but peak at different points in it; the wings flap
+   at exactly twice that rate; the two legs share one 620ms step cycle half a
+   cycle apart, so the bird is always on one foot. Give them all the same
+   timing and the whole thing moves as one rigid lump.
+
+   `transform-box: fill-box` ON EVERY ANIMATED GROUP. An SVG child's default
+   transform-origin resolves against the nearest viewport, not its own bounding
+   box, so `transform-origin: 50% 100%` on the wing rotated it about a point
+   somewhere off the bird entirely. fill-box is what makes the percentages mean
+   what they look like they mean. */
+.aat-cel-chicken {
+  position: absolute; z-index: 2; pointer-events: none;
+  left: 50%; top: 50%;
+  width: clamp(132px, 36vw, 208px); height: clamp(132px, 36vw, 208px);
+  /* The entrance ends on the resting offset, and `both` holds it there — so
+     the wrapper's transform is owned by one animation rather than fought over
+     by a static rule and a keyframe. */
+  animation: aat-cel-chicken-in 560ms cubic-bezier(.2,1.55,.35,1) both;
+  filter: drop-shadow(0 10px 20px rgba(0,0,0,.32));
+}
+@keyframes aat-cel-chicken-in {
+  0%   { opacity: 0; transform: translate(-50%, 96px) scale(.35) rotate(-14deg); }
+  65%  { opacity: 1; transform: translate(-50%, 10px) scale(1.1) rotate(4deg); }
+  100% { opacity: 1; transform: translate(-50%, 26px) scale(1) rotate(0); }
+}
+
+.aat-cel-chk,
+.aat-cel-chk-body,
+.aat-cel-chk-wing,
+.aat-cel-chk-head,
+.aat-cel-chk-leg { transform-box: fill-box; }
+
+/* The whole bird: up, down, and a shimmy from side to side. */
+.aat-cel-chk {
+  transform-origin: 50% 100%;
+  animation: aat-cel-chk-hop 620ms cubic-bezier(.3,.65,.4,1) infinite;
+}
+@keyframes aat-cel-chk-hop {
+  0%, 100% { transform: translateY(0) rotate(-3.5deg); }
+  25%      { transform: translateY(-15px) rotate(2.5deg); }
+  50%      { transform: translateY(0) rotate(3.5deg); }
+  75%      { transform: translateY(-9px) rotate(-2deg); }
+}
+/* Landing squashes it, the rise stretches it — the thing that stops a hop
+   looking like a sprite being moved up and down. */
+.aat-cel-chk-body {
+  transform-origin: 50% 100%;
+  animation: aat-cel-chk-squash 620ms ease-in-out infinite;
+}
+@keyframes aat-cel-chk-squash {
+  0%, 100% { transform: scale(1.07, .93); }
+  30%      { transform: scale(.94, 1.08); }
+  62%      { transform: scale(1.04, .96); }
+}
+/* Twice the beat: two flaps per hop. */
+.aat-cel-chk-wing {
+  transform-origin: 28% 26%;
+  animation: aat-cel-chk-flap 310ms ease-in-out infinite;
+}
+@keyframes aat-cel-chk-flap {
+  0%, 100% { transform: rotate(-7deg) translateY(0); }
+  50%      { transform: rotate(29deg) translateY(-4px); }
+}
+.aat-cel-chk-head {
+  transform-origin: 18% 82%;
+  animation: aat-cel-chk-bob 620ms ease-in-out infinite;
+}
+@keyframes aat-cel-chk-bob {
+  0%, 100% { transform: rotate(-6deg) translateX(0); }
+  35%      { transform: rotate(7deg) translateX(4px); }
+  70%      { transform: rotate(-2deg) translateX(-2px); }
+}
+/* One step cycle, the two legs half a cycle apart. */
+.aat-cel-chk-leg {
+  transform-origin: 50% 0;
+  animation: aat-cel-chk-step 620ms ease-in-out infinite;
+}
+.aat-cel-chk-leg-b { animation-delay: 310ms; }
+@keyframes aat-cel-chk-step {
+  0%, 100% { transform: rotate(0) translateY(0); }
+  50%      { transform: rotate(-18deg) translateY(-6px); }
+}
+
+/* Chicken-coloured, not level-coloured: the palettes around it are already
+   doing the work of saying which course this is. */
+.aat-cel-chk-belly,
+.aat-cel-chk-skull { fill: #fffdf4; stroke: rgba(24,20,12,.14); stroke-width: 2; }
+.aat-cel-chk-tail  { fill: #f2e7cf; stroke: rgba(24,20,12,.12); stroke-width: 2; }
+.aat-cel-chk-wing ellipse { fill: #efe1c3; stroke: rgba(24,20,12,.12); stroke-width: 2; }
+.aat-cel-chk-comb,
+.aat-cel-chk-wattle { fill: #e0392f; }
+.aat-cel-chk-beak { fill: #f5a524; }
+.aat-cel-chk-eye  { fill: #23201a; }
+.aat-cel-chk-leg  { fill: none; stroke: #f5a524; stroke-width: 5; stroke-linecap: round; }
+
+/* Motion removed, chicken removed: celebrate.js draws no moving layer at all
+   under prefers-reduced-motion, and a bird frozen mid-hop is a worse joke than
+   no bird. These rules are here so a chicken rendered by anything else — a
+   check, a future caller — still holds still. */
+@media (prefers-reduced-motion: reduce) {
+  .aat-cel-chicken,
+  .aat-cel-chk,
+  .aat-cel-chk-body,
+  .aat-cel-chk-wing,
+  .aat-cel-chk-head,
+  .aat-cel-chk-leg { animation: none; }
+  .aat-cel-chicken { transform: translate(-50%, 26px); opacity: 1; }
+}
+
 /* ── Level 2: violet, the colour its endless mode already uses ───────────────
    FIFTY is a SHOCKWAVE. Rings punch outward from the centre while chips are
    thrown after them on the same bearings — the first milestone, and the
