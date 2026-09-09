@@ -18,10 +18,18 @@
  *   whose min-height was 68 but whose measured height is 70.6 — so nine pixels
  *   of the tab strip lived behind the bar on every phone.
  *
- * WHY A NUMBER CANNOT BE RIGHT. The app header measures 72.8px at 320px wide,
- * 46px at 390px and 50px above that: it wraps, and it is three heights. So the
- * fix is chrome-offset.js, which measures it into --chrome-h, and the fix is
- * only as good as the guarantee that every bar uses it. That guarantee is here.
+ * WHY A NUMBER CANNOT BE RIGHT. The app header used to measure 72.8px at 320px
+ * wide, 46px at 390px and 50px above that: it wrapped, and it was three
+ * heights. It no longer wraps — every course now wears the same one-row bar —
+ * so today it is 46px narrow and 50px wide, and a typed number would be wrong
+ * on one of them and right on the other by luck. The fix is still
+ * chrome-offset.js measuring it into --chrome-h, and is still only as good as
+ * the guarantee that every bar uses it. That guarantee is here.
+ *
+ * AND THE MEASURING ITSELF IS NOW PROVED SEPARATELY. While the header was
+ * fractional, reading --chrome-h once was enough to catch both a constant and
+ * a rounding error. On a whole-number header neither shows, so §1b makes the
+ * chrome fractional and watches the variable follow it.
  *
  * WHAT IS ASSERTED, at four widths, on three surfaces:
  *
@@ -139,6 +147,69 @@ let checks = 0;
 const errors = [];
 function ok(cond, msg) { checks++; if (!cond) errors.push(msg); }
 
+/* ── §1b. --chrome-h is MEASURED, and rounded DOWN ──────────────────────────
+   Both of these used to be proved by the header itself. It wrapped, so it was
+   72.81px at 320px and 46px at 390px — a fractional height, and three different
+   ones — and against that a published constant was obviously wrong and
+   Math.ceil overshot by a pixel. check-sticky-chrome-adversarial.js has a
+   mutant for each.
+
+   THEN THE HEADER STOPPED WRAPPING. Making every course wear the same compact
+   bar meant holding it to one row, so it is now a whole number of pixels at
+   every width — and at 320px that number is 46, which is exactly the constant
+   the mutant publishes. Both mutants became invisible in the same stroke:
+   floor and ceil agree on an integer, and a constant that happens to be right
+   is indistinguishable from a measurement. Two of sixteen regressions stopped
+   being caught, and nothing failed to say so.
+
+   So the arithmetic is exercised against a chrome the check makes fractional
+   itself, which is the honest test of it: chrome-offset.js's contract is
+   "measure whatever the chrome is", not "be correct about today's header".
+   A constant fails the tracking assertion whatever value it holds, and ceil
+   fails the flooring one because .4 of a pixel is put back. */
+async function auditMeasurement(page, where) {
+  const got = await page.evaluate(async () => {
+    const el = document.querySelector('[data-app-chrome]');
+    if (!el) return { error: 'no [data-app-chrome] to measure' };
+    const read = () => getComputedStyle(document.documentElement)
+      .getPropertyValue('--chrome-h').trim();
+    const before = read();
+    const wait = () => new Promise(r => setTimeout(r, 120));
+
+    /* A fractional, and different, height. 8.4px of extra padding cannot land
+       on a whole pixel from an integer start, so floor and ceil must disagree. */
+    const had = el.style.paddingTop;
+    el.style.paddingTop = (parseFloat(getComputedStyle(el).paddingTop) + 8.4) + 'px';
+    window.dispatchEvent(new Event('resize'));
+    await wait();
+    const after = read();
+    const trueH = el.getBoundingClientRect().height;
+
+    el.style.paddingTop = had;
+    window.dispatchEvent(new Event('resize'));
+    await wait();
+    const restored = read();
+    return { before, after, restored, trueH: Math.round(trueH * 1000) / 1000 };
+  });
+  if (got.error) { errors.push(`${where}: ${got.error}`); checks++; return; }
+
+  /* IT TRACKS. A constant is caught here and only here — no reading of a single
+     value can tell a lucky constant from a measurement. */
+  ok(got.after !== got.before,
+    `${where}: the chrome grew by 8.4px and --chrome-h stayed at ${got.before} — it is not being measured.`);
+  ok(got.restored === got.before,
+    `${where}: --chrome-h did not return to ${got.before} when the chrome did (left at ${got.restored}).`);
+
+  /* AND IT IS FLOORED. Published past the chrome's real bottom edge, every bar
+     beneath sits a fraction of a pixel too low and the scrolling page shows
+     through the seam — the reported bug this whole file exists for. */
+  const published = parseFloat(got.after);
+  ok(Number.isFinite(published) && published === Math.floor(got.trueH),
+    `${where}: the chrome measures ${got.trueH}px and --chrome-h is ${got.after} — expected ${Math.floor(got.trueH)}px, rounded down.`);
+  ok(!Number.isFinite(published) || published <= got.trueH,
+    `${where}: --chrome-h (${got.after}) exceeds the chrome's real height (${got.trueH}px), so every bar beneath it sits below the edge it is meant to meet.`);
+}
+
 /* One surface, scrolled far enough that its sticky bars have engaged, inspected
    against every rule above. */
 async function audit(page, where, sel) {
@@ -176,7 +247,8 @@ async function audit(page, where, sel) {
      This used to ask only that a bar was not BEHIND the thing above it, which
      let any size of gap through — and a gap is what shipped. A bar that meets
      the edge above it exactly is not good enough either: layout heights are
-     fractional (the chrome is 72.81px where it wraps) and so is the device
+     fractional (the chrome was 72.81px back when it wrapped, and a lesson bar
+     still is — see the 108.27px in this file's own output) and so is the device
      pixel grid, so an exact meeting at 2.75x lands on device pixel 126.5 and
      the two sides round apart, leaving one row of pixels through which the
      scrolling page shows. It was reported from a phone and is visible in the
@@ -233,6 +305,7 @@ async function audit(page, where, sel) {
         await page.click('[data-a3="openunit"]');
         await page.waitForTimeout(320);
         await audit(page, `L3 path @${width}`, ['.a3-ctx']);
+        await auditMeasurement(page, `L3 path @${width}`);
         await page.evaluate(() => window.scrollTo(0, 0));
         const lesson = await page.$('[data-a3="open"]');
         if (lesson) {
@@ -325,7 +398,7 @@ async function audit(page, where, sel) {
         await ctx.close();
       }
     }
-    notes.push(`Chrome height is measured, not typed: the header is 72.8px at 320px, 46px at 390px and 50px above that.`);
+    notes.push(`Chrome height is measured, not typed: proved by moving the chrome and watching --chrome-h follow it, floored (§1b).`);
     notes.push(`Every sticky bar on Levels 1 and 3 and CIPS sits below the chrome at ${WIDTHS.join('/')}px, with its controls reachable where they are drawn.`);
   } finally {
     await browser.close(); server.close();

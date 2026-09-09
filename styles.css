@@ -290,68 +290,66 @@ header, main { position: relative; z-index: 1; }
 }
 
 /* ── HEADER ── */
-/* ══ The app bar, compacted for the three AAT subjects ═══════════════════════
+/* ══ The app bar, compact on every subject ═══════════════════════════════════
    index.html's header carries a title, a subtitle, a version chip, a badge and
    four controls. At 390px that wraps to 206px of an 844px display before a word
-   of content — and each of the AAT subjects then drew its own hero on top,
-   so the whole first screen was chrome and the reader scrolled to begin.
+   of content — and each subject then draws its own hero on top, so the whole
+   first screen was chrome and the reader scrolled to begin.
 
    The subtitle and the version chip are read once and never again; the title
-   and the controls stay. The language subjects keep the header they have,
-   because their screens do not open with a bar of their own and the subtitle is
-   the only thing naming what they are.
+   and the controls stay.
 
-   ONE RULE, ONE PLACE. This lived three times — once in aat1-styles.css and
-   once in aat3-styles.css, each scoped to its own subject and neither able to
-   see the other. The header is shared chrome; the rule that compacts it belongs
-   with the shared chrome, or the third copy is the one that gets forgotten.
+   IT WAS SCOPED TO FOUR SUBJECTS AND IS NOW SCOPED TO NONE. The rule used to
+   name aat, aat1, aat3 and cips2, and the comment here defended the exception:
+   the language subjects kept the tall bar "because their screens do not open
+   with a bar of their own and the subtitle is the only thing naming what they
+   are". The first half is true and the second is not — the h1 names the subject
+   on every screen, in every subject; the subtitle only ever described it. So
+   four courses had one header and four had another, for a reason that did not
+   hold, and a reader moving between them met two different apps.
+
+   Unscoped, it is also self-maintaining: a ninth subject gets the app's header
+   rather than whatever the list happened to omit. That is the same argument the
+   paragraph below makes about the rule living in one place, carried one step
+   further — a list of subjects IS a second place, updated by hand.
 
    `> header`, NOT `header`. The app bar is a direct child of body; a descendant
    selector also matches any <header> a screen renders inside #app, and these
    rules were shrinking the type on a screen heading and beating the class that
    was supposed to size it — Level 3's "Choose a unit" came out at body-text
    size. The child combinator says what is meant: the bar at the top, and
-   nothing else. */
-body[data-subject="aat"] > header,
-body[data-subject="aat1"] > header,
-body[data-subject="aat3"] > header,
-body[data-subject="cips2"] > header {
+   nothing else. Dropping the subject prefix makes that combinator load-bearing
+   where it used to be belt-and-braces, so it matters more now, not less. */
+body > header {
   padding: 9px 18px;
   gap: 8px;
+  /* ONE ROW, ALWAYS. The base rule wraps, and wrapping is what a compact bar
+     must not do: with `Langue des Signes Française` in the title the controls
+     dropped to a second line and LSF's header came out at 73px against every
+     other subject's 46. `.brand-name` has carried `text-overflow: ellipsis`
+     all along and never got to use it, because the flex line broke before the
+     title was ever forced to shrink. Holding the line to one row is what makes
+     the truncation fire, so the bar is the same height whatever the subject is
+     called. */
+  flex-wrap: nowrap;
   box-shadow: 0 1px 0 rgba(255,255,255,.06) inset;
 }
-body[data-subject="aat"] > header .sub,
-body[data-subject="aat"] > header .version-badge,
-body[data-subject="aat1"] > header .sub,
-body[data-subject="aat1"] > header .version-badge,
-body[data-subject="aat1"] > header .badge,
-body[data-subject="aat3"] > header .sub,
-body[data-subject="aat3"] > header .version-badge,
-body[data-subject="aat3"] > header .badge,
-body[data-subject="cips2"] > header .sub,
-body[data-subject="cips2"] > header .version-badge,
-body[data-subject="cips2"] > header .badge { display: none; }
-body[data-subject="aat"] > header h1,
-body[data-subject="aat1"] > header h1,
-body[data-subject="aat3"] > header h1,
-body[data-subject="cips2"] > header h1 { font-size: .98rem; }
-body[data-subject="aat"] > header .header-left,
-body[data-subject="aat1"] > header .header-left,
-body[data-subject="aat3"] > header .header-left,
-body[data-subject="cips2"] > header .header-left { gap: 10px; }
+/* The controls keep their size; the title is what gives way. */
+body > header .header-right { flex: 0 0 auto; }
+body > header .sub,
+body > header .version-badge,
+/* LEVEL 2'S "EXAM PREP" CHIP GOES TOO. It was the one subject still showing it
+   on a wide screen — aat1, aat3 and cips2 already hid it, and even Level 2 hid
+   it below 560px because it landed on top of the title. Keeping it would have
+   left the courses still not matching, and it says nothing the reader cannot
+   see from the screen they are on. */
+body > header .badge { display: none; }
+body > header h1 { font-size: .98rem; }
+body > header .header-left { gap: 10px; }
 
 @media (max-width: 560px) {
-  body[data-subject="aat"] > header,
-  body[data-subject="aat1"] > header,
-  body[data-subject="aat3"] > header,
-  body[data-subject="cips2"] > header { padding: 8px 12px; }
-  body[data-subject="aat"] > header .icon-btn,
-  body[data-subject="aat1"] > header .icon-btn,
-  body[data-subject="aat3"] > header .icon-btn,
-  body[data-subject="cips2"] > header .icon-btn { padding: 6px 10px; font-size: .78rem; }
-  /* Level 2 alone still shows a badge, and at this width it lands on top of
-     the title it is meant to sit beside. */
-  body[data-subject="aat"] > header .badge { display: none; }
+  body > header { padding: 8px 12px; }
+  body > header .icon-btn { padding: 6px 10px; font-size: .78rem; }
 }
 
 header {
@@ -5624,10 +5622,13 @@ body[data-subject="french"]::before {
     ),
     radial-gradient(ellipse 70% 50% at 75% -5%, rgba(0,52,176,.08) 0%, transparent 60%);
 }
+/* THE TRICOLOR STRIPE IS GONE, and it is the only thing about this header that
+   was not shared. It was a 3px border where every other subject has the app
+   bar's 1px, so French sat 2px taller than the rest and read as a different
+   piece of chrome. The glow below is kept: colour is this subject's identity
+   and every subject tunes it, but geometry is the app's. */
 body[data-subject="french"] header {
   box-shadow: 0 1px 0 rgba(255,255,255,.07) inset, 0 4px 24px -4px rgba(0,31,120,.55);
-  border-bottom: 3px solid transparent;
-  border-image: linear-gradient(90deg, #002395 33.33%, #ffffff 33.33% 66.66%, #ED2939 66.66%) 1;
 }
 body[data-subject="french"] .topic-card,
 body[data-subject="french"] .score-card,
@@ -5757,9 +5758,10 @@ body[data-subject="code-route"]::before {
     ),
     radial-gradient(ellipse 80% 40% at 50% -5%, rgba(185,28,28,.07) 0%, transparent 55%);
 }
+/* The red stripe goes for the same reason the tricolor did — see the French
+   header above. The glow stays. */
 body[data-subject="code-route"] header {
   box-shadow: 0 1px 0 rgba(255,255,255,.05) inset, 0 4px 24px -4px rgba(0,0,0,.55);
-  border-bottom: 3px solid #b91c1c;
 }
 body[data-subject="code-route"] .topic-card,
 body[data-subject="code-route"] .score-card,

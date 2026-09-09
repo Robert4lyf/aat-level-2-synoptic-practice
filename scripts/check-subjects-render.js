@@ -11,7 +11,9 @@
  * The implementation plan called this sweep manual and not optional. It does
  * not have to be manual — Chromium is available, the site is static, and
  * "does this subject render" is a question a browser can answer in a second.
- * So it runs here, over all seven subjects, on every commit.
+ * So it runs here, over all seven subjects on index.html, on every commit —
+ * plus CIPS, which has a page of its own and joins for the part that is common
+ * to all eight: the app bar.
  *
  * WHAT IT ASSERTS, per subject:
  *   - it renders something into #app rather than staying blank
@@ -21,6 +23,12 @@
  *   - the title is not truncated on a 1280px header with room to spare
  *   - the --subj token resolves, so its accent colour exists
  *   - progress written under its own key survives a reload
+ *
+ * AND ACROSS ALL EIGHT, ONCE THE SWEEP IS DONE:
+ *   - every app bar is the same shape as AAT Level 3's — the header is shared
+ *     chrome and every course should wear it the same way
+ *   - cips2.html's hand-copied header still matches index.html's, less a list
+ *     of declared omissions
  *
  * WHAT IT DOES NOT ASSERT: that any of it looks right. That still needs eyes.
  *
@@ -104,6 +112,9 @@ function serve() {
 (async () => {
   const errors = [];
   const notes = [];
+  /* Every subject's app bar, compared against each other once the sweep is
+     done — one bar cannot be wrong on its own, only different from the rest. */
+  const bars = {};
   const fallbackSubjects = [];
   const { server, port } = await serve();
   const base = `http://127.0.0.1:${port}/`;
@@ -220,12 +231,41 @@ function serve() {
            plainer figure, it is a black rectangle where the tab digits were.
            Probing a rule only that file defines catches both a stylesheet that
            404s and one that mount() did not wait for. */
-        moduleCss: window.__mountCss
+        moduleCss: window.__mountCss,
+        /* ── THE APP BAR'S SHAPE ────────────────────────────────────────────
+           Read here, per subject, because the header is the one piece of
+           chrome every subject shares and the only proof that they share it is
+           measuring all of them. It used to be compacted for four subjects by
+           name — aat, aat1, aat3, cips2 — so French, LSF, guitar and
+           code-route kept a taller bar with a subtitle and a version chip, and
+           a reader moving between courses met two different apps. The rule is
+           unscoped now; this is what stops a ninth subject, or a helpful
+           re-scoping, from quietly splitting them again. */
+        bar: (() => {
+          const h = document.querySelector('body > header');
+          if (!h) return null;
+          const cs = getComputedStyle(h);
+          const shown = sel => {
+            const e = h.querySelector(sel);
+            return !!e && getComputedStyle(e).display !== 'none';
+          };
+          return {
+            height: Math.round(h.getBoundingClientRect().height),
+            padTop: cs.paddingTop, padBottom: cs.paddingBottom,
+            wrap: cs.flexWrap,
+            borderBottom: cs.borderBottomWidth,
+            h1: getComputedStyle(h.querySelector('h1')).fontSize,
+            sub: shown('.sub'), version: shown('.version-badge'), badge: shown('.badge'),
+          };
+        })()
       }));
 
       if (seen.subject !== subj.id) {
         errors.push(`${subj.id}: body[data-subject] is "${seen.subject}", not "${subj.id}".`);
       }
+      if (seen.bar) bars[subj.id] = seen.bar;
+      else errors.push(`${subj.id}: there is no <header> as a direct child of body.`);
+
       if (seen.appLen < 40) {
         errors.push(`${subj.id}: #app rendered ${seen.appLen} characters — effectively blank.`);
       }
@@ -383,7 +423,154 @@ function serve() {
       }
       await ctx.close();
     }
+
+    /* ── CIPS, which lives on a page of its own ─────────────────────────────
+       It is a subject like any other and its bar has to obey the same rules,
+       but it is not in SUBJECTS because that loop drives index.html: it picks
+       the subject through localStorage, reads #app, and checks a progress key
+       none of which apply here. What DOES apply is the app bar, so that is
+       what is taken — measured the same way, into the same table, compared
+       against the same reference below.
+
+       Left out, "every subject's bar matches" was a claim about seven of the
+       eight, and the eighth was the one with a hand-copied header. */
+    {
+      const ctx = await browser.newContext();
+      const page = await ctx.newPage();
+      const consoleErrors = [];
+      page.on('console', m => { if (m.type() === 'error') consoleErrors.push(m.text()); });
+      page.on('pageerror', e => consoleErrors.push('uncaught: ' + e.message));
+      await page.goto(base + 'cips2.html', { waitUntil: 'load' });
+      await page.waitForFunction(() => {
+        const app = document.getElementById('cipsApp');
+        return app && app.textContent.trim().length > 40;
+      }, { timeout: 15000 }).catch(() => {});
+      const bar = await page.evaluate(() => {
+        const h = document.querySelector('body > header');
+        if (!h) return null;
+        const cs = getComputedStyle(h);
+        const shown = sel => {
+          const e = h.querySelector(sel);
+          return !!e && getComputedStyle(e).display !== 'none';
+        };
+        return {
+          height: Math.round(h.getBoundingClientRect().height),
+          padTop: cs.paddingTop, padBottom: cs.paddingBottom,
+          wrap: cs.flexWrap,
+          borderBottom: cs.borderBottomWidth,
+          h1: getComputedStyle(h.querySelector('h1')).fontSize,
+          sub: shown('.sub'), version: shown('.version-badge'), badge: shown('.badge'),
+        };
+      });
+      if (bar) bars['cips2'] = bar;
+      else errors.push('cips2: cips2.html has no <header> as a direct child of body.');
+      if (consoleErrors.length) {
+        errors.push(`cips2: ${consoleErrors.length} console error(s) — ${consoleErrors[0]}`);
+      }
+      await ctx.close();
+    }
   } finally {
+    /* ── THE TWO COPIES OF THE HEADER MARKUP ───────────────────────────────
+       CIPS is a separate static page, so index.html's header is hand-copied
+       into cips2.html. Measuring both bars proves they LOOK the same today; it
+       says nothing about a control added to one and not the other, which is the
+       way a duplicated block actually rots — the new button simply is not there
+       on the other page and everything still passes.
+
+       So the skeletons are compared, and the differences are DECLARED. CIPS
+       legitimately omits three things and the reasons are written down; any
+       fourth difference, in either direction, fails. That is the most a check
+       can do about a duplication it is not allowed to remove, and it is enough:
+       the next person to touch either header is told about the other one. */
+    {
+      const skeleton = (file) => {
+        const src = fs.readFileSync(path.join(ROOT, file), 'utf8');
+        const m = /<header data-app-chrome>[\s\S]*?<\/header>/.exec(src);
+        if (!m) return null;
+        return [...m[0].matchAll(/<(\w+)([^>]*)>/g)].map(([, tag, attrs]) => {
+          const cls = /class="([^"]*)"/.exec(attrs);
+          const id = /id="([^"]*)"/.exec(attrs);
+          return tag + (cls ? '.' + cls[1].trim().split(/\s+/).join('.') : '') + (id ? '#' + id[1] : '');
+        });
+      };
+      const shell = skeleton('index.html');
+      const cips = skeleton('cips2.html');
+      if (!shell || !cips) {
+        errors.push('the app header could not be found in index.html and cips2.html to compare them.');
+      } else {
+        /* What CIPS is allowed to leave out, and why. Each of these is a
+           deliberate decision recorded at the time; anything else appearing
+           here means the two pages have drifted. */
+        const ALLOWED_MISSING = {
+          'span.version-badge': 'the version chip is the shell\'s, and is hidden on every subject anyway',
+          'span.badge': 'the EXAM PREP chip is the shell\'s, and is hidden on every subject anyway',
+          'button.icon-btn#referenceToggle': 'CIPS has no reference panel to toggle',
+          'span.rt-i': 'part of the reference button',
+          'span.rt-l': 'part of the reference button',
+        };
+        const missing = shell.filter(x => !cips.includes(x));
+        const extra = cips.filter(x => !shell.includes(x));
+        const undeclared = missing.filter(x => !(x in ALLOWED_MISSING));
+        if (undeclared.length) {
+          errors.push(`cips2.html's header is missing ${undeclared.join(', ')}, which index.html's has. ` +
+            `The two copies have drifted — add it there too, or record why CIPS does without it.`);
+        }
+        if (extra.length) {
+          errors.push(`cips2.html's header carries ${extra.join(', ')}, which index.html's does not. ` +
+            `A control on one page and not the other is the duplication rotting.`);
+        }
+        /* AND THE DECLARED OMISSIONS ARE STILL REAL. A reason recorded for
+           something that has since been deleted from index.html too is a stale
+           note that will mislead whoever reads it next. */
+        Object.keys(ALLOWED_MISSING).forEach(k => {
+          if (!shell.includes(k)) {
+            errors.push(`cips2.html is excused from ${k}, but index.html's header no longer has it either — ` +
+              `the exception outlived the thing it was about.`);
+          }
+        });
+        if (!undeclared.length && !extra.length) {
+          notes.push(`app bar     cips2.html's header matches index.html's, less ${missing.length} declared omissions`);
+        }
+      }
+    }
+
+    /* ── ONE APP BAR, NOT EIGHT ───────────────────────────────────────────
+       Compared rather than measured against a number: a fixed 46px would fail
+       the day someone legitimately changes the padding, and would say nothing
+       about whether the subjects agree — which is the actual requirement. AAT
+       Level 3 is the reference because "match the AAT courses" is how this was
+       asked for; any of them would do, since the point is that they match. */
+    {
+      const ids = Object.keys(bars);
+      const ref = bars['aat3'] || bars[ids[0]];
+      const FIELDS = ['height', 'padTop', 'padBottom', 'wrap', 'borderBottom', 'h1', 'sub', 'version', 'badge'];
+      ids.filter(id => id !== 'aat3').forEach(id => {
+        const differs = FIELDS.filter(f => String(bars[id][f]) !== String(ref[f]));
+        if (differs.length) {
+          errors.push(`${id}: its app bar does not match AAT Level 3's — ` +
+            differs.map(f => `${f} ${JSON.stringify(bars[id][f])} vs ${JSON.stringify(ref[f])}`).join(', ') +
+            `. The header is shared chrome and every course should wear it the same way.`);
+        }
+      });
+      /* AND IT IS THE COMPACT ONE. Identical-but-tall would satisfy the loop
+         above and lose the thing that made the AAT bar worth copying: the
+         subtitle and version chip are read once and never again, and at 390px
+         they cost a third of the first screen before a word of content. */
+      if (ref) {
+        const on = [ref.sub && 'the subtitle', ref.version && 'the version chip',
+                    ref.badge && 'the badge'].filter(Boolean);
+        if (on.length) {
+          errors.push(`the shared app bar still shows ${on.join(', ')} — the compact bar hides all three.`);
+        }
+        if (ref.wrap !== 'nowrap') {
+          errors.push(`the app bar is "${ref.wrap}", not nowrap — a long subject name ` +
+            `("Langue des Signes Française") then pushes the controls onto a second row and ` +
+            `that subject's bar comes out taller than everyone else's.`);
+        }
+        notes.push(`app bar     every subject: ${ref.height}px, padding ${ref.padTop}/${ref.padBottom}, h1 ${ref.h1}`);
+      }
+    }
+
     await browser.close();
     server.close();
   }
@@ -399,5 +586,6 @@ function serve() {
     console.log(`\n${RED}${BOLD}${errors.length} subject(s) broken.${RESET}\n`);
     process.exit(1);
   }
-  console.log(`  ${GREEN}✓  all ${SUBJECTS.length} subjects render, keep their chrome and keep their progress${RESET}\n`);
+  console.log(`  ${GREEN}✓  all ${SUBJECTS.length} subjects render, keep their chrome and keep their progress; ` +
+              `all ${Object.keys(bars).length} app bars are the same${RESET}\n`);
 })();
