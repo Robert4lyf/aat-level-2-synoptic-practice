@@ -845,7 +845,8 @@
     if (S.tryResult === null) {
       h += '<div class="a1-try-row">' +
         '<input class="a1-input" inputmode="decimal" data-a1="tryinput" value="' + esc(S.tryInput) + '" placeholder="' + esc(t.unit || '') + '" aria-label="Your answer">' +
-        '<button class="a1-btn a1-btn-primary" data-a1="trycheck">Check</button></div>';
+        '<button class="a1-btn a1-btn-primary" data-a1="trycheck"' +
+          (num(S.tryInput) === null ? ' disabled' : '') + '>Check</button></div>';
       if (t.hint) h += '<div class="a1-hint">Hint — ' + md(t.hint) + '</div>';
     } else {
       h += '<div class="a1-verdict ' + (S.tryResult ? 'is-right' : 'is-wrong') + '">' +
@@ -1405,7 +1406,8 @@
       if (S.answered === null) {
         h += '<div class="a1-try-row' + (isMock() ? ' a1-try-row-mock' : '') + '">' +
           '<input class="a1-input" inputmode="decimal" data-a1="numinput" value="' + esc(S.numInput) + '" placeholder="' + esc(q.unit || '') + '" aria-label="Your answer">' +
-          (isMock() ? '' : '<button class="a1-btn a1-btn-primary" data-a1="numsubmit">Check</button>') + '</div>';
+          (isMock() ? '' : '<button class="a1-btn a1-btn-primary" data-a1="numsubmit"' +
+            (num(S.numInput) === null ? ' disabled' : '') + '>Check</button>') + '</div>';
       } else {
         h += '<div class="a1-verdict ' + (S.answered ? 'is-right' : 'is-wrong') + '">' +
           (S.answered ? 'Correct' : 'The answer is ' + esc(fmtAns(q))) + '</div>';
@@ -3502,8 +3504,15 @@
         return;
       }
       if (act === 'tryinput' || act === 'numinput') {
+        /* KEPT IN STEP BY HAND, because this listener deliberately does not
+           repaint: a rerender on every keystroke would put the caret back to
+           the end of the box. So the button that grades this box is enabled
+           and disabled here, from the same value the guard reads. */
         n.addEventListener('input', function () {
           if (act === 'tryinput') S.tryInput = n.value; else S.numInput = n.value;
+          var btn = el.querySelector('[data-a1="' +
+            (act === 'tryinput' ? 'trycheck' : 'numsubmit') + '"]');
+          if (btn) btn.disabled = num(n.value) === null;
         });
         n.addEventListener('keydown', function (e) {
           if (e.key === 'Enter') {
@@ -3730,6 +3739,7 @@
     if (act === 'step') { S.revealed++; return rerender(); }
     if (act === 'stepall') { S.revealed = (card.worked.steps || []).length; return rerender(); }
     if (act === 'trycheck') {
+      if (num(S.tryInput) === null) return;
       var want = card.worked.tryIt.answer;
       var got = num(S.tryInput);
       S.tryResult = got !== null && Math.abs(got - want) < 0.005;
@@ -3827,7 +3837,15 @@
     }
     if (act === 'ordersubmit') { return settle(q); }
 
-    if (act === 'numsubmit') { return settle(q); }
+    if (act === 'numsubmit') {
+      /* THE GUARD IS HERE AS WELL AS ON THE BUTTON. Disabling a button is a
+         hint to a person and no obstacle to a stale repaint, a soft keyboard
+         firing Enter, or a harness. Submitting an empty box used to grade it
+         WRONG — the streak broken, the question logged as a mistake and the
+         answer revealed, for a question nobody had attempted. */
+      if (num(S.numInput) === null) return;
+      return settle(q);
+    }
     if (act === 'wrshow') {
       /* The guard is in the handler as well as on the button. Disabling a
          button is a hint to a person and no obstacle at all to a harness or a

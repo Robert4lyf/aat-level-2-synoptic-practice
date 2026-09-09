@@ -1116,7 +1116,8 @@
     if (S.tryResult === null) {
       h += '<div class="a3-try-row">' +
         '<input class="a3-input" inputmode="decimal" data-a3="tryinput" value="' + esc(S.tryInput) + '" placeholder="' + esc(t.unit || '') + '" aria-label="Your answer">' +
-        '<button class="a3-btn a3-btn-primary" data-a3="trycheck">Check</button></div>';
+        '<button class="a3-btn a3-btn-primary" data-a3="trycheck"' +
+          (num(S.tryInput) === null ? ' disabled' : '') + '>Check</button></div>';
       if (t.hint) h += '<div class="a3-hint">Hint — ' + md(t.hint) + '</div>';
     } else {
       h += '<div class="a3-try-verdict ' + (S.tryResult ? 'is-right' : 'is-wrong') + '">' +
@@ -2157,7 +2158,8 @@
       if (S.answered === null) {
         h += '<div class="a3-try-row' + (isMock() ? ' a3-try-row-mock' : '') + '">' +
           '<input class="a3-input" inputmode="decimal" data-a3="numinput" value="' + esc(S.numInput) + '" placeholder="' + esc(q.unit || '') + '" aria-label="Your answer">' +
-          (isMock() ? '' : '<button class="a3-btn a3-btn-primary" data-a3="numsubmit">Check</button>') + '</div>';
+          (isMock() ? '' : '<button class="a3-btn a3-btn-primary" data-a3="numsubmit"' +
+            (num(S.numInput) === null ? ' disabled' : '') + '>Check</button>') + '</div>';
       } else {
         h += '<div class="a3-try-verdict ' + (S.answered ? 'is-right' : 'is-wrong') + '">' +
           (S.answered ? 'Correct' : 'The answer is ' + esc((q.unit === '£' ? '£' : '') + q.answer)) + '</div>';
@@ -4684,9 +4686,19 @@
         return;
       }
       if (act === 'tryinput' || act === 'numinput' || act === 'taskinput') {
+        /* KEPT IN STEP BY HAND, because this listener deliberately does not
+           repaint: a rerender on every keystroke would put the caret back to
+           the end of the box. So the button that grades this box is enabled
+           and disabled here, from the same value the guard reads. */
+        function syncCheck() {
+          var pair = act === 'tryinput' ? 'trycheck' : act === 'numinput' ? 'numsubmit' : null;
+          if (!pair) return;
+          var btn = el.querySelector('[data-a3="' + pair + '"]');
+          if (btn) btn.disabled = num(n.value) === null;
+        }
         n.addEventListener('input', function () {
-          if (act === 'tryinput') S.tryInput = n.value;
-          else if (act === 'numinput') S.numInput = n.value;
+          if (act === 'tryinput') { S.tryInput = n.value; syncCheck(); }
+          else if (act === 'numinput') { S.numInput = n.value; syncCheck(); }
           else {
             var pi = +n.getAttribute('data-p');
             S.taskInputs[pi] = n.value;
@@ -4979,6 +4991,7 @@
     if (act === 'step') { S.revealed++; return rerender(); }
     if (act === 'stepall') { S.revealed = (card.worked.steps || []).length; return rerender(); }
     if (act === 'trycheck') {
+      if (num(S.tryInput) === null) return;
       var want = card.worked.tryIt.answer;
       var got = num(S.tryInput);
       S.tryResult = got !== null && Math.abs(got - want) < 0.005;
@@ -5026,7 +5039,15 @@
       if (Object.keys(S.gapPicks).length < q.gaps.length) return;
       return settle(q);
     }
-    if (act === 'numsubmit') { return settle(q); }
+    if (act === 'numsubmit') {
+      /* THE GUARD IS HERE AS WELL AS ON THE BUTTON. Disabling a button is a
+         hint to a person and no obstacle to a stale repaint, a soft keyboard
+         firing Enter, or a harness. Submitting an empty box used to grade it
+         WRONG — the streak broken, the question logged as a mistake and the
+         answer revealed, for a question nobody had attempted. */
+      if (num(S.numInput) === null) return;
+      return settle(q);
+    }
     if (act === 'wrshow') {
       /* The guard is in the handler as well as on the button. Disabling a
          button is a hint to a person and no obstacle at all to a harness or a

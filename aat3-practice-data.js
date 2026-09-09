@@ -5777,10 +5777,10 @@
             'No — £2,080.00 is above the £' + T.partialExemption.deMinimisPerQuarter.value.toLocaleString() + '.00 quarterly limit',
             'Yes — £2,080.00 is under half of total input tax',
             'Yes — exempt supplies are only 20% of turnover',
-            'No — its exempt supplies exceed £' + T.partialExemption.deMinimisPerQuarter.value.toLocaleString() + '.00',
+            'No — its exempt supplies are more than half of total turnover',
           ],
           answer: 0,
-          exp: 'BOTH limbs have to be met and this fails the first. Exempt input tax must average no more than £' + T.partialExemption.deMinimisPerMonth.value + ' a month — £' + T.partialExemption.deMinimisPerQuarter.value.toLocaleString() + '.00 in a quarter — AND be no more than half of total input tax. At £2,080.00 the first limb fails, so it does not matter that the second passes comfortably: £2,080.00 out of £27,080.00 is well under half. Passing one limb is not passing the test.',
+          exp: 'BOTH limbs have to be met and this fails the first. Exempt input tax must average no more than £' + T.partialExemption.deMinimisPerMonth.value + ' a month — £' + T.partialExemption.deMinimisPerQuarter.value.toLocaleString() + '.00 in a quarter — AND be no more than half of total input tax. At £2,080.00 the first limb fails, so it does not matter that the second passes comfortably: £2,080.00 out of £27,080.00 is well under half. Passing one limb is not passing the test. And the limit is on exempt INPUT TAX, not on exempt supplies: £60,000.00 of exempt supplies is 20% of the £300,000.00 total, nowhere near half, and it is not the figure the test looks at.',
         },
         {
           label: 'Input tax recoverable for the quarter',
@@ -5804,7 +5804,7 @@
             ['14 Aug last year', 'Marlow Ltd', '13 Sep last year', '4,800.00', 'Written off in the VAT account'],
             ['02 Nov last year', 'Naylor & Sons', '01 Dec last year', '6,200.00', 'Written off in the VAT account'],
             ['19 Mar', 'Ordish Ltd', '18 Apr', '3,100.00', 'Written off in the VAT account'],
-            ['05 Feb', 'Pettifer plc', '07 Mar', '9,400.00', 'Sold to a debt factor'],
+            ['05 Aug last year', 'Pettifer plc', '07 Sep last year', '9,400.00', 'Sold to a debt factor'],
           ],
         },
         {
@@ -5843,7 +5843,7 @@
             '£1,880.00, shared with the factor',
           ],
           answer: 0,
-          exp: 'A debt that has been sold is not a loss the business has suffered — the factor paid for it. Relief on it would be relief for a loss that has moved to somebody else. The six-month point is not what decides this one, which is why the age of the invoice is given.',
+          exp: 'A debt that has been sold is not a loss the business has suffered — the factor paid for it. Relief on it would be relief for a loss that has moved to somebody else. Payment fell due on 7 September, so this one is nearly ten months overdue and comfortably past six: age is not what disqualifies it, and no amount of further waiting will ever make a factored debt claimable.',
         },
         {
           label: 'Total bad debt relief claimable this quarter',

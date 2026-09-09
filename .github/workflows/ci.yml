@@ -99,6 +99,8 @@ jobs:
         run: npm run check:written
       - name: Check retiring a question retires it (and that a mock still asks it)
         run: npm run check:retire
+      - name: Check an empty answer box cannot be submitted (and a valid one still can)
+        run: npm run check:blank-answer
       - name: Check the next-step recommendation moves with the evidence and lands where it says
         run: npm run check:nextstep
       - name: Check the glossary agrees with the teaching and its flashcards are scheduled
