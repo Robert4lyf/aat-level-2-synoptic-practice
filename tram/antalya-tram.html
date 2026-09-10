@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Antalya Tram — next departures</title>
+<title>Antalya Tram Board</title>
 <meta name="theme-color" content="#0d1117">
 <style>
   :root {
@@ -11,12 +11,20 @@
     --line: #e2e6ea; --accent: #b3123c; --ok: #1c7c4a;
     --t1a: #d81e3f; --t1b: #1667c2; --t2: #97682a; --t3: #2f8f5b;
   }
+  /* Three states, not two: an explicit choice stamps data-theme on the root,
+     and the default setting stamps nothing at all — so the media query has to
+     be guarded, and the stamped dark case written out again. */
   @media (prefers-color-scheme: dark) {
-    :root {
+    :root:not([data-theme="light"]) {
       --bg: #0d1117; --card: #161b22; --ink: #e8edf3; --dim: #98a3b0;
       --line: #262d36; --accent: #ff6b8a; --ok: #4bd189;
       --t1a: #ff5a76; --t1b: #5aa2ff; --t2: #d5a86a; --t3: #55c98b;
     }
+  }
+  :root[data-theme="dark"] {
+      --bg: #0d1117; --card: #161b22; --ink: #e8edf3; --dim: #98a3b0;
+      --line: #262d36; --accent: #ff6b8a; --ok: #4bd189;
+      --t1a: #ff5a76; --t1b: #5aa2ff; --t2: #d5a86a; --t3: #55c98b;
   }
   * { box-sizing: border-box; }
   body {
