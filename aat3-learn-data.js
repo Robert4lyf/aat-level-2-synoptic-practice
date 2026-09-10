@@ -2914,11 +2914,11 @@
           p: [
             'Deductions divide into two kinds, and the difference is about **who requires them**, not how large they are.',
             '**Statutory deductions** are the ones the tax and pensions system itself requires, and the employer has no discretion. They are **Pay As You Earn (PAYE) Income Tax**, **National Insurance contributions**, **student loan repayments**, and — where the employer has automatically enrolled staff — **pension contributions**. An employee cannot instruct the employer to stop deducting Income Tax; the obligation runs to HMRC, not to the employee.',
-            '**Non-statutory deductions** are everything else. They depend on the employee having agreed to them, or on a court order. Trade union subscriptions, payroll giving to charity, season ticket loan repayments, workplace savings schemes, and repayments of a salary advance all sit here. So do **attachment of earnings orders**, which are imposed by a court rather than chosen. The point is that none of them are part of the tax system.',
+            '**Non-statutory deductions** are everything else. They depend on the employee having agreed to them, or on a court order. Trade union subscriptions, payroll giving to charity, season ticket loan repayments, workplace savings schemes, and repayments of a salary advance all sit here. So do **attachment of earnings orders**, which are imposed by a court rather than chosen. The point is that none of them are part of the tax or pensions system.',
             'Two consequences follow. The **order** matters: pre-tax deductions come off before Income Tax is calculated, and everything else comes off afterwards. Putting a deduction in the wrong place changes the tax. And the **amount due to HMRC** includes only the statutory tax and National Insurance items. A union subscription deducted from wages is owed to the union, not to HMRC, and never appears in the payment to them.',
           ],
           split: {
-            left: { title: 'Statutory — required by law', items: ['PAYE Income Tax', 'National Insurance contributions', 'Student loan repayments', 'Auto-enrolment pension contributions'] },
+            left: { title: 'Statutory — required by tax or pensions law', items: ['PAYE Income Tax', 'National Insurance contributions', 'Student loan repayments', 'Auto-enrolment pension contributions'] },
             right: { title: 'Non-statutory — agreed or ordered', items: ['Trade union subscriptions', 'Payroll giving to charity', 'Season ticket and salary advance repayments', 'Attachment of earnings orders'] },
           },
         },
@@ -2986,7 +2986,7 @@
             'PAYE Income Tax',
           ],
           ans: 0,
-          exp: 'Union subscriptions are deducted only because the employee has agreed to it. PAYE, National Insurance and student loan repayments are all required by law, which is what makes them statutory — and only the statutory tax and NI items form part of the amount owed to HMRC.',
+          exp: 'Union subscriptions are deducted only because the employee has agreed to it. PAYE, National Insurance and student loan repayments are all required by the tax system, which is what makes them statutory — and only the statutory tax and NI items form part of the amount owed to HMRC.',
         },
         {
           type: 'truefalse',
