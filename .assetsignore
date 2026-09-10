@@ -39,3 +39,8 @@
 /sync-worker
 /vercel.json
 /shot-revision-dark.png
+
+# The Antalya tram board is kept here for safekeeping, not served. It is a
+# standalone file with inline scripts, which this site's CSP refuses, and it
+# would sit behind the password gate — no use to anyone on a tram platform.
+/tram

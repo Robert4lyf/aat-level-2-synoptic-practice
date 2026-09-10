@@ -1,13 +1,21 @@
 # Antalya tram board
 
 A one-page departure board for Antalya's trams — T1A, T1B, T3 and the T2
-nostalgic line. Open `tram/index.html` (deployed: `/tram/index.html`), pick a
-line, a direction and a stop, and it counts down the next six trams. Tap a
-departure to see when that tram reaches every stop further down the line.
+nostalgic line. Open `antalya-tram.html`, pick a line, a direction and a stop,
+and it counts down the next six trams. Tap a departure to see when that tram
+reaches every stop further down the line.
 
-It is deliberately inert: three files, no build, no network calls at runtime,
-no service worker of its own. That means it works on a phone with no signal,
-and it means the timetable is frozen at the moment it was captured.
+ONE FILE, ON PURPOSE. Markup, styles, timetable and logic are all in
+`antalya-tram.html` — no build, no imports, no network calls at runtime, no
+service worker. Open it from anywhere: a phone's downloads, a memory stick, any
+static host. It works with no signal, and the timetable is frozen at the moment
+it was captured.
+
+IT IS NOT PART OF THIS SITE. `.assetsignore` keeps it out of the deploy, so it
+never reaches the password gate — which is the point, since a tram board you
+have to log in to is no use standing on a platform. Its inline scripts would
+also be refused by the site's `script-src 'self'` policy, and relaxing that
+policy to host a tram timetable would be the wrong trade.
 
 ## What it is not
 
@@ -33,7 +41,7 @@ To refresh it, for each line and direction (`T1A|0`, `T1A|1`, `T1B|0`, `T1B|1`,
 2. Fetch each trip: `https://api.transitous.org/api/v1/trip?tripId=<id>` — the
    single leg holds `from`, `intermediateStops` and `to` with scheduled times.
 3. Write each trip as `[departure minute, then minutes after departure at each
-   stop]` into `tram-data.js`.
+   stop]` into the `window.TRAM` object at the top of `antalya-tram.html`.
 
 Two day types are stored: `wd` (Monday–Saturday, one timetable) and `su`
 (Sunday, which runs a denser T1 service). The feed lists some Sunday trips
