@@ -180,6 +180,18 @@ const FORBIDDEN = {
       const seen = await page.evaluate(() => ({
         open: document.querySelector('.reference-panel').classList.contains('is-open'),
         titles: Array.from(document.querySelectorAll('.ref-section summary')).map(e => e.textContent.trim()),
+        items: Array.from(document.querySelectorAll('.ref-section li')).map(e => e.textContent),
+        /* `open` is the attribute, not a guess from geometry. A <details> that
+           is closed still has its <li>s in the DOM with their text intact,
+           which is why every other assertion here reads the same either way —
+           and why nothing would notice `open` being put back. */
+        expanded: Array.from(document.querySelectorAll('.ref-section')).filter(d => d.open).length,
+        sections: Array.from(document.querySelectorAll('.ref-section')).map(function (d) {
+          return {
+            title: d.querySelector('summary') ? d.querySelector('summary').textContent.trim() : '(untitled)',
+            items: d.querySelectorAll('li').length
+          };
+        }),
         body: Array.from(document.querySelectorAll('.ref-section li')).map(e => e.textContent).join(' ‖ '),
         unlevelled: (window.__refUnlevelled || []),
         scheme: Array.from(document.querySelectorAll('.ref-section')).filter(function (d) {
@@ -202,6 +214,66 @@ const FORBIDDEN = {
             annJoin: s.annualAccounting.joinThreshold.value, annLeave: s.annualAccounting.leaveThreshold.value,
             flatJoin: s.flatRate.joinThreshold.value, flatLeave: s.flatRate.leaveThreshold.value
           };
+        })(),
+        /* WHAT THE LEVEL 3 DRAWER MUST BE SHOWING, built HERE from the governed
+           file rather than typed into this checker. Each needle is the exact
+           substring the panel should render for that figure, so a literal typed
+           into app.js passes today and fails the moment aat3-tax-data.js rolls
+           to a new Finance Act — which is the drift this is for. Comparing the
+           panel against a copy in the checker would only prove the copy equals
+           itself. */
+        tpfbNeedles: (function () {
+          var T = window.AAT3_TAX;
+          if (!T) return null;
+          var m = function (n) {
+            if (n >= 1000000) return '£' + (n / 1000000).toFixed(2).replace(/\.?0+$/, '') + 'm';
+            return '£' + n.toLocaleString('en-GB');
+          };
+          var reg = T.registration, rec = T.records, inv = T.invoicing, pe = T.partialExemption;
+          var ec = T.errorCorrection, pf = ec.penaltyForError, a = T.assessments;
+          var ls = T.penalties.lateSubmission, lp = T.penalties.latePayment, fn = T.penalties.failureToNotify;
+          var b = T.blockedExpenses, f = T.fuelScaleCharges, bd = T.badDebtRelief;
+          var pr = T.payroll.records, pay = T.payroll.paymentToHmrc;
+          var lf = T.payroll.penalties.lateFiling, plp = T.payroll.penalties.latePayment;
+          return [
+            ['VAT rates', T.rates.standard.value + '% · reduced rate ' + T.rates.reduced.value + '%'],
+            ['actual tax point window', 'within ' + inv.actualTaxPointDays.value + ' days AFTER'],
+            ['invoice issue window', 'within ' + inv.issueWithinDays.value + ' days of the tax point'],
+            ['registration threshold', 'exceeded ' + m(reg.threshold.value)],
+            ['deregistration threshold', 'fall below ' + m(reg.deregistrationThreshold.value)],
+            ['changes in advance', reg.changesToNotify.inAdvanceDays.value + ' days IN ADVANCE'],
+            ['failure to notify', fn.behaviours.nonDeliberate.max + '% non-deliberate, ' + fn.behaviours.deliberate.max + '% deliberate'],
+            ['VAT record retention', 'at least ' + rec.retentionYears.value + ' years'],
+            ['VAT records penalty', 'penalty of up to ' + m(rec.penalty.value)],
+            ['simplified invoice limit', 'at or below ' + m(inv.simplifiedLimit.value)],
+            ['leased car proportion', 'exactly ' + b.cars.hiredOrLeased.value + '% of the input tax'],
+            ['CO2 rounding', 'multiple of ' + f.roundDownToMultipleOf.value + ' g/km'],
+            ['bad debt age', 'at least ' + bd.debtAgeMonths.value + ' months overdue'],
+            ['bad debt claim window', 'Claim within ' + bd.claimWindow.value],
+            ['de minimis monthly', 'below ' + m(pe.deMinimisPerMonth.value) + ' a month'],
+            ['de minimis proportion', 'no more than ' + pe.inputTaxProportion.value + '% of total input tax'],
+            ['error method 1 limit', 'greater of ' + m(ec.netErrorLimit.value)],
+            ['error ceiling', 'absolute ceiling of ' + m(ec.absoluteCeiling.value)],
+            ['error notification form', 'form ' + ec.separateNotificationForm],
+            ['error time limit', 'within ' + ec.timeLimitYears.value + ' years'],
+            ['submission thresholds', ls.thresholds.annual + ' points for annual returns, ' + ls.thresholds.quarterly + ' for quarterly, ' + ls.thresholds.monthly + ' for monthly'],
+            ['submission penalty', 'a ' + m(ls.penalty.value) + ' penalty'],
+            ['late payment day 15', lp.firstPenaltyDay15.value + '% of what is outstanding at day 15'],
+            ['late payment annualised', lp.secondPenaltyAnnualised.value + '% a year'],
+            ['careless penalty', 'Careless: maximum ' + pf.careless.max + '%'],
+            ['deliberate penalty', 'Deliberate: maximum ' + pf.deliberate.max + '%'],
+            ['concealed penalty', 'concealed: maximum ' + pf.deliberateAndConcealed.max + '%'],
+            ['assessment window', 'within ' + a.normalTimeLimitYears.value + ' years, extended to ' + a.extendedTimeLimitYears.value],
+            ['payroll retention', 'records for ' + pr.retentionYears.value + ' years'],
+            ['payroll records penalty', 'up to ' + m(pr.penalty.value)],
+            ['PAYE electronic deadline', 'by the ' + pay.electronicDeadline.value + 'nd of the following month'],
+            ['PAYE quarterly threshold', 'under ' + m(pay.quarterlyThreshold.value) + ' a month'],
+            ['late FPS smallest band', m(lf.byEmployees['1to9']) + ' for 1–9 employees'],
+            ['late FPS largest band', m(lf.byEmployees['250plus']) + ' for 250 or more'],
+            ['extended payroll failure', lf.extendedFailurePercent.value + '% of the tax that should have been reported'],
+            ['payroll default bands', plp.byDefaults['1to3'] + '% for 1–3, ' + plp.byDefaults['4to6'] + '% for 4–6'],
+            ['payroll six-month addition', 'further ' + plp.sixMonths.value + '% if still unpaid after 6 months']
+          ];
         })()
       }));
 
@@ -213,6 +285,87 @@ const FORBIDDEN = {
       if (!seen.titles.length) errors.push(`${id}: the drawer opened with no sections in it.`);
       if (seen.scheme) schemeText[id] = seen.scheme;
       if (id === 'aat3') schemeText.__governed = seen.governed;
+
+      /* ── NOTHING RENDERS AS PLUMBING ─────────────────────────────────────
+         Every figure in the Level 3 tax sections is reached through a node in
+         aat3-tax-data.js, and those nodes wrap their figure in `.value`. Read
+         one without it and JavaScript does not complain: it stringifies the
+         object, and the drawer confidently shows "Claim within [object
+         Object]." to somebody revising bad debt relief. That shipped into this
+         very panel while it was being written, and only reading the rendered
+         page caught it — no unit test on the data would, because the data is
+         fine. `undefined` and `NaN` are the same failure through a mistyped
+         path or a missing field. */
+      (seen.items || []).forEach(function (li) {
+        var m = /\[object Object\]|\bundefined\b|\bNaN\b|\bnull\b/.exec(li);
+        if (m) errors.push(`${id}: a reference line renders "${m[0]}" — a data node read without .value, or a path that does not exist:\n      ${li.slice(0, 150)}`);
+      });
+
+      /* ── SECTIONS START CLOSED, AND STILL OPEN ───────────────────────────
+         Closed by default is what makes a 23-section drawer usable: the titles
+         fit on a phone screen and one tap gets the answer. Both halves are
+         asserted, because each fails in a way the other hides. All-expanded
+         passes every text assertion in this file, since a closed <details>
+         keeps its text in the DOM. And a section that cannot be opened would
+         satisfy "starts closed" perfectly while being useless. */
+      if (seen.expanded !== 0) {
+        errors.push(`${id}: ${seen.expanded} reference section(s) render already expanded. ` +
+                    `The drawer is meant to open as a list of titles — every text assertion here ` +
+                    `passes either way, so nothing else would catch this.`);
+      }
+      /* A REAL click, not element.click(). The synthetic one dispatches the
+         event straight at the node and ignores pointer-events, overlays and
+         anything sitting on top — a section made untappable by CSS passed that
+         version of this check perfectly. Playwright's click hit-tests the
+         point a thumb would land on, so it fails when a reader's would. */
+      let tapped = null;
+      if (!(await page.locator('.ref-section summary').count())) {
+        errors.push(`${id}: no reference section to open.`);
+      } else {
+        try {
+          await page.locator('.ref-section summary').first().click({ timeout: 3000 });
+          await page.waitForTimeout(150);
+          tapped = await page.evaluate(() => {
+            const d = document.querySelector('.ref-section');
+            return { open: d.open, itemsVisible: Array.from(d.querySelectorAll('li')).some(li => li.offsetHeight > 0) };
+          });
+        } catch (e) {
+          errors.push(`${id}: a section heading could not be clicked where a reader would tap it — ` +
+                      `${String(e.message).split('\n')[0]}`);
+        }
+        if (tapped && (!tapped.open || !tapped.itemsVisible)) {
+          errors.push(`${id}: tapping a section heading did not reveal its lines ` +
+                      `(open=${tapped.open}, any line visible=${tapped.itemsVisible}). ` +
+                      `Closed by default is only right if opening works.`);
+        }
+      }
+
+      /* ── EVERY SECTION HAS SOMETHING IN IT ───────────────────────────────
+         The Level 3 sections return [] when window.AAT3_TAX is missing, which
+         is the right way to fail — it costs the section rather than throwing
+         inside renderReferencePanel() and taking the whole drawer down. But a
+         guard that becomes the normal path is a silent empty panel, so an
+         empty section is a failure here rather than a shrug. */
+      (seen.sections || []).forEach(function (sec) {
+        if (!sec.items) errors.push(`${id}: section “${sec.title}” rendered with no items — its data source is missing, not merely different.`);
+      });
+
+      /* ── THE FIGURES ARE THE GOVERNED ONES ───────────────────────────────
+         Level 3 only. Each needle was built in-page from aat3-tax-data.js, so
+         this compares the panel against the file rather than against a second
+         copy kept here. */
+      if (id === 'aat3') {
+        if (!seen.tpfbNeedles) {
+          errors.push('aat3: window.AAT3_TAX was not loaded when the drawer rendered, so no figure could be checked against it.');
+        } else {
+          seen.tpfbNeedles.forEach(function (pair) {
+            if (seen.body.indexOf(pair[1]) === -1) {
+              errors.push(`aat3: the drawer does not show the governed ${pair[0]} — aat3-tax-data.js gives "${pair[1]}", and nothing in the panel matches it.`);
+            }
+          });
+          notes.push(`aat3         ${seen.tpfbNeedles.length} figures matched against aat3-tax-data.js`);
+        }
+      }
 
       for (const [what, re] of (FORBIDDEN[id] || [])) {
         if (re.test(seen.body) || re.test(seen.titles.join(' ‖ '))) {
@@ -300,11 +453,37 @@ const FORBIDDEN = {
         window.AAT3_TAX.registration.threshold.value = 91234;
         window.AAT3_TAX.schemes.cashAccounting.joinThreshold.value = 1230000;
         window.AAT3_TAX.schemes.flatRate.leaveThreshold.value = 234567;
+        /* The same trick, applied to the tax sections the drawer gained. A
+           needle built from the file cannot tell a figure that was READ from
+           one that was TYPED and happens to agree — 30% is 30% either way. It
+           can only tell them apart once the file says something else, so the
+           file is made to say something else here. Every sentinel is a value
+           no Finance Act would produce, so a match is proof of a read. */
+        const T = window.AAT3_TAX;
+        T.records.retentionYears.value = 47;
+        T.records.penalty.value = 4321;
+        T.invoicing.simplifiedLimit.value = 271;
+        T.invoicing.actualTaxPointDays.value = 41;
+        T.partialExemption.inputTaxProportion.value = 57;
+        T.errorCorrection.absoluteCeiling.value = 54321;
+        T.errorCorrection.penaltyForError.careless.max = 37;
+        T.penalties.lateSubmission.penalty.value = 271;
+        T.penalties.latePayment.secondPenaltyAnnualised.value = 17;
+        T.assessments.extendedTimeLimitYears.value = 27;
+        T.blockedExpenses.cars.hiredOrLeased.value = 57;
+        T.badDebtRelief.debtAgeMonths.value = 61;
+        T.payroll.records.retentionYears.value = 43;
+        T.payroll.paymentToHmrc.quarterlyThreshold.value = 1543;
+        T.payroll.penalties.lateFiling.byEmployees['250plus'] = 447;
+        T.payroll.penalties.latePayment.sixMonths.value = 53;
         document.getElementById('referenceToggle').click();
         return new Promise(r => setTimeout(() => {
           const sec = Array.from(document.querySelectorAll('.ref-section'))
             .filter(d => /VAT schemes/.test(d.querySelector('summary').textContent))[0];
-          r(sec ? sec.textContent : '');
+          r({
+            schemes: sec ? sec.textContent : '',
+            body: Array.from(document.querySelectorAll('.ref-section li')).map(e => e.textContent).join(' ‖ ')
+          });
         }, 250));
       });
       await ctx.close();
@@ -314,7 +493,37 @@ const FORBIDDEN = {
       } else {
         const want = [['registration threshold', '£91,234'], ['cash accounting join', '£1.23m'],
                       ['flat rate leave', '£234,567']];
-        const stuck = want.filter(([, v]) => followed.indexOf(v) === -1).map(([k, v]) => `${k} (${v})`);
+        const stuck = want.filter(([, v]) => followed.schemes.indexOf(v) === -1).map(([k, v]) => `${k} (${v})`);
+
+        /* Every TPFB section carries at least one perturbed figure, so a
+           section that quietly stopped reading the file is named by its own
+           row rather than hidden behind a neighbour that still does. */
+        const wantTpfb = [
+          ['VAT record retention', '47 years'],
+          ['VAT records penalty', '£4,321'],
+          ['simplified invoice limit', '£271 including VAT'],
+          ['actual tax point window', '41 days AFTER'],
+          ['de minimis proportion', '57% of total input tax'],
+          ['error correction ceiling', '£54,321'],
+          ['careless inaccuracy maximum', 'Careless: maximum 37%'],
+          ['late submission penalty', '£271 penalty'],
+          ['late payment annualised rate', '17% a year'],
+          ['extended assessment window', 'extended to 27'],
+          ['leased car proportion', 'exactly 57% of the input tax'],
+          ['bad debt age', '61 months overdue'],
+          ['payroll record retention', 'records for 43 years'],
+          ['payroll quarterly threshold', '£1,543 a month'],
+          ['largest late-FPS band', '£447 for 250 or more'],
+          ['payroll six-month addition', 'further 53%']
+        ];
+        const frozen = wantTpfb.filter(([, v]) => followed.body.indexOf(v) === -1).map(([k, v]) => `${k} (expected "${v}")`);
+        if (frozen.length) {
+          errors.push(`Changing aat3-tax-data.js did not change what the Level 3 tax sections render — ` +
+                      `${frozen.join('; ')}. Those figures are typed into app.js, not read from the governed ` +
+                      `file, and they agree with it only until the next Finance Act.`);
+        } else {
+          notes.push(`TPFB tax     all ${wantTpfb.length} perturbed figures moved with aat3-tax-data.js`);
+        }
         if (stuck.length) {
           errors.push(`Changing aat3-tax-data.js's figures did not change what Level 3 renders — ` +
                       `${stuck.join(', ')} never appeared. The panel is falling back to the literals in ` +

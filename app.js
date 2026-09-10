@@ -560,6 +560,35 @@
         'Goodwill: raise in OLD ratio, write off in NEW ratio — must not remain on SFP',
       ]},
       { title: 'VAT schemes', levels: ['aat', 'aat3'], items: vatSchemeItems },
+      /* ── Level 3 TPFB: what the real assessment puts on screen ───────────
+         The live TPFB assessment shows the candidate a 25-section reference
+         document at every task position, and this repository HAS that document
+         (docs/reference/) with its figures reconciled into aat3-tax-data.js by
+         check-reference-material.js.
+
+         This drawer carried two of the twenty-five: the standard rate, and the
+         scheme thresholds. So a reader practising here had to hold from memory
+         what the exam simply hands them — which trains the wrong thing twice
+         over. It makes practice harder than the assessment, and it rewards
+         recall the marking does not test. Someone who learns the penalty
+         percentages by heart has spent that time on the one part of the paper
+         they were always going to be given.
+
+         EVERY FIGURE BELOW IS READ FROM aat3-tax-data.js. None is typed here.
+         That file is reconciled against the document, so a Finance Act roll
+         moves these lines with it and cannot leave the drawer quoting last
+         year's thresholds at a reader who trusts them. */
+      { title: 'VAT rates and tax points', levels: ['aat3'], items: vatRatesItems },
+      { title: 'Registering and deregistering', levels: ['aat3'], items: vatRegistrationItems },
+      { title: 'VAT records and invoices', levels: ['aat3'], items: vatRecordsItems },
+      { title: 'Blocked input tax, fuel and bad debts', levels: ['aat3'], items: vatBlockedItems },
+      { title: 'Partial exemption and international trade', levels: ['aat3'], items: vatPartialItems },
+      { title: 'VAT return deadlines and payment', levels: ['aat3'], items: vatFilingItems },
+      { title: 'Correcting errors in a VAT return', levels: ['aat3'], items: vatErrorItems },
+      { title: 'VAT penalties — late submission and payment', levels: ['aat3'], items: vatLatePenaltyItems },
+      { title: 'VAT penalties — inaccuracies and assessments', levels: ['aat3'], items: vatInaccuracyItems },
+      { title: 'Payroll records and RTI submissions', levels: ['aat3'], items: payrollRecordsItems },
+      { title: 'Payroll deadlines and penalties', levels: ['aat3'], items: payrollPenaltyItems },
       /* TWO SECTIONS USED TO SIT HERE and no longer do: variance formulas
          labelled for MATS, and income tax for sole traders. Neither is assessed
          in any unit this app teaches — its Level 2 is the Q2022 certificate and
@@ -649,6 +678,166 @@
       'Zero-rated (0%): food, books, children\'s clothing — a taxable supply, so input VAT IS reclaimable.',
       'Exempt: financial services, education, insurance — input VAT is NOT reclaimable.',
       'Box 5 = Box 1 − Box 4. Positive → pay HMRC. Negative → HMRC refunds.',
+    ];
+  }
+
+  /* ── The Level 3 TPFB sections' items ─────────────────────────────────────
+     These sections are Level 3 only, and aat3-tax-data.js is in that subject's
+     asset list, so _commitSubjectSwitch() repaints this panel only after the
+     file has loaded. t3() guards anyway: a missing global should cost the one
+     section, not throw inside renderReferencePanel() and take the whole drawer
+     with it. An empty array renders an empty section rather than "undefined",
+     and check-reference-panel.js fails a Level 3 section that comes back
+     empty, so the guard cannot quietly become the normal path. */
+  function t3() { return window.AAT3_TAX || null; }
+
+  function vatRatesItems() {
+    const T = t3(); if (!T) return [];
+    const r = T.rates, inv = T.invoicing;
+    return [
+      'Standard rate ' + r.standard.value + '% · reduced rate ' + r.reduced.value + '% · zero rate ' + r.zero.value + '%.',
+      'Exempt and outside-the-scope supplies carry no VAT, and neither is the same as zero-rated.',
+      'Basic tax point: the date goods are removed or made available, or the date a service is completed.',
+      'Payment received or a VAT invoice issued BEFORE the basic tax point overrides it — the earlier date wins.',
+      'A VAT invoice issued within ' + inv.actualTaxPointDays.value + ' days AFTER the basic tax point makes the invoice date the tax point. This is the only thing that moves it later.',
+      'A VAT invoice must normally be issued within ' + inv.issueWithinDays.value + ' days of the tax point.',
+    ];
+  }
+
+  function vatRegistrationItems() {
+    const T = t3(); if (!T) return [];
+    const reg = T.registration, fn = T.penalties.failureToNotify;
+    return [
+      'Historic test: taxable turnover exceeded ' + refMoney(reg.threshold.value) + ' in the previous rolling 12 months. Notify within ' + reg.historicTest.notifyWithinDays.value + ' days of the end of that month; registration starts on the first day of the second following month.',
+      'Future test: turnover is expected to exceed ' + refMoney(reg.threshold.value) + ' in the NEXT 30 days alone. Notify by the end of that period; registration starts the day the expectation arose.',
+      'Compulsory deregistration on ceasing to make taxable supplies — notify within ' + reg.deregistration.compulsoryNotifyWithinDays.value + ' days. It takes effect from the date of cessation.',
+      'Voluntary deregistration where turnover for the NEXT 12 months is expected to fall below ' + refMoney(reg.deregistrationThreshold.value) + '. It cannot be backdated.',
+      'Changes to notify within ' + reg.changesToNotify.withinDays.value + ' days: name, trading name or address; partnership members; agent’s details; a change of business activity.',
+      'Bank account details: ' + reg.changesToNotify.inAdvanceDays.value + ' days IN ADVANCE, not after.',
+      'Failure to notify, as a share of the VAT lost: up to ' + fn.behaviours.nonDeliberate.max + '% non-deliberate, ' + fn.behaviours.deliberate.max + '% deliberate, ' + fn.behaviours.deliberateAndConcealed.max + '% deliberate and concealed.',
+    ];
+  }
+
+  function vatRecordsItems() {
+    const T = t3(); if (!T) return [];
+    const rec = T.records, inv = T.invoicing;
+    return [
+      'Keep VAT records for at least ' + rec.retentionYears.value + ' years. Failing to keep them carries a penalty of up to ' + refMoney(rec.penalty.value) + '.',
+      'Under Making Tax Digital, records must be kept in functional compatible software with digital links between them — retyping a figure breaks the link.',
+      'A full VAT invoice shows: a unique sequential number; the tax point; the date of issue where different; the supplier’s name, address and VAT number; the customer’s name and address; a description of what was supplied.',
+      'For each description: the quantity or extent, the VAT rate, and the amount payable excluding VAT.',
+      'Then the gross total excluding VAT, the rate of any cash discount offered, the total VAT chargeable — which must be in sterling — and the unit price.',
+      'A simplified VAT invoice may be used at or below ' + refMoney(inv.simplifiedLimit.value) + ' including VAT.',
+    ];
+  }
+
+  function vatBlockedItems() {
+    const T = t3(); if (!T) return [];
+    const b = T.blockedExpenses, f = T.fuelScaleCharges, bd = T.badDebtRelief;
+    return [
+      'Business entertainment: input tax is blocked. Entertaining OVERSEAS customers is the exception; UK and Isle of Man customers are still blocked.',
+      'Cars: input tax is recoverable only where no private use is AVAILABLE. Availability blocks it — actual private journeys are not needed.',
+      'Hired or leased car: exactly ' + b.cars.hiredOrLeased.value + '% of the input tax, as a fixed proportion. It does not move with mileage.',
+      'Vans and lorries are not cars — the normal rules apply.',
+      'Fuel with private use: the scale charge is a VAT-INCLUSIVE deemed supply set by CO2 band. Output tax is 1/6 of the table figure in Box 1; the net goes in Box 6.',
+      'A CO2 figure that is not a multiple of ' + f.roundDownToMultipleOf.value + ' g/km rounds DOWN to the next multiple — 137 is charged at the 135 band.',
+      'Bad debt relief: the debt must be at least ' + bd.debtAgeMonths.value + ' months overdue and written off in the VAT account. Claim within ' + bd.claimWindow.value + '.',
+    ];
+  }
+
+  function vatPartialItems() {
+    const T = t3(); if (!T) return [];
+    const pe = T.partialExemption, it = T.internationalTrade;
+    return [
+      'De minimis: input tax attributable to exempt supplies is recoverable IN FULL if it is below ' + refMoney(pe.deMinimisPerMonth.value) + ' a month on average — ' + refMoney(pe.deMinimisPerQuarter.value) + ' a quarter, ' + refMoney(pe.deMinimisPerYear.value) + ' a year — AND no more than ' + pe.inputTaxProportion.value + '% of total input tax.',
+      'Both conditions must hold. Passing one alone is not de minimis.',
+      'Exports of goods are ZERO-RATED — a taxable supply, so input tax stays recoverable and the net still goes in Box 6.',
+      'Imports of goods use postponed accounting: the import VAT goes on the return as output tax and is recovered as input tax.',
+      'Services to an overseas BUSINESS: the place of supply is where the customer is, so it is OUTSIDE THE SCOPE. Not zero-rated, and it does not reach Box 6.',
+      'Services to an overseas CONSUMER: the place of supply is where the supplier is, so UK VAT IS charged.',
+      'Imported services: the reverse charge — the UK customer accounts for the output tax and recovers it as input tax.',
+    ];
+  }
+
+  function vatFilingItems() {
+    const T = t3(); if (!T) return [];
+    const f = T.filing, ann = T.schemes.annualAccounting;
+    return [
+      'Standard deadline: one calendar month and seven days after the end of the VAT period — for the return AND the payment.',
+      'Annual accounting is the exception: the single return and the balancing payment are both due ' + ann.returnAndBalancingPayment.value + ' months after the year end.',
+      'The money must REACH HMRC by the deadline. A payment started on the due date by a slow method is late.',
+      'Same or next day: Faster Payments, CHAPS, debit or corporate credit card.',
+      'Three working days: Bacs, standing order, payment at a bank or building society.',
+      'Direct debit: set it up at least three working days before submitting; HMRC then collects three working days AFTER the deadline.',
+      'A repayment trader — typically a zero-rated supplier or exporter — may apply to file monthly.',
+    ];
+  }
+
+  function vatErrorItems() {
+    const T = t3(); if (!T) return [];
+    const ec = T.errorCorrection;
+    return [
+      'Method 1 — adjust on the next return. Available where the NET error is below the greater of ' + refMoney(ec.netErrorLimit.value) + ' and ' + ec.turnoverPercentage.value + '% of Box 6 turnover, subject to an absolute ceiling of ' + refMoney(ec.absoluteCeiling.value) + '.',
+      'VAT that was due to HMRC goes into Box 1; VAT that was reclaimable goes into Box 4.',
+      'Method 2 — notify HMRC separately on form ' + ec.separateNotificationForm + '. Required above those limits, and for any DELIBERATE error however small.',
+      'Either way, the error must fall within ' + ec.timeLimitYears.value + ' years.',
+      'Method 2 may be used for any error. Coming forward early is a choice, not an obligation, once the limits are cleared.',
+    ];
+  }
+
+  function vatLatePenaltyItems() {
+    const T = t3(); if (!T) return [];
+    const ls = T.penalties.lateSubmission, lp = T.penalties.latePayment;
+    return [
+      'Late submission is POINTS-BASED: one point per late return.',
+      'Threshold: ' + ls.thresholds.annual + ' points for annual returns, ' + ls.thresholds.quarterly + ' for quarterly, ' + ls.thresholds.monthly + ' for monthly.',
+      'At the threshold, a ' + refMoney(ls.penalty.value) + ' penalty — and another ' + refMoney(ls.penalty.value) + ' for every late return after it.',
+      'Below the threshold a point expires ' + ls.pointExpiryMonths.value + ' months after the month it was given.',
+      'Late payment: ' + lp.firstPenaltyDay15.value + '% of what is outstanding at day 15, a further ' + lp.firstPenaltyDay30.value + '% of what is still outstanding at day 30.',
+      'From day 31, a second penalty accrues DAILY at ' + lp.secondPenaltyAnnualised.value + '% a year on the outstanding amount.',
+      'A Time to Pay agreement, if kept to, stops further penalties accruing.',
+    ];
+  }
+
+  function vatInaccuracyItems() {
+    const T = t3(); if (!T) return [];
+    const pf = T.errorCorrection.penaltyForError, a = T.assessments;
+    return [
+      'An inaccuracy penalty is a percentage of the POTENTIAL LOST REVENUE, set by behaviour and reduced for the quality of disclosure.',
+      'Careless: maximum ' + pf.careless.max + '%. Minimum ' + pf.careless.unpromptedMin + '% unprompted, ' + pf.careless.promptedMin + '% prompted.',
+      'Deliberate: maximum ' + pf.deliberate.max + '%. Minimum ' + pf.deliberate.unpromptedMin + '% unprompted, ' + pf.deliberate.promptedMin + '% prompted.',
+      'Deliberate and concealed: maximum ' + pf.deliberateAndConcealed.max + '%. Minimum ' + pf.deliberateAndConcealed.unpromptedMin + '% unprompted, ' + pf.deliberateAndConcealed.promptedMin + '% prompted.',
+      'An inaccuracy made despite taking reasonable care attracts NO penalty at all.',
+      'Assessments: HMRC may assess within ' + a.normalTimeLimitYears.value + ' years, extended to ' + a.extendedTimeLimitYears.value + ' years where behaviour was deliberate.',
+    ];
+  }
+
+  function payrollRecordsItems() {
+    const T = t3(); if (!T) return [];
+    const r = T.payroll.records, rti = T.payroll.rti;
+    return [
+      'Keep payroll records for ' + r.retentionYears.value + ' years from the END OF THE TAX YEAR they relate to. Shorter than the six years for VAT records, and the two are easily confused.',
+      'Failing to keep them: HMRC may estimate what is owed AND charge a penalty of up to ' + refMoney(r.penalty.value) + '.',
+      'FPS — Full Payment Submission. Pay and deductions for every employee paid, plus starters, leavers and changes of detail. It reports what WAS PAID.',
+      'The FPS is due on or before the day the employees are paid, even for an employer that pays HMRC quarterly.',
+      'EPS — Employer Payment Summary. Amounts that REDUCE what is owed: statutory pay recovered, the Employment Allowance, CIS suffered, and months with nobody paid.',
+      'The EPS is due by the 19th of the following tax month, and is sent only when there is something to report.',
+    ];
+  }
+
+  function payrollPenaltyItems() {
+    const T = t3(); if (!T) return [];
+    const p = T.payroll.paymentToHmrc, lf = T.payroll.penalties.lateFiling, lp = T.payroll.penalties.latePayment;
+    const e = lf.byEmployees, d = lp.byDefaults;
+    return [
+      'The PAYE month ends on the ' + p.monthEndDate.value + 'th, running 6th to 5th.',
+      'Pay HMRC by the ' + p.electronicDeadline.value + 'nd of the following month electronically, or the ' + p.nonElectronicDeadline.value + 'th by cheque.',
+      'An employer averaging under ' + refMoney(p.quarterlyThreshold.value) + ' a month may pay quarterly instead.',
+      'Late FPS — a monthly penalty by headcount: ' + refMoney(e['1to9']) + ' for 1–9 employees, ' + refMoney(e['10to49']) + ' for 10–49, ' + refMoney(e['50to249']) + ' for 50–249, ' + refMoney(e['250plus']) + ' for 250 or more.',
+      'The FIRST failure in a tax year is not penalised. A return still outstanding after ' + lf.extendedFailureMonths.value + ' months adds ' + lf.extendedFailurePercent.value + '% of the tax that should have been reported.',
+      'Late payment — a percentage of the amount paid late, by defaults in the tax year: ' + d['1to3'] + '% for 1–3, ' + d['4to6'] + '% for 4–6, ' + d['7to9'] + '% for 7–9, ' + d['10plus'] + '% for 10 or more.',
+      'A further ' + lp.sixMonths.value + '% if still unpaid after 6 months, and another ' + lp.twelveMonths.value + '% after 12 months. These reach even a single late payment.',
+      'Inaccuracies in payroll returns use the same behaviour table as VAT.',
     ];
   }
 
@@ -1026,6 +1215,18 @@
     return typeof section.items === 'function' ? section.items() : section.items;
   }
 
+  /* SECTIONS START CLOSED. Every section used to render `open`, which was fine
+     while the longest drawer held eleven of them. Level 3 now carries the
+     twenty-five-section reference document the real assessment provides, and a
+     drawer that opens with twenty-three expanded sections is a page to scroll
+     rather than a thing to look something up in — the opposite of what a
+     reference is for. Closed, the whole list of titles fits on a phone screen
+     and one tap gets the answer.
+
+     A section the reader opens stays open: the panel is repainted only when the
+     drawer is toggled, when the subject changes, and at boot, so nothing slams
+     it shut mid-read. Closing and reopening the drawer does reset them, which
+     is the cost of not persisting per-section state. */
   function renderReferencePanel() {
     const panel = document.getElementById('referencePanel');
     if (!panel) return;
@@ -1035,7 +1236,7 @@
         <button class="ref-close" id="referenceClose" type="button" aria-label="Close reference">✕</button>
       </div>
       <div class="ref-body">
-        ${refSections().map(s => `<details class="ref-section" open>
+        ${refSections().map(s => `<details class="ref-section">
           <summary>${escapeHtml(s.title)}</summary>
           <ul>${refItems(s).map(it => '<li>' + escapeHtml(it) + '</li>').join('')}</ul>
         </details>`).join('')}

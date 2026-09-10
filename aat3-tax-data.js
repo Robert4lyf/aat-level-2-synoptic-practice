@@ -813,7 +813,13 @@
             'It is the business’s first failure in the tax year to report on time.'
           ],
           whatTriggersIt: 'A late FPS, fewer FPSs than expected, or an EPS that was not filed.',
-          extendedFailure: 'A return still outstanding after 3 months attracts a further penalty of 5% of the tax that should have been reported.',
+          /* The figure was inside the prose, which made it unreadable by anything
+             that wanted to RENDER it — the reference drawer among them. Split out
+             so there is one copy, and the prose points at it rather than repeating
+             it. */
+          extendedFailureMonths: { value: 3, unit: 'months' },
+          extendedFailurePercent: { value: 5, unit: '%', note: 'Of the tax that should have been reported, on a return still outstanding after three months.' },
+          extendedFailure: 'A return still outstanding after three months attracts a further penalty, on top of the monthly ones.',
           exceptionsSource: REF,
           source: 'HMRC, What happens if you do not report payroll information on time', checked: '2026-09-05'
         },
