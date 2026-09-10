@@ -27,25 +27,45 @@ time here.
 
 ## Where the timetable comes from
 
-The city's official GTFS feed (`tr_antalya.gtfs.zip`), read through
-[transitous.org](https://transitous.org)'s public MOTIS API — a free community
-mirror of open transit feeds. Captured 2026-09-10.
+The GTFS feed published by Otobus Tramvay (`agency_url` is
+antalyaulasim.com.tr), as mirrored by [transitous.org](https://transitous.org),
+whose feed list points at a Dropbox-hosted `antalya.zip`. That is the newest
+public copy there is, and it is not new: `stop_times.txt` is dated September
+2023 and `routes.txt` September 2024. Its `calendar.txt` runs to 2030, so
+nothing anywhere marks it stale — this paragraph is the only thing that does.
 
-To refresh it, for each line and direction (`T1A|0`, `T1A|1`, `T1B|0`, `T1B|1`,
-`T2|0`, `T2|1`, `T3|0`, `T3|1`):
+To rebuild the timetable, download that zip and flatten it:
 
-1. List that day's trips from the first stop of the direction:
-   `https://api.transitous.org/api/v1/stoptimes?stopId=<first stop>&time=<ISO UTC>&n=100`
-   (page on with `pageCursor`, keep entries whose `routeShortName` and
-   `directionId` match).
-2. Fetch each trip: `https://api.transitous.org/api/v1/trip?tripId=<id>` — the
-   single leg holds `from`, `intermediateStops` and `to` with scheduled times.
-3. Write each trip as `[departure minute, then minutes after departure at each
-   stop]` into the `window.TRAM` object at the top of `antalya-tram.html`.
+1. `trips.txt` — keep `route_id` in T1A, T1B, T2, T3; note `service_id` and
+   `direction_id`.
+2. `stop_times.txt` — group by `trip_id`, order by `stop_sequence`, and write
+   each trip as `[departure minute, then minutes after departure at each stop]`
+   into the `window.TRAM` object at the top of `antalya-tram.html`.
+3. `stops.txt` — name and coordinates for each stop id.
 
-Two day types are stored: `wd` (Monday–Saturday, one timetable) and `su`
-(Sunday, which runs a denser T1 service). The feed lists some Sunday trips
-twice; trips sharing a departure minute are collapsed to one.
+THE FEED'S CALENDARS DISAGREE WITH THEMSELVES, and taking them literally is a
+bug I shipped once. There are three: `H`, `C` and `P`. `C` departs at exactly
+the same minutes as `H` and `P` at different ones — plainly weekday, Saturday
+and Sunday — but all three are marked `1` for all seven days, so read literally
+they put the weekday and the Sunday timetable on the road simultaneously. The
+first cut of this page did that and offered Sunday trams that do not run: 99
+departures a day against the real 61. Each day now takes the one calendar meant
+for it.
 
 Stop names keep the feed's trailing `1`/`2`, which marks the two sides of the
 track; the page strips it, because the sign on the street does not have it.
+
+## No live feed exists, and here is where I looked
+
+- **Kentkart** (`service.kentkart.com/rl1/api`, Antalya is region `026`) is the
+  service behind the AntalyaKart app. `route/list` and `trip/search` answer
+  unauthenticated; roughly 400 probed paths and parameter names turned up no
+  vehicle-position endpoint. The app has live buses, so the data exists — it is
+  just not exposed.
+- **transitous.org** carries no GTFS-Realtime for any Turkish feed.
+- **acikveri.antalya.bel.tr** (the city's open data portal) and
+  **antray.antalyaulasim.com.tr** both resolve in DNS but refuse connections
+  from outside Turkey. Either could hold something; check them from a Turkish
+  connection before assuming this list is closed.
+- **Moovit** shows Antalya trams and advertises live arrivals, but has no
+  public API.
