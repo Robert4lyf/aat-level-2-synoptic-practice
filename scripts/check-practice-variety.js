@@ -55,14 +55,12 @@ const ok = () => { checks++; };
    purpose: every judgement this file makes terminates here. */
 const CEILING = 4.0;
 
-/* Outcomes that do not meet it yet, each with the pool it would need. They are
-   listed rather than tolerated, and §2 fails if one of them has quietly become
-   compliant — an exceptions list that outlives its exception is how a standard
-   gets forgotten. */
-const THIN = [
-  { unit: 'buaw', lo: 4, why: 'Business Awareness Outcome 4 has never been expanded past its first authoring pass.' },
-  { unit: 'buaw', lo: 5, why: 'Business Awareness Outcome 5, the same.' },
-];
+/* Outcomes that do not meet the ceiling yet, each with a reason. It is EMPTY,
+   and the emptiness is the point: BUAW Outcomes 4 and 5 were listed here when
+   this gate was written, at 20 and 21 questions, and have since been taken to
+   40 each. §2 fails if an entry is added for an outcome that already complies,
+   so the list cannot quietly refill with things nobody intends to fix. */
+const THIN = [];
 
 console.log(`${BOLD}Practice variety${RESET}\n`);
 
