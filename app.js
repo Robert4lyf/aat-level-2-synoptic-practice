@@ -1215,6 +1215,18 @@
     return typeof section.items === 'function' ? section.items() : section.items;
   }
 
+  /* SECTIONS START CLOSED. Every section used to render `open`, which was fine
+     while the longest drawer held eleven of them. Level 3 now carries the
+     twenty-five-section reference document the real assessment provides, and a
+     drawer that opens with twenty-three expanded sections is a page to scroll
+     rather than a thing to look something up in — the opposite of what a
+     reference is for. Closed, the whole list of titles fits on a phone screen
+     and one tap gets the answer.
+
+     A section the reader opens stays open: the panel is repainted only when the
+     drawer is toggled, when the subject changes, and at boot, so nothing slams
+     it shut mid-read. Closing and reopening the drawer does reset them, which
+     is the cost of not persisting per-section state. */
   function renderReferencePanel() {
     const panel = document.getElementById('referencePanel');
     if (!panel) return;
@@ -1224,7 +1236,7 @@
         <button class="ref-close" id="referenceClose" type="button" aria-label="Close reference">✕</button>
       </div>
       <div class="ref-body">
-        ${refSections().map(s => `<details class="ref-section" open>
+        ${refSections().map(s => `<details class="ref-section">
           <summary>${escapeHtml(s.title)}</summary>
           <ul>${refItems(s).map(it => '<li>' + escapeHtml(it) + '</li>').join('')}</ul>
         </details>`).join('')}

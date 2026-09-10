@@ -181,6 +181,11 @@ const FORBIDDEN = {
         open: document.querySelector('.reference-panel').classList.contains('is-open'),
         titles: Array.from(document.querySelectorAll('.ref-section summary')).map(e => e.textContent.trim()),
         items: Array.from(document.querySelectorAll('.ref-section li')).map(e => e.textContent),
+        /* `open` is the attribute, not a guess from geometry. A <details> that
+           is closed still has its <li>s in the DOM with their text intact,
+           which is why every other assertion here reads the same either way —
+           and why nothing would notice `open` being put back. */
+        expanded: Array.from(document.querySelectorAll('.ref-section')).filter(d => d.open).length,
         sections: Array.from(document.querySelectorAll('.ref-section')).map(function (d) {
           return {
             title: d.querySelector('summary') ? d.querySelector('summary').textContent.trim() : '(untitled)',
@@ -295,6 +300,45 @@ const FORBIDDEN = {
         var m = /\[object Object\]|\bundefined\b|\bNaN\b|\bnull\b/.exec(li);
         if (m) errors.push(`${id}: a reference line renders "${m[0]}" — a data node read without .value, or a path that does not exist:\n      ${li.slice(0, 150)}`);
       });
+
+      /* ── SECTIONS START CLOSED, AND STILL OPEN ───────────────────────────
+         Closed by default is what makes a 23-section drawer usable: the titles
+         fit on a phone screen and one tap gets the answer. Both halves are
+         asserted, because each fails in a way the other hides. All-expanded
+         passes every text assertion in this file, since a closed <details>
+         keeps its text in the DOM. And a section that cannot be opened would
+         satisfy "starts closed" perfectly while being useless. */
+      if (seen.expanded !== 0) {
+        errors.push(`${id}: ${seen.expanded} reference section(s) render already expanded. ` +
+                    `The drawer is meant to open as a list of titles — every text assertion here ` +
+                    `passes either way, so nothing else would catch this.`);
+      }
+      /* A REAL click, not element.click(). The synthetic one dispatches the
+         event straight at the node and ignores pointer-events, overlays and
+         anything sitting on top — a section made untappable by CSS passed that
+         version of this check perfectly. Playwright's click hit-tests the
+         point a thumb would land on, so it fails when a reader's would. */
+      let tapped = null;
+      if (!(await page.locator('.ref-section summary').count())) {
+        errors.push(`${id}: no reference section to open.`);
+      } else {
+        try {
+          await page.locator('.ref-section summary').first().click({ timeout: 3000 });
+          await page.waitForTimeout(150);
+          tapped = await page.evaluate(() => {
+            const d = document.querySelector('.ref-section');
+            return { open: d.open, itemsVisible: Array.from(d.querySelectorAll('li')).some(li => li.offsetHeight > 0) };
+          });
+        } catch (e) {
+          errors.push(`${id}: a section heading could not be clicked where a reader would tap it — ` +
+                      `${String(e.message).split('\n')[0]}`);
+        }
+        if (tapped && (!tapped.open || !tapped.itemsVisible)) {
+          errors.push(`${id}: tapping a section heading did not reveal its lines ` +
+                      `(open=${tapped.open}, any line visible=${tapped.itemsVisible}). ` +
+                      `Closed by default is only right if opening works.`);
+        }
+      }
 
       /* ── EVERY SECTION HAS SOMETHING IN IT ───────────────────────────────
          The Level 3 sections return [] when window.AAT3_TAX is missing, which
