@@ -79,6 +79,24 @@
   .calls li { display: flex; justify-content: space-between; padding: 3px 0; }
   .calls b { font-weight: 600; font-variant-numeric: tabular-nums; color: var(--ink); }
   .empty { color: var(--dim); font-size: 14px; padding: 16px 2px; }
+  #mapwrap { margin-top: 24px; }
+  #mapwrap h2 { font-size: 15px; margin: 0 0 2px; }
+  #mapwrap p { margin: 0 0 8px; font-size: 12px; color: var(--dim); }
+  #map {
+    display: block; width: 100%; height: auto; background: var(--card);
+    border: 1px solid var(--line); border-radius: 12px;
+  }
+  .track { fill: none; stroke-width: 5; stroke-linejoin: round; stroke-linecap: round; opacity: 0.7; }
+  .stopdot { fill: var(--dim); opacity: 0.45; }
+  .here { fill: none; stroke: var(--ink); stroke-width: 4; }
+  .tram { stroke: var(--card); stroke-width: 3; }
+  .maplabel {
+    fill: var(--dim); font-size: 28px; font-weight: 600;
+    paint-order: stroke; stroke: var(--card); stroke-width: 7px; stroke-linejoin: round;
+  }
+  .legend { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; font-size: 12px; color: var(--dim); }
+  .legend span { display: inline-flex; align-items: center; gap: 5px; }
+  .legend i { width: 9px; height: 9px; border-radius: 50%; background: currentColor; }
   footer { margin-top: 22px; font-size: 12px; line-height: 1.6; color: var(--dim); }
   footer a { color: inherit; }
   .favs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 4px; }
@@ -103,6 +121,14 @@
 </div>
 
 <ul id="board"></ul>
+
+<section id="mapwrap">
+  <h2>Where the timetable puts them</h2>
+  <p id="mapcount">Positions worked out from the schedule — not where the trams
+  actually are.</p>
+  <svg id="map" role="img" aria-label="Schematic map of the Antalya tram network with each tram at its scheduled position"></svg>
+  <div class="legend" id="legend"></div>
+</section>
 
 <footer>
   <p id="src"></p>
@@ -307,6 +333,7 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
     var now = antalyaNow();
     el.clock.textContent = now.clock;
     var key = dirKey(), deps = departures(key, state.stop, now);
+    drawTrams(now);
     el.board.innerHTML = '';
     if (!deps.length) {
       var p = document.createElement('li');
@@ -364,6 +391,187 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
       ul.appendChild(li);
     }
     return ul;
+  }
+
+
+  /* ---- the map ---------------------------------------------------------
+   *
+   * Nothing here is observed. A tram's position is read off the same
+   * timetable the board counts down: find the trip that should be running,
+   * find which pair of stops it should be between, and slide it along that
+   * pair by however much of the leg has elapsed. Straight lines between
+   * stops, because that is exactly the assumption the position is computed
+   * under — drawing a truer curve would claim an accuracy the dot lacks.
+   *
+   * The projection is equirectangular with the longitude squeezed by
+   * cos(latitude); across a city this is indistinguishable from anything
+   * more careful, and it needs no basemap, no tiles and no network.
+   */
+
+  var VB_W = 1000, PAD = 46;
+  var proj = (function () {
+    var ids = Object.keys(STOPS), i, s;
+    var minLat = 90, maxLat = -90, minLon = 180, maxLon = -180;
+    for (i = 0; i < ids.length; i++) {
+      s = STOPS[ids[i]];
+      if (s[1] < minLat) minLat = s[1];
+      if (s[1] > maxLat) maxLat = s[1];
+      if (s[2] < minLon) minLon = s[2];
+      if (s[2] > maxLon) maxLon = s[2];
+    }
+    var k = Math.cos((minLat + maxLat) / 2 * Math.PI / 180);
+    var w = (maxLon - minLon) * k, h = maxLat - minLat;
+    var scale = (VB_W - 2 * PAD) / w;
+    return {
+      h: h * scale + 2 * PAD,
+      x: function (lon) { return PAD + (lon - minLon) * k * scale; },
+      y: function (lat) { return PAD + (maxLat - lat) * scale; }
+    };
+  })();
+
+  /* One track per line: the two directions run on the same pair of rails, so
+     drawing both would only thicken the line and hide the trams on it. */
+  function trackKeys() {
+    var seen = {}, out = [];
+    Object.keys(DIRS).sort().forEach(function (k) {
+      var r = DIRS[k].route;
+      if (!seen[r]) { seen[r] = 1; out.push(k); }
+    });
+    return out;
+  }
+
+  function pathFor(key) {
+    return DIRS[key].stops.map(function (id, i) {
+      var s = STOPS[id];
+      return (i ? 'L' : 'M') + proj.x(s[2]).toFixed(1) + ' ' + proj.y(s[1]).toFixed(1);
+    }).join(' ');
+  }
+
+  /* Every tram that should be on the network at `now`, as {route, x, y}. */
+  function running(now) {
+    var out = [];
+    Object.keys(DIRS).forEach(function (key) {
+      var dir = DIRS[key], stops = dir.stops;
+      function scan(trips, shift) {
+        if (!trips) return;
+        trips.forEach(function (t) {
+          var start = t[0] - shift, done = start + t[t.length - 1];
+          if (now.minutes < start || now.minutes > done) return;
+          for (var i = 1; i < t.length - 1; i++) {
+            var a = start + t[i], b = start + t[i + 1];
+            if (now.minutes < a || now.minutes > b) continue;
+            var f = b > a ? (now.minutes - a) / (b - a) : 0;
+            var p = STOPS[stops[i - 1]], q = STOPS[stops[i]];
+            out.push({
+              route: dir.route,
+              x: proj.x(p[2] + (q[2] - p[2]) * f),
+              y: proj.y(p[1] + (q[1] - p[1]) * f)
+            });
+            return;
+          }
+        });
+      }
+      scan(dir.trips[dayType(now.weekday)], 0);
+      scan(dir.trips[yesterdayType(now.weekday)], 1440);
+    });
+    return out;
+  }
+
+  function svg(tag, attrs) {
+    var n = document.createElementNS('http://www.w3.org/2000/svg', tag), k;
+    for (k in attrs) n.setAttribute(k, attrs[k]);
+    return n;
+  }
+
+  var mapBase = null;   /* tracks, stops and labels: drawn once */
+
+  function drawBase() {
+    var el = document.getElementById('map');
+    el.setAttribute('viewBox', '0 0 ' + VB_W + ' ' + Math.round(proj.h));
+    el.innerHTML = '';
+    var keys = trackKeys();
+    keys.forEach(function (key) {
+      el.appendChild(svg('path', {
+        d: pathFor(key), class: 'track',
+        stroke: 'var(--' + DIRS[key].route.toLowerCase() + ')'
+      }));
+    });
+    Object.keys(STOPS).forEach(function (id) {
+      el.appendChild(svg('circle', {
+        cx: proj.x(STOPS[id][2]).toFixed(1), cy: proj.y(STOPS[id][1]).toFixed(1),
+        r: 3.5, class: 'stopdot'
+      }));
+    });
+    mapBase = el.childNodes.length;
+    el.appendChild(svg('g', { id: 'here' }));
+    el.appendChild(svg('g', { id: 'trams' }));
+
+    /* Only the ends of each line are labelled. Everything else is a dot: at
+       phone width there is room for six words, not a hundred and twenty. The
+       ends of two lines can sit almost on top of each other — Müze and
+       Zerdalilik are a few hundred metres apart — so a name that would land
+       on one already placed goes below its stop instead of above. */
+    var labels = svg('g', {}), placed = [], named = {};
+    keys.forEach(function (key) {
+      [DIRS[key].stops[0], DIRS[key].stops[DIRS[key].stops.length - 1]].forEach(function (id) {
+        /* Lines share ends — both T1s start at Fatih, T2 and T3 both finish at
+           Müze — and the two platforms of one stop are two ids. One name. */
+        if (named[stopName(id)]) return;
+        named[stopName(id)] = 1;
+        var s = STOPS[id], x = proj.x(s[2]), y = proj.y(s[1]), i, below = false;
+        for (i = 0; i < placed.length; i++) {
+          if (Math.abs(placed[i][0] - x) < 150 && Math.abs(placed[i][1] - (y - 16)) < 34) below = true;
+        }
+        var ly = below ? y + 38 : y - 16;
+        placed.push([x, ly]);
+        var t = svg('text', {
+          x: x, y: ly, class: 'maplabel',
+          'text-anchor': x > VB_W * 0.75 ? 'end' : (x < VB_W * 0.25 ? 'start' : 'middle')
+        });
+        t.textContent = stopName(id);
+        labels.appendChild(t);
+      });
+    });
+    el.appendChild(labels);
+  }
+
+  function drawTrams(now) {
+    var g = document.getElementById('trams'), here = document.getElementById('here');
+    if (!g) return;
+    g.innerHTML = '';
+    here.innerHTML = '';
+    var s = STOPS[state.stop];
+    if (s) here.appendChild(svg('circle', {
+      cx: proj.x(s[2]).toFixed(1), cy: proj.y(s[1]).toFixed(1), r: 16, class: 'here'
+    }));
+    var list = running(now);
+    list.forEach(function (t) {
+      g.appendChild(svg('circle', {
+        cx: t.x.toFixed(1), cy: t.y.toFixed(1), r: 11, class: 'tram',
+        fill: 'var(--' + t.route.toLowerCase() + ')'
+      }));
+    });
+    document.getElementById('mapcount').textContent = list.length
+      ? list.length + ' trams should be running now — positions worked out from the '
+        + 'schedule, not where they actually are. The ring is your stop.'
+      : 'No trams are scheduled to be running right now.';
+  }
+
+  function drawLegend() {
+    var l = document.getElementById('legend');
+    l.innerHTML = '';
+    trackKeys().forEach(function (key) {
+      var r = DIRS[key].route;
+      var w = document.createElement('span');
+      w.style.color = 'var(--' + r.toLowerCase() + ')';
+      var dot = document.createElement('i');
+      var name = document.createElement('em');
+      name.style.color = 'var(--dim)';
+      name.style.fontStyle = 'normal';
+      name.textContent = r;
+      w.appendChild(dot); w.appendChild(name);
+      l.appendChild(w);
+    });
   }
 
   /* ---- saved stops ----------------------------------------------------- */
@@ -432,6 +640,8 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
   el.src.textContent = 'Timetable: ' + DATA.meta.feed + '.';
 
   restore();
+  drawBase();
+  drawLegend();
   render();
 
   /* A minute is the resolution of the timetable, so a 15-second tick keeps the
