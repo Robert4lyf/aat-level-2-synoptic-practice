@@ -3363,7 +3363,7 @@
         { text: 'Student loan repayments.', answer: true },
         { text: 'Repayment of a salary advance to the employer.', answer: false },
       ],
-      exp: 'Statutory deductions are required by law: PAYE, National Insurance, student loan repayments and auto-enrolment pension contributions. Payroll giving and a salary advance repayment happen only because the employee agreed to them.',
+      exp: 'Statutory deductions are the ones the tax and pensions system requires: PAYE, National Insurance, student loan repayments and auto-enrolment pension contributions. Payroll giving and a salary advance repayment happen only because the employee agreed to them.',
     },
     {
       id: 'P-4-05', unitKey: 'tpfb', lo: 4, criteria: ['TPFB-4.2.1', 'TPFB-4.2.2'],
@@ -3555,7 +3555,7 @@
         { text: 'A contribution to a workplace social fund.', answer: false },
         { text: 'Repayment of a season ticket loan from the employer.', answer: false },
       ],
-      exp: 'A deduction is statutory when the law requires it, whatever the employee thinks. Everything else — union subscriptions, charitable giving, staff funds, loan repayments — needs the employee’s agreement, and the employer cannot take it without one.',
+      exp: 'A deduction is statutory when the tax or pensions system requires it — PAYE, National Insurance, student loan repayments, auto-enrolment pension — whatever the employee thinks. Everything else is non-statutory: union subscriptions, charitable giving, staff funds and loan repayments all need the employee’s agreement, and a court-ordered deduction needs nobody’s.',
     },
     {
       id: 'P-4-28', unitKey: 'tpfb', lo: 4, criteria: ['TPFB-4.2.1', 'TPFB-4.2.2'],
@@ -3766,7 +3766,7 @@
         { text: 'A statutory deduction is one the employee has agreed to in writing.', answer: false },
         { text: 'Employer’s National Insurance is deducted from the employee’s gross pay.', answer: false },
       ],
-      exp: 'The obligation on Income Tax runs to HMRC, not to the employee, so agreement is irrelevant — that absolute holds. Auto-enrolment makes pension contributions statutory where the employer has enrolled its staff. A statutory deduction is defined by the law requiring it rather than by consent, which is the inversion in the third statement. And EMPLOYER’s National Insurance is a cost of the employer: it never appears as a deduction from the employee’s pay, though it is paid over to HMRC alongside everything that is.',
+      exp: 'The obligation on Income Tax runs to HMRC, not to the employee, so agreement is irrelevant — that absolute holds. Auto-enrolment makes pension contributions statutory where the employer has enrolled its staff. A statutory deduction is defined by the tax or pensions system requiring it rather than by consent, which is the inversion in the third statement. And EMPLOYER’s National Insurance is a cost of the employer: it never appears as a deduction from the employee’s pay, though it is paid over to HMRC alongside everything that is.',
     },
     {
       id: 'P-4-49', unitKey: 'tpfb', lo: 4, criteria: ['TPFB-4.1.8'],
@@ -3779,7 +3779,7 @@
         'It applies only where the employee agrees to the order',
       ],
       ans: 0,
-      exp: 'The classification is about whether the deduction is part of the TAX system, not about whether the employee had a choice — and an attachment order allows no choice at all. It comes from a court order enforcing a debt, so it sits with union subscriptions and salary advances rather than with PAYE and National Insurance. The employer must apply it, and the employee cannot stop it.',
+      exp: 'The classification is about whether the deduction is part of the TAX OR PENSIONS system, not about whether the employee had a choice — and an attachment order allows no choice at all. It comes from a court order enforcing a debt, so it sits with union subscriptions and salary advances rather than with PAYE and National Insurance. The employer must apply it, and the employee cannot stop it.',
     },
     {
       id: 'P-4-50', unitKey: 'tpfb', lo: 4, criteria: ['TPFB-4.1.8'],
@@ -3791,7 +3791,7 @@
         { text: 'Pay As You Earn Income Tax.', answer: false },
         { text: 'A charitable gift under a payroll giving scheme.', answer: true },
       ],
-      exp: 'Union subscriptions and payroll giving both depend on the employee having agreed, so both are non-statutory. PAYE and employee National Insurance are the two paradigm statutory deductions. The useful test is not whether the money leaves the payslip but WHO the obligation runs to: HMRC for the statutory ones, a third party or the employer for the rest.',
+      exp: 'Union subscriptions and payroll giving both depend on the employee having agreed, so both are non-statutory. PAYE and employee National Insurance are the two paradigm statutory deductions. The useful test is not whether the money leaves the payslip but WHICH SYSTEM demands it. Tax and pensions give the statutory ones; a private arrangement or a court gives the rest.',
     },
     {
       id: 'P-4-51', unitKey: 'tpfb', lo: 4, criteria: ['TPFB-4.1.9'],
@@ -6791,7 +6791,7 @@
           { text: 'Giving to charity under a Payroll Giving Scheme', answer: 1 },
         ],
       },
-      exp: 'A STATUTORY deduction is one the law requires the employer to make whether or not the employee agrees — tax, employee National Insurance and student loan repayments. A NON-STATUTORY deduction is made only because the employee asked for it, and can be stopped when they ask. The employer’s National Insurance is neither: it is a cost the employer bears on top of pay, so it is not a deduction at all, and putting it in either of the first two columns overstates what the employee has lost.',
+      exp: 'A STATUTORY deduction is one the tax or pensions system requires the employer to make, whatever the employee wants — tax, employee National Insurance, student loan repayments and auto-enrolment pension. A NON-STATUTORY deduction comes from anywhere else: the employee asked for it, or a court ordered it. The employer’s National Insurance is neither: it is a cost the employer bears on top of pay, so it is not a deduction at all, and putting it in either of the first two columns overstates what the employee has lost.',
     },
     {
       id: 'P-4-74', unitKey: 'tpfb', lo: 4, criteria: ['TPFB-4.2.1', 'TPFB-4.2.2'],

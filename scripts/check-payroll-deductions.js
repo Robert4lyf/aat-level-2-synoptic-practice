@@ -31,9 +31,21 @@
  *      without the qualifier that makes it true. Sentences a human has read
  *      and cleared are declared in CLEARED, and a CLEARED entry that no longer
  *      occurs fails too, so the list cannot rot into a blanket exemption.
+ *   §4 No sentence DEFINING a statutory deduction states a rule that would
+ *      misclassify one. This is the half that let the pension defect through:
+ *      every answer key can be right while the rule offered to derive them is
+ *      wrong, and a reader taught the wrong rule gets the next one wrong.
  *   §3 No ANSWER KEY contradicts the table. Every graded row that classifies a
  *      named deduction on a statutory axis — true/false statements, pick lists
  *      — is checked against it, in every practice bank at every level.
+ *
+ * §4 found two more places the day it was written — P-4-48's explanation and the
+ * glossary — both saying a statutory deduction is one "the law requires". That
+ * reads fine until you apply it: a court's attachment of earnings order is
+ * required by law and is NOT statutory, so the rule as stated gives the wrong
+ * answer for it. The narrower "required by the tax or pensions system" gives the
+ * right answer for all five of PAYE, NI, student loan, auto-enrolment pension and
+ * the court order, which is why it is the one the material now states throughout.
  *
  * §3 finds nothing today: no bank currently keys a pension row on that axis,
  * and the rows that exist are all keyed correctly. It is written for the next
@@ -283,10 +295,70 @@ BANKS.forEach(([level, bank]) => {
   });
 });
 
+/* ── §4 the rule offered to the reader gives the right answers ────────────
+   A DEFINING sentence is one that says what a statutory deduction is — not a
+   question stem asking the reader to classify, and not a deliberately-false
+   statement in a true/false set, both of which contain the words and neither
+   of which is the material speaking in its own voice. So the scan runs over
+   explanation and lesson prose only, and requires a definition to name both
+   halves of the rule: the tax side and the pensions side. Naming only the tax
+   side is the too-narrow rule that makes auto-enrolment pension non-statutory;
+   saying only "required by law" is the too-broad one that makes a court order
+   statutory. Both were live in this repository. */
+/* Markdown bold is stripped first: the Level 2 lesson writes "**Statutory**
+   deductions are required by law", and the asterisks alone hid that sentence
+   from an earlier version of this scan. The third alternative catches the
+   glossary, which states the rule as "A deduction the ... requires" with the
+   term in its own field rather than in the sentence. */
+const demark = s => s.replace(/[*_]/g, '');
+/* (?<!non-) matters: "Non-statutory deductions are everything else" is a
+   different and correct claim, and without the guard it reads as a broken
+   definition of the statutory class. */
+const DEFINES = /(?<!non-)\b(statutory deductions? (is|are)|statutory deductions?\b[^.]{0,80}\brequire)|deduction is statutory/i;
+const NAMES_TAX = /\btax\b|\bPAYE\b|\bHMRC\b/i;
+const NAMES_PENSIONS = /\bpension/i;
+
+let definitionsChecked = 0;
+PROSE_FILES.forEach(file => {
+  const full = path.join(ROOT, file);
+  if (!fs.existsSync(full)) return;
+  fs.readFileSync(full, 'utf8').split('\n').forEach((line, i) => {
+    /* Only the material's own voice: an explanation, or a line of lesson prose.
+       A `q:` stem or a `text:` statement is the question talking, not the rule. */
+    /* The exclusions are the meaningful half: a `q:` stem asks the reader to
+       classify and a `text:` statement is often deliberately false, so neither
+       is the material stating a rule. Everything else is in scope — including
+       the glossary's `{ t: ..., d: ... }` line, which an earlier positive
+       prefix filter silently skipped. */
+    if (/^\s*(q|text|label|title):/.test(line)) return;
+    line.split(/(?<=[.!?])\s+/).map(demark).forEach(sentence => {
+      if (!DEFINES.test(sentence)) return;
+      if (/\bagreed to in writing\b|\bthe employee has agreed\b/i.test(sentence)) return; /* a stated falsehood */
+      definitionsChecked++;
+      /* Test the RULE, not the examples after it. "Statutory deductions are the
+         ones HMRC requires: PAYE, NI, student loan and auto-enrolment pension"
+         states a rule that excludes pension and then lists pension, and reading
+         the whole sentence lets the correct list hide the wrong rule — both
+         survivors when this was first written. So the clause is cut at whatever
+         introduces the examples. */
+      /* Everything up to the LAST `: '` is object plumbing — `exp: '`, or the
+         glossary's `{ t: 'Statutory deduction', d: '`. Past it, the first
+         em-dash, colon or semicolon introduces the examples. */
+      const lastKey = sentence.lastIndexOf(": '") >= 0 ? sentence.lastIndexOf(": '") + 3
+        : sentence.lastIndexOf(': "') >= 0 ? sentence.lastIndexOf(': "') + 3 : 0;
+      const rule = sentence.slice(lastKey).split(/[—:;]/)[0];
+      const tax = NAMES_TAX.test(rule), pen = NAMES_PENSIONS.test(rule);
+      if (tax && pen) { ok(); return; }
+      fail(`§4 ${file}:${i + 1} defines a statutory deduction by a rule that misclassifies — it names ${tax ? 'the tax side but not pensions (which makes auto-enrolment pension non-statutory)' : pen ? 'pensions but not tax' : 'neither tax nor pensions, so it reads as "anything the law requires" — which makes a court order statutory'}:\n     ${rule.trim().slice(0, 200)}`);
+    });
+  });
+});
+
 /* ── report ──────────────────────────────────────────────────────────────── */
 console.log(`${DIM}  §1 the table is stated in ${STATED.length} places`);
 console.log(`  §2 ${sentencesScanned.toLocaleString('en-GB')} sentences scanned across ${PROSE_FILES.length} files, ${CLEARED.length} cleared by hand`);
-console.log(`  §3 ${rowsChecked} graded rows classified against the table${RESET}\n`);
+console.log(`  §3 ${rowsChecked} graded rows classified against the table`);
+console.log(`  §4 ${definitionsChecked} sentences defining the statutory class${RESET}\n`);
 
 if (errors.length) {
   errors.forEach(e => console.log(`${RED}  ✗ ${e}${RESET}`));
