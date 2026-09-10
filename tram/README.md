@@ -63,9 +63,12 @@ track; the page strips it, because the sign on the street does not have it.
   vehicle-position endpoint. The app has live buses, so the data exists — it is
   just not exposed.
 - **transitous.org** carries no GTFS-Realtime for any Turkish feed.
-- **acikveri.antalya.bel.tr** (the city's open data portal) and
-  **antray.antalyaulasim.com.tr** both resolve in DNS but refuse connections
-  from outside Turkey. Either could hold something; check them from a Turkish
-  connection before assuming this list is closed.
+- **antray.antalyaulasim.com.tr** refuses connections from outside Turkey, so
+  it had to be checked from a Turkish one: it is a journey-time lookup — line,
+  boarding stop, alighting stop, day — over the same scheduled data, with no
+  vehicle positions anywhere on it.
+- **acikveri.antalya.bel.tr** (the city's open data portal) resolves in DNS and
+  serves nothing. It hangs on load from a Turkish connection too, so it is down
+  rather than merely blocked.
 - **Moovit** shows Antalya trams and advertises live arrivals, but has no
   public API.
