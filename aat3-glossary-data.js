@@ -128,7 +128,7 @@
     { t: 'National Insurance', d: 'Contributions paid by both employee and employer on earnings above set thresholds. The employer’s share is a cost of employment, not a deduction from pay.', lo: 4 },
     { t: 'Employer’s National Insurance', d: 'The employer’s own contribution. It never appears as a deduction on the payslip, because the employee does not pay it.', lo: 4 },
     { t: 'Statutory deduction', d: 'A deduction the law requires — income tax, National Insurance, student loan repayments, and pension under auto-enrolment.', lo: 4 },
-    { t: 'Voluntary deduction', d: 'A deduction the employee has agreed to — a charity donation, union subscription, or additional pension.', lo: 4 },
+    { t: 'Voluntary deduction', d: 'A deduction the employee has agreed to — a charity donation, union subscription, or pension contributions ABOVE the auto-enrolment minimum. The auto-enrolment contribution itself is statutory.', lo: 4 },
     { t: 'Real Time Information (RTI)', d: 'The requirement to report pay and deductions to HMRC on or before each payday, rather than at the end of the year.', lo: 4 },
     { t: 'Full Payment Submission (FPS)', d: 'The RTI report of what was paid and deducted, sent on or before payday.', lo: 4 },
     { t: 'Auto-enrolment', d: 'The duty to enrol eligible workers into a pension scheme and contribute to it. The employee may opt out; the employer may not fail to enrol.', lo: 4 },

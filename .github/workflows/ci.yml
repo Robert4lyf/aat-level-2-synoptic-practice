@@ -65,6 +65,8 @@ jobs:
         run: npm run check:answerable
       - name: Check teaching prose is plain English on all three levels
         run: npm run check:plain-english
+      - name: Check every level classifies payroll deductions the same way
+        run: npm run check:payroll
       - name: Check the accuracy-over-time history is recorded, kept and merged
         run: npm run check:aat3-trend
       - name: Check AAT Level 3 practice summary (totals, most-mistakes ranking)
