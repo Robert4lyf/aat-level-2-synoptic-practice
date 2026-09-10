@@ -138,6 +138,43 @@ Cel.clear();
 global.matchMedia = () => ({ matches: false });
 delete document.body.classList;
 
+/* ── 1b. The chicken ────────────────────────────────────────────────────────
+   Fifty in a row gets a chicken doing a happy dance. It is a joke, and a joke
+   that has quietly stopped rendering is worse than no joke — nobody reports a
+   missing chicken as a bug, they just stop seeing it. So: it is there at fifty,
+   it is NOT there at a hundred, and it is still a chicken rather than a blank
+   box where one used to be. */
+Cel.clear();
+const withChick = Cel.fire('a3', 50, '50 in a row');
+const chick = withChick.children.find(c => c.className === 'aat-cel-chicken');
+ok(!!chick, 'fifty in a row draws a chicken');
+ok(Cel.CHICKEN_AT === 50, `the chicken is keyed to a milestone (CHICKEN_AT ${Cel.CHICKEN_AT})`);
+ok(Cel.AT.indexOf(Cel.CHICKEN_AT) !== -1,
+  'and to one the run actually celebrates, so it cannot be stranded on a number nothing fires at');
+ok(chick && chick.attrs['aria-hidden'] === 'true',
+  'the chicken is hidden from screen readers — the banner already says what was reached');
+/* THE PARTS, NAMED. "An element with the right class" would pass against an
+   empty <span>. These five are what make it read as a hen rather than a chick
+   or a blob, and the comb is in the list because it was drawn INSIDE the skull
+   the first time and the head painted straight over it. */
+['aat-cel-chk-comb', 'aat-cel-chk-wattle', 'aat-cel-chk-beak', 'aat-cel-chk-eye',
+ 'aat-cel-chk-leg'].forEach(part => {
+  ok(chick && String(chick.innerHTML).indexOf(part) !== -1, `the chicken has its ${part.replace('aat-cel-chk-', '')}`);
+});
+
+const noChick = Cel.fire('a3', 100, '100 in a row');
+ok(!noChick.children.some(c => c.className === 'aat-cel-chicken'),
+  'a hundred does not draw one — it has the bigger event already, and a reader who gets there should meet something new');
+
+/* Motion removed, chicken removed. A bird frozen mid-hop is a worse joke than
+   no bird, and the banner is what carries the meaning. */
+global.matchMedia = () => ({ matches: true });
+const quietChick = Cel.fire('a3', 50, '50 in a row');
+ok(!quietChick.children.some(c => c.className === 'aat-cel-chicken'),
+  'and none at all under prefers-reduced-motion');
+Cel.clear();
+global.matchMedia = () => ({ matches: false });
+
 /* ── 2. Each level's celebration is its own ───────────────────────────────── */
 console.log(`${DIM}three looks, not one${RESET}`);
 
@@ -523,12 +560,84 @@ function finish() {
             h: r ? Math.round(r.height) : 0,
             bannerBg: bs ? bs.backgroundColor : null,
             pieces: wrap.querySelectorAll('.aat-cel-p').length,
+            /* The chicken, if this is the milestone that gets one. Read here
+               rather than in its own pass so it is measured through the same
+               real fire() on the same real stylesheet as everything else. */
+            chick: (() => {
+              const c = wrap.querySelector('.aat-cel-chicken');
+              if (!c) return null;
+              const part = sel => {
+                const e = wrap.querySelector(sel);
+                if (!e) return null;
+                const s2 = getComputedStyle(e);
+                return { anim: s2.animationName, dur: s2.animationDuration,
+                         box: s2.transformBox, delay: s2.animationDelay };
+              };
+              /* LAYOUT size, for the reason spelled out above the piece
+                 measurement: the chicken enters at scale(.35) and grows, so a
+                 bounding rect read on the first frame is legitimately small.
+                 It reported 88px against a computed 208px and failed a bird
+                 that works. offsetWidth ignores the transform. */
+              return {
+                w: c.offsetWidth, h: c.offsetHeight,
+                svg: !!c.querySelector('svg'),
+                bird: part('.aat-cel-chk'), body: part('.aat-cel-chk-body'),
+                wing: part('.aat-cel-chk-wing'), head: part('.aat-cel-chk-head'),
+                legA: part('.aat-cel-chk-leg-a'), legB: part('.aat-cel-chk-leg-b'),
+                combFill: (() => {
+                  const e = wrap.querySelector('.aat-cel-chk-comb');
+                  return e ? getComputedStyle(e).fill : null;
+                })(),
+              };
+            })(),
           };
           window.AATCelebrate.clear();
           return out;
         }, [theme, m, SUBJECT[theme], SHEET[theme] || null]);
         const key = `${theme}-${m}`;
         seen[key] = got;
+
+        /* ── THE CHICKEN, DANCING ──────────────────────────────────────────
+           A picture being wobbled and a dance are the same markup with
+           different CSS, so what is asserted is that the parts move against
+           EACH OTHER: the wing at twice the body's beat, the two legs half a
+           cycle apart. Give them all one duration and the bird moves as a
+           rigid lump — which is what "add an animated chicken" most easily
+           degrades into. */
+        if (m === 50) {
+          const ch = got.chick;
+          ok(!!ch, `${key}: fifty draws a chicken`);
+          if (ch) {
+            ok(ch.svg, `${key}: and the chicken is drawn, not an empty box`);
+            ok(ch.w > 100 && ch.h > 100, `${key}: at a size worth looking at (${ch.w}x${ch.h})`);
+            ['bird', 'body', 'wing', 'head', 'legA', 'legB'].forEach(part => {
+              ok(ch[part] && ch[part].anim && ch[part].anim !== 'none',
+                `${key}: the chicken's ${part} is animated (got ${ch[part] && ch[part].anim})`);
+              /* An SVG child's transform-origin resolves against the nearest
+                 VIEWPORT unless this is set, so `50% 100%` on the wing rotated
+                 it about a point off the bird entirely. */
+              ok(ch[part] && ch[part].box === 'fill-box',
+                `${key}: and turns about its own box, not the SVG viewport (${part} transform-box ${ch[part] && ch[part].box})`);
+            });
+            const secs = v => parseFloat(String(v)) * (/ms$/.test(String(v)) ? 0.001 : 1);
+            const beat = ch.body && secs(ch.body.dur);
+            const flap = ch.wing && secs(ch.wing.dur);
+            ok(beat > 0 && flap > 0 && Math.abs(flap * 2 - beat) < 0.02,
+              `${key}: the wings flap at twice the body's beat (${flap}s against ${beat}s)`);
+            ok(ch.legA && ch.legB && secs(ch.legA.delay) !== secs(ch.legB.delay),
+              `${key}: the legs step out of phase, so the bird is always on one foot ` +
+              `(${ch.legA && ch.legA.delay} / ${ch.legB && ch.legB.delay})`);
+            /* THE COMB HAS TO BE VISIBLE, and it was not: drawn inside the
+               skull circle, the head painted over it and the bird came out
+               combless — which reads as a chick rather than a hen. A fill of
+               "none" or the body's cream would be the same defect by a
+               different route. */
+            ok(ch.combFill && ch.combFill !== 'none' && !/255, *25[0-9]/.test(ch.combFill),
+              `${key}: the comb is painted its own colour (got ${ch.combFill})`);
+          }
+        } else {
+          ok(!got.chick, `${key}: a hundred draws no chicken — it has its own, bigger event`);
+        }
         ok(got.pieces > 0, `${key}: draws pieces`);
         ok(got.anim && got.anim !== 'none', `${key}: its pieces are actually animated (got ${got.anim})`);
         ok(got.w > 0 && got.h > 0, `${key}: and the pieces have a size (${got.w}x${got.h})`);

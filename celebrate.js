@@ -49,6 +49,52 @@
      the pieces. The pieces are the confetti; the rings are the bang. */
   var WAVES = { 50: 3, 100: 5 };
 
+  /* ── THE CHICKEN ────────────────────────────────────────────────────────────
+     Fifty in a row gets a chicken doing a happy dance. It is drawn rather than
+     dropped in as an emoji because a happy dance needs parts that move
+     independently — the wings flap at twice the rate of the hop, the legs
+     alternate, the head bobs against the body's squash — and an emoji is one
+     glyph that can only be scaled and spun.
+
+     THE MARKUP IS HERE AND THE DANCE IS NOT, which is the same split every
+     other layer keeps: this file owns what exists, the stylesheet owns what it
+     looks like and how it moves. Every part carries a class so the dance can
+     reach it.
+
+     FIFTY ONLY. A hundred has the bigger event already and a chicken at both
+     would make them the same celebration twice; it is also the reason a reader
+     who reaches a hundred sees something they have not seen before. */
+  var CHICKEN_AT = 50;
+  var CHICKEN_SVG =
+    '<svg viewBox="0 0 120 120" width="100%" height="100%" aria-hidden="true" focusable="false">' +
+      '<g class="aat-cel-chk">' +
+        '<g class="aat-cel-chk-legs">' +
+          '<path class="aat-cel-chk-leg aat-cel-chk-leg-a" d="M50 92 v13 M43 107 h13"/>' +
+          '<path class="aat-cel-chk-leg aat-cel-chk-leg-b" d="M69 92 v13 M62 107 h13"/>' +
+        '</g>' +
+        '<g class="aat-cel-chk-body">' +
+          /* THREE SWEPT FEATHERS, not the jagged wedge this started as. */
+          '<path class="aat-cel-chk-tail" d="M33 60 C15 57 5 44 2 28 C13 37 23 43 31 47 ' +
+            'C24 34 23 23 27 13 C33 28 37 41 39 52 Z"/>' +
+          '<ellipse class="aat-cel-chk-belly" cx="58" cy="70" rx="31" ry="26"/>' +
+          '<g class="aat-cel-chk-wing"><ellipse cx="55" cy="68" rx="17" ry="12"/></g>' +
+          '<g class="aat-cel-chk-head">' +
+            /* ABOVE THE SKULL, WHICH IT WAS NOT. The first version sat between
+               y=27 and y=33 while the skull's top edge is y=27, so the head
+               drew straight over it and the bird came out combless — which
+               reads as a chick rather than a hen. It is still drawn BEFORE the
+               skull, so the base is hidden and the lobes sit on top. */
+            '<path class="aat-cel-chk-comb" d="M72 32 C73 17 82 13 83 27 ' +
+              'C85 14 93 12 94 26 C97 18 102 21 100 31 Z"/>' +
+            '<circle class="aat-cel-chk-skull" cx="84" cy="43" r="16"/>' +
+            '<path class="aat-cel-chk-beak" d="M99 41 l16 6 l-16 6 z"/>' +
+            '<path class="aat-cel-chk-wattle" d="M96 54 a6 7 0 1 1 -9 5 z"/>' +
+            '<circle class="aat-cel-chk-eye" cx="88" cy="39" r="2.8"/>' +
+          '</g>' +
+        '</g>' +
+      '</g>' +
+    '</svg>';
+
   /* THE SCREEN ITSELF MOVES AT A HUNDRED. The class goes on <body> rather than
      on the overlay, because the overlay is what the reader is looking THROUGH:
      shaking it moves nothing they can see. It is taken off again by clear(),
@@ -127,6 +173,18 @@
         p.style.setProperty('--s', String(Math.round(Math.random() * 100)));
         frag.appendChild(p);
       }
+      /* AFTER THE PIECES, so the bird dances in front of the confetti rather
+         than behind it. `aria-hidden` on the <svg> itself: the banner already
+         announces the milestone, and "chicken" is not information a reader
+         using a screen reader needs read out over it. */
+      if (milestone === CHICKEN_AT) {
+        var chick = document.createElement('span');
+        chick.className = 'aat-cel-chicken';
+        chick.setAttribute('aria-hidden', 'true');
+        chick.innerHTML = CHICKEN_SVG;
+        frag.appendChild(chick);
+      }
+
       wrap.appendChild(frag);
     }
 
@@ -150,6 +208,7 @@
     LIFE: LIFE,
     PIECES: PIECES,
     WAVES: WAVES,
+    CHICKEN_AT: CHICKEN_AT,
     QUAKE: QUAKE,
     /* The milestones themselves, so the three levels cannot disagree about
        which streaks are worth marking. */
