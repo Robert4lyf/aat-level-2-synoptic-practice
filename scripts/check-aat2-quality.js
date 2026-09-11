@@ -569,17 +569,22 @@ const QUESTION_FLOORS = {
      tagged where it genuinely tests that criterion. Coverage went from 4 of 16
      criteria to 16 of 16, and these floors are set at what each now holds.
 
-     Thirty of the unit's questions are deliberately still untagged. They are in
-     the ITBK bank but outside ITBK's scope — bad debts, control account
-     reconciliation, the VAT control account, the journal, bank reconciliation,
-     inventory valuation, depreciation, prepayments and payroll all belong to
-     Principles of Bookkeeping Controls or to Level 3. Tagging them to an ITBK
-     criterion to make the numbers look better is exactly the wrong tag this
-     file warns about below. */
-  'ITBK-1.1': 6, 'ITBK-1.2': 13, 'ITBK-1.3': 6, 'ITBK-1.4': 16,
-  'ITBK-2.1': 13, 'ITBK-2.2': 2, 'ITBK-2.3': 4,
-  'ITBK-3.1': 11, 'ITBK-3.2': 9, 'ITBK-3.3': 3,
-  'ITBK-4.1': 13, 'ITBK-4.2': 3, 'ITBK-4.3': 5, 'ITBK-4.4': 4,
+     A `criteria` tag names a CRITERION, not a bank. Thirty ITBK questions were
+     first left untagged because they sit in the ITBK bank and outside ITBK's
+     scope; twenty-seven of them have since been tagged to the criterion they
+     really test, which is usually in another unit — irrecoverable debts and
+     the journal to POBC-3.1, the control accounts and the VAT control account
+     to POBC-1.1 and 1.2, inventory and cost of goods sold to POC-2.1 and 2.5,
+     net pay to POC-2.2. What stays untagged is the material that is in no
+     Level 2 criterion at all: reducing-balance depreciation, straight-line
+     depreciation and prepayments, all of which are Level 3. Tagging a question
+     to the nearest criterion in ITS OWN bank, to make the numbers look better,
+     is exactly the wrong tag this file warns about below; tagging it to the
+     criterion it genuinely tests is the right one. */
+  'ITBK-1.1': 7, 'ITBK-1.2': 13, 'ITBK-1.3': 6, 'ITBK-1.4': 16,
+  'ITBK-2.1': 15, 'ITBK-2.2': 3, 'ITBK-2.3': 4,
+  'ITBK-3.1': 12, 'ITBK-3.2': 9, 'ITBK-3.3': 3,
+  'ITBK-4.1': 14, 'ITBK-4.2': 3, 'ITBK-4.3': 5, 'ITBK-4.4': 4,
   'ITBK-5.1': 10, 'ITBK-5.2': 6,
   /* POBC audited the same way. 2 of 10 criteria carried a tag, now 10 of 10.
      The audit's own finding was POBC-2.1: payment methods is taught in full by
@@ -589,12 +594,17 @@ const QUESTION_FLOORS = {
      because classifying the effect on the bank balance is what the assessment
      asks for.
 
-     Nineteen POBC questions stay untagged, and for the same reason ITBK's do:
-     internal controls, segregation of duties, audit trails, inventory controls
-     and labour turnover are in this bank and outside this unit's scope. */
-  'POBC-1.1': 26, 'POBC-1.2': 7,
-  'POBC-2.1': 6, 'POBC-2.2': 7, 'POBC-2.3': 21,
-  'POBC-3.1': 17, 'POBC-3.2': 31, 'POBC-3.3': 14,
+     Fifteen POBC questions stay untagged, and unlike ITBK's they could not be
+     rehoused: internal controls, segregation of duties, audit trails,
+     inventory controls, internal audit and labour turnover appear nowhere in
+     the Level 2 scope of content — not in this unit, and not in the other
+     three. They were checked term by term against the extracted spec rather
+     than assumed. Two that DO appear were moved: a source document to
+     ITBK-1.1, the cash book to ITBK-4.1, and restricting access to a system
+     to BESY-7.2. */
+  'POBC-1.1': 36, 'POBC-1.2': 12,
+  'POBC-2.1': 6, 'POBC-2.2': 9, 'POBC-2.3': 22,
+  'POBC-3.1': 24, 'POBC-3.2': 33, 'POBC-3.3': 15,
   'POBC-4.1': 8, 'POBC-4.2': 7,
   /* POC audited the same way: 5 of 15 criteria carried a tag, now 15 of 15.
      Two were taught and tested by nothing. 1.6 is carried by L-poc-1 and
@@ -604,7 +614,7 @@ const QUESTION_FLOORS = {
      place, had none, so a reader could be asked to judge a number they had
      never been asked to work out. Five questions each now cover them. */
   'POC-1.1': 36, 'POC-1.2': 20, 'POC-1.3': 5, 'POC-1.4': 6, 'POC-1.5': 4, 'POC-1.6': 5,
-  'POC-2.1': 6, 'POC-2.2': 11, 'POC-2.3': 18, 'POC-2.4': 8, 'POC-2.5': 9,
+  'POC-2.1': 7, 'POC-2.2': 12, 'POC-2.3': 18, 'POC-2.4': 8, 'POC-2.5': 11,
   'POC-3.1': 5, 'POC-3.2': 7, 'POC-4.1': 8, 'POC-4.2': 7,
   /* BESY audited the same way, and it was the largest job: 6 of 22 criteria
      carried a tag, now 22 of 22, with 111 of the bank's questions read against

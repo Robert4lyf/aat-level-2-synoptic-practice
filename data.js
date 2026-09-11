@@ -235,13 +235,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The trial balance is an arithmetic check. If debits equal credits the ledger is likely correct, although certain errors (e.g. omission, principle) will not be detected.' },
 
-  { id: 'itbk-022', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-022', topic: 'itbk', difficulty: 'easy', criteria: ['POBC-1.1'],
     q: 'VAT input tax exceeds output tax. What is the outcome?',
     opts: ['VAT payable over to HMRC in full', 'VAT receivable from HMRC', 'No VAT adjustment', 'Increase in sales'],
     ans: 1,
     exp: 'Where input tax exceeds output tax, the business has reclaimable VAT — HMRC owes a refund to the business.' },
 
-  { id: 'itbk-023', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-023', topic: 'itbk', difficulty: 'easy', criteria: ['POBC-1.1'],
     q: 'VAT output tax exceeds input tax. The business will:',
     opts: ['Receive refund from HMRC', 'Owe HMRC VAT', 'Pay no VAT', 'Increase assets'],
     ans: 1,
@@ -258,7 +258,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Bank is an asset, and assets increase on the debit side, so a debit balance means money is held. An overdraft is the opposite: a credit balance on the bank account, representing a liability owed to the bank.' },
 
-  { id: 'itbk-025', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-025', topic: 'itbk', difficulty: 'easy', criteria: ['POBC-3.1'],
     q: 'What is a bad debt?',
     opts: [
       'A receivable that is considered irrecoverable and written off',
@@ -330,7 +330,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A purchases return is when the business returns previously purchased goods to a supplier. The supplier issues a credit note.' },
 
-  { id: 'itbk-032', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-032', topic: 'itbk', difficulty: 'easy', criteria: ['POBC-3.1'],
     q: 'What is recorded in the journal?',
     opts: [
       'Non-routine adjustments not covered by other books of prime entry',
@@ -369,7 +369,7 @@ window.ALL_QUESTIONS = [
     ans: 1,
     exp: 'Capital is what the business owes its owner, so it behaves like a liability and increases on the credit side. A debit therefore reduces it. The two common causes are drawings taken by the owner and a loss for the period.' },
 
-  { id: 'itbk-036', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-036', topic: 'itbk', difficulty: 'easy', criteria: ['POBC-3.1'],
     q: 'What is the effect of writing off a bad debt?',
     opts: [
       'Trade receivables and reported profit both decrease',
@@ -397,7 +397,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The remittance advice travels from buyer to supplier and says which invoices a payment covers. Without it, a supplier receiving a single lump sum cannot allocate it and may chase invoices that have in fact been paid. The invoice, by contrast, travels the other way and requests payment.' },
 
-  { id: 'itbk-039', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-039', topic: 'itbk', difficulty: 'easy', criteria: ['POBC-1.1'],
     q: 'What is the purpose of control accounts?',
     opts: [
       'To provide a summary check on the subsidiary ledgers',
@@ -464,7 +464,7 @@ window.ALL_QUESTIONS = [
     ans: 1,
     exp: 'A credit sale recognises revenue when the goods are supplied, not when the money arrives, so Sales is credited and Trade receivables debited. When the customer later pays, the entry moves value between two assets — Dr Bank, Cr Trade receivables — and Sales is not touched again.' },
 
-  { id: 'itbk-046', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-046', topic: 'itbk', difficulty: 'easy', criteria: ['POBC-3.1'],
     q: 'Which accounting treatment is required for irrecoverable debts recovered after being written off?',
     opts: [
       'Credit the irrecoverable debts expense account',
@@ -514,7 +514,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A sales invoice requests payment from the buyer, showing the amount owed, the payment terms and the due date. A remittance advice travels the other way, with the payment; a credit note reduces what is owed; a delivery note accompanies the goods and asks for nothing.' },
 
-  { id: 'itbk-051', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-051', topic: 'itbk', difficulty: 'easy', criteria: ['POBC-3.2'],
     q: 'Which document is used internally to correct errors in the ledger?',
     opts: ['Invoice', 'Credit note', 'Journal', 'Remittance advice'],
     ans: 2,
@@ -572,7 +572,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The sales ledger is the memorandum record of individual customer accounts. The general ledger holds only the single sales ledger control account that summarises them, which is what appears in the trial balance.' },
 
-  { id: 'itbk-059', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-059', topic: 'itbk', difficulty: 'easy', criteria: ['POBC-1.1'],
     q: 'Which of the following appears on the credit side of the VAT control account?',
     opts: ['VAT on purchases (input tax)', 'VAT on sales (output tax)', 'VAT refund received from HMRC', 'VAT paid to HMRC'],
     ans: 1,
@@ -607,13 +607,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The dual effect (duality) concept states that every transaction has at least two effects — equal debits and credits — and forms the foundation of double-entry bookkeeping.' },
 
-  { id: 'itbk-064', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-064', topic: 'itbk', difficulty: 'easy', criteria: ['POBC-1.1'],
     q: 'Which statement is correct about VAT input tax?',
     opts: ['Charged on sales', 'Charged on purchases', 'Paid to employees', 'Recorded as revenue'],
     ans: 1,
     exp: 'Input tax is VAT the business is charged on what it buys, and a VAT-registered business can generally reclaim it from HMRC. Output tax is what it charges on sales. An unregistered business cannot reclaim input tax, so for it the VAT is simply part of the cost.' },
 
-  { id: 'itbk-065', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-065', topic: 'itbk', difficulty: 'easy', criteria: ['BESY-2.2'],
     q: 'Which statement is correct about VAT registered businesses?',
     opts: [
       'They collect VAT on behalf of HMRC and pay it over',
@@ -630,7 +630,7 @@ window.ALL_QUESTIONS = [
     ans: 1,
     exp: 'Receipts represent money coming in. A customer paying by BACS increases the bank balance and is recorded on the receipts (debit) side of the cash book.' },
 
-  { id: 'itbk-067', topic: 'itbk', difficulty: 'medium',
+  { id: 'itbk-067', topic: 'itbk', difficulty: 'medium', criteria: ['POC-2.1'],
     q: 'A business maintains inventory records using FIFO. Closing inventory contains the most recent purchases because:',
     opts: [
       'The newest purchases are assumed to remain unsold at the year end',
@@ -661,7 +661,7 @@ window.ALL_QUESTIONS = [
 
 
 
-  { id: 'itbk-073', topic: 'itbk', difficulty: 'medium',
+  { id: 'itbk-073', topic: 'itbk', difficulty: 'medium', criteria: ['POBC-1.2'],
     q: 'A sales ledger control account and sales ledger differ due to:',
     opts: [
       'Timing differences and errors made when posting entries',
@@ -707,7 +707,7 @@ window.ALL_QUESTIONS = [
 
 
 
-  { id: 'itbk-084', topic: 'itbk', difficulty: 'medium',
+  { id: 'itbk-084', topic: 'itbk', difficulty: 'medium', criteria: ['POBC-1.1'],
     q: 'What is the effect of a contra entry between SLCA and PLCA?',
     opts: [
       'It reduces both trade receivables and trade payables',
@@ -738,13 +738,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A cash book contra arises when cash moves between the bank and cash columns — e.g. withdrawing cash from the bank: Cr Bank column, Dr Cash column.' },
 
-  { id: 'itbk-095', topic: 'itbk', difficulty: 'medium',
+  { id: 'itbk-095', topic: 'itbk', difficulty: 'medium', criteria: ['POBC-1.2'],
     q: 'Which of the following is NOT a valid reason for a difference between the sales ledger control account and the list of sales ledger balances?',
     opts: ['A contra entry that was posted to the control account but not to the individual customer account', 'A cash receipt that was entered in the cash book but never posted to the individual customer account', 'An error in the bank reconciliation, which affects neither the control account nor the customer accounts', 'A sales invoice entered in the day book but not posted to the individual customer account'],
     ans: 2,
     exp: 'A bank reconciliation reconciles the cash book to the bank statement — it has no impact on the sales ledger or its control account.' },
 
-  { id: 'itbk-096', topic: 'itbk', difficulty: 'medium',
+  { id: 'itbk-096', topic: 'itbk', difficulty: 'medium', criteria: ['POBC-1.2'],
     q: 'Which statement best describes a control account reconciliation?',
     opts: [
       'Matching the control account total with the individual ledger balances',
@@ -757,7 +757,7 @@ window.ALL_QUESTIONS = [
 
 
 
-  { id: 'itbk-099', calc: true, topic: 'itbk', difficulty: 'hard',
+  { id: 'itbk-099', calc: true, topic: 'itbk', difficulty: 'hard', criteria: ['POC-2.5'],
     q: 'A business has opening inventory of £8,000, purchases of £42,000 and closing inventory of £6,000. Cost of goods sold is:',
     opts: ['£44,000', '£56,000', '£36,000', '£50,000'],
     ans: 0,
@@ -787,7 +787,7 @@ window.ALL_QUESTIONS = [
     ans: 1,
     exp: 'The sales day book records the gross (VAT-inclusive) invoice amount: £600 + £120 VAT = £720. The net and VAT elements are then analysed within the day book.' },
 
-  { id: 'itbk-104', topic: 'itbk', difficulty: 'hard',
+  { id: 'itbk-104', topic: 'itbk', difficulty: 'hard', criteria: ['POBC-3.1'],
     q: 'A business writes off £300 bad debt previously recorded. Which entry is correct?',
     opts: [
       'Dr Irrecoverable debts, Cr Trade receivables',
@@ -798,7 +798,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Writing off a bad debt reduces trade receivables and recognises a bad-debts expense: Dr Bad Debts, Cr Trade Receivables.' },
 
-  { id: 'itbk-105', topic: 'itbk', difficulty: 'hard',
+  { id: 'itbk-105', topic: 'itbk', difficulty: 'hard', criteria: ['POBC-3.1'],
     q: 'A business writes off a bad debt of £240 (including VAT of £40). Which entry is correct?',
     opts: [
       'Dr Irrecoverable debts £200, Dr VAT £40, Cr Trade receivables £240',
@@ -1128,7 +1128,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A suspense account holds the difference temporarily when the trial balance does not balance, pending investigation.' },
 
-  { id: 'pobc-027', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-027', topic: 'pobc', difficulty: 'easy', criteria: ['ITBK-4.1'],
     q: 'What is a cash book?',
     opts: [
       'A record of the money received into and paid out of bank and cash',
@@ -1316,7 +1316,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'An omission leaves both debits and credits reduced by the same amount, so the columns still agree. The other three all leave the two sides unequal and will show up as a difference on the trial balance.' },
 
-  { id: 'pobc-045', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-045', topic: 'pobc', difficulty: 'easy', criteria: ['ITBK-1.1'],
     q: 'Which is a source document?',
     opts: ['Ledger', 'Invoice', 'Trial balance', 'Profit statement'],
     ans: 1,
@@ -1687,7 +1687,7 @@ window.ALL_QUESTIONS = [
     ans: 1,
     exp: 'An error of principle (posting to the wrong type of account) cannot be fixed by a simple reposting on the same side; it must be reclassified by journal.' },
 
-  { id: 'pobc-086', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-086', topic: 'pobc', difficulty: 'medium', criteria: ['BESY-7.2'],
     q: 'Which internal control prevents unauthorised access to accounting systems?',
     opts: ['Password controls', 'Depreciation policy', 'Cost centres', 'Bank reconciliation'],
     ans: 0,
@@ -3404,7 +3404,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'itbk-num-003', topic: 'itbk', difficulty: 'medium', type: 'numeric', unit: '£',
+  { id: 'itbk-num-003', topic: 'itbk', difficulty: 'medium', type: 'numeric', unit: '£', criteria: ['POC-2.5'],
     generate: function () {
       const opening = window._QH.rs(3000, 12000, 500);
       const purchases = window._QH.rs(25000, 80000, 1000);
@@ -3422,7 +3422,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'itbk-num-004', topic: 'itbk', difficulty: 'medium', type: 'numeric', unit: '£',
+  { id: 'itbk-num-004', topic: 'itbk', difficulty: 'medium', type: 'numeric', unit: '£', criteria: ['POC-2.2'],
     generate: function () {
       const gross = window._QH.rs(1800, 4500, 100);
       const paye = Math.round(gross * window._QH.pick([0.15, 0.17, 0.18, 0.20, 0.22]) / 10) * 10;
@@ -4373,7 +4373,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Analysis columns split an amount rather than adding to it, so each row must add across to the figure in its cash or bank column. VAT is analysed on a cash sale, because the sale was never invoiced; a receipt settling an invoice carries no VAT here, because the output tax went into the sales day book when the invoice was raised.' },
 
-  { id: 'gf-005', topic: 'pobc', difficulty: 'medium', type: 'gapfill',
+  { id: 'gf-005', topic: 'pobc', difficulty: 'medium', type: 'gapfill', criteria: ['POBC-1.1'],
     q: 'Complete the statement about the VAT control account.',
     template: 'A credit balance on the VAT control account means {0} tax exceeds {1} tax, so the business owes HMRC.',
     gaps: [
@@ -4582,7 +4582,7 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'Total debits = 14,000 + 9,000 = 23,000. Total credits = 7,500 + 15,500 = 23,000. A trial balance must balance.' },
 
-  { id: 'tf-008', topic: 'itbk', difficulty: 'medium', type: 'tablefill',
+  { id: 'tf-008', topic: 'itbk', difficulty: 'medium', type: 'tablefill', criteria: ['ITBK-3.1'],
     q: 'Complete the calculation of the amount owed on a credit purchase.',
     table: {
       title: 'Supplier invoice',
@@ -4973,7 +4973,7 @@ window.ALL_QUESTIONS.push(
     exp: 'PED (own-price elasticity), revenue implications, and cross-price elasticity (XED) between substitute goods.' }
 ,
 
-{ id: 'sc-025', topic: 'synoptic', difficulty: 'medium', type: 'scenario',
+{ id: 'sc-025', topic: 'synoptic', difficulty: 'medium', type: 'scenario', criteria: ['POBC-1.1', 'BESY-4.1'],
   setup: 'Hartley & Co is a sole trader selling office supplies. In March: credit sales £5,000 net (20% VAT standard-rated); credit purchases £3,000 net (20% VAT); fixed costs £800 paid cash; no payments received or made to suppliers/customers yet.',
   parts: [
     { type: 'mcq', q: 'VAT payable to HMRC for March?',
@@ -5005,7 +5005,7 @@ window.ALL_QUESTIONS.push(
   ],
   exp: 'Cross-unit scenario covering AVCO inventory valuation and the cost of an issue (poc), with the payables ledger control account entry for the same purchase (pobc).' },
 
-{ id: 'sc-029', topic: 'poc', difficulty: 'medium', type: 'scenario',
+{ id: 'sc-029', topic: 'poc', difficulty: 'medium', type: 'scenario', criteria: ['BESY-4.1'],
   setup: 'Meadow Bakery is a sole trader run by Sarah. She is considering a £15,000 bank loan at 8% annual interest to buy equipment that would reduce her cost per unit. She has ruled out taking on a business partner.',
   parts: [
     { type: 'mcq', q: 'The bank loan is an example of:',
@@ -5017,7 +5017,7 @@ window.ALL_QUESTIONS.push(
   ],
   exp: 'Sources of business finance and the unlimited liability of a sole trader (besy), assessed through a financing decision the owner actually has to make.' },
 
-{ id: 'sc-030', topic: 'synoptic', difficulty: 'hard', type: 'scenario',
+{ id: 'sc-030', topic: 'synoptic', difficulty: 'hard', type: 'scenario', criteria: ['POBC-3.2', 'POBC-3.3', 'POBC-2.2'],
   setup: 'Whitmore Ltd\'s bookkeeper finds three errors after the trial balance: (1) Office equipment £2,500 posted as Dr Office expenses / Cr Bank — should be Dr Equipment / Cr Bank. (2) A credit sale of £800 entered in the sales day book as £80. (3) Bank charges £120 on the bank statement not in the cashbook.',
   parts: [
     { type: 'mcq', q: 'Error 1 (equipment posted to office expenses) is:',
@@ -5058,7 +5058,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'A credit note from a supplier reduces what is owed: Dr PLCA £240 (gross). The credit note net reduces Purchase returns (Cr £200) and input VAT is recovered (Cr VAT £40). Debits must equal credits: £240 = £240.' },
 
-  { id: 'itbk-202', topic: 'itbk', difficulty: 'hard', type: 'mcq',
+  { id: 'itbk-202', topic: 'itbk', difficulty: 'hard', type: 'mcq', criteria: ['POBC-1.1'],
     q: 'A contra (set-off) is used where a business owes a supplier £600 (PLCA) and is also owed £600 by the same party as a customer (SLCA). What is the double entry?',
     opts: [
       'Dr PLCA £600, Cr SLCA £600',
@@ -5104,7 +5104,7 @@ window.ALL_QUESTIONS.push(
     ans: 1,
     exp: 'Discounts received reduce amounts paid to suppliers. They appear on the credit (payments) side memo column. At month-end the column total is posted: Dr PLCA / Cr Discounts received — the income entry enters the general ledger at that point.' },
 
-  { id: 'itbk-207', topic: 'itbk', difficulty: 'hard', type: 'mcq',
+  { id: 'itbk-207', topic: 'itbk', difficulty: 'hard', type: 'mcq', criteria: ['POBC-1.2'],
     q: 'The SLCA shows £22,500 but the total of the sales ledger listing is £21,900 (SLCA is higher by £600). Which error would cause this?',
     opts: [
       'A sales invoice of £600 posted to the SLCA but NOT to the individual customer account',
@@ -5124,7 +5124,7 @@ window.ALL_QUESTIONS.push(
     ans: 1,
     exp: 'Dr PLCA £480 / Cr Purchase returns £400 / Cr VAT control £80. The PLCA is debited (reducing the creditor). Purchase returns and VAT control are credited.' },
 
-  { id: 'itbk-209', calc: true, topic: 'itbk', difficulty: 'hard', type: 'mcq',
+  { id: 'itbk-209', calc: true, topic: 'itbk', difficulty: 'hard', type: 'mcq', criteria: ['POBC-3.1'],
     q: 'A bad debt of £840 is written off. The customer was VAT-registered and the original invoice included VAT at 20%. What is the VAT element that can be reclaimed (if the business uses the standard VAT accounting scheme)?',
     opts: ['£840', '£700', '£140', '£168'],
     ans: 2,
@@ -5389,7 +5389,7 @@ window.ALL_QUESTIONS.push(
 
   // ── SCENARIO QUESTIONS ───────────────────────────────────────────────────
 
-  { id: 'sc-031', topic: 'itbk', difficulty: 'hard', type: 'scenario',
+  { id: 'sc-031', topic: 'itbk', difficulty: 'hard', type: 'scenario', criteria: ['POBC-2.2', 'POBC-2.3'],
     setup: 'Kelsey & Co keeps a three-column cash book. On 30 June the cash book shows a debit (bank) balance of £4,850. The bank statement at the same date shows £4,200. On checking: (i) a BACS receipt of £620 from a customer appears on the statement but not in the cash book; (ii) unpresented cheques total £1,300; (iii) a direct debit for business rates of £370 appears on the statement but not in the cash book; (iv) outstanding lodgements total £400.',
     parts: [
       { type: 'mcq', q: 'Which items require an UPDATE to the cash book before reconciling?',
@@ -5894,7 +5894,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'A goods received note is an internal document confirming that goods arrived and were checked. The document requesting payment is the sales invoice.' },
 
-  { id: 'tfq-015', topic: 'itbk', difficulty: 'medium', type: 'truefalse', skill: 'itbk-vat',
+  { id: 'tfq-015', topic: 'itbk', difficulty: 'medium', type: 'truefalse', skill: 'itbk-vat', criteria: ['ITBK-2.1', 'POBC-1.1'],
     q: 'Identify whether the following statements about VAT are true or false.',
     statements: [
       { text: 'Output VAT is charged on sales; input VAT is incurred on purchases.', answer: true },
@@ -6311,7 +6311,7 @@ window.ALL_QUESTIONS.push(
    ──────────────────────────────────────────────────────────────────────── */
 window.ALL_QUESTIONS.push(
 
-  { id: 'sc-051', topic: 'synoptic', difficulty: 'medium', type: 'scenario', skill: 'besy-comms',
+  { id: 'sc-051', topic: 'synoptic', difficulty: 'medium', type: 'scenario', skill: 'besy-comms', criteria: ['ITBK-2.1', 'ITBK-2.2', 'BESY-6.2'],
     setup: 'You are an accounts assistant at Foxglove Interiors Ltd, a VAT-registered company. On 12 May the business sells goods on credit to Marchmont Design for £1,600 plus VAT at 20%. On 19 May Marchmont returns goods with a net value of £200 and a credit note is issued. On 30 May Marchmont pays the balance in full by bank transfer.',
     parts: [
       { type: 'mcq', q: 'What is the double entry for the sale on 12 May?',
@@ -6337,7 +6337,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'This mirrors synoptic Task 4: process the transactions correctly, then explain the resulting balance to the customer in plain terms.' },
 
-  { id: 'sc-052', topic: 'synoptic', difficulty: 'hard', type: 'scenario', skill: 'besy-comms',
+  { id: 'sc-052', topic: 'synoptic', difficulty: 'hard', type: 'scenario', skill: 'besy-comms', criteria: ['POBC-1.2', 'BESY-6.2'],
     setup: 'You work at Glenmore Supplies Ltd. The purchase ledger control account shows £32,400 at 31 July. The total of the individual supplier accounts is £33,150. Investigation finds that a purchase invoice for £750 was entered in the purchase day book and posted to the supplier\'s individual account, but the day book total posted to the control account was understated by the same amount.',
     parts: [
       { type: 'numeric', q: 'What is the difference between the control account and the list of supplier balances?', answer: 750, unit: '£',
@@ -6369,7 +6369,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Synoptic Task 5 shape combined with Task 4 communication: reconcile the control account, then report the reconciliation clearly.' },
 
-  { id: 'sc-053', topic: 'synoptic', difficulty: 'medium', type: 'scenario', skill: 'besy-tech',
+  { id: 'sc-053', topic: 'synoptic', difficulty: 'medium', type: 'scenario', skill: 'besy-tech', criteria: ['BESY-7.2'],
     setup: 'You are an accounts assistant at Rowan Fabrications Ltd. While processing the weekly payment run you notice that a supplier record was amended two days ago to change the bank account details. The amendment was made using the shared office login, and there is no supporting documentation on file. A payment of £8,400 to that supplier is due today.',
     parts: [
       { type: 'mcq', q: 'What is the most appropriate immediate action?',
