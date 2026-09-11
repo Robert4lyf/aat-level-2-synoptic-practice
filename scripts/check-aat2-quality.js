@@ -564,7 +564,23 @@ L2_UNITS.forEach(u => {
    is worse than an absent one — so the list grows as questions are written or
    audited rather than being backfilled by regex. */
 const QUESTION_FLOORS = {
-  'ITBK-1.3': 5, 'ITBK-4.1': 7, 'ITBK-4.3': 5, 'ITBK-4.4': 4,
+  /* ITBK was audited in full: every question in the unit's bank was read against
+     the scope of content in docs/reference/aat-l2-spec-v5.4-extracted.txt and
+     tagged where it genuinely tests that criterion. Coverage went from 4 of 16
+     criteria to 16 of 16, and these floors are set at what each now holds.
+
+     Thirty of the unit's questions are deliberately still untagged. They are in
+     the ITBK bank but outside ITBK's scope — bad debts, control account
+     reconciliation, the VAT control account, the journal, bank reconciliation,
+     inventory valuation, depreciation, prepayments and payroll all belong to
+     Principles of Bookkeeping Controls or to Level 3. Tagging them to an ITBK
+     criterion to make the numbers look better is exactly the wrong tag this
+     file warns about below. */
+  'ITBK-1.1': 6, 'ITBK-1.2': 13, 'ITBK-1.3': 6, 'ITBK-1.4': 16,
+  'ITBK-2.1': 13, 'ITBK-2.2': 2, 'ITBK-2.3': 4,
+  'ITBK-3.1': 11, 'ITBK-3.2': 9, 'ITBK-3.3': 3,
+  'ITBK-4.1': 13, 'ITBK-4.2': 3, 'ITBK-4.3': 5, 'ITBK-4.4': 4,
+  'ITBK-5.1': 10, 'ITBK-5.2': 6,
   'POBC-4.1': 7, 'POBC-4.2': 7,
   'POC-1.3': 5, 'POC-1.4': 6, 'POC-2.2': 9, 'POC-3.2': 6, 'POC-4.1': 8, 'POC-4.2': 7,
   'BESY-1.1': 5, 'BESY-1.2': 4, 'BESY-1.4': 4, 'BESY-3.4': 4, 'BESY-5.3': 6, 'BESY-6.1': 6,

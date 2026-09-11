@@ -49,14 +49,14 @@ window.TOPICS = [
 window.ALL_QUESTIONS = [
 
   /* -- INTRODUCTION TO BOOKKEEPING (ITBK) -- */
-  { id: 'itbk-001', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-001', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-5.1'],
     q: 'A business issues a credit note to a customer. The double entry is:',
     opts: ['Dr Sales Returns, Cr Trade Receivables', 'Dr Trade Receivables, Cr Sales Returns', 'Dr Bank, Cr Sales Returns', 'Dr Sales, Cr Bank'],
     ans: 0,
     exp: 'Dr Sales Returns (reducing revenue), Cr Trade Receivables (reducing the amount owed by the customer).' },
 
 
-  { id: 'itbk-003', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-003', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-5.1'],
     q: 'A business purchases goods on credit. The correct entry is:',
     opts: [
       'Dr Purchases, Cr Trade payables',
@@ -67,7 +67,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Buying on credit means goods arrive now and payment follows later. Purchases (an expense) is debited and Trade payables (a liability) is credited. Bank is untouched until the supplier is actually paid, which is a separate entry: Dr Trade payables, Cr Bank.' },
 
-  { id: 'itbk-004', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-004', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-3.2'],
     q: 'A business receives a credit note from a supplier. In which book of prime entry is it recorded?',
     opts: [
       'The purchases returns day book',
@@ -78,7 +78,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A credit note received from a supplier is recorded in the purchases returns day book. It reduces the amount owed to that supplier.' },
 
-  { id: 'itbk-005', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-005', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-2.1'],
     q: 'A cash discount allowed to a customer is recorded as:',
     opts: [
       'Dr Discounts allowed, Cr Trade receivables',
@@ -89,7 +89,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A settlement discount given to a customer is an expense of the seller, so Discounts allowed is debited, and the amount the customer owes falls, so Trade receivables is credited. Discounts received is the mirror item for discounts obtained from suppliers.' },
 
-  { id: 'itbk-006', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-006', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-5.2'],
     q: 'A credit balance on a customer\'s account indicates:',
     opts: [
       'The customer has overpaid or been issued a credit note',
@@ -100,7 +100,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Customers normally have debit balances. A credit balance means the customer has overpaid or has been issued a credit note — the business owes them. Owing beyond a limit, a doubled invoice and interest charged would all push the balance further to the debit side, not into credit.' },
 
-  { id: 'itbk-007', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-007', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.4'],
     q: 'A debit balance on the rent account represents:',
     opts: [
       'Rent that has been paid — an expense of the business',
@@ -111,7 +111,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Expenses increase on the debit side, so a debit balance on Rent is rent paid. Rent received would be income with a credit balance, and an amount owed to the business would be a receivable.' },
 
-  { id: 'itbk-008', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-008', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-5.2'],
     q: 'A debit entry in the sales ledger control account (SLCA) most commonly represents:',
     opts: [
       'Credit sales made to customers during the period',
@@ -122,19 +122,19 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The SLCA is an asset, so entries increasing what customers owe are debits — principally credit sales, plus dishonoured cheques. Receipts, returns, discounts allowed and irrecoverable debts all reduce the balance and sit on the credit side.' },
 
-  { id: 'itbk-009', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-009', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.4'],
     q: 'A debit entry to the bank account represents:',
     opts: ['Money leaving the business', 'An increase in money at the bank', 'A liability increasing', 'A decrease in the bank balance'],
     ans: 1,
     exp: 'Bank is an asset account. A debit increases an asset, so a debit to bank means money has been received.' },
 
-  { id: 'itbk-010', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-010', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-2.1'],
     q: 'A discount allowed is recorded as:',
     opts: ['Revenue increase', 'Expense increase', 'Liability increase', 'Asset increase'],
     ans: 1,
     exp: 'A discount allowed is given to a customer for prompt settlement, so the business receives less than the invoiced amount. That shortfall is a cost of getting paid early — an expense, debited to Discounts allowed. Discounts received, from suppliers, is the mirror item and is income.' },
 
-  { id: 'itbk-011', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-011', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-3.1'],
     q: 'A goods received note (GRN) is used to:',
     opts: [
       'Confirm that ordered goods have been received and checked on delivery',
@@ -145,7 +145,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A GRN is an internal document confirming the quantity and condition of goods received. It is matched against the purchase order and supplier invoice before payment.' },
 
-  { id: 'itbk-012', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-012', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-3.2'],
     q: 'A purchase return occurs when:',
     opts: [
       'Goods bought from a supplier are returned to that supplier',
@@ -156,7 +156,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A purchase return is when the business sends goods back to a supplier. The supplier then issues a credit note.' },
 
-  { id: 'itbk-013', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-013', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.1'],
     q: 'A remittance advice is sent by:',
     opts: [
       'The buyer, to notify the seller of a payment made',
@@ -167,13 +167,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The buyer sends a remittance advice to the supplier to advise which invoices are being paid, helping the supplier allocate the payment correctly.' },
 
-  { id: 'itbk-014', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-014', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.2'],
     q: 'A sales invoice is posted twice to the sales ledger control account. The effect is:',
     opts: ['Overstated receivables', 'Understated receivables', 'No effect', 'Overstated liabilities'],
     ans: 0,
     exp: 'The SLCA is debited by credit sales, so posting the same invoice twice debits it twice. Trade receivables is overstated, and the control account will no longer agree with the total of the individual customer accounts — which is exactly how the reconciliation catches it.' },
 
-  { id: 'itbk-015', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-015', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.2'],
     q: 'A supplier invoice is received but not recorded at year end. What is the effect?',
     opts: [
       'Both expenses and liabilities are understated at the year end',
@@ -184,7 +184,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Failing to record a supplier invoice at year end omits the expense (understating purchases/expenses) and the related liability (understating trade payables).' },
 
-  { id: 'itbk-016', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-016', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-3.2'],
     q: 'A supplier issues a credit note after an invoice has been recorded. What is the correct adjustment?',
     opts: [
       'Decrease purchases and decrease trade payables',
@@ -195,7 +195,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A credit note from a supplier reduces what the business owes, so trade payables falls (debit) and the original purchase is reduced (credit). It is the mirror image of the invoice entry. Do not net it off against a later invoice — record it in its own right through the purchases returns day book.' },
 
-  { id: 'itbk-017', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-017', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-2.1'],
     q: 'A trade discount is:',
     opts: [
       'A price reduction given to trade customers at the time of sale',
@@ -207,13 +207,13 @@ window.ALL_QUESTIONS = [
     exp: 'A trade discount is deducted at the point of sale. Only the net (post-discount) amount is recorded in the books.' },
 
 
-  { id: 'itbk-019', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-019', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.4'],
     q: 'The accounting equation is:',
     opts: ['Assets = Capital − Liabilities', 'Assets = Capital + Liabilities', 'Liabilities = Capital + Assets', 'Capital = Assets + Liabilities'],
     ans: 1,
     exp: 'Assets = Capital + Liabilities. Everything the business holds was funded either by the owner or by someone else — there is no third source. It rearranges to Capital = Assets − Liabilities, which is how you find the owner\'s stake when only two figures are given.' },
 
-  { id: 'itbk-020', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-020', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.3'],
     q: 'The purpose of coding in accounting systems is to:',
     opts: [
       'Allocate transactions to the correct ledger account for later analysis',
@@ -224,7 +224,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Coding assigns a unique identifier to each transaction so it is posted to the correct account, cost centre or department — enabling accurate analysis and reporting.' },
 
-  { id: 'itbk-021', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-021', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.2'],
     q: 'The trial balance is prepared to:',
     opts: [
       'Check that total debits equal total credits across the ledgers',
@@ -247,7 +247,7 @@ window.ALL_QUESTIONS = [
     ans: 1,
     exp: 'Output tax is charged on sales and credited to the VAT account; input tax is suffered on purchases and debited to it. A credit balance means output exceeds input, so the difference is payable to HMRC. The reverse — input exceeding output — produces a repayment claim.' },
 
-  { id: 'itbk-024', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-024', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.4'],
     q: 'What does a debit balance on a bank account represent?',
     opts: [
       'Cash held at the bank, which is an asset of the business',
@@ -269,13 +269,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A bad debt is a trade receivable considered irrecoverable. It is written off as an expense and removed from receivables.' },
 
-  { id: 'itbk-026', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-026', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.1'],
     q: 'What is a remittance advice used for?',
     opts: ['Request payment', 'Confirm payment sent', 'Issue invoice', 'Record inventory'],
     ans: 1,
     exp: 'A remittance advice is sent by the buyer to the supplier confirming the payment made and the invoices it relates to.' },
 
-  { id: 'itbk-027', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-027', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.4'],
     q: 'What is a bank overdraft?',
     opts: [
       'A negative bank balance where the business owes money to the bank',
@@ -286,7 +286,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A bank overdraft is a negative bank balance — money owed to the bank. It is classified as a current liability.' },
 
-  { id: 'itbk-028', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-028', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.4'],
     q: 'What does the double-entry principle state?',
     opts: [
       'Every transaction has an equal debit entry and credit entry',
@@ -297,7 +297,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Every transaction is recorded with equal debit and credit amounts, keeping the accounting equation in balance.' },
 
-  { id: 'itbk-029', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-029', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.2'],
     q: 'What is a ledger?',
     opts: [
       'A collection of the accounts in which transactions are recorded',
@@ -308,7 +308,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A ledger is where the accounts themselves live, as opposed to a book of prime entry, which merely lists documents before posting. The general ledger holds the accounts that make up the trial balance; the sales and purchases ledgers hold individual customer and supplier accounts outside the double entry.' },
 
-  { id: 'itbk-030', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-030', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-4.2'],
     q: 'What is petty cash typically used for?',
     opts: [
       'Small day-to-day expenses that are impractical to pay by bank transfer',
@@ -319,7 +319,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Petty cash covers minor items such as postage, taxi fares and refreshments, usually run on the imprest system so the float is restored to a set amount. Large payments and payroll go through the bank for control and audit-trail reasons.' },
 
-  { id: 'itbk-031', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-031', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-3.2'],
     q: 'What is a purchases return?',
     opts: [
       'Goods returned by the business to the supplier who sold them',
@@ -341,7 +341,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Routine transactions reach the ledgers through the day books and cash book. The journal handles everything else — error corrections, year-end adjustments, opening balances, payroll and asset disposals — and every entry carries a narrative so the reason is auditable later.' },
 
-  { id: 'itbk-033', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-033', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-2.2'],
     q: 'What is a sales return?',
     opts: [
       'Goods returned to the business by one of its credit customers',
@@ -352,7 +352,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A sales return is when a customer returns goods previously sold to them. The business issues a credit note.' },
 
-  { id: 'itbk-034', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-034', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.4'],
     q: 'What is the accounting treatment of drawings?',
     opts: [
       'A reduction in the owner\'s capital in the business',
@@ -363,7 +363,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Drawings represent cash or goods withdrawn by the owner for personal use. They reduce the owner\'s capital, not profit.' },
 
-  { id: 'itbk-035', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-035', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.4'],
     q: 'What is the effect of a debit entry to capital?',
     opts: ['Increases capital', 'Decreases capital', 'Increases profit', 'No effect'],
     ans: 1,
@@ -380,13 +380,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Writing off a bad debt reduces trade receivables (an asset) and recognises a bad-debt expense, which reduces profit.' },
 
-  { id: 'itbk-037', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-037', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.4'],
     q: 'What is the normal balance of trade receivables?',
     opts: ['Credit', 'Debit', 'Zero', 'Negative'],
     ans: 1,
     exp: 'Trade receivables is an asset — money owed to the business — and assets increase on the debit side, so the normal balance is a debit. A credit balance is possible but unusual: it means a customer has overpaid or holds an unused credit note.' },
 
-  { id: 'itbk-038', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-038', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.1'],
     q: 'What is the purpose of a remittance advice when a payment is made?',
     opts: [
       'It tells the supplier which invoices the payment covers',
@@ -408,7 +408,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The control account holds the total of many individual accounts, built from day book totals. The individual accounts are built from single transactions. Because the two are constructed by genuinely different routes, agreement between them is real evidence that the postings are right.' },
 
-  { id: 'itbk-040', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-040', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.2'],
     q: 'What is the purpose of the sales day book?',
     opts: [
       'List all credit sales invoices before they are posted to the ledger',
@@ -419,7 +419,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The sales day book is a book of prime entry — it lists credit sales invoices before they are posted to the sales ledger and the SLCA.' },
 
-  { id: 'itbk-041', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-041', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-2.1'],
     q: 'What is a trade discount?',
     opts: [
       'A reduction from the list price given at the point of sale',
@@ -430,7 +430,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A trade discount is a price reduction given at the point of sale to trade customers. It is deducted before the invoice is raised and is not recorded separately in the ledger.' },
 
-  { id: 'itbk-042', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-042', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.4'],
     q: 'What is a trade receivable?',
     opts: [
       'An amount owed to the business by a credit customer',
@@ -441,13 +441,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A trade receivable arises when goods or services are supplied on credit: the revenue is recognised at once, and the amount owed is carried as a current asset until the customer pays. Money owed by the business to a supplier is the mirror item, a trade payable.' },
 
-  { id: 'itbk-043', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-043', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-3.3'],
     q: 'When a business pays a supplier, the correct double entry is:',
     opts: ['Dr Bank, Cr Trade Payables', 'Dr Trade Payables, Cr Bank', 'Dr Trade Payables, Cr Sales', 'Dr Purchases, Cr Bank'],
     ans: 1,
     exp: 'Paying a supplier settles an existing obligation. The liability falls, so Trade payables is debited, and money leaves the account, so Bank is credited. Purchases is not touched — the expense was recognised when the goods were bought, not when they were paid for.' },
 
-  { id: 'itbk-044', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-044', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-5.1'],
     q: 'Which account is affected when inventory is purchased on credit?',
     opts: [
       'Trade payables, because the amount is owed to the supplier',
@@ -458,7 +458,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Buying on credit creates an obligation, so Trade payables is credited. The debit goes to Purchases (or Inventory, depending on the system). Bank stays out of it entirely until settlement, which is a separate transaction.' },
 
-  { id: 'itbk-045', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-045', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-5.1'],
     q: 'Which account is credited when goods are sold on credit?',
     opts: ['Bank', 'Sales', 'Trade Receivables', 'Purchases'],
     ans: 1,
@@ -475,7 +475,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Recovering a debt already written off reverses part of the earlier expense, so the credit goes to irrecoverable debts (with the debit to bank). Crediting sales would double-count revenue, since the sale was recognised when the invoice was raised.' },
 
-  { id: 'itbk-047', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-047', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-2.1'],
     q: 'Which document accompanies goods delivered to a customer?',
     opts: [
       'A delivery note, signed by the customer on receipt',
@@ -486,13 +486,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The delivery note travels with the goods and evidences what physically arrived. The invoice follows and requests payment; a credit note reverses part of it; a statement summarises the account at the month end.' },
 
-  { id: 'itbk-048', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-048', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-3.1'],
     q: 'Which document confirms goods have been ordered from a supplier?',
     opts: ['Invoice', 'Purchase order', 'Credit note', 'Remittance advice'],
     ans: 1,
     exp: 'A purchase order is issued by the buyer to the supplier to request goods or services. It specifies what is being ordered and on what terms.' },
 
-  { id: 'itbk-049', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-049', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-3.1'],
     q: 'Which document confirms that ordered goods have been delivered and checked against the order?',
     opts: [
       'A goods received note raised when the delivery is checked',
@@ -503,7 +503,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A goods received note (GRN) is an internal document confirming that ordered goods have been received and checked. It is matched against the purchase order and supplier invoice before payment.' },
 
-  { id: 'itbk-050', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-050', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.1'],
     q: 'Which document is sent by a seller to request payment?',
     opts: [
       'A sales invoice',
@@ -520,19 +520,19 @@ window.ALL_QUESTIONS = [
     ans: 2,
     exp: 'The journal is used for non-routine entries — including corrections, year-end adjustments and opening balances.' },
 
-  { id: 'itbk-052', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-052', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-3.1'],
     q: 'Which document is used to initiate a purchase?',
     opts: ['Sales invoice', 'Purchase order', 'Credit note', 'Statement'],
     ans: 1,
     exp: 'The purchase order is the buyer\'s formal request to the supplier, fixing quantity and price. It is the first document in the order-to-payment trail and the first leg of the three-way match against the goods received note and the invoice.' },
 
-  { id: 'itbk-053', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-053', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-3.1'],
     q: 'Which document provides evidence of goods ordered but not yet received?',
     opts: ['Invoice', 'Purchase order', 'Goods received note', 'Remittance advice'],
     ans: 1,
     exp: 'A purchase order evidences that goods have been ordered, but does not by itself confirm that they have arrived.' },
 
-  { id: 'itbk-054', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-054', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-5.1'],
     q: 'Which double entry correctly records a cash sale?',
     opts: [
       'Dr Bank, Cr Sales',
@@ -543,7 +543,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A cash sale brings money in immediately, so bank increases (debit) and revenue is recognised (credit). No receivable arises because nothing is owed. The second entry would be a credit sale; the third is the later receipt from one.' },
 
-  { id: 'itbk-055', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-055', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-5.2'],
     q: 'Which is posted to the credit side of the sales ledger control account (SLCA)?',
     opts: [
       'Cash received from credit customers during the period',
@@ -554,14 +554,14 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The SLCA is debited with sales and credited when customers pay (reducing the balance owed). Credit sales invoices and dishonoured cheques are debits; discounts received relates to the PLCA.' },
 
-  { id: 'itbk-056', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-056', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-5.1'],
     q: 'Which is posted to the debit side of the telephone expense account?',
     opts: ['Payment received from a customer', 'A telephone bill paid', 'A refund from the telephone provider', 'A reduction in the telephone bill'],
     ans: 1,
     exp: 'Paying a telephone bill increases an expense (debit) and reduces the bank balance (credit): Dr Telephone Expense, Cr Bank.' },
 
 
-  { id: 'itbk-058', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-058', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.2'],
     q: 'Which ledger records customer accounts?',
     opts: [
       'The sales ledger, holding one account per credit customer',
@@ -578,14 +578,14 @@ window.ALL_QUESTIONS = [
     ans: 1,
     exp: 'Output tax (VAT charged on sales) is a liability and is credited to the VAT control account. Input tax is debited. A credit balance represents the net amount owed to HMRC.' },
 
-  { id: 'itbk-060', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-060', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.2'],
     q: 'Which of the following is a book of prime entry?',
     opts: ['Trial balance', 'General ledger', 'Purchases day book', 'Statement of financial position'],
     ans: 2,
     exp: 'Books of prime entry (day books, cash book, journal) are where transactions are first recorded before being posted to the ledger.' },
 
 
-  { id: 'itbk-062', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-062', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-5.2'],
     q: 'Which of the following would reduce the balance on the purchases ledger control account?',
     opts: [
       'Both returns made to suppliers and payments made to suppliers',
@@ -596,7 +596,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The PLCA credit balance is reduced by both payments to suppliers (Dr PLCA, Cr Bank) and returns to suppliers (Dr PLCA, Cr Purchases Returns). Each reduces the liability.' },
 
-  { id: 'itbk-063', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-063', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.4'],
     q: 'Which statement correctly describes the dual effect of transactions?',
     opts: [
       'Every transaction has equal and opposite effects on two accounts',
@@ -624,7 +624,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'VAT-registered businesses charge VAT on taxable sales and collect it on behalf of HMRC. They reclaim VAT on eligible purchases and pay the net difference to HMRC.' },
 
-  { id: 'itbk-066', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-066', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-4.1'],
     q: 'Which transaction is entered as a receipt in the cash book?',
     opts: ['A payment to a trade payable', 'A customer paying their invoice by BACS', 'Purchasing goods on credit', 'Issuing a credit note to a customer'],
     ans: 1,
@@ -641,13 +641,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'FIFO assumes the oldest units leave first, so whatever remains must be the most recent purchases. In a rising market that means closing inventory is valued at higher prices, cost of sales is lower and reported profit is higher than under AVCO.' },
 
-  { id: 'itbk-068', topic: 'itbk', difficulty: 'medium',
+  { id: 'itbk-068', topic: 'itbk', difficulty: 'medium', criteria: ['ITBK-2.3'],
     q: 'A business receives a cheque from a customer that is subsequently dishonoured by the bank. Which entry reverses the original receipt?',
     opts: ['Dr Bank, Cr Trade Receivables', 'Dr Trade Receivables, Cr Bank', 'Dr Trade Receivables, Cr Sales', 'Dr Bank, Cr Sales'],
     ans: 1,
     exp: 'A dishonoured cheque reverses the original receipt: Dr Trade Receivables (re-instating the debt), Cr Bank (removing the amount from the bank).' },
 
-  { id: 'itbk-069', topic: 'itbk', difficulty: 'medium',
+  { id: 'itbk-069', topic: 'itbk', difficulty: 'medium', criteria: ['ITBK-2.3'],
     q: 'A cheque from a customer is later returned by the bank unpaid. The double entry to record this is:',
     opts: [
       'Dr Trade receivables, Cr Bank',
@@ -672,7 +672,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Differences between the SLCA and the sum of individual sales ledger balances are caused by posting errors, omissions or timing differences.' },
 
-  { id: 'itbk-074', topic: 'itbk', difficulty: 'medium',
+  { id: 'itbk-074', topic: 'itbk', difficulty: 'medium', criteria: ['ITBK-3.1'],
     q: 'A supplier invoice is recorded as £540 in the purchases day book when the correct amount is £450. What type of error is this?',
     opts: ['Complete omission', 'Error of original entry', 'A compensating error', 'Error of principle'],
     ans: 1,
@@ -682,7 +682,7 @@ window.ALL_QUESTIONS = [
 
 
 
-  { id: 'itbk-079', topic: 'itbk', difficulty: 'medium',
+  { id: 'itbk-079', topic: 'itbk', difficulty: 'medium', criteria: ['ITBK-4.2'],
     q: 'The imprest system of petty cash means:',
     opts: [
       'Petty cash is restored to a fixed float at regular intervals',
@@ -694,7 +694,7 @@ window.ALL_QUESTIONS = [
     exp: 'Under the imprest system the float is restored to a fixed amount each period — reimbursed by the total of vouchers paid out since the last top-up.' },
 
 
-  { id: 'itbk-081', topic: 'itbk', difficulty: 'medium',
+  { id: 'itbk-081', topic: 'itbk', difficulty: 'medium', criteria: ['ITBK-4.1'],
     q: 'What is a contra entry in a cash book?',
     opts: [
       'A transfer of money between the cash account and the bank',
@@ -727,7 +727,7 @@ window.ALL_QUESTIONS = [
 
 
 
-  { id: 'itbk-094', topic: 'itbk', difficulty: 'medium',
+  { id: 'itbk-094', topic: 'itbk', difficulty: 'medium', criteria: ['ITBK-4.1'],
     q: 'Which of the following is an example of a contra entry within a three-column cash book?',
     opts: [
       'Cash is withdrawn from the bank and placed in the petty cash tin',
@@ -763,25 +763,25 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Cost of goods sold = opening inventory + purchases − closing inventory = £8,000 + £42,000 − £6,000 = £44,000.' },
 
-  { id: 'itbk-100', calc: true, topic: 'itbk', difficulty: 'hard',
+  { id: 'itbk-100', calc: true, topic: 'itbk', difficulty: 'hard', criteria: ['ITBK-3.1'],
     q: 'A business purchases goods for £1,000 less 10% trade discount. What is recorded in the purchase ledger?',
     opts: ['£1,000', '£900', '£100', '£1,100'],
     ans: 1,
     exp: 'Trade discounts are deducted before invoicing and never appear in the ledger: only the net £900 (after £100 discount) is recorded.' },
 
-  { id: 'itbk-101', topic: 'itbk', difficulty: 'hard',
+  { id: 'itbk-101', topic: 'itbk', difficulty: 'hard', criteria: ['ITBK-3.1'],
     q: 'A business receives an invoice for £2,400 including VAT at 20% but records it as £2,400 net. What type of error is this?',
     opts: ['Error of principle', 'Error of commission', 'Compensating error', 'Error of original entry'],
     ans: 0,
     exp: 'VAT (£400) should sit in the VAT control account, but the full gross £2,400 has been posted to purchases — putting an item in the wrong type of account, an error of principle.' },
 
-  { id: 'itbk-102', topic: 'itbk', difficulty: 'hard',
+  { id: 'itbk-102', topic: 'itbk', difficulty: 'hard', criteria: ['ITBK-3.1'],
     q: 'A business receives goods with a value of £800 but only £720 is invoiced due to trade discount. What is recorded?',
     opts: ['£800 purchase', '£720 purchase', '£80 discount income', '£800 liability'],
     ans: 1,
     exp: 'Trade discount is deducted before the invoice is raised, so it never enters the accounting records. Only the net figure actually charged is recorded. Settlement discount behaves differently: it is offered for prompt payment and is recorded when taken.' },
 
-  { id: 'itbk-103', calc: true, topic: 'itbk', difficulty: 'hard',
+  { id: 'itbk-103', calc: true, topic: 'itbk', difficulty: 'hard', criteria: ['ITBK-2.1'],
     q: 'A business sells goods on credit for £600 plus VAT at 20%. Which amount is recorded against the invoice in the sales day book?',
     opts: ['£600', '£720', '£120', '£480'],
     ans: 1,
@@ -809,7 +809,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Where the strict VAT bad-debt-relief conditions are met, the VAT element can be reclaimed: Dr Bad Debts £200 (net), Dr VAT £40 (reclaimed), Cr Trade Receivables £240 (gross).' },
 
-  { id: 'itbk-106', topic: 'itbk', difficulty: 'hard',
+  { id: 'itbk-106', topic: 'itbk', difficulty: 'hard', criteria: ['ITBK-2.3'],
     q: 'A customer pays £490 in full settlement of a £500 debt. The £10 difference is:',
     opts: [
       'A settlement discount, posted to discounts allowed',
@@ -820,13 +820,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A settlement (cash) discount IS recorded in the ledger: Dr Discounts Allowed £10, Cr Trade Receivables £10. Trade discounts are never posted to the ledger.' },
 
-  { id: 'itbk-107', topic: 'itbk', difficulty: 'hard',
+  { id: 'itbk-107', topic: 'itbk', difficulty: 'hard', criteria: ['ITBK-1.4'],
     q: 'A sole trader\'s drawings of £500 in cash should be recorded as:',
     opts: ['Dr Drawings, Cr Sales', 'Dr Drawings, Cr Bank', 'Dr Capital, Cr Bank', 'Dr Expenses, Cr Bank'],
     ans: 1,
     exp: 'Drawings represent money taken out of the business by the owner. Dr Drawings £500 (reduces capital ultimately), Cr Bank £500. Drawings are not an expense.' },
 
-  { id: 'itbk-108', topic: 'itbk', difficulty: 'hard',
+  { id: 'itbk-108', topic: 'itbk', difficulty: 'hard', criteria: ['ITBK-3.1'],
     q: 'A supplier invoice for £1,000 net plus 20% VAT (£1,200 gross) is recorded by debiting purchases with the full £1,200. What is the effect?',
     opts: [
       'Purchases are overstated by £200 and the input VAT is not recorded',
@@ -837,7 +837,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Purchases should have been £1,000 net with £200 debited separately to VAT control. Posting the gross £1,200 to purchases overstates expenses by £200 and means no input VAT is reclaimable from HMRC.' },
 
-  { id: 'itbk-109', topic: 'itbk', difficulty: 'hard',
+  { id: 'itbk-109', topic: 'itbk', difficulty: 'hard', criteria: ['ITBK-3.3'],
     q: 'A trade payable balance of £3,600 is settled by issuing a cheque for £3,528 in full and final settlement. The £72 difference is:',
     opts: [
       'A settlement discount received, credited to discounts received',
@@ -848,20 +848,20 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Paying less than the full balance in settlement of a debt creates a discount received: Dr Trade Payables £3,600, Cr Bank £3,528, Cr Discounts Received £72.' },
 
-  { id: 'itbk-110', topic: 'itbk', difficulty: 'hard',
+  { id: 'itbk-110', topic: 'itbk', difficulty: 'hard', criteria: ['ITBK-1.2'],
     q: 'A trial balance shows the debit total exceeding the credit total by £180. Which of the following could be the cause?',
     opts: ['A purchase of £90 posted as a debit to purchases AND a debit to bank', 'A sales invoice of £180 posted only to the credit of trade receivables', 'A payment of £90 to a supplier posted as a debit to trade payables and a credit to bank', 'A £180 receipt from a customer posted only as a credit to bank'],
     ans: 0,
     exp: 'Two debits of £90 (Purchases and Bank) total £180 with no corresponding credit, so debits exceed credits by exactly £180. Option B would give a credit excess; Option C is correctly balanced; Option D would also create a credit excess.' },
 
-  { id: 'itbk-111', calc: true, topic: 'itbk', difficulty: 'hard',
+  { id: 'itbk-111', calc: true, topic: 'itbk', difficulty: 'hard', criteria: ['ITBK-2.1'],
     q: 'An invoice is issued for £1,200 plus VAT at 20%. The total payable is:',
     opts: ['£1,200', '£1,440', '£1,020', '£960'],
     ans: 1,
     exp: 'VAT is charged on the net amount: £1,200 × 20% = £240, giving £1,440 gross. To work backwards from a gross figure, divide by 1.2 for the net, or by 6 for the VAT itself — a shortcut worth memorising.' },
 
 
-  { id: 'itbk-113', calc: true, topic: 'itbk', difficulty: 'hard',
+  { id: 'itbk-113', calc: true, topic: 'itbk', difficulty: 'hard', criteria: ['ITBK-1.4'],
     q: 'Net assets at year end are £45,000. The owner introduced additional capital of £10,000 during the year, opening capital was £30,000 and there were no drawings. What is the profit for the year?',
     opts: ['£5,000', '£15,000', '£25,000', '£55,000'],
     ans: 0,
@@ -869,7 +869,7 @@ window.ALL_QUESTIONS = [
 
 
 
-  { id: 'itbk-116', topic: 'itbk', difficulty: 'hard',
+  { id: 'itbk-116', topic: 'itbk', difficulty: 'hard', criteria: ['ITBK-5.1'],
     q: 'Which of the following is the correct double entry for a credit sale of £500?',
     opts: ['Dr Sales £500, Cr Trade Receivables £500', 'Dr Trade Receivables £500, Cr Sales £500', 'Dr Bank £500, Cr Sales £500', 'Dr Sales £500, Cr Bank £500'],
     ans: 1,
@@ -3371,7 +3371,7 @@ window.ALL_QUESTIONS = [
 window.ALL_QUESTIONS.push(
 
   /* -- INTRODUCTION TO BOOKKEEPING (ITBK) -- */
-  { id: 'itbk-num-001', topic: 'itbk', difficulty: 'easy', type: 'numeric', unit: '£',
+  { id: 'itbk-num-001', topic: 'itbk', difficulty: 'easy', type: 'numeric', unit: '£', criteria: ['ITBK-2.1'],
     generate: function () {
       const net = window._QH.rs(150, 4000, 50);
       const ans = window._QH.round2(net * 0.20);
@@ -3387,7 +3387,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'itbk-num-002', topic: 'itbk', difficulty: 'easy', type: 'numeric', unit: '£',
+  { id: 'itbk-num-002', topic: 'itbk', difficulty: 'easy', type: 'numeric', unit: '£', criteria: ['ITBK-2.1'],
     generate: function () {
       const net = window._QH.rs(100, 3000, 50);
       const vat = window._QH.round2(net * 0.20);
@@ -3512,7 +3512,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'itbk-num-008', topic: 'itbk', difficulty: 'easy', type: 'numeric', unit: '£',
+  { id: 'itbk-num-008', topic: 'itbk', difficulty: 'easy', type: 'numeric', unit: '£', criteria: ['ITBK-2.1'],
     generate: function () {
       const units = window._QH.rs(25, 200, 5);
       const price = window._QH.r(8, 60);
@@ -4137,7 +4137,7 @@ window.GLOSSARY = [
 window.ALL_QUESTIONS.push(
 
   /* === DRAG-DROP / MATCHING === */
-  { id: 'dd-001', topic: 'itbk', difficulty: 'easy', type: 'dragdrop',
+  { id: 'dd-001', topic: 'itbk', difficulty: 'easy', type: 'dragdrop', criteria: ['ITBK-1.1'],
     q: 'Match each source document to its primary purpose.',
     pairs: [
       { left: 'Purchase order', right: 'Sent by buyer to request goods from a supplier' },
@@ -4227,7 +4227,7 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'Total Cr = 15,000 + 44,000 = 59,000. The debit side must total the same, so the closing balance is 59,000 − 38,000 − 1,500 = 19,500.' },
 
-  { id: 'tf-003', topic: 'itbk', difficulty: 'medium', type: 'tablefill',
+  { id: 'tf-003', topic: 'itbk', difficulty: 'medium', type: 'tablefill', criteria: ['ITBK-2.1'],
     q: 'Complete the VAT calculation for these three invoices (VAT at 20%).',
     table: {
       title: 'Invoice analysis',
@@ -4282,7 +4282,7 @@ window.ALL_QUESTIONS.push(
 
 
   /* === SCENARIO-BASED MULTI-PART QUESTIONS === */
-  { id: 'sc-001', topic: 'itbk', difficulty: 'medium', type: 'scenario',
+  { id: 'sc-001', topic: 'itbk', difficulty: 'medium', type: 'scenario', criteria: ['ITBK-2.1'],
     setup: 'Bright Sparks Ltd is a small lighting wholesaler registered for VAT. On 1 May it sells goods on credit to Helios Decor for £800 plus VAT at 20%. Helios pays on 28 May. Bright Sparks pays its supplier, Aurora Cables, £1,200 owing from an earlier invoice on 30 May.',
     parts: [
       { type: 'mcq', q: 'What is the correct double entry for the sale to Helios Decor on 1 May (gross)?',
@@ -4337,7 +4337,7 @@ window.ALL_QUESTIONS.push(
 
 /* ── GAP-FILL / PICKLIST QUESTIONS ── */
 window.ALL_QUESTIONS.push(
-  { id: 'gf-001', topic: 'itbk', difficulty: 'easy', type: 'gapfill',
+  { id: 'gf-001', topic: 'itbk', difficulty: 'easy', type: 'gapfill', criteria: ['ITBK-5.1'],
     q: 'Complete the double entry by selecting the correct account for each gap.',
     template: 'When goods are sold on credit, the double entry is Dr {0} and Cr {1}.',
     gaps: [
@@ -4346,7 +4346,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'A credit sale increases the amount owed by customers (Dr Trade receivables) and recognises revenue (Cr Sales).' },
 
-  { id: 'gf-002', topic: 'itbk', difficulty: 'easy', type: 'gapfill',
+  { id: 'gf-002', topic: 'itbk', difficulty: 'easy', type: 'gapfill', criteria: ['ITBK-3.3'],
     q: 'Complete the double entry for paying a supplier.',
     template: 'A business pays a supplier by bank transfer. The double entry is Dr {0} and Cr {1}.',
     gaps: [
@@ -4355,7 +4355,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Paying a supplier reduces the liability owed (Dr Trade payables) and the bank balance (Cr Bank).' },
 
-  { id: 'gf-003', topic: 'itbk', difficulty: 'easy', type: 'gapfill',
+  { id: 'gf-003', topic: 'itbk', difficulty: 'easy', type: 'gapfill', criteria: ['ITBK-1.4'],
     q: 'Complete the accounting equation.',
     template: 'The accounting equation states that assets equal {0} plus {1}.',
     gaps: [
@@ -4364,7 +4364,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Assets = Capital + Liabilities. Read it as what the business has on one side and where it came from on the other — the owner, or outsiders it owes. Rearranged, Capital = Assets − Liabilities gives the owner’s stake.' },
 
-  { id: 'gf-004', topic: 'itbk', difficulty: 'medium', type: 'gapfill',
+  { id: 'gf-004', topic: 'itbk', difficulty: 'medium', type: 'gapfill', criteria: ['ITBK-4.1'],
     q: 'Complete the statements about the analysed cash book.',
     template: 'The cash and bank columns hold the full amount that moved, and the analysis columns {0} that amount. VAT is analysed on {1}.',
     gaps: [
@@ -4448,7 +4448,7 @@ window.ALL_QUESTIONS.push(
 
 /* ── EXPANDED CONTENT: additional drag-drop questions ── */
 window.ALL_QUESTIONS.push(
-  { id: 'dd-009', topic: 'itbk', difficulty: 'easy', type: 'dragdrop',
+  { id: 'dd-009', topic: 'itbk', difficulty: 'easy', type: 'dragdrop', criteria: ['ITBK-5.1'],
     q: 'Match each transaction to its correct double entry.',
     pairs: [
       { left: 'Cash sale of goods', right: 'Dr Bank, Cr Sales' },
@@ -4458,7 +4458,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Every transaction changes two accounts by the same amount, one debit and one credit. Work out which account gains value and which gives it up, and the entry follows — the debit is never chosen first and the credit fitted around it.' },
 
-  { id: 'dd-010', topic: 'itbk', difficulty: 'medium', type: 'dragdrop',
+  { id: 'dd-010', topic: 'itbk', difficulty: 'medium', type: 'dragdrop', criteria: ['ITBK-1.2'],
     q: 'Match each book of prime entry to what it records.',
     pairs: [
       { left: 'Sales day book', right: 'Credit sales invoices' },
@@ -4469,7 +4469,7 @@ window.ALL_QUESTIONS.push(
     exp: 'Books of prime entry are where transactions are first recorded before posting to the ledger.' },
 
 
-  { id: 'dd-012', topic: 'itbk', difficulty: 'easy', type: 'dragdrop',
+  { id: 'dd-012', topic: 'itbk', difficulty: 'easy', type: 'dragdrop', criteria: ['ITBK-1.4'],
     q: 'Match each item to the category it belongs to when a bookkeeping system is set up.',
     pairs: [
       { left: 'Motor vehicle', right: 'Asset' },
@@ -4563,7 +4563,7 @@ window.ALL_QUESTIONS.push(
 
 /* ── EXPANDED CONTENT: additional table-completion questions ── */
 window.ALL_QUESTIONS.push(
-  { id: 'tf-007', topic: 'itbk', difficulty: 'medium', type: 'tablefill',
+  { id: 'tf-007', topic: 'itbk', difficulty: 'medium', type: 'tablefill', criteria: ['ITBK-1.2'],
     q: 'Complete the trial balance extract by calculating the missing total.',
     table: {
       title: 'Trial balance (extract)',
@@ -4693,7 +4693,7 @@ window.ALL_QUESTIONS.push(
 
 /* ── EXPANDED CONTENT: additional scenario questions (ITBK / POBC) ── */
 window.ALL_QUESTIONS.push(
-  { id: 'sc-005', topic: 'itbk', difficulty: 'medium', type: 'scenario',
+  { id: 'sc-005', topic: 'itbk', difficulty: 'medium', type: 'scenario', criteria: ['ITBK-3.2'],
     setup: 'Maple Joinery is a sole trader. During March it buys timber on credit from Forest Supplies for £600 plus VAT at 20%. It later returns £100 (net) of damaged timber. Maple Joinery is registered for VAT.',
     parts: [
       { type: 'numeric', q: 'What is the total (gross) amount of the original credit purchase invoice?', answer: 720, unit: '£', exp: 'Add VAT to the net figure: £600 + £120 = £720. The gross amount is what the supplier is owed, and it is the figure that goes to the total column of the purchases day book.' },
@@ -4708,7 +4708,7 @@ window.ALL_QUESTIONS.push(
     exp: 'A credit purchase with VAT, followed by a returns adjustment — covering day books and VAT-inclusive amounts.' },
 
 
-  { id: 'sc-007', topic: 'itbk', difficulty: 'medium', type: 'scenario',
+  { id: 'sc-007', topic: 'itbk', difficulty: 'medium', type: 'scenario', criteria: ['ITBK-1.4'],
     setup: 'Crafty Pots started trading on 1 January when the owner paid £20,000 into the business bank account. During the year the business made a profit of £14,000 and the owner took drawings of £9,000.',
     parts: [
       { type: 'mcq', q: 'What is the double entry for the owner paying £20,000 into the business?',
@@ -4834,7 +4834,7 @@ window.ALL_QUESTIONS.push(
 
   /* ── Additional scenario questions (Phase 6 expansion) ── */
 
-  { id: 'sc-017', topic: 'itbk', difficulty: 'hard', type: 'scenario',
+  { id: 'sc-017', topic: 'itbk', difficulty: 'hard', type: 'scenario', criteria: ['ITBK-1.2'],
     setup: 'Blossom Interiors is a sole trader business. At 31 March the trial balance shows: Bank £2,400 Dr; Trade receivables £8,100 Dr; Inventory £3,600 Dr; Premises £45,000 Dr; Trade payables £5,200 Cr; Loan £12,000 Cr; Capital £28,500 Cr; Sales £62,000 Cr; Purchases £32,000 Dr; Wages £9,500 Dr; Rent £4,200 Dr; Drawings £2,900 Dr.',
     parts: [
       { type: 'mcq', q: 'The trial balance total (debit side) is:',
@@ -4852,7 +4852,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Trial balance composition, the nature of drawings, closing inventory, and errors of original entry.' },
 
-  { id: 'sc-018', topic: 'itbk', difficulty: 'medium', type: 'scenario',
+  { id: 'sc-018', topic: 'itbk', difficulty: 'medium', type: 'scenario', criteria: ['ITBK-3.2'],
     setup: 'Priya runs a craft supplies shop. She buys goods from Supplier X on credit. This month: purchases £4,800 net; VAT at 20%; she returns goods of £600 net + VAT and receives a credit note from Supplier X; a £200 trade discount was received (already deducted from the invoice); and she pays £3,000 to Supplier X during the month.',
     parts: [
       { type: 'mcq', q: 'The VAT on the purchase invoice (£4,800 net) is:',
@@ -5042,13 +5042,13 @@ window.ALL_QUESTIONS.push(
 
   // ── ITBK additional hard questions ──────────────────────────────────────
 
-  { id: 'itbk-200', calc: true, topic: 'itbk', difficulty: 'hard', type: 'mcq',
+  { id: 'itbk-200', calc: true, topic: 'itbk', difficulty: 'hard', type: 'mcq', criteria: ['ITBK-4.2'],
     q: 'The imprest petty cash fund is set at £150. At month-end, receipts total £112 and cash remaining in the tin is £38. What is the reimbursement cheque raised?',
     opts: ['£38', '£112', '£150', '£74'],
     ans: 1,
     exp: 'Under the imprest system the reimbursement always equals total vouchers (£112), restoring the fund to £150. Check: £38 + £112 = £150 ✓.' },
 
-  { id: 'itbk-201', calc: true, topic: 'itbk', difficulty: 'hard', type: 'mcq',
+  { id: 'itbk-201', calc: true, topic: 'itbk', difficulty: 'hard', type: 'mcq', criteria: ['ITBK-3.2'],
     q: 'A supplier sends a credit note for £200 net (plus VAT at 20%). How is this recorded in the BUYER\'s books?',
     opts: [
       'Dr PLCA £240, Cr Purchase returns £200, Cr VAT £40',
@@ -5068,13 +5068,13 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'A contra: Dr PLCA £600 (remove the payable) / Cr SLCA £600 (remove the receivable). No cash moves. The entry must also appear in the individual personal accounts for both the payables and receivables ledger.' },
 
-  { id: 'itbk-203', calc: true, topic: 'itbk', difficulty: 'hard', type: 'mcq',
+  { id: 'itbk-203', calc: true, topic: 'itbk', difficulty: 'hard', type: 'mcq', criteria: ['ITBK-5.2'],
     q: 'At 1 April the SLCA has a Dr balance of £3,200. During April: credit sales £12,000; customer receipts £10,500; sales returns £400; discounts allowed £150; bad debt written off £200. What is the closing SLCA balance?',
     opts: ['£4,150', '£3,950', '£3,750', '£4,350'],
     ans: 1,
     exp: 'Dr side: £3,200 + £12,000 = £15,200. Cr side: £10,500 + £400 + £150 + £200 = £11,250. Closing balance: £15,200 − £11,250 = £3,950 Dr.' },
 
-  { id: 'itbk-204', topic: 'itbk', difficulty: 'hard', type: 'mcq',
+  { id: 'itbk-204', topic: 'itbk', difficulty: 'hard', type: 'mcq', criteria: ['ITBK-4.1'],
     q: 'Which of the following items appears on the CREDIT (payments) side of the cash book?',
     opts: [
       'Cash received from a credit customer',
@@ -5084,7 +5084,7 @@ window.ALL_QUESTIONS.push(
     ans: 2,
     exp: 'The credit side records PAYMENTS out of the bank. A standing order to a supplier is a payment. All receipts (options A, B) appear on the debit side. An opening balance in credit would be a debit opening entry.' },
 
-  { id: 'itbk-205', calc: true, topic: 'itbk', difficulty: 'hard', type: 'mcq',
+  { id: 'itbk-205', calc: true, topic: 'itbk', difficulty: 'hard', type: 'mcq', criteria: ['ITBK-2.3'],
     q: 'A customer settles their balance of £2,000 within the discount period, paying £1,960. What is the double entry for the DISCOUNT ALLOWED?',
     opts: [
       'Dr Discounts allowed £40, Cr SLCA £40',
@@ -5094,7 +5094,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: '2% discount = £40. Expense: Dr Discounts allowed £40 / Cr SLCA £40. Plus separately Dr Bank £1,960 / Cr SLCA £1,960. In a three-column cash book the discount column is a memorandum; at month-end the total is posted Dr Discounts allowed / Cr SLCA.' },
 
-  { id: 'itbk-206', topic: 'itbk', difficulty: 'hard', type: 'mcq',
+  { id: 'itbk-206', topic: 'itbk', difficulty: 'hard', type: 'mcq', criteria: ['ITBK-4.1'],
     q: 'In a three-column cash book, discounts RECEIVED appear:',
     opts: [
       'On the debit (receipts) side in the discount column',
@@ -5114,7 +5114,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'Option A: Dr SLCA £600 (increases the control account) but the individual customer account is not updated — the listing stays the same. SLCA is therefore £600 higher than the listing ✓. This is the standard textbook cause: invoice posted to the control account but omitted from the personal ledger.' },
 
-  { id: 'itbk-208', topic: 'itbk', difficulty: 'hard', type: 'mcq',
+  { id: 'itbk-208', topic: 'itbk', difficulty: 'hard', type: 'mcq', criteria: ['ITBK-3.2'],
     q: 'When a business receives a credit note from a supplier (gross £480, VAT £80), which account is CREDITED?',
     opts: [
       'PLCA (reduces the liability)',
@@ -5355,7 +5355,7 @@ window.ALL_QUESTIONS.push(
 
   // ── TABLE-FILL QUESTIONS ─────────────────────────────────────────────────
 
-  { id: 'tf-016', topic: 'itbk', difficulty: 'medium', type: 'tablefill',
+  { id: 'tf-016', topic: 'itbk', difficulty: 'medium', type: 'tablefill', criteria: ['ITBK-5.2'],
     q: 'Complete the SLCA for the month. All figures in £.',
     table: {
       title: 'Sales Ledger Control Account',
@@ -5761,7 +5761,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Two are false. Monetary policy is the Bank of England’s and fiscal policy the government’s — swapping the two is the most frequently penalised error in this topic. And inelastic demand means quantity responds LESS than proportionately to a price change, which is why a price rise increases total revenue.' },
 
-  { id: 'tfq-014', topic: 'itbk', difficulty: 'easy', type: 'truefalse', skill: 'itbk-docs',
+  { id: 'tfq-014', topic: 'itbk', difficulty: 'easy', type: 'truefalse', skill: 'itbk-docs', criteria: ['ITBK-1.1'],
     q: 'Identify whether the following statements about source documents are true or false.',
     statements: [
       { text: 'A purchase order is sent by the buyer to the supplier to request goods.', answer: true },
@@ -5911,7 +5911,7 @@ window.ALL_QUESTIONS.push(
     answers: [0, 1],
     exp: 'Give the figures and the route forward. Naming internal decision-makers is unnecessary, and disclosing a customer\'s payment position to third parties breaches confidentiality.' },
 
-  { id: 'ms-010', topic: 'itbk', difficulty: 'medium', type: 'multiselect', skill: 'itbk-docs', selectCount: 2,
+  { id: 'ms-010', topic: 'itbk', difficulty: 'medium', type: 'multiselect', skill: 'itbk-docs', selectCount: 2, criteria: ['ITBK-3.1'],
     q: 'Which TWO documents should be matched against a purchase invoice before it is authorised for payment?',
     opts: [
       'The purchase order confirming the goods were ordered and at what price',
@@ -7389,7 +7389,7 @@ window.ALL_QUESTIONS.push(
    table"; what it cannot ask is which column or which side, because its blanks
    are placed for the reader before they start. */
 window.ALL_QUESTIONS.push(
-  { id: 'itbk-500', topic: 'itbk', difficulty: 'medium', type: 'entrygrid',
+  { id: 'itbk-500', topic: 'itbk', difficulty: 'medium', type: 'entrygrid', criteria: ['ITBK-2.2'],
     q: 'A credit customer is invoiced £2,400 plus VAT at 20%. Record the double entry in the general ledger.',
     entrygrid: {
       title: 'General ledger', rowHeader: 'Account', columns: ['Debit £', 'Credit £'],
@@ -7401,7 +7401,7 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'The customer owes the whole invoice, so the SLCA is debited with the GROSS £2,880. The business has earned the net £2,400 and owes HMRC the £480, and both are credits. It is the gross figure on the debit side that makes the entry balance at £2,880 each way — debiting the net instead is the commonest way to get this wrong, and it leaves the journal £480 out.' },
 
-  { id: 'itbk-501', topic: 'itbk', difficulty: 'medium', type: 'picklist',
+  { id: 'itbk-501', topic: 'itbk', difficulty: 'medium', type: 'picklist', criteria: ['ITBK-1.2'],
     q: 'Choose the book of prime entry for each document.',
     picklist: {
       title: 'Documents to be entered', rowHeader: 'Document', choiceHeader: 'Book of prime entry',
@@ -7452,7 +7452,7 @@ window.ALL_QUESTIONS.push(
      statement. Four tables cannot supply thirty marks without serving the same
      ones every sitting, which is a paper the reader learns rather than sits. */
 
-  { id: 'itbk-502', topic: 'itbk', difficulty: 'medium', type: 'entrygrid',
+  { id: 'itbk-502', topic: 'itbk', difficulty: 'medium', type: 'entrygrid', criteria: ['ITBK-3.2'],
     q: 'A supplier invoices the business £1,600 plus VAT at 20% for goods bought on credit. Record the double entry in the general ledger.',
     entrygrid: {
       title: 'General ledger', rowHeader: 'Account', columns: ['Debit £', 'Credit £'],
@@ -7464,7 +7464,7 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'A purchase invoice is the mirror of a sales invoice. The business owes the supplier the whole £1,920, so the purchases ledger control account is credited with the GROSS. The cost of the goods is the net £1,600 and the £320 of VAT is input tax the business can reclaim from HMRC, so both are debits — the VAT is not part of the cost, which is why it goes to the VAT control account rather than to purchases.' },
 
-  { id: 'itbk-503', topic: 'itbk', difficulty: 'medium', type: 'picklist',
+  { id: 'itbk-503', topic: 'itbk', difficulty: 'medium', type: 'picklist', criteria: ['ITBK-1.2'],
     q: 'In which ledger is each account kept?',
     picklist: {
       title: 'Accounts in the bookkeeping system', rowHeader: 'Account', choiceHeader: 'Ledger',
@@ -7480,7 +7480,7 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'The CONTROL accounts live in the general ledger and are part of the double entry — the sales ledger control account is the one figure for everything customers owe. The individual customer and supplier accounts are memorandum accounts kept in the sales and purchases ledgers: they say who owes what, but they are not part of the double entry, which is why their total is checked AGAINST the control account rather than added to it.' },
 
-  { id: 'itbk-504', topic: 'itbk', difficulty: 'medium', type: 'entrygrid',
+  { id: 'itbk-504', topic: 'itbk', difficulty: 'medium', type: 'entrygrid', criteria: ['ITBK-2.1'],
     q: 'The business issues a credit note to a credit customer for £300 plus VAT at 20% for goods returned. Record the double entry in the general ledger.',
     entrygrid: {
       title: 'General ledger', rowHeader: 'Account', columns: ['Debit £', 'Credit £'],
@@ -7492,7 +7492,7 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'A credit note reverses a sale, so every entry is the other way round from the invoice: the customer no longer owes the £360, so the sales ledger control account is CREDITED with the gross. The £300 goes to sales returns rather than being deducted from sales, so the books still show what was sold and what came back, and the £60 of output tax is taken back off what is owed to HMRC by debiting the VAT control account.' },
 
-  { id: 'itbk-505', topic: 'itbk', difficulty: 'medium', type: 'picklist',
+  { id: 'itbk-505', topic: 'itbk', difficulty: 'medium', type: 'picklist', criteria: ['ITBK-5.1'],
     q: 'Is the entry in the named account a debit or a credit?',
     picklist: {
       title: 'Entries in the general ledger', rowHeader: 'Account and transaction', choiceHeader: 'Entry',
