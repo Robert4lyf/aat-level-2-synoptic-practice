@@ -49,6 +49,47 @@ console.log(`${BOLD}AAT Level 3 mistake memory${RESET}\n`);
 
 const restore = D.seedRandom(20260828);
 
+/* ── Every task part type this file can answer ────────────────────────────
+   The grid crash above was not found by a check. It was found by a question
+   being added three units away, which moved a seeded draw far enough to reach
+   the one task that carries a grid. That is luck, not coverage, and the next
+   part type would have been found the same way.
+
+   So the part types in the bank are read and compared with the ones `answer()`
+   handles. Adding a part type this file cannot fill now fails here, with the
+   name of the type, on the day it is added.
+
+   IT RUNS BEFORE THE PRACTICE RUNS, deliberately. Left at the foot of the
+   file it never reported anything: an unfillable part throws inside the run
+   long before the assertion is reached, so the reader gets a stack trace
+   instead of the sentence naming the type. */
+{
+  const HANDLED = ['choice', 'numeric', 'grid'];
+  const banks = [
+    ['../aat3-practice-data.js', 'AAT3_PRACTICE'],
+    ['../aat3-faps-data.js', 'AAT3_FAPS_PRACTICE'],
+    ['../aat3-mats-data.js', 'AAT3_MATS_PRACTICE'],
+    ['../aat3-buaw-data.js', 'AAT3_BUAW_PRACTICE'],
+  ];
+  const found = new Set();
+  let tasks = 0;
+  banks.forEach(([file, key]) => {
+    (require(file)[key].QUESTIONS || []).forEach(q => {
+      if ((q.type || 'mcq') !== 'task') return;
+      tasks++;
+      (q.parts || []).forEach(p => found.add(p.type || '(none)'));
+    });
+  });
+  const unhandled = [...found].filter(t => HANDLED.indexOf(t) === -1);
+  ok(unhandled.length === 0,
+    `answer() can fill every task part type in the bank (cannot fill: ${unhandled.join(', ')})`);
+  ok(tasks > 0, `there were task questions to read part types from (${tasks})`);
+  /* And the converse: a type listed as handled that nothing uses is a branch
+     nothing exercises, which is where the next stale assumption will live. */
+  const unused = HANDLED.filter(t => !found.has(t));
+  ok(unused.length === 0, `no handled part type has fallen out of the bank (unused: ${unused.join(', ')})`);
+}
+
 /* A run of `n` questions, answering each one right or wrong as `verdict` says.
    Answers are given by reading the key off the question, so "wrong" means a
    real wrong answer through the real grading and not a flag set by hand. */
@@ -130,11 +171,34 @@ function answer(el, right) {
       if (p.type === 'choice') {
         const want = right ? p.answer : (p.answer === 0 ? 1 : 0);
         pick(el, 'taskpick', { 'data-p': pi, 'data-o': want });
-      } else {
-        const box = D.nodes(el, 'taskinput').find(n => n.getAttribute('data-p') === String(pi));
-        box.value = String(right ? p.answer : p.answer + 1);
-        box.fire('input');
+        return;
       }
+      /* A GRID PART IS NOT A TYPED BOX. `T-1-01` is the one task in the bank
+         carrying a grid, and answering it as a box threw on a `taskinput` that
+         was never rendered — so this file crashed outright on any run whose
+         draw happened to include it. The draw is seeded, so for a long time it
+         did not, and the crash sat waiting for a bank change to shift it.
+
+         check-aat3-mock.js hit the same wall and fixed it there; the fix was
+         never carried across. The static assertion below is what stops the
+         next part type doing this a third time, because it fails on the day
+         the type is added rather than on the day the draw first reaches it. */
+      if (p.type === 'grid') {
+        const cols = GRID.entryCols(p);
+        GRID.entryRows(p).forEach((r, ri) => cols.forEach((c, ci) => {
+          if (GRID.isGiven(r, ci)) return;
+          const cell = D.nodes(el, 'egcell').find(n => n.getAttribute('data-c') === `${ri}:${ci}`);
+          if (!cell) return;
+          const key = GRID.cellKey(r, ci);
+          cell.value = key == null ? '' : String(right ? key : Number(key) + 1);
+          cell.fire('input');
+        }));
+        return;
+      }
+      const box = D.nodes(el, 'taskinput').find(n => n.getAttribute('data-p') === String(pi));
+      if (!box) throw new Error(`${q.id} part ${pi}: no input for a "${p.type}" part`);
+      box.value = String(right ? p.answer : p.answer + 1);
+      box.fire('input');
     });
     D.click(el, 'tasksubmit');
   } else if (t === 'picklist') {
