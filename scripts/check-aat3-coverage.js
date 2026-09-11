@@ -58,6 +58,27 @@ const MODULES_SHIPPED = [
   { unit: 'mats', outcome: 5 },
   { unit: 'mats', outcome: 6 },
   { unit: 'mats', outcome: 7 },
+  /* BUAW was written, taught and practised without ever being declared here,
+     so its five outcomes sat outside the ratchet: a concept could have lost
+     its lesson and nothing would have failed. It passes the same checks the
+     other twenty-one do, and is now held to them. */
+  { unit: 'buaw', outcome: 1 },
+  { unit: 'buaw', outcome: 2 },
+  { unit: 'buaw', outcome: 3 },
+  { unit: 'buaw', outcome: 4 },
+  { unit: 'buaw', outcome: 5 },
+];
+
+/* Every Level 3 question bank, in one place. The tag check below read only the
+   TPFB bank, so a FAPS, MATS or BUAW question tagged to a criterion that does
+   not exist passed it — which is the same defect that check was written to
+   catch, surviving in three of the four units because the scope was narrower
+   than the rule. */
+const BANKS = [
+  ['aat3-practice-data.js', 'AAT3_PRACTICE'],
+  ['aat3-faps-data.js', 'AAT3_FAPS_PRACTICE'],
+  ['aat3-mats-data.js', 'AAT3_MATS_PRACTICE'],
+  ['aat3-buaw-data.js', 'AAT3_BUAW_PRACTICE'],
 ];
 
 const errors = [];
@@ -189,23 +210,73 @@ lessons.forEach(l => {
    A question tagged to a criterion that does not exist is invisible to every
    report that counts coverage by criterion — it looks like teaching that
    nothing tests, which is exactly what those reports exist to surface. */
+const questionsByConcept = new Map();
 {
-  const { AAT3_PRACTICE } = require(path.join(ROOT, 'aat3-practice-data.js'));
-  let checked = 0;
-  (AAT3_PRACTICE.QUESTIONS || []).forEach(q => {
-    if (!(q.criteria || []).length) {
-      errors.push(`${q.id}: claims no criteria, so no coverage report can see it.`);
-      return;
-    }
-    q.criteria.forEach(tag => {
-      checked++;
-      if (!allTags.has(tag)) {
-        errors.push(`${q.id}: claims "${tag}", which is not in the syllabus. ` +
-                    `A question tagged to a criterion that does not exist is counted by nothing.`);
+  let checked = 0, seen = 0;
+  BANKS.forEach(([file, key]) => {
+    const bank = require(path.join(ROOT, file))[key];
+    (bank.QUESTIONS || []).forEach(q => {
+      seen++;
+      if (!(q.criteria || []).length) {
+        errors.push(`${q.id}: claims no criteria, so no coverage report can see it.`);
+        return;
       }
+      q.criteria.forEach(tag => {
+        checked++;
+        if (!allTags.has(tag)) {
+          errors.push(`${q.id}: claims "${tag}", which is not in the syllabus. ` +
+                      `A question tagged to a criterion that does not exist is counted by nothing.`);
+          return;
+        }
+        questionsByConcept.set(tag, (questionsByConcept.get(tag) || 0) + 1);
+      });
     });
   });
-  notes.push(`${checked} question criteria checked against the syllabus`);
+  /* THE SCOPE IS ASSERTED, NOT ASSUMED. This rule used to see one bank of four
+     and nothing said so. Counting the questions it actually reached, and
+     requiring that number to stay in the thousands, is what makes the widening
+     permanent: drop a bank back out and this line fails rather than the
+     coverage quietly falling to a quarter. */
+  if (BANKS.length !== 4) errors.push(`BANKS lists ${BANKS.length} question banks; Level 3 has four units.`);
+  if (seen < 1300) errors.push(`the tag rule reached only ${seen} questions — a bank has fallen out of its scope.`);
+  notes.push(`${checked} question criteria across ${seen} questions checked against the syllabus`);
+}
+
+/* ── Every concept can be practised more than once ────────────────────────
+   WHY A FLOOR PER CONCEPT AND NOT PER OUTCOME. Outcome counts were healthy —
+   every one of the twenty-six held forty questions or more — and underneath
+   them eighty-five of the 363 key concepts held one or two. A reader working
+   through a concept meets its whole bank in a sitting and then meets it again
+   unchanged, which is the experience the outcome-level numbers were hiding.
+
+   THREE IS THE FLOOR, NOT THE TARGET. Two questions on a concept can be one
+   question asked twice; three is the point at which a second sitting is
+   likely to differ from the first. Most concepts here carry far more, and
+   nothing about this rule discourages that.
+
+   It is deliberately NOT a ratchet set at today's number per concept. A
+   ratchet that high would fail every time a question was retired or retagged,
+   and the thing worth protecting is the floor rather than the exact count. */
+{
+  const FLOOR = 3;
+  const thin = [];
+  let counted = 0;
+  MODULES_SHIPPED.forEach(m => {
+    S.concepts(m.unit).filter(c => c.outcome === m.outcome).forEach(c => {
+      counted++;
+      const n = questionsByConcept.get(c.tag) || 0;
+      if (n < FLOOR) thin.push(`${c.id} (${n})`);
+    });
+  });
+  if (thin.length) {
+    errors.push(`${thin.length} key concepts have fewer than ${FLOOR} practice questions, ` +
+      `so a reader meets the same ones every time: ${thin.slice(0, 8).join(', ')}${thin.length > 8 ? '…' : ''}`);
+  }
+  if (counted !== 363) {
+    errors.push(`the depth floor was applied to ${counted} concepts, not the 363 the syllabus holds — ` +
+      `an outcome has dropped out of MODULES_SHIPPED, taking its concepts with it.`);
+  }
+  notes.push(`${counted} key concepts checked for a practice floor of ${FLOOR}`);
 }
 
 MODULES_SHIPPED.forEach(m => {

@@ -6966,6 +6966,38 @@
       exp: 'Confidentiality is not about secrecy but about NEED: a colleague posting the month-end journal needs the payroll figures and a friend needs nothing, so the same file is properly shared in one case and a breach in the other. Restricting access to the payroll team is the same principle written into the system. The café is a breach even when nobody appears to be listening. Authorisation is separate and just as firm: a deadline is never a reason to file a return the client has not approved, because the return is their declaration and not yours.',
     },
 
+
+    /* ── Depth pass: concepts that had fewer than three questions ─────────
+       A concept with one or two questions behind it is a concept a reader
+       meets the same way every time. The sweep that found these counted
+       questions per KEY CONCEPT rather than per outcome — the outcomes were
+       all healthy, which is exactly why the thin spots underneath them had
+       gone unnoticed. */
+    {
+      id: 'P-4-76', unitKey: 'tpfb', lo: 4, criteria: ['TPFB-4.2.6'],
+      type: 'truefalse',
+      q: 'Identify whether each report reaches HMRC within the required timescale.',
+      statements: [
+        { text: 'An FPS sent on the day the employees are paid.', answer: true },
+        { text: 'An FPS sent three days after payday, no exception applying.', answer: false },
+        { text: 'A new employee\u2019s details included on the first FPS after they start.', answer: true },
+        { text: 'A leaver reported to HMRC by separate letter within 30 days.', answer: false },
+      ],
+      exp: 'The FPS carries almost everything, and it is due ON OR BEFORE payday \u2014 so three days after is late whatever the reason. Starters and leavers travel on the FPS too: a leaving date is a field on it, not a separate letter. The EPS is the exception in timing, being due by the 19th of the following tax month, and it is what reports a month in which nobody was paid.',
+    },
+    {
+      id: 'P-5-44', unitKey: 'tpfb', lo: 5, criteria: ['TPFB-5.2.6'],
+      type: 'mcq',
+      q: 'A VAT rate change takes effect on 1 April. The bookkeeper has not applied the update to the accounting software. Where does responsibility for the returns filed afterwards sit?',
+      opts: [
+        'With the business, which answers for what it submits',
+        'With the software supplier, which should have forced the update',
+        'With HMRC, which recalculates each return on receipt',
+        'Nowhere, unless and until HMRC raises an assessment',
+      ],
+      ans: 0,
+      exp: 'Software is a tool and not a defence. A return is the business\u2019s own declaration, so an out-of-date rate produces an inaccurate return the business answers for, with the behaviour-based penalties that follow. Suppliers do issue updates, but applying them and checking they took effect is part of keeping the records. HMRC recalculates nothing on receipt.',
+    },
   ];
 
   /* Grouped for the by-outcome picker. */

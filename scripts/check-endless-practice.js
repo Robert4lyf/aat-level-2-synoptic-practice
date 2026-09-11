@@ -211,16 +211,41 @@ LEVELS.forEach(L => {
     return s ? Number(s[1]) : null;
   };
   ok(streakNow() === 0, `${L.name}: the streak starts at zero`);
-  let rose = false, reset = false;
-  for (let i = 0; i < 25 && !(rose && reset); i++) {
+
+  /* READ THE OUTCOME, DO NOT ASSUME IT. This loop used to decide whether an
+     answer was right by having asked `answer()` for a right one — and
+     `answer()` cannot give one. It reads the DOM, the player shuffles the
+     options, and nothing on screen says which is the key before it is graded,
+     so "answer correctly" was: click the first option, tick every statement
+     true, and hope. Across twenty-five questions something normally landed,
+     `rose` went true, and these two assertions passed on that luck.
+
+     Then a bank change moved the draw, twenty-five questions ran without a
+     single accidental right answer, and both assertions failed — on a streak
+     counter that works perfectly. The check was wrong, not the app.
+
+     The graded markup says plainly what happened: the key is marked `is-right`
+     and anything the reader got wrong is marked `is-wrong`, on every type. So
+     the answer is read back rather than presumed, which makes the assertion
+     the one it always claimed to be — that a RIGHT answer raises the streak
+     and a WRONG one clears it — and stops it depending on the draw at all. */
+  const gradedRight = () => el3.innerHTML.indexOf('is-wrong') === -1;
+  let rose = false, reset = false, rights = 0, wrongs = 0;
+  for (let i = 0; i < 40 && !(rose && reset); i++) {
     const before = streakNow();
     if (!answer(D, el3, L.pre, !rose)) break;
     if (!D.nodes(el3, 'nextq').length) break;
+    const right = gradedRight();
     D.click(el3, 'nextq');
     const after = streakNow();
-    if (after > before) rose = true;
-    else if (rose && after === 0) reset = true;
+    if (right) { rights++; if (after > before) rose = true; }
+    /* `before > 0` matters: a wrong answer while the streak is already zero
+       leaves it at zero, which is not a reset and must not be read as one. */
+    else { wrongs++; if (before > 0 && after === 0) reset = true; }
   }
+  ok(rights > 0 && wrongs > 0,
+    `${L.name}: the run produced both a right and a wrong answer to judge on ` +
+    `(${rights} right, ${wrongs} wrong)`);
   ok(rose, `${L.name}: the streak rises on a right answer`);
   ok(reset, `${L.name}: and resets on a wrong one`);
 
