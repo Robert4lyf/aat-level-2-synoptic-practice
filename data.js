@@ -877,31 +877,31 @@ window.ALL_QUESTIONS = [
 
 
   /* -- PRINCIPLES OF BOOKKEEPING CONTROLS (POBC) -- */
-  { id: 'pobc-001', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-001', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-1.2'],
     q: 'A control account reconciles with:',
     opts: ['Bank statement', 'Individual ledger balances', 'Profit and loss account', 'Cash flow statement'],
     ans: 1,
     exp: 'A control account holds the total of a subsidiary ledger, so the two are reconciled by matching the control account balance to the total of the individual balances.' },
 
-  { id: 'pobc-002', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-002', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.2'],
     q: 'A correction of an error requires:',
     opts: ['Ignoring the error', 'Journal entry', 'Bank payment', 'VAT adjustment only'],
     ans: 1,
     exp: 'Errors identified during a reconciliation are corrected by raising a journal entry with a clear narrative.' },
 
-  { id: 'pobc-003', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-003', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-1.1'],
     q: 'A credit balance on the VAT control account means:',
     opts: ['HMRC owes the business money', 'The business owes HMRC money', 'Input tax exceeds output tax', 'The business has overclaimed VAT'],
     ans: 1,
     exp: 'A credit balance means output tax (on sales) exceeds input tax (on purchases) — the business owes the difference to HMRC.' },
 
-  { id: 'pobc-004', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-004', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-2.2'],
     q: 'A direct debit on the bank statement that is not in the cash book requires:',
     opts: ['Adjustment to the bank statement', 'Entry as a payment in the cash book', 'Entry as a receipt in the cash book', 'No adjustment'],
     ans: 1,
     exp: 'Unrecorded direct debits must be entered as payments (credits) in the cash book to bring it up to date.' },
 
-  { id: 'pobc-005', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-005', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.1'],
     q: 'A journal entry is used to:',
     opts: [
       'Make adjustments that are not covered by any other book of prime entry',
@@ -912,7 +912,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The journal handles the non-routine entries that no other book of prime entry covers — corrections, opening balances, irrecoverable debts and the payroll. That is the test: if a transaction fits one of the other books, it belongs there instead.' },
 
-  { id: 'pobc-006', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-006', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-2.2'],
     q: 'A normal reason for the cash book and bank statement to differ is:',
     opts: [
       'Timing differences such as cheques written but not yet presented',
@@ -923,7 +923,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Timing differences — for example unpresented cheques and outstanding lodgements — are the normal reason for differences between the cash book and the bank statement.' },
 
-  { id: 'pobc-007', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-007', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-1.1'],
     q: 'A sales ledger control account is reduced by:',
     opts: [
       'Cash received from credit customers settling their accounts',
@@ -934,7 +934,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Receipts reduce what customers owe, so they are credited to the SLCA. So do sales returns, discounts allowed, irrecoverable debts and contras. Credit sales and dishonoured cheques increase the balance and sit on the debit side.' },
 
-  { id: 'pobc-008', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-008', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.3'],
     q: 'A suspense account balance remains after correction. What does this indicate?',
     opts: [
       'Further errors remain that have not yet been found and corrected',
@@ -945,7 +945,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The suspense account only clears when every error causing the difference has been found and journalled. A balance still sitting there means at least one error remains unidentified, and it must not simply be written off — the accounts would then be knowingly wrong.' },
 
-  { id: 'pobc-009', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-009', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.3'],
     q: 'A suspense account is cleared by:',
     opts: [
       'Identifying and correcting the bookkeeping errors that caused it',
@@ -956,7 +956,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A suspense account is cleared by identifying the underlying errors and correcting them by journal entry.' },
 
-  { id: 'pobc-010', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-010', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.3'],
     q: 'A suspense account is cleared when:',
     opts: [
       'The errors causing the difference are identified and corrected',
@@ -967,7 +967,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A suspense account is a temporary holding place for a trial balance difference. It clears only when the underlying errors are found and put right by journal. A balance still sitting there at the year end means errors remain unresolved.' },
 
-  { id: 'pobc-011', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-011', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.2'],
     q: 'A transposition error will:',
     opts: [
       'Usually cause the trial balance to disagree by a multiple of nine',
@@ -978,7 +978,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Transposing digits — £45 recorded as £54 — leaves a difference divisible by nine, which is why a difference that divides by nine points to a transposition. It only agrees if the same error is made on both sides.' },
 
-  { id: 'pobc-012', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-012', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-2.3'],
     q: 'An unpresented cheque is:',
     opts: [
       'A cheque written and recorded that has not yet cleared the bank',
@@ -989,7 +989,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The business has written the cheque and recorded it, but the payee has not yet banked it, so the bank statement is still higher. This is a timing difference: it needs no adjustment and will resolve itself when the cheque clears. Contrast bank charges, which are genuine omissions from the cash book.' },
 
-  { id: 'pobc-013', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-013', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-2.2'],
     q: 'Bank charges shown on the bank statement but not in the cash book should be:',
     opts: [
       'Entered in the cash book as a payment out of the account',
@@ -1000,7 +1000,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Bank charges reduce the bank balance — enter them as a payment (credit) in the cash book to bring it up to date.' },
 
-  { id: 'pobc-014', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-014', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.3'],
     q: 'Clearing a suspense account requires:',
     opts: [
       'Identifying the errors that caused it and posting corrections',
@@ -1011,7 +1011,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Clearing suspense means locating each error and posting a journal that moves the amount to where it belongs. There is no shortcut: transferring the balance to the income statement would conceal the errors rather than correct them.' },
 
-  { id: 'pobc-015', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-015', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.1'],
     q: 'Every journal entry must include:',
     opts: [
       'A narrative explaining the reason for the entry',
@@ -1022,7 +1022,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The narrative is what makes a journal auditable: without it, nobody reviewing the books later can judge whether the entry was legitimate. Director approval is a control some businesses add, but it is not part of the entry itself.' },
 
-  { id: 'pobc-016', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-016', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.1'],
     q: 'Net pay equals:',
     opts: [
       'Gross pay less all deductions made from the employee\'s wages',
@@ -1033,7 +1033,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Net pay is what actually reaches the employee: gross pay less PAYE, employee National Insurance, pension contributions and any other deductions. Employer\'s NIC is not deducted from the employee — it is an additional cost to the employer on top of gross pay.' },
 
-  { id: 'pobc-017', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-017', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-2.3'],
     q: 'Outstanding lodgements are:',
     opts: [
       'Deposits recorded in the cash book but not yet on the bank statement',
@@ -1044,7 +1044,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Outstanding lodgements are deposits the business has made and recorded in the cash book, but which have not yet appeared on the bank statement.' },
 
-  { id: 'pobc-018', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-018', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.1'],
     q: 'The payroll journal records:',
     opts: [
       'Gross wages, National Insurance, deductions and net pay',
@@ -1055,7 +1055,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The payroll journal records gross pay, PAYE, employee and employer NICs, pension deductions and net pay.' },
 
-  { id: 'pobc-019', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-019', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-1.1'],
     q: 'The purchases ledger control account normally has:',
     opts: [
       'A credit balance representing the amounts owed to suppliers',
@@ -1066,7 +1066,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The PLCA records what the business owes suppliers, making it a liability, and liabilities carry credit balances. A debit balance is possible but unusual: it means a supplier has been overpaid or a credit note exceeds the amount owed.' },
 
-  { id: 'pobc-020', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-020', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-1.2'],
     q: 'The sales ledger control account balance should agree with:',
     opts: [
       'The total of the individual customer balances in the sales ledger',
@@ -1077,7 +1077,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The SLCA is a summary account — its balance must equal the total of all individual customer balances in the sales ledger.' },
 
-  { id: 'pobc-021', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-021', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.1'],
     q: 'Total employment cost to the employer is:',
     opts: [
       'Gross pay plus employer\'s National Insurance and pension contributions',
@@ -1088,19 +1088,19 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Total employment cost is what the employer actually parts with: gross pay plus employer\'s National Insurance plus employer\'s pension contributions. The employee\'s own deductions are inside gross pay, not additional to it — a distinction routinely tested.' },
 
-  { id: 'pobc-022', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-022', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.2'],
     q: 'What causes a transposition error?',
     opts: ['Missing entry', 'Digits reversed', 'Wrong account type', 'Wrong VAT rate'],
     ans: 1,
     exp: 'A transposition error occurs when digits are reversed when recording a figure — for example writing £54 instead of £45.' },
 
-  { id: 'pobc-023', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-023', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-1.1'],
     q: 'What does a control account help detect?',
     opts: ['Marketing errors', 'Ledger discrepancies', 'Sales strategy issues', 'HR problems'],
     ans: 1,
     exp: 'Control accounts summarise the total of subsidiary ledgers, so any discrepancy between the control account and the underlying ledger points to a posting error or omission.' },
 
-  { id: 'pobc-024', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-024', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-1.1'],
     q: 'What does a credit balance on VAT control mean?',
     opts: [
       'Output tax exceeds input tax, so the business owes HMRC',
@@ -1111,13 +1111,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The VAT control account collects output tax on sales as credits and input tax on purchases as debits. A credit balance therefore means output exceeds input and the difference is payable. A debit balance is the refund position.' },
 
-  { id: 'pobc-025', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-025', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.2'],
     q: 'What is a journal correction used for?',
     opts: ['Sales recording', 'Error correction', 'Bank deposits', 'Inventory valuation'],
     ans: 1,
     exp: 'The journal handles what the day books cannot: correcting errors, posting year-end adjustments, recording opening balances, payroll and asset disposals. Every entry carries a narrative, without which nobody reviewing the books later can judge whether it was legitimate.' },
 
-  { id: 'pobc-026', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-026', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.3'],
     q: 'What is a suspense account used for?',
     opts: [
       'To hold a difference on the trial balance until it is resolved',
@@ -1139,7 +1139,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The cash book is a book of prime entry that records all bank and cash transactions, acting as both a day book and part of the ledger.' },
 
-  { id: 'pobc-028', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-028', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-1.1'],
     q: 'What is the main purpose of a control account?',
     opts: [
       'To summarise a subsidiary ledger in a single ledger balance',
@@ -1150,7 +1150,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A control account holds the total of a subsidiary ledger, allowing the ledger to be verified by comparing the two.' },
 
-  { id: 'pobc-029', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-029', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.1'],
     q: 'What is employer\'s National Insurance contribution (NIC)?',
     opts: [
       'A payroll cost borne by the employer in addition to gross wages',
@@ -1161,7 +1161,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Employer\'s NIC is an additional employment cost paid by the employer to HMRC based on each employee\'s earnings above the secondary threshold.' },
 
-  { id: 'pobc-030', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-030', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-1.1'],
     q: 'What is input VAT?',
     opts: [
       'VAT the business has incurred on its purchases',
@@ -1183,7 +1183,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Labour turnover measures the rate at which employees leave and need replacing. High turnover increases recruitment and training costs.' },
 
-  { id: 'pobc-032', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-032', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.1'],
     q: 'What is PAYE?',
     opts: [
       'Income tax deducted from employees\' wages by the employer',
@@ -1194,7 +1194,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'PAYE (Pay As You Earn) is income tax deducted at source from employees’ wages by the employer and paid to HMRC.' },
 
-  { id: 'pobc-033', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-033', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.1'],
     q: 'What is the purpose of the payroll journal?',
     opts: [
       'Record gross wages, deductions and the net pay due to employees',
@@ -1205,7 +1205,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The payroll journal records gross wages, employee and employer NICs, PAYE, pension contributions and net pay for the period.' },
 
-  { id: 'pobc-034', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-034', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.3'],
     q: 'How is a suspense account cleared?',
     opts: [
       'By posting correcting journal entries once the errors are found',
@@ -1238,7 +1238,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Internal controls are designed to safeguard assets, ensure the accuracy and completeness of records, and prevent and detect errors and fraud.' },
 
-  { id: 'pobc-037', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-037', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.3'],
     q: 'What is the purpose of a suspense account?',
     opts: [
       'To hold a difference on the trial balance until it is investigated',
@@ -1271,13 +1271,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Sequential numbering of invoices, credit notes and cheques means missing or duplicated documents are quickly spotted, improving completeness controls.' },
 
-  { id: 'pobc-040', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-040', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.1'],
     q: 'Which account is credited for wages paid?',
     opts: ['Wages expense', 'Bank', 'Capital', 'Revenue'],
     ans: 1,
     exp: 'Paying wages reduces the bank balance, so Bank is credited. The debit side splits between the wages expense and the liabilities created for PAYE and National Insurance owed to HMRC, which are paid over separately.' },
 
-  { id: 'pobc-041', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-041', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-1.1'],
     q: 'Which control account is used for VAT reporting?',
     opts: [
       'The VAT control account',
@@ -1288,7 +1288,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The VAT control account collects output tax on sales and input tax on purchases; its balance is what is owed to, or reclaimable from, HMRC at the quarter end. The other accounts track customers, suppliers and money movements.' },
 
-  { id: 'pobc-042', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-042', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-1.1'],
     q: 'Which control account reconciles suppliers?',
     opts: [
       'The total of the individual balances in the subsidiary ledger',
@@ -1299,13 +1299,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The purchases ledger control account (PLCA) summarises supplier balances and is used to verify the purchases ledger.' },
 
-  { id: 'pobc-043', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-043', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.1'],
     q: 'Which document supports payroll entries?',
     opts: ['Invoice', 'Payslip', 'Statement', 'Credit note'],
     ans: 1,
     exp: 'Payslips are the source documents that evidence the gross pay, deductions and net pay recorded in the payroll journal.' },
 
-  { id: 'pobc-044', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-044', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.2'],
     q: 'Which error would still allow the trial balance to agree?',
     opts: [
       'A transaction omitted from the records entirely',
@@ -1322,7 +1322,7 @@ window.ALL_QUESTIONS = [
     ans: 1,
     exp: 'Source documents (such as invoices, credit notes and bank statements) provide the original evidence for transactions.' },
 
-  { id: 'pobc-046', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-046', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.3'],
     q: 'Which item appears in a suspense account temporarily?',
     opts: [
       'An unidentified difference on the trial balance',
@@ -1333,7 +1333,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The suspense account is a temporary holding place for a difference whose cause is not yet known. It is cleared by journal once the errors are traced, and any balance remaining at the year end signals unresolved errors.' },
 
-  { id: 'pobc-047', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-047', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-2.3'],
     q: 'Which of the following causes the cash book balance to be HIGHER than the bank statement balance?',
     opts: [
       'Outstanding lodgements not yet credited by the bank',
@@ -1344,13 +1344,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A lodgement recorded by the business but not yet by the bank makes the cash book higher. Unpresented cheques leave the cash book lower, and unrecorded charges or direct debits mean the cash book is overstated and needs adjusting.' },
 
-  { id: 'pobc-048', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-048', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-1.1'],
     q: 'Which reduces trade receivables control account?',
     opts: ['Credit sales', 'Cash received', 'Purchases', 'Capital'],
     ans: 1,
     exp: 'Cash received from customers reduces the amount owed and is therefore credited to the trade receivables (SLCA) account.' },
 
-  { id: 'pobc-049', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-049', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.2'],
     q: 'Which type of error IS detected by a trial balance?',
     opts: [
       'Different debit and credit amounts entered for one transaction',
@@ -1361,7 +1361,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A trial balance only detects arithmetic imbalances. Posting different debit and credit amounts will leave the totals unequal.' },
 
-  { id: 'pobc-050', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-050', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-2.3'],
     q: 'A bank reconciliation identifies:',
     opts: [
       'Differences between the cash book balance and the bank statement',
@@ -1372,7 +1372,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A bank reconciliation identifies and explains the differences between the cash book balance and the bank statement balance — typically timing differences or unrecorded items.' },
 
-  { id: 'pobc-051', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-051', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-2.3'],
     q: 'A bank reconciliation is used to:',
     opts: [
       'Reconcile the cash book balance with the balance on the bank statement',
@@ -1383,7 +1383,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A bank reconciliation identifies and explains timing differences between the cash book balance and the bank statement balance.' },
 
-  { id: 'pobc-052', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-052', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-2.3'],
     q: 'A bank reconciliation shows adjusted cash book higher than bank statement. This suggests:',
     opts: [
       'Outstanding lodgements the bank has not yet credited',
@@ -1394,13 +1394,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A lodgement recorded in the cash book but not yet credited by the bank makes the cash book the higher of the two. Unpresented cheques work the other way, and bank charges or direct debits mean the cash book is too high only because entries are missing — those require adjustment rather than being timing differences.' },
 
-  { id: 'pobc-053', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-053', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-3.2'],
     q: 'A compensating error occurs when:',
     opts: ['Two errors cancel each other out', 'The bank makes a posting error', 'The trial balance is incorrect', 'An auditor finds an error'],
     ans: 0,
     exp: 'A compensating error occurs when two unrelated errors of equal value on opposite sides offset each other, leaving the trial balance balanced.' },
 
-  { id: 'pobc-054', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-054', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-1.1'],
     q: 'A contra entry between control accounts occurs when:',
     opts: [
       'A customer is also a supplier and the amounts owed are offset against each other',
@@ -1411,25 +1411,25 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A contra nets off amounts owed to and by the same business that is both a customer and a supplier — Dr PLCA, Cr SLCA.' },
 
-  { id: 'pobc-055', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-055', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-1.1'],
     q: 'A contra entry between control accounts results in:',
     opts: ['No net effect overall', 'Increase in liabilities', 'Increase in assets', 'Increase in revenue'],
     ans: 0,
     exp: 'A contra entry offsets amounts owed by a customer who is also a supplier — reducing both the SLCA and the PLCA by the same amount with no overall change.' },
 
-  { id: 'pobc-056', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-056', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-3.2'],
     q: 'A corrected error that balances the trial balance may still be:',
     opts: ['Error of omission', 'Error of transposition', 'Compensating error', 'Bank error'],
     ans: 2,
     exp: 'Compensating errors are two errors of equal value on opposite sides that offset each other, so the trial balance still balances.' },
 
-  { id: 'pobc-057', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-057', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-3.2'],
     q: 'A correcting journal entry is used to:',
     opts: ['Record cash sales', 'Correct accounting errors', 'Prepare budgets', 'Calculate depreciation'],
     ans: 1,
     exp: 'A correcting journal entry is the standard mechanism for posting adjustments to fix errors identified after initial recording.' },
 
-  { id: 'pobc-058', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-058', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-1.2'],
     q: 'A difference in a control account and subsidiary ledger is most likely caused by:',
     opts: [
       'Timing differences or errors made when postings were recorded',
@@ -1440,13 +1440,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Differences between a control account and its subsidiary ledger are typically caused by posting errors, omissions or timing differences.' },
 
-  { id: 'pobc-059', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-059', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-3.2'],
     q: 'A payment is posted to the wrong supplier account. This is an example of:',
     opts: ['Error of omission', 'Error of commission', 'Error of principle', 'Compensating error'],
     ans: 1,
     exp: 'Posting to the correct type of account but the wrong specific account (e.g. wrong supplier) is an error of commission.' },
 
-  { id: 'pobc-060', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-060', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-3.3'],
     q: 'A suspense account is opened when:',
     opts: [
       'The trial balance does not balance and the cause is unknown',
@@ -1457,7 +1457,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A suspense account temporarily holds the difference when a trial balance does not balance, while errors are traced and corrected.' },
 
-  { id: 'pobc-061', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-061', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-3.2'],
     q: 'Which type of error will NOT be revealed by a trial balance?',
     opts: ['Transposition error (digits reversed)', 'A complete omission of a transaction', 'A single-sided entry', 'Unequal debit and credit amounts'],
     ans: 1,
@@ -1474,7 +1474,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'An audit trail links every accounting entry back to its source document, providing the evidence needed for review, audit and investigation.' },
 
-  { id: 'pobc-063', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-063', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-3.2'],
     q: 'An error of commission occurs when:',
     opts: [
       'A transaction is posted to the wrong account of the correct type',
@@ -1485,7 +1485,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Error of commission: correct account type but wrong specific account — for example posted to the wrong supplier account.' },
 
-  { id: 'pobc-064', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-064', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-3.2'],
     q: 'An error of original entry occurs when:',
     opts: [
       'The wrong figure is used for both the debit and the credit',
@@ -1496,7 +1496,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'In an error of original entry the wrong figure is entered for both sides — the trial balance still balances, but the amount is wrong.' },
 
-  { id: 'pobc-065', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-065', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-3.2'],
     q: 'An error of principle occurs when:',
     opts: [
       'A payment for motor expenses is posted to the motor vehicles account',
@@ -1507,7 +1507,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'An error of principle posts a transaction to the wrong type of account altogether — an expense treated as an asset. Posting to the wrong supplier is an error of commission, because the type of account was right; transposed digits are an error of original entry.' },
 
-  { id: 'pobc-066', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-066', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-3.2'],
     q: 'A reversal of entries (debits and credits swapped) is recorded for a transaction. What is the effect on the trial balance?',
     opts: [
       'The trial balance still balances, but the accounts hold the wrong figures',
@@ -1518,7 +1518,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A reversal of entries swaps the debit and credit sides. Total debits still equal total credits, so the trial balance balances — but the wrong accounts have been debited and credited, leaving each at twice the error.' },
 
-  { id: 'pobc-067', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-067', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-2.2'],
     q: 'In a bank reconciliation, an unrecorded bank charge should be:',
     opts: ['Added to cash book receipts', 'Deducted in the cash book', 'Ignored until next period', 'Added to bank statement balance'],
     ans: 1,
@@ -1530,7 +1530,7 @@ window.ALL_QUESTIONS = [
     ans: 1,
     exp: 'Splitting duties between different staff (e.g. authorising, recording and paying) reduces the opportunity for fraud or undetected error.' },
 
-  { id: 'pobc-069', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-069', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-1.1'],
     q: 'The purpose of a control account is to:',
     opts: [
       'Provide a summary total that can be reconciled to the ledger',
@@ -1541,7 +1541,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Control accounts summarise the totals of the subsidiary ledgers, providing a single figure that can be reconciled to confirm the underlying ledger is accurate.' },
 
-  { id: 'pobc-070', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-070', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-2.3'],
     q: 'What does a bank reconciliation identify?',
     opts: [
       'Differences between the cash book balance and the bank statement',
@@ -1552,7 +1552,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A bank reconciliation identifies differences between the cash book and the bank statement — primarily timing differences and unrecorded items.' },
 
-  { id: 'pobc-071', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-071', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-1.1'],
     q: 'What does a debit balance on PLCA mean?',
     opts: [
       'An overpayment or prepayment made to a supplier',
@@ -1563,7 +1563,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The PLCA normally has a credit balance (a liability). A debit balance indicates an overpayment to suppliers — the supplier now owes the business.' },
 
-  { id: 'pobc-072', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-072', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-1.2'],
     q: 'What does reconciliation ensure?',
     opts: [
       'That the business\'s records agree with an independent external record',
@@ -1586,7 +1586,7 @@ window.ALL_QUESTIONS = [
     ans: 1,
     exp: 'Segregation of duties spreads responsibility across different people, reducing the risk that one individual can both commit and conceal fraud.' },
 
-  { id: 'pobc-075', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-075', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-3.2'],
     q: 'What is an error of commission?',
     opts: [
       'A transaction posted to the wrong account within the correct category',
@@ -1597,7 +1597,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'An error of commission occurs when a transaction is posted to the correct type of account but to the wrong specific account.' },
 
-  { id: 'pobc-076', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-076', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-2.3'],
     q: 'What is the aim of a bank reconciliation?',
     opts: [
       'Match the cash book against the bank statement and explain any differences',
@@ -1608,7 +1608,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A bank reconciliation aims to ensure the cash book balance agrees with the bank statement balance after explaining timing differences and adjusting for unrecorded items.' },
 
-  { id: 'pobc-077', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-077', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-2.3'],
     q: 'What is the impact of a timing difference in bank reconciliation?',
     opts: [
       'It is a temporary difference that resolves in a later period',
@@ -1658,19 +1658,19 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Splitting cash-handling duties (receipts, banking, recording, reconciliation) means no single person controls all aspects of the cash cycle, reducing the opportunity for theft.' },
 
-  { id: 'pobc-082', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-082', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-3.2'],
     q: 'Which type of error affects only one side of the trial balance?',
     opts: ['Compensating error', 'A single-sided posting', 'Complete omission of a transaction', 'Error of principle'],
     ans: 1,
     exp: 'A single-sided posting records the debit but not the credit (or vice versa), causing the trial balance totals to disagree.' },
 
-  { id: 'pobc-083', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-083', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-3.2'],
     q: 'Which type of error would cause the trial balance to disagree?',
     opts: ['Compensating error', 'A single-sided posting', 'Complete omission of a transaction', 'Correct posting of a transaction'],
     ans: 1,
     exp: 'A single-sided posting leaves only one half of the double entry recorded, so total debits do not equal total credits.' },
 
-  { id: 'pobc-084', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-084', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-3.2'],
     q: 'Which of the following errors will NOT cause the trial balance to disagree?',
     opts: [
       'A posting made to the wrong account on the correct side',
@@ -1681,7 +1681,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Posting to the wrong account on the correct side does not unbalance the trial balance — total debits still equal total credits, even though the analysis is wrong.' },
 
-  { id: 'pobc-085', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-085', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-3.2'],
     q: 'Which error would require a journal correction rather than ledger reposting?',
     opts: ['Transposition error', 'Error of principle', 'Bank omission', 'Casting error'],
     ans: 1,
@@ -1693,7 +1693,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Passwords and user access rights limit who can enter the system and what they can do once inside. Individual logins matter as much as the password itself: a shared login destroys the audit trail, because no entry can be attributed to a person.' },
 
-  { id: 'pobc-087', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-087', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-2.3'],
     q: 'Which is a timing difference?',
     opts: [
       'A cheque written and recorded but not yet presented',
@@ -1704,7 +1704,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'An unpresented cheque is a payment recorded in the cash book that has not yet cleared the bank — a typical bank-reconciliation timing difference.' },
 
-  { id: 'pobc-088', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-088', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-2.3'],
     q: 'Which item appears on bank reconciliation?',
     opts: [
       'Cheques written and recorded but not yet presented to the bank',
@@ -1715,7 +1715,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Unpresented cheques are timing differences that appear on the bank reconciliation until they clear through the bank.' },
 
-  { id: 'pobc-089', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-089', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-2.3'],
     q: 'Which of the following would NOT appear in a bank reconciliation statement?',
     opts: [
       'Bank charges that have already been entered in the cash book',
@@ -1732,19 +1732,19 @@ window.ALL_QUESTIONS = [
     ans: 1,
     exp: 'A stock reconciliation compares the physical count against the inventory records and investigates any difference — theft, damage, mis-posting or goods received but not recorded. Like every reconciliation, it works by comparing two records built independently.' },
 
-  { id: 'pobc-091', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-091', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-3.2'],
     q: 'Which type of error is NOT revealed by a trial balance?',
     opts: ['A transposition causing imbalance', 'A single-sided entry', 'An error of omission', 'An arithmetic error in casting a ledger'],
     ans: 2,
     exp: 'An error of omission affects neither side, so the trial balance still balances and the error remains undetected by it.' },
 
-  { id: 'pobc-092', topic: 'pobc', difficulty: 'hard',
+  { id: 'pobc-092', topic: 'pobc', difficulty: 'hard', criteria: ['POBC-2.2'],
     q: 'A cash book is overcast by £200. The effect is:',
     opts: ['Profit overstated', 'Bank balance overstated', 'Liabilities understated', 'Inventory overstated'],
     ans: 1,
     exp: 'Overcasting a cash book column overstates the cash book balance by the same amount, so the bank balance is overstated until the error is corrected.' },
 
-  { id: 'pobc-093', topic: 'pobc', difficulty: 'hard',
+  { id: 'pobc-093', topic: 'pobc', difficulty: 'hard', criteria: ['POBC-1.2'],
     q: 'A control account shows £2,000 credit but the ledger shows £1,800. What is most likely?',
     opts: [
       'A posting error or an omission from one of the records',
@@ -1755,25 +1755,25 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A discrepancy between a control account and the underlying ledger is normally caused by a posting error, omission or transposition rather than any external factor.' },
 
-  { id: 'pobc-094', topic: 'pobc', difficulty: 'hard',
+  { id: 'pobc-094', topic: 'pobc', difficulty: 'hard', criteria: ['POBC-3.2'],
     q: 'A payment of £600 is recorded as £60 in the cash book. What type of error is this?',
     opts: ['Transposition error', 'Error of original entry', 'Error of commission', 'Complete omission'],
     ans: 1,
     exp: 'An error of original entry occurs when an incorrect figure is entered at the point of recording (here, £60 instead of £600). Both sides of the double entry use the wrong figure so the trial balance still balances.' },
 
-  { id: 'pobc-095', topic: 'pobc', difficulty: 'hard',
+  { id: 'pobc-095', topic: 'pobc', difficulty: 'hard', criteria: ['POBC-1.2'],
     q: 'A supplier is overpaid by £100. How should this be recorded?',
     opts: ['Dr expense, Cr bank', 'Dr trade receivables, Cr bank', 'Dr trade payables, Cr bank', 'Dr bank, Cr sales'],
     ans: 2,
     exp: 'An overpayment to a supplier reduces both the trade payables balance and the bank balance: Dr Trade Payables £100, Cr Bank £100.' },
 
-  { id: 'pobc-096', topic: 'pobc', difficulty: 'hard',
+  { id: 'pobc-096', topic: 'pobc', difficulty: 'hard', criteria: ['POBC-3.3'],
     q: 'A suspense account shows a debit balance of £150. What does this indicate?',
     opts: ['Credits exceed debits by £150', 'Debits exceed credits by £150', 'No errors exist', 'Cash is missing'],
     ans: 0,
     exp: 'A debit balance on the suspense account means the original trial balance had credits exceeding debits — the suspense Dr is needed to make the two sides equal.' },
 
-  { id: 'pobc-097', topic: 'pobc', difficulty: 'hard',
+  { id: 'pobc-097', topic: 'pobc', difficulty: 'hard', criteria: ['POBC-1.1'],
     q: 'In the VAT control account, the amount due to HMRC is:',
     opts: ['Output tax minus input tax', 'Input tax minus output tax', 'Total sales divided by 6', 'Total purchases multiplied by 20%'],
     ans: 0,
@@ -3530,7 +3530,7 @@ window.ALL_QUESTIONS.push(
 
 
   /* -- PRINCIPLES OF BOOKKEEPING CONTROLS (POBC) -- */
-  { id: 'pobc-num-001', topic: 'pobc', difficulty: 'easy', type: 'numeric', unit: '£',
+  { id: 'pobc-num-001', topic: 'pobc', difficulty: 'easy', type: 'numeric', unit: '£', criteria: ['POBC-1.1'],
     generate: function () {
       const output = window._QH.rs(5000, 25000, 100);
       const input = window._QH.rs(1000, output - 500, 100);
@@ -3547,7 +3547,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'pobc-num-002', topic: 'pobc', difficulty: 'easy', type: 'numeric', unit: '£',
+  { id: 'pobc-num-002', topic: 'pobc', difficulty: 'easy', type: 'numeric', unit: '£', criteria: ['POBC-3.3'],
     generate: function () {
       const credits = window._QH.rs(80000, 200000, 100);
       const diff = window._QH.rs(100, 1500, 50);
@@ -3564,7 +3564,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'pobc-num-003', topic: 'pobc', difficulty: 'medium', type: 'numeric', unit: '£',
+  { id: 'pobc-num-003', topic: 'pobc', difficulty: 'medium', type: 'numeric', unit: '£', criteria: ['POBC-1.1'],
     generate: function () {
       const opening = window._QH.rs(10000, 25000, 500);
       const purchases = window._QH.rs(30000, 70000, 500);
@@ -3584,7 +3584,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'pobc-num-004', topic: 'pobc', difficulty: 'medium', type: 'numeric', unit: '£',
+  { id: 'pobc-num-004', topic: 'pobc', difficulty: 'medium', type: 'numeric', unit: '£', criteria: ['POBC-2.3'],
     generate: function () {
       const cb = window._QH.rs(3000, 9000, 100);
       const unpresented = window._QH.rs(500, 2000, 50);
@@ -3602,7 +3602,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'pobc-num-005', topic: 'pobc', difficulty: 'hard', type: 'numeric', unit: '£', tolerance: 0.10,
+  { id: 'pobc-num-005', topic: 'pobc', difficulty: 'hard', type: 'numeric', unit: '£', tolerance: 0.10, criteria: ['POBC-3.1'],
     generate: function () {
       const salary = window._QH.rs(20000, 60000, 1000);
       const threshold = 5000;
@@ -3621,7 +3621,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'pobc-num-006', topic: 'pobc', difficulty: 'medium', type: 'numeric', unit: '£',
+  { id: 'pobc-num-006', topic: 'pobc', difficulty: 'medium', type: 'numeric', unit: '£', criteria: ['POBC-3.1'],
     generate: function () {
       const net = window._QH.rs(1500, 3500, 50);
       const paye = window._QH.rs(150, 550, 10);
@@ -4147,7 +4147,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'These four documents track the order-to-pay cycle: PO → GRN → invoice → remittance advice on payment.' },
 
-  { id: 'dd-003', topic: 'pobc', difficulty: 'medium', type: 'dragdrop',
+  { id: 'dd-003', topic: 'pobc', difficulty: 'medium', type: 'dragdrop', criteria: ['POBC-3.2'],
     q: 'Match each type of error to its description.',
     pairs: [
       { left: 'Error of omission', right: 'Transaction completely missed' },
@@ -4157,7 +4157,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'All four leave the trial balance in balance, so none can be found by checking that the totals agree. Each needs a different check: reconciliation, a review of the source document, or a second person reading the posting.' },
 
-  { id: 'dd-004', topic: 'pobc', difficulty: 'medium', type: 'dragdrop',
+  { id: 'dd-004', topic: 'pobc', difficulty: 'medium', type: 'dragdrop', criteria: ['POBC-2.3'],
     q: 'Match each bank-reconciliation item to its meaning.',
     pairs: [
       { left: 'Unpresented cheque', right: 'Issued by the business but not yet cleared by the bank' },
@@ -4199,7 +4199,7 @@ window.ALL_QUESTIONS.push(
 
 
   /* === TABLE-COMPLETION === */
-  { id: 'tf-001', topic: 'pobc', difficulty: 'medium', type: 'tablefill',
+  { id: 'tf-001', topic: 'pobc', difficulty: 'medium', type: 'tablefill', criteria: ['POBC-1.1'],
     q: 'Complete the sales ledger control account (SLCA) by calculating the missing balance.',
     table: {
       title: 'Sales ledger control account',
@@ -4213,7 +4213,7 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'Total Dr = 12,000 + 58,000 = 70,000. The credit side must total the same, so the closing balance is 70,000 − 45,000 − 2,000 = 23,000.' },
 
-  { id: 'tf-002', topic: 'pobc', difficulty: 'medium', type: 'tablefill',
+  { id: 'tf-002', topic: 'pobc', difficulty: 'medium', type: 'tablefill', criteria: ['POBC-1.1'],
     q: 'Complete the purchases ledger control account (PLCA) by calculating the missing balance.',
     table: {
       title: 'Purchases ledger control account',
@@ -4260,7 +4260,7 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'Cost of goods sold is opening inventory plus purchases less closing inventory: 8,000 + 42,000 − 6,000 = 44,000. Only stock that has actually left the business is a cost of this period; what remains on the shelf is an asset.' },
 
-  { id: 'tf-005', topic: 'pobc', difficulty: 'hard', type: 'tablefill',
+  { id: 'tf-005', topic: 'pobc', difficulty: 'hard', type: 'tablefill', criteria: ['POBC-3.1'],
     q: 'Complete the payroll summary for one employee.',
     table: {
       title: 'Payroll',
@@ -4299,7 +4299,7 @@ window.ALL_QUESTIONS.push(
     exp: 'A full sales/receipt/payment cycle with VAT — covers credit sales, output tax, receipt and supplier payment.' },
 
 
-  { id: 'sc-003', topic: 'pobc', difficulty: 'medium', type: 'scenario',
+  { id: 'sc-003', topic: 'pobc', difficulty: 'medium', type: 'scenario', criteria: ['POBC-2.3'],
     setup: 'Pinewood Ltd prepares its bank reconciliation at 31 March. The cash book shows a debit balance of £4,200. The bank statement at the same date shows £3,500. On investigation: unpresented cheques total £900; outstanding lodgements total £1,200; bank charges of £40 appear on the statement but are not in the cash book; a direct debit of £160 also appears on the statement but is missing from the cash book.',
     parts: [
       { type: 'mcq', q: 'How should the bank charges of £40 be treated?',
@@ -4382,7 +4382,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Output tax (on sales) exceeding input tax (on purchases) gives a credit balance — the net amount owed to HMRC.' },
 
-  { id: 'gf-006', topic: 'pobc', difficulty: 'easy', type: 'gapfill',
+  { id: 'gf-006', topic: 'pobc', difficulty: 'easy', type: 'gapfill', criteria: ['POBC-2.3'],
     q: 'Select the correct bank-reconciliation term.',
     template: 'A cheque written by the business and recorded in the cash book, but not yet cleared by the bank, is called {0}.',
     gaps: [
@@ -4390,7 +4390,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'An unpresented cheque has been entered in the cash book but has not yet been processed by the bank — a timing difference.' },
 
-  { id: 'gf-007', topic: 'pobc', difficulty: 'medium', type: 'gapfill',
+  { id: 'gf-007', topic: 'pobc', difficulty: 'medium', type: 'gapfill', criteria: ['POBC-3.2'],
     q: 'Identify the type of error.',
     template: 'Posting a payment to the wrong supplier account, but still within trade payables, is an error of {0}. This type of error {1} the trial balance.',
     gaps: [
@@ -4479,7 +4479,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Five categories cover every account: assets, liabilities, equity, income and expenses. Getting the category right is what decides which side of the ledger a balance sits on, and therefore which column of the trial balance it goes into.' },
 
-  { id: 'dd-013', topic: 'pobc', difficulty: 'medium', type: 'dragdrop',
+  { id: 'dd-013', topic: 'pobc', difficulty: 'medium', type: 'dragdrop', criteria: ['POBC-1.1'],
     q: 'Match each control account entry to the side it appears on in the sales ledger control account.',
     pairs: [
       { left: 'Credit sales', right: 'Debit side of SLCA' },
@@ -4489,7 +4489,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'The SLCA is debited with amounts that increase what customers owe, and credited with amounts that reduce it.' },
 
-  { id: 'dd-014', topic: 'pobc', difficulty: 'medium', type: 'dragdrop',
+  { id: 'dd-014', topic: 'pobc', difficulty: 'medium', type: 'dragdrop', criteria: ['POBC-3.1'],
     q: 'Match each payroll item to its description.',
     pairs: [
       { left: 'Gross pay', right: 'Total earnings before any deductions' },
@@ -4603,7 +4603,7 @@ window.ALL_QUESTIONS.push(
     exp: 'Take the trade discount off first: 2,000 − 200 = 1,800 net. VAT is then charged on what the customer is actually being charged, so 1,800 × 20% = 360, giving 2,160 total. Calculating VAT before the discount overstates both figures.' },
 
 
-  { id: 'tf-010', topic: 'pobc', difficulty: 'medium', type: 'tablefill',
+  { id: 'tf-010', topic: 'pobc', difficulty: 'medium', type: 'tablefill', criteria: ['POBC-1.1'],
     q: 'Complete the VAT control account by calculating the amount due to HMRC.',
     table: {
       title: 'VAT control account',
@@ -4616,7 +4616,7 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'Output tax charged on sales less input tax reclaimed on purchases leaves what is owed: 11,200 − 6,400 = 4,800. It is a credit balance because the business is holding HMRC’s money, not its own.' },
 
-  { id: 'tf-011', topic: 'pobc', difficulty: 'hard', type: 'tablefill',
+  { id: 'tf-011', topic: 'pobc', difficulty: 'hard', type: 'tablefill', criteria: ['POBC-2.3'],
     q: 'Complete the bank reconciliation statement.',
     table: {
       title: 'Bank reconciliation statement',
@@ -4721,7 +4721,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'The capital account: capital introduced, profit and drawings combine to give closing capital.' },
 
-  { id: 'sc-008', topic: 'pobc', difficulty: 'hard', type: 'scenario',
+  { id: 'sc-008', topic: 'pobc', difficulty: 'hard', type: 'scenario', criteria: ['POBC-3.3'],
     setup: 'Oakfield Ltd extracted a trial balance that did not balance: the debit column totalled £248,600 and the credit column totalled £247,900. A suspense account was opened. On investigation, a £700 payment for rent had been debited to the rent account but not credited to the bank account.',
     parts: [
       { type: 'numeric', q: 'What is the value of the difference placed in the suspense account?', answer: 700, unit: '£', exp: 'The suspense account holds the difference until it is found: £248,600 − £247,900 = £700. Only errors that unbalance the trial balance produce a suspense entry; the ones that leave it balanced never show up here.' },
@@ -4734,7 +4734,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'A trial balance difference, a suspense account, and the correcting journal for a single-sided error.' },
 
-  { id: 'sc-009', topic: 'pobc', difficulty: 'medium', type: 'scenario',
+  { id: 'sc-009', topic: 'pobc', difficulty: 'medium', type: 'scenario', criteria: ['POBC-3.1'],
     setup: 'Belmont Trading runs monthly payroll. For one employee in April: gross pay is £2,800, PAYE is £420, employee NIC is £210, and the employee pays £140 into a pension. The employer\'s NIC for the month is £260.',
     parts: [
       { type: 'numeric', q: 'What is the employee\'s net pay for April?', answer: 2030, unit: '£', exp: 'Net pay is gross less the employee’s own deductions: 2,800 − 420 PAYE − 210 employee NIC − 140 pension = £2,030. Employer NIC is never deducted from the employee, so it is not in this calculation.' },
@@ -4745,7 +4745,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Payroll: distinguishing net pay (to the employee) from total employment cost (to the employer).' },
 
-  { id: 'sc-010', topic: 'pobc', difficulty: 'medium', type: 'scenario',
+  { id: 'sc-010', topic: 'pobc', difficulty: 'medium', type: 'scenario', criteria: ['POBC-1.1'],
     setup: 'Harbour Supplies keeps a purchases ledger control account. On 1 May the balance was £18,000 Cr. During May: credit purchases were £47,000, payments to suppliers were £41,000, purchases returns were £1,300, and a contra of £700 was made against the sales ledger.',
     parts: [
       { type: 'numeric', q: 'What is the closing balance on the purchases ledger control account at 31 May?', answer: 22000, unit: '£', exp: 'Start with what was owed, add credit purchases, then deduct everything that reduces the debt: 18,000 + 47,000 − 41,000 payments − 1,300 returns − 700 contra = £22,000. It is a credit balance because the business owes it.' },
@@ -4870,7 +4870,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'VAT on purchases, trade vs settlement discounts, purchases returns day book, and running payable balances.' },
 
-  { id: 'sc-019', topic: 'pobc', difficulty: 'hard', type: 'scenario',
+  { id: 'sc-019', topic: 'pobc', difficulty: 'hard', type: 'scenario', criteria: ['POBC-1.1'],
     setup: 'At 30 April, the sales ledger control account (SLCA) shows a closing balance of £18,400 Dr. The list of individual trade receivable balances totals £17,950. Investigation reveals: (1) The sales returns day book was undercast by £300, and the wrong total was posted. (2) A customer payment of £150 was posted to the wrong customer\'s account (the total posted was correct). (3) A credit note of £150 was posted twice to one customer\'s individual account; the day book entry itself was correct.',
     parts: [
       { type: 'mcq', q: 'Which of the three errors would cause the SLCA not to agree with the individual ledger list?',
@@ -4888,7 +4888,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Sales ledger control account reconciliation, error types, and correction journal entries.' },
 
-  { id: 'sc-020', topic: 'pobc', difficulty: 'medium', type: 'scenario',
+  { id: 'sc-020', topic: 'pobc', difficulty: 'medium', type: 'scenario', criteria: ['POBC-3.1'],
     setup: 'Callum earns a basic salary of £28,000 per year and worked 12 overtime hours this month at time-and-a-half. His hourly rate is £13.50. PAYE deducted this month: £320. Employee NIC: £198. Employer NIC rate: 15% on earnings above £416.67/month.',
     parts: [
       { type: 'mcq', q: 'Callum\'s overtime pay for the month is:',
@@ -5132,7 +5132,7 @@ window.ALL_QUESTIONS.push(
 
   // ── POBC additional hard questions ──────────────────────────────────────
 
-  { id: 'pobc-200', topic: 'pobc', difficulty: 'hard', type: 'mcq',
+  { id: 'pobc-200', topic: 'pobc', difficulty: 'hard', type: 'mcq', criteria: ['POBC-2.3'],
     q: 'Which of the following is a TIMING DIFFERENCE in a bank reconciliation (i.e., it appears on the bank statement but NOT in the cash book, or vice versa)?',
     opts: [
       'A direct debit for rent that the bookkeeper forgot to enter in the cash book',
@@ -5142,7 +5142,7 @@ window.ALL_QUESTIONS.push(
     ans: 1,
     exp: 'An unpresented (uncleared) cheque: the business recorded it in the cash book when it was written, but the bank has not yet processed it — a classic timing difference. Options A and C are errors/omissions requiring cash book updates. Option D has not yet occurred in either record.' },
 
-  { id: 'pobc-201', topic: 'pobc', difficulty: 'hard', type: 'mcq',
+  { id: 'pobc-201', topic: 'pobc', difficulty: 'hard', type: 'mcq', criteria: ['POBC-3.2'],
     q: 'Which error would cause the debit side of the trial balance to exceed the credit side by £400 (requiring a credit entry to a suspense account of £400)?',
     opts: [
       'A credit sale of £400 omitted from all ledgers',
@@ -5152,7 +5152,7 @@ window.ALL_QUESTIONS.push(
     ans: 2,
     exp: 'Option C: Dr Rent £400 with no corresponding credit creates a debit excess of £400. A credit suspense entry of £400 is opened to restore balance. Option A is a complete omission (both sides missing — no imbalance). Options B and D are correctly balanced double entries.' },
 
-  { id: 'pobc-202', topic: 'pobc', difficulty: 'hard', type: 'mcq',
+  { id: 'pobc-202', topic: 'pobc', difficulty: 'hard', type: 'mcq', criteria: ['POBC-3.2'],
     q: 'A purchase of equipment for £3,000 is posted to the office expenses account. What type of error is this?',
     opts: [
       'Error of omission',
@@ -5162,20 +5162,20 @@ window.ALL_QUESTIONS.push(
     ans: 2,
     exp: 'An error of principle occurs when a transaction is posted to the correct side but the WRONG CLASS of account — here, a capital/non-current asset (equipment) is recorded as a revenue expense (office expenses). The capital vs revenue distinction is violated.' },
 
-  { id: 'pobc-203', calc: true, topic: 'pobc', difficulty: 'hard', type: 'mcq',
+  { id: 'pobc-203', calc: true, topic: 'pobc', difficulty: 'hard', type: 'mcq', criteria: ['POBC-3.2'],
     q: 'A transposition error occurs when rent of £450 is posted as £540. The trial balance total shows debits exceed credits by:',
     opts: ['£90', '£45', '£450', '£540'],
     ans: 0,
     exp: '£540 − £450 = £90. The same single amount is wrong on one side, creating a £90 imbalance. Transposition errors always produce a difference divisible by 9 (here 90 ÷ 9 = 10 — a useful check). A suspense account of £90 Cr would be opened to restore balance.' },
 
 
-  { id: 'pobc-205', calc: true, topic: 'pobc', difficulty: 'hard', type: 'mcq',
+  { id: 'pobc-205', calc: true, topic: 'pobc', difficulty: 'hard', type: 'mcq', criteria: ['POBC-1.1'],
     q: 'A business has output VAT of £18,400 and input VAT of £11,750 for the quarter. What amount is payable to HMRC?',
     opts: ['£18,400', '£11,750', '£6,650', '£30,150'],
     ans: 2,
     exp: 'Net VAT = output tax − input tax = £18,400 − £11,750 = £6,650 payable to HMRC. That figure is the credit balance left on the VAT control account once the quarter’s entries are complete, and it is settled by payment.' },
 
-  { id: 'pobc-206', topic: 'pobc', difficulty: 'hard', type: 'mcq',
+  { id: 'pobc-206', topic: 'pobc', difficulty: 'hard', type: 'mcq', criteria: ['POBC-1.2'],
     q: 'The PLCA balance is £13,600 but the total of individual supplier balances is £14,200. The list is higher than the PLCA by £600. Which error would explain this?',
     opts: [
       'A purchase invoice of £600 posted to the PLCA but not to the individual supplier account',
@@ -5185,7 +5185,7 @@ window.ALL_QUESTIONS.push(
     ans: 1,
     exp: 'If a payment of £600 was Dr PLCA (reducing it) but the individual account was NOT updated, the PLCA balance falls by £600 while the listing stays the same — list becomes £600 higher than PLCA ✓. Option A would make PLCA higher (Cr PLCA, no matching individual entry). Option C correctly matches — no difference. Option D would reduce PLCA twice.' },
 
-  { id: 'pobc-207', topic: 'pobc', difficulty: 'hard', type: 'mcq',
+  { id: 'pobc-207', topic: 'pobc', difficulty: 'hard', type: 'mcq', criteria: ['POBC-3.2'],
     q: 'Which of the following errors does NOT affect the trial balance agreement?',
     opts: [
       'A purchase of £750 debited to both the purchases account and the PLCA (two debits, no credit)',
@@ -5195,17 +5195,64 @@ window.ALL_QUESTIONS.push(
     ans: 2,
     exp: 'Option C is a complete omission — both the Dr (SLCA) and the Cr (Sales) entries are missing. Both sides are equally understated so the TB still agrees. Option A has two debits but no credit (Dr excess). Option B has Dr £600 and Cr £540 (£60 imbalance). Option D has only a debit and no credit — all three create TB imbalances.' },
 
-  { id: 'pobc-208', calc: true, topic: 'pobc', difficulty: 'hard', type: 'mcq',
+  { id: 'pobc-208', calc: true, topic: 'pobc', difficulty: 'hard', type: 'mcq', criteria: ['POBC-2.3'],
     q: 'A bank reconciliation shows: cash book balance £5,100; unpresented cheques £850; outstanding lodgements £1,200. What should the bank statement balance be?',
     opts: ['£5,100', '£4,750', '£5,450', '£6,150'],
     ans: 1,
     exp: 'Bank statement balance = Cash book balance + Unpresented cheques − Outstanding lodgements = £5,100 + £850 − £1,200 = £4,750. (Cheques written but not cleared inflate the cash book; lodgements paid in but not shown yet inflate the statement.)' },
 
-  { id: 'pobc-209', calc: true, topic: 'pobc', difficulty: 'hard', type: 'mcq',
+  { id: 'pobc-209', calc: true, topic: 'pobc', difficulty: 'hard', type: 'mcq', criteria: ['POBC-2.2'],
     q: 'After updating the cash book, the balance is £3,800 Dr. Unpresented cheques total £650 and outstanding lodgements total £420. The bank statement should show:',
     opts: ['£3,800', '£4,030', '£3,570', '£4,870'],
     ans: 1,
     exp: 'Statement balance = £3,800 + £650 − £420 = £4,030. The bank has not yet processed the unpresented cheques (so its balance is higher) and has not yet shown the lodgements (so its balance is lower than the cash book after lodgements).' },
+
+  // ── POBC 2.1 payment methods ────────────────────────────────────────────
+  // The audit that tagged this bank found 2.1 taught by L-pobc-15 and tested by
+  // nothing at all: every other POBC criterion had questions behind it and this
+  // one had none. These six are written to the three groups the spec sets out
+  // (2.1.2) — reduce funds now, reduce funds later, no effect — because that
+  // classification is what the assessment asks for, not the names of the methods.
+  { id: 'pobc-210', topic: 'pobc', difficulty: 'easy', type: 'mcq', criteria: ['POBC-2.1'],
+    q: 'Which payment method reduces the bank balance on the date the payment is made?',
+    opts: ['A debit card payment', 'A cheque sent in the post', 'A BACS payment submitted today', 'A credit card payment'],
+    ans: 0,
+    exp: 'A debit card is drawn on the current account and authorised in real time, so the money has gone immediately and no timing difference arises. A cheque waits for the payee to bank it, BACS runs a three-day cycle, and a credit card spends the ISSUER\u2019s money \u2014 the bank balance does not move until the card account is settled.' },
+
+  { id: 'pobc-211', topic: 'pobc', difficulty: 'medium', type: 'mcq', criteria: ['POBC-2.1'],
+    q: 'A business pays a supplier by credit card on 28 June. What is the effect on the bank balance at that date?',
+    opts: ['None \u2014 a liability to the card issuer arises instead', 'It falls by the full amount of the payment', 'It falls by the minimum monthly repayment', 'It rises, because the purchase is financed'],
+    ans: 0,
+    exp: 'The money spent is the card issuer\u2019s, not the business\u2019s. Nothing leaves the current account on 28 June; what the business has instead is a payable to the card company. The bank balance changes later, when the card account is settled \u2014 usually by a separate direct debit.' },
+
+  { id: 'pobc-212', topic: 'pobc', difficulty: 'medium', type: 'mcq', criteria: ['POBC-2.1'],
+    q: 'A business pays rent of \u00a3900 on the first of every month, the amount fixed by the lease. Which method suits it, and who controls it?',
+    opts: ['Standing order \u2014 the payer instructs the bank', 'Direct debit \u2014 the payer instructs the bank', 'Standing order \u2014 the recipient claims the amount', 'Direct debit \u2014 the bank sets the amount'],
+    ans: 0,
+    exp: 'A standing order is the PAYER\u2019s instruction to send a fixed amount on fixed dates, which is exactly a rent at \u00a3900 on the first. A direct debit reverses the control: the recipient claims the amount, which is what suits a bill that varies. Confusing the two is the standard error here, and the test is who decides how much.' },
+
+  { id: 'pobc-213', topic: 'pobc', difficulty: 'medium', type: 'mcq', criteria: ['POBC-2.1'],
+    q: 'A business must pay \u00a3180,000 today to complete a property purchase. Which method fits, and why?',
+    opts: ['CHAPS \u2014 it settles the same working day, and the fee is worth the certainty', 'BACS \u2014 it is the cheapest way to move a large sum', 'Cheque \u2014 it gives a clear paper record of the payment', 'Standing order \u2014 it can be set up for the completion date'],
+    ans: 0,
+    exp: 'CHAPS exists for exactly this: large, time-critical payments that must land the same working day. It carries a fee of roughly \u00a320 to \u00a330, which is nothing against a completion that fails. BACS takes three days, a cheque takes longer still and can be lost, and a standing order is for repeating amounts rather than a one-off.' },
+
+  { id: 'pobc-214', topic: 'pobc', difficulty: 'medium', type: 'truefalse', criteria: ['POBC-2.1'],
+    q: 'Identify whether each payment reduces the bank balance on the day it is made.',
+    statements: [
+      { text: 'A Faster Payment sent to a supplier.', answer: true },
+      { text: 'A debit card payment at a trade counter.', answer: true },
+      { text: 'A cheque written and posted to a supplier.', answer: false },
+      { text: 'A purchase put on the company credit card.', answer: false }
+    ],
+    exp: 'The spec splits methods three ways and this is the first split. Faster Payments and debit cards settle in real time on the business\u2019s own account. A cheque leaves the balance untouched until the payee banks it and it clears, which is what makes it an unpresented cheque in the reconciliation. A credit card does not touch the balance at all at the point of purchase.' },
+
+  { id: 'pobc-215', topic: 'pobc', difficulty: 'hard', type: 'mcq', criteria: ['POBC-2.1'],
+    q: 'A wages run of \u00a362,000 covering forty employees is submitted by BACS on Monday. When does the bank balance fall, and why that method?',
+    opts: ['Wednesday \u2014 one submission pays every employee on a three-day cycle', 'Monday \u2014 BACS settles in real time like a Faster Payment', 'Wednesday \u2014 the bank holds the funds as security for three days', 'Monday \u2014 the funds leave at once and reach employees later'],
+    ans: 0,
+    exp: 'BACS runs submitted on day one, processed on day two, credited on day three \u2014 so a Monday submission lands Wednesday. Its advantage for payroll is not speed but volume: one file pays forty people. A Faster Payment would be immediate but would have to be sent forty times, which is why wages runs go by BACS.' },
+
 
   // ── POC additional hard questions ───────────────────────────────────────
 
@@ -5319,7 +5366,7 @@ window.ALL_QUESTIONS.push(
     exp: 'Inventory valuation using FIFO and AVCO, and their comparative impact on profit during price changes.' },
 
 
-  { id: 'sc-034', topic: 'pobc', difficulty: 'hard', type: 'scenario',
+  { id: 'sc-034', topic: 'pobc', difficulty: 'hard', type: 'scenario', criteria: ['POBC-3.3'],
     setup: 'Finch & Partners\' trial balance does not agree. A suspense account has been opened with a credit balance of £630. Investigation reveals three errors: (1) A sales invoice for £270 was entered as a debit to both the Sales account AND the SLCA. (2) Rent paid £900 was entered in the cash book correctly but posted to the Rent account as £990. (3) A purchase of stationery for £180 was completely omitted from the ledger.',
     parts: [
       { type: 'mcq', q: 'Error 1 (invoice debited to Sales AND SLCA) — what type of error is this?',
@@ -5391,7 +5438,7 @@ window.ALL_QUESTIONS.push(
     exp: 'A job cost card totals the direct costs then adds absorbed overhead. Labour is 12 × £10 = £120 and overhead 12 × £8 = £96, so with £260 of materials the total production cost is £476.' },
 
 
-  { id: 'tf-019', topic: 'pobc', difficulty: 'hard', type: 'tablefill',
+  { id: 'tf-019', topic: 'pobc', difficulty: 'hard', type: 'tablefill', criteria: ['POBC-3.3'],
     q: 'A trial balance has a debit excess of £860 (suspense account: credit balance £860). Two correcting journals are processed. Complete the suspense account.',
     table: {
       title: 'Suspense Account',
@@ -5781,7 +5828,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Only registered businesses reclaim input VAT. For an unregistered business the VAT is simply part of the cost. Gross ÷ 6 works because gross = net × 1.2, so VAT = gross × (0.2/1.2).' },
 
-  { id: 'tfq-016', topic: 'pobc', difficulty: 'medium', type: 'truefalse', skill: 'pobc-ca',
+  { id: 'tfq-016', topic: 'pobc', difficulty: 'medium', type: 'truefalse', skill: 'pobc-ca', criteria: ['POBC-1.1'],
     q: 'Identify whether the following statements about control accounts are true or false.',
     statements: [
       { text: 'The sales ledger control account total should agree with the sum of the individual customer balances.', answer: true },
@@ -5791,7 +5838,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Two are false. The subsidiary ledgers sit outside the double entry, so an error in one customer’s account does not unbalance the trial balance — which is precisely why the control account reconciliation exists. And a contra entry offsets a party who is both customer and supplier, so it REDUCES both control accounts.' },
 
-  { id: 'tfq-017', topic: 'pobc', difficulty: 'medium', type: 'truefalse', skill: 'pobc-bankrec',
+  { id: 'tfq-017', topic: 'pobc', difficulty: 'medium', type: 'truefalse', skill: 'pobc-bankrec', criteria: ['POBC-2.3'],
     q: 'Identify whether the following statements about bank reconciliation are true or false.',
     statements: [
       { text: 'Unpresented cheques are a timing difference and need no adjustment in the cash book.', answer: true },
@@ -5922,7 +5969,7 @@ window.ALL_QUESTIONS.push(
     answers: [0, 1],
     exp: 'This is the three-way match: purchase order, goods received note and invoice. A remittance advice relates to payments already made, and a statement is a reconciliation tool rather than an authorisation control.' },
 
-  { id: 'ms-011', topic: 'pobc', difficulty: 'medium', type: 'multiselect', skill: 'pobc-errors', selectCount: 2,
+  { id: 'ms-011', topic: 'pobc', difficulty: 'medium', type: 'multiselect', skill: 'pobc-errors', selectCount: 2, criteria: ['POBC-3.2'],
     q: 'Which TWO of the following errors would cause the trial balance to disagree?',
     opts: [
       'A purchase of £450 debited to the purchases account but not credited to the payables account',
@@ -5933,7 +5980,7 @@ window.ALL_QUESTIONS.push(
     answers: [0, 1],
     exp: 'One-sided entries and transposition on one side only break the balance. An error of principle (right amount, wrong account) and a complete omission both leave the debits and credits equal.' },
 
-  { id: 'ms-012', topic: 'pobc', difficulty: 'medium', type: 'multiselect', skill: 'pobc-bankrec', selectCount: 2,
+  { id: 'ms-012', topic: 'pobc', difficulty: 'medium', type: 'multiselect', skill: 'pobc-bankrec', selectCount: 2, criteria: ['POBC-2.2'],
     q: 'Which TWO items require an adjustment to the cash book during a bank reconciliation?',
     opts: [
       'Bank charges shown on the statement that have not been recorded in the cash book',
@@ -7417,7 +7464,7 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'The two credit notes are the pair to be careful with, and the test is who SENT it: one the business sends to its own customer cancels a sale and belongs in the sales returns day book, while one received from a supplier cancels a purchase. The petty cash book is a separate book from the cash book, not a column in it — small cash reimbursements go there, cheques go in the cash book.' },
 
-  { id: 'pobc-500', topic: 'pobc', difficulty: 'hard', type: 'entrygrid',
+  { id: 'pobc-500', topic: 'pobc', difficulty: 'hard', type: 'entrygrid', criteria: ['POBC-3.1'],
     q: 'A debt of £1,440 including VAT at 20%, more than six months past its due date, is written off as irrecoverable. Record the journal.',
     entrygrid: {
       title: 'Journal', rowHeader: 'Account', columns: ['Debit £', 'Credit £'],
@@ -7429,7 +7476,7 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'The whole £1,440 comes out of receivables, so the SLCA is credited with the gross. Because the debt is over six months past its due date the VAT of £1,440 ÷ 6 = £240 can be reclaimed, which DEBITS the VAT control account and reduces what is owed to HMRC — leaving the net £1,200 as the real cost to the business. Writing the full £1,440 to irrecoverable debts overstates the expense and forgets a reclaim the business is entitled to.' },
 
-  { id: 'pobc-501', topic: 'pobc', difficulty: 'medium', type: 'picklist',
+  { id: 'pobc-501', topic: 'pobc', difficulty: 'medium', type: 'picklist', criteria: ['POBC-2.3'],
     q: 'A bank reconciliation is being prepared. Where does each item belong?',
     picklist: {
       title: 'Reconciling items', rowHeader: 'Item', choiceHeader: 'Treatment',
@@ -7508,7 +7555,7 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'Two of these are the same transaction seen from both sides: a customer paying by BACS debits the bank because the business has more money, and credits the sales ledger control account because it is owed less. The pair that catches people is the control accounts — the SALES ledger control account is an asset and falls on the credit side when it is settled, while the PURCHASES ledger control account is a liability and falls on the debit side when it is paid.' },
 
-  { id: 'pobc-502', topic: 'pobc', difficulty: 'medium', type: 'entrygrid',
+  { id: 'pobc-502', topic: 'pobc', difficulty: 'medium', type: 'entrygrid', criteria: ['POBC-3.2'],
     q: 'A payment of £480 for motor expenses was posted in error to the motor vehicles account. The bank entry was correct. Record the journal to correct the error.',
     entrygrid: {
       title: 'Journal', rowHeader: 'Account', columns: ['Debit £', 'Credit £'],
@@ -7519,7 +7566,7 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'Only the two accounts that were confused move, because the bank side was right and the trial balance still agreed — this is an error of principle, which a trial balance cannot find. Take the £480 out of motor vehicles by crediting it, and put it where it belonged by debiting motor expenses. Running the cost through an asset account instead of an expense would overstate both the year\u2019s profit and what the business owns.' },
 
-  { id: 'pobc-503', topic: 'pobc', difficulty: 'hard', type: 'picklist',
+  { id: 'pobc-503', topic: 'pobc', difficulty: 'hard', type: 'picklist', criteria: ['POBC-3.2'],
     q: 'Name the type of error in each case.',
     picklist: {
       title: 'Errors found during the month', rowHeader: 'What happened', choiceHeader: 'Type of error',
@@ -7535,7 +7582,7 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'Every one of these leaves the trial balance agreeing, which is the point: a balanced trial balance is not a correct one. The pair most often swapped is principle and commission — commission is the RIGHT KIND of account and the wrong one within it (one customer instead of another), while principle is the WRONG KIND altogether (an expense posted to an asset). A reversal has both entries the right size and on the wrong sides, so correcting it takes twice the amount, not once.' },
 
-  { id: 'pobc-504', topic: 'pobc', difficulty: 'medium', type: 'picklist',
+  { id: 'pobc-504', topic: 'pobc', difficulty: 'medium', type: 'picklist', criteria: ['POBC-1.1'],
     q: 'Which side of the sales ledger control account does each item go on?',
     picklist: {
       title: 'Sales ledger control account', rowHeader: 'Item', choiceHeader: 'Side',
@@ -7551,7 +7598,7 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'The account is an asset — what customers owe — so anything that INCREASES the debt is a debit and anything that reduces it is a credit. Selling on credit and starting the month owed money are debits; receipts, returns and discounts allowed all reduce the debt and are credits. The dishonoured cheque is the one to think about: the receipt was credited when it came in, and the cheque bouncing puts the debt straight back on, so it is debited.' },
 
-  { id: 'pobc-505', topic: 'pobc', difficulty: 'medium', type: 'picklist',
+  { id: 'pobc-505', topic: 'pobc', difficulty: 'medium', type: 'picklist', criteria: ['POBC-4.1'],
     q: 'Would each balance appear in the debit or the credit column of the trial balance?',
     picklist: {
       title: 'Balances at the year end', rowHeader: 'Balance', choiceHeader: 'Trial balance column',

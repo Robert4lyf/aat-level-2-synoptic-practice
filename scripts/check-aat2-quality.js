@@ -581,7 +581,21 @@ const QUESTION_FLOORS = {
   'ITBK-3.1': 11, 'ITBK-3.2': 9, 'ITBK-3.3': 3,
   'ITBK-4.1': 13, 'ITBK-4.2': 3, 'ITBK-4.3': 5, 'ITBK-4.4': 4,
   'ITBK-5.1': 10, 'ITBK-5.2': 6,
-  'POBC-4.1': 7, 'POBC-4.2': 7,
+  /* POBC audited the same way. 2 of 10 criteria carried a tag, now 10 of 10.
+     The audit's own finding was POBC-2.1: payment methods is taught in full by
+     L-pobc-15 and was tested by nothing whatever, the one criterion in the unit
+     with no question behind it at all. Six were written against the spec's own
+     three-way split (2.1.2) rather than against the names of the methods,
+     because classifying the effect on the bank balance is what the assessment
+     asks for.
+
+     Nineteen POBC questions stay untagged, and for the same reason ITBK's do:
+     internal controls, segregation of duties, audit trails, inventory controls
+     and labour turnover are in this bank and outside this unit's scope. */
+  'POBC-1.1': 26, 'POBC-1.2': 7,
+  'POBC-2.1': 6, 'POBC-2.2': 7, 'POBC-2.3': 21,
+  'POBC-3.1': 17, 'POBC-3.2': 31, 'POBC-3.3': 14,
+  'POBC-4.1': 8, 'POBC-4.2': 7,
   'POC-1.3': 5, 'POC-1.4': 6, 'POC-2.2': 9, 'POC-3.2': 6, 'POC-4.1': 8, 'POC-4.2': 7,
   'BESY-1.1': 5, 'BESY-1.2': 4, 'BESY-1.4': 4, 'BESY-3.4': 4, 'BESY-5.3': 6, 'BESY-6.1': 6,
 };
