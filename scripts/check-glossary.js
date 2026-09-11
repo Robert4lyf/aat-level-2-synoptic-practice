@@ -31,12 +31,14 @@
  *       every other answer goes to — and into the lesson map, not the practice
  *       one, so a term is never counted as practice the reader never did
  *   §8  a run prefers what is due, then what has never been seen
+ *   §9  every term on every glossary in the app READS like a term
  *
  * Run: node scripts/check-glossary.js   (exit 1 on any failure)
  */
 
 'use strict';
 
+const fs = require('fs');
 const path = require('path');
 const D3 = require('./lib/aat3-driver.js');
 const D1 = require('./lib/aat1-driver.js');
@@ -451,6 +453,107 @@ PLAYERS.forEach(P => {
   }
   console.log('');
 });
+
+/* ── 9. A term reads like a term ────────────────────────────────────────────
+   WHY THIS EXISTS. A stray mutation once left
+
+     term: 'CSR is not a statutory requirement for most companies'
+
+   sitting in the Level 2 glossary, and the entire suite passed with it in
+   place. Nothing anywhere checked the SHAPE of the term field: §1 asserts that
+   it is present and unique, and every other rule in this file reads the
+   definition instead. So an assertion pasted into a label slot was invisible —
+   and that is exactly the shape a bad edit leaves behind, because the thing
+   being pasted is usually a sentence about the term rather than the term.
+
+   THE SOURCES ARE NAMED, AND COUNTED. The reason the defect survived is not
+   that the rule was wrong, it is that the surface was out of scope: the Level 2
+   glossary is a plain `window.GLOSSARY` array and not one of the two
+   self-rendering players the rest of this file drives, so anything written
+   against `PLAYERS` would have missed the only list the defect was ever on.
+   Hence both halves below — the Level 2 list is loaded explicitly, and the
+   total is asserted, so losing a list fails here instead of quietly halving
+   the coverage.
+
+   WHAT A TERM IS. A label: a noun phrase a reader could look up. Across all
+   695 of them the longest real term is seven words and not one ends in a full
+   stop, so the ceilings are set just above what the material actually does. A
+   finite verb is the reliable giveaway — a label does not conjugate — with the
+   one genuine exception declared by name below rather than the rule being
+   loosened for everything. */
+console.log(`${BOLD}The shape of a term${RESET}`);
+section('  9. a term is a label, not a sentence');
+{
+  /* A named principle taught under that name, not a definition that escaped
+     its field. Declared so the verb rule can stay strict everywhere else. */
+  const ALLOWED_SENTENCES = ['Profit is not cash'];
+
+  const lists = [];
+  {
+    const w = {};
+    new Function('window', 'self', fs.readFileSync(path.join(ROOT, 'data.js'), 'utf8'))(w, w);
+    lists.push({ key: 'Level 2', terms: (w.GLOSSARY || []).map(t => t.term) });
+  }
+  lists.push({
+    key: 'Level 1 bkfn',
+    terms: require(path.join(ROOT, 'aat1-glossary-data.js')).AAT1_GLOSSARY.TERMS.map(t => t.t),
+  });
+  {
+    const U = require(path.join(ROOT, 'aat3-glossary-data.js')).AAT3_GLOSSARY.UNITS;
+    Object.keys(U).forEach(u => lists.push({ key: 'Level 3 ' + u, terms: U[u].map(t => t.t) }));
+  }
+
+  /* Auxiliaries, copulas and modals only. A wider list would start catching
+     nouns that double as verbs — "credit", "record", "balance", "account" are
+     all of them — and a rule that fires on ordinary vocabulary is a rule that
+     gets deleted. Two entries here can still collide with a legitimate label:
+     "may" is also a month and "will" is also a document. Neither belongs in a
+     term as things stand, and if one ever does it goes in the list above
+     rather than out of this one. */
+  const FINITE = /\b(is|are|was|were|be|been|being|am|has|have|had|do|does|did|must|should|shall|will|would|can|could|may|might|means)\b/i;
+
+  let counted = 0;
+  const bad = { space: [], long: [], stop: [], lower: [], verb: [] };
+  lists.forEach(L => L.terms.forEach(raw => {
+    counted++;
+    const t = String(raw);
+    const where = `${L.key}: ${t}`;
+    if (t !== t.trim()) bad.space.push(where);
+    const words = t.trim().split(/\s+/).filter(Boolean);
+    if (words.length > 8) bad.long.push(`${where} (${words.length} words)`);
+    if (/[.!?]$/.test(t.trim())) bad.stop.push(where);
+    /* A leading lowercase letter is a sentence fragment — unless the word
+       carries a capital of its own, which is how technical names are spelled:
+       iXBRL and eCommerce are labels, "dashboard" is a mistake. */
+    const firstWord = words[0] || '';
+    if (/^[a-z]/.test(firstWord) && !/[A-Z]/.test(firstWord)) bad.lower.push(where);
+    if (FINITE.test(t) && ALLOWED_SENTENCES.indexOf(t) === -1) bad.verb.push(where);
+  }));
+
+  const clean = (list, label) =>
+    ok(list.length === 0, `${label} (${list.length}: ${list.slice(0, 3).join(' · ')})`);
+  clean(bad.space, 'no term carries stray whitespace');
+  clean(bad.long, 'no term runs longer than a label');
+  clean(bad.stop, 'no term ends in sentence punctuation');
+  clean(bad.lower, 'every term starts as a heading does');
+  clean(bad.verb, 'no term is a sentence with a finite verb in it');
+
+  /* A declared exception that no longer matches anything is a licence nobody
+     asked for, left lying about for the next sentence to slip through. */
+  const everyTerm = new Set([].concat(...lists.map(L => L.terms.map(String))));
+  const stale = ALLOWED_SENTENCES.filter(t => !everyTerm.has(t));
+  ok(stale.length === 0, `every declared exception is still a term (stale: ${stale.join(' · ')})`);
+
+  /* THE SCOPE IS ASSERTED. This is the rule whose absence let the defect
+     through, so it is the rule that must fail loudest when a list falls out of
+     it. Both numbers move together when vocabulary is added; a list going
+     missing moves only one. */
+  ok(lists.length === 6,
+    `all six glossary lists were read — a seventh unit is a deliberate change, ` +
+    `so raise this number with it (${lists.length}: ${lists.map(L => L.key).join(', ')})`);
+  ok(counted >= 690, `every term was checked (${counted})`);
+  console.log('');
+}
 
 if (failures) {
   console.log(`${RED}${BOLD}── ${failures} of ${checks} checks failed${RESET}`);

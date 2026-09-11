@@ -461,7 +461,7 @@
         {
           h: 'Time limits and electronic invoicing',
           p: [
-            'A VAT invoice must normally be issued within **30 days** of the basic tax point. Miss that, and the basic tax point stands — issuing late does not move the supply.',
+            'A VAT invoice must normally be issued within **30 days** of the basic tax point. That is a compliance deadline in its own right, and it is not the rule that decides the tax point.',
             'The two periods are easy to confuse, because both concern the gap between a supply and its invoice, and both are counted in days from the same starting point. Keep the jobs separate. **Fourteen days moves the tax point** to the invoice date. **Thirty days is the deadline for issuing the document at all.** One is about which period the supply falls into; the other is a compliance obligation in its own right.',
             '**Electronic invoices** have exactly the same legal standing as paper ones. They must contain the same information, their authenticity of origin and integrity of content must be assured, and they must remain legible for the whole retention period. In practice the customer is expected to agree to receive them electronically, though that agreement can be tacit.',
             'There is no separate, lesser standard for e-invoices. A digital document missing the supplier\'s VAT number is exactly as invalid as a paper one. And a PDF that cannot be opened in six years\' time has not been retained in any meaningful sense.',
@@ -3261,6 +3261,7 @@
           p: [
             'Reporting and paying are separate obligations with separate deadlines, exactly as they were for VAT. The difference is that in VAT the two shared a date. Here they do not.',
             'The payment deadline is the **' + T.payroll.paymentToHmrc.electronicDeadline.value + 'nd of the following month** if paying electronically, or the **' + T.payroll.paymentToHmrc.nonElectronicDeadline.value + 'th** if paying by post. This is the same electronic/non-electronic split seen on the Class 1A deadline in the last lesson. It reflects the same principle from lesson 1D: what matters is when **cleared funds reach HMRC**, so a slower method needs a longer run-up.',
+            'Following WHAT is the part to pin down, and the assessment knows it. The tax month ends on the **' + T.payroll.paymentToHmrc.monthEndDate.value + 'th**, and the deadline is the 22nd of that same calendar month. Deductions for the tax month running 6 September to 5 October are therefore due by **22 October**, not a month later.',
             'A smaller employer may pay **quarterly** rather than monthly, where the average monthly liability is under **£' + T.payroll.paymentToHmrc.quarterlyThreshold.value.toLocaleString('en-GB') + '**. The reporting obligation is unaffected: the FPS is still due on or before every payday, twelve times a year for a monthly payroll, even though only four payments are made. Assuming quarterly payment implies quarterly reporting is a trap the assessment sets deliberately.',
             'The pattern to carry away is that **the FPS is tied to the payday, and the payment is tied to the month end**. They move independently, and an employer can be perfectly compliant on one and late on the other.',
           ],

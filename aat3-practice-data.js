@@ -683,11 +683,23 @@
       exp: 'Zero-rated supplies ARE taxable supplies — at a rate of 0% — so they count towards the threshold and carry full input tax recovery. Exempt supplies are not taxable supplies: they do not count towards the threshold, and the business making only exempt supplies has nothing to register in respect of, so it cannot register at all. That absolute is genuinely absolute. The last statement inverts the zero-rating rule, which is precisely what makes zero-rating the more valuable status.',
     },
     {
-      id: 'P-1-67', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.1.4'], recall: true,
-      type: 'numeric',
-      q: 'A business fails to keep the VAT records HMRC requires. What is the maximum penalty HMRC may charge for that failure, in pounds?',
-      answer: 500, unit: '£',
-      exp: 'The penalty for failing to keep adequate VAT records is up to £500. It is separate from anything charged for a late return or a late payment: a business can file on time, pay on time and still be penalised for having nothing behind the figures. Records must be kept for ' + T.records.retentionYears.value + ' years.',
+      id: 'P-1-67', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.1.4'],
+      /* WAS a bare lookup of the £500 figure, which §5 of the reference material
+         supplies. Asking a candidate to recall a number the assessment hands
+         them tests the wrong thing; what the assessment tests is knowing WHICH
+         penalty a set of facts attracts. The facts here are chosen so the two
+         regimes a reader might reach for — late submission, and a behaviour-based
+         inaccuracy — are both ruled out by the scenario. */
+      type: 'mcq',
+      q: 'A business files every return on time and pays every liability on time. On a compliance visit HMRC finds it keeps no VAT account and holds no purchase invoices older than two years. Which penalty may HMRC charge?',
+      opts: [
+        'Up to ' + money(T.records.penalty.value) + ', for the failure to keep records',
+        money(T.penalties.lateSubmission.penalty.value) + ', the records being treated as part of the return',
+        '30% of the VAT on the invoices no longer held',
+        'Nothing, the returns and payments all having been on time',
+      ],
+      ans: 0,
+      exp: 'The record-keeping penalty is separate, and it needs nothing to be late. A business can file on time, pay on time and still be penalised for having nothing behind its figures. The ' + money(T.penalties.lateSubmission.penalty.value) + ' late submission penalty needs a missed deadline and the behaviour-based penalties need an inaccurate return, neither of which has happened. Records must be kept for ' + T.records.retentionYears.value + ' years, so two years of invoices is well short.',
     },
     {
       id: 'P-1-68', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.1.4'],
@@ -818,11 +830,22 @@
       exp: 'Thirty days alone, not twelve months — the whole threshold has to be expected within a single month for the test to bite. That is a demanding condition, and it is why the future test usually turns on one identifiable event such as a contract or an order. Reading it as a 12-month projection makes the test far easier to trip than it really is.',
     },
     {
-      id: 'P-1-79', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.2.2'], recall: true,
-      type: 'numeric',
-      q: 'A business exceeds the rolling threshold at the end of July. How many days does it have from the end of that month in which to notify HMRC?',
-      answer: 30, unit: 'days',
-      exp: 'Thirty days, running from the END OF THE MONTH in which the threshold was passed rather than from the date it was passed — so notification here is due by 30 August. Registration then takes effect from 1 September, the first day of the second month after the month of exceeding.',
+      id: 'P-1-79', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.2.2'],
+      /* WAS a bare lookup of the 30 days, which §2 of the reference material
+         prints. The two clocks are now run against a real date instead, which
+         is where both standard errors show up: counting from the date rather
+         than the month end, and registering from the first day of the next
+         month rather than the second. */
+      type: 'mcq',
+      q: 'A business exceeds the registration threshold on 18 July under the historic test. By what date must it notify HMRC, and from what date is it registered?',
+      opts: [
+        'Notify by 30 August, registered from 1 September',
+        'Notify by 17 August, registered from 1 August',
+        'Notify by 30 August, registered from 1 August',
+        'Notify by 17 August, registered from 1 September',
+      ],
+      ans: 0,
+      exp: 'The historic test runs from the END of the month, not from the date the threshold was passed. July ends on the 31st, so notification is due by 30 August. Registration then takes effect from the first day of the SECOND month after the month of exceeding, which is 1 September. Counting ' + T.registration.historicTest.notifyWithinDays.value + ' days from 18 July gives 17 August, and that is the commonest wrong answer here.',
     },
     {
       id: 'P-1-80', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.2.2'],
@@ -1173,10 +1196,21 @@
       exp: 'Registration is backdated to the date the obligation arose, and output tax is due on supplies made from that date whether or not the business charged any. It may try to recover the VAT from customers, but that is a commercial matter between them and often impossible. Input tax incurred in the same period is recoverable, which softens the figure without removing the problem — and this is why the future test, which backdates furthest, is the expensive one to miss.',
     },
     {
-      id: 'P-1-109', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.5.3'], recall: true,
-      type: 'numeric',
-      q: 'An annual filer is at the late submission points threshold. For how many months must it submit every return on time to reset its points to zero?',
-      answer: 24, unit: 'months',
+      id: 'P-1-109', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.5.3'],
+      /* WAS a bare lookup of the 24 months, which §17.1 of the reference
+         material prints for annual and quarterly filers alike. What the table
+         does NOT say is that serving the period is only half of the test — so
+         that is what this now asks, with the length of the period demoted to
+         one statement among four. (The monthly period really is absent from
+         the table, which is why P-1-53 is allowed to ask for it outright.) */
+      type: 'truefalse',
+      q: 'An annual filer reached the late submission points threshold exactly two years ago and has submitted every return on time since. Identify whether each statement about resetting its points is correct.',
+      statements: [
+        { text: 'The period of compliance for an annual filer has now been served.', answer: true },
+        { text: 'Serving that period is enough on its own to reset the points.', answer: false },
+        { text: 'Any return still outstanding for the preceding 24 months must be filed too.', answer: true },
+        { text: 'A quarterly filer would have had to serve the same period.', answer: false },
+      ],
       exp: 'An annual filer serves a period of compliance of ' + T.penalties.lateSubmission.complianceMonths.annual + ' months — the longest of the three, because it files least often and needs a longer run to demonstrate anything. Quarterly is ' + T.penalties.lateSubmission.complianceMonths.quarterly + ' months and monthly ' + T.penalties.lateSubmission.complianceMonths.monthly + '. Serving the period is not enough on its own: all outstanding returns for the preceding 24 months must also have been filed.',
     },
     {
@@ -2227,11 +2261,21 @@
       exp: 'Both limbs are about INPUT TAX, not turnover: exempt input tax must average no more than ' + money(T.partialExemption.deMinimisPerMonth.value) + ' a month AND must be no more than ' + T.partialExemption.inputTaxProportion.value + '% of total input tax. Substituting turnover for input tax in either limb is the standard misremembering, and it can flip the answer in both directions.',
     },
     {
-      id: 'P-2-101', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.3.6'], recall: true,
-      type: 'numeric',
-      q: 'What is the de minimis limit for exempt input tax over a full VAT year, in pounds?',
-      answer: 7500, unit: '£',
-      exp: 'The limit is an average, so the annual figure is twelve times the monthly one: ' + money(T.partialExemption.deMinimisPerMonth.value) + ' × 12 = £7,500. For a quarter it is ' + money(T.partialExemption.deMinimisPerQuarter.value) + '. Whichever period is used, the proportion limb still has to be met as well.',
+      id: 'P-2-101', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.3.6'],
+      /* WAS “what is the annual de minimis limit?” — a figure §7 of the reference
+         material supplies. The figures are now inputs instead: the proportion
+         limb passes and the average limb fails, so the question can only be
+         answered by someone who knows the two are joined by AND. */
+      type: 'mcq',
+      q: 'Over its VAT year a business incurs exempt input tax averaging £640 a month, which is 42% of its total input tax. Is it de minimis?',
+      opts: [
+        'No — the average is over the limit, and both limbs must be met',
+        'Yes — the proportion is under half, which is the limb that governs it',
+        'Yes — either limb will do, and the proportion limb is met here easily',
+        'No — the proportion is over the limit, though the average is not',
+      ],
+      ans: 0,
+      exp: 'De minimis needs BOTH limbs. Exempt input tax must average no more than ' + money(T.partialExemption.deMinimisPerMonth.value) + ' a month — ' + money(T.partialExemption.deMinimisPerYear.value) + ' over a year, ' + money(T.partialExemption.deMinimisPerQuarter.value) + ' over a quarter. It must also be no more than ' + T.partialExemption.inputTaxProportion.value + '% of total input tax. Here the proportion limb is met at 42%, but £640 a month is over ' + money(T.partialExemption.deMinimisPerMonth.value) + ', so the business fails. Failing costs only the exempt input tax: the wholly taxable and apportioned parts still come back.',
     },
     {
       id: 'P-2-102', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.3.6'],
@@ -3405,15 +3449,16 @@
     {
       id: 'P-4-08', unitKey: 'tpfb', lo: 4, criteria: ['TPFB-4.2.7'],
       type: 'mcq',
-      q: 'An employer pays PAYE electronically. By what date must the payment reach HMRC?',
-      opts: [
-        'The 22nd of the following month',
-        'The 19th of the following month',
-        'The last working day of the following month',
-        'Within 30 days of the end of the tax month',
-      ],
-      ans: 0,
-      exp: 'Electronic payments are due by the 22nd of the following month, non-electronic by the 19th. The same split applies to the Class 1A National Insurance deadline in July.',
+      /* WAS “by what date must an electronic payment reach HMRC?”, answered by
+         reading §22 of the reference material. The date is now the output of
+         two rules rather than one lookup: where the tax month ends, and which
+         calendar month the 22nd then falls in. “The following month” is the
+         phrase that misleads — it follows the tax month’s END, not its close
+         as a calendar month. */
+      q: 'An employer pays PAYE electronically. For the tax month ending 5 October, by what date must the payment reach HMRC?',
+      opts: ['19 October', '22 October', '22 November', '19 November'],
+      ans: 1,
+      exp: 'The tax month runs from 6 September to 5 October, and payment is due by the 22nd of the month in which it ends. That is 22 October, not a month later. The slip to avoid is reading “the following month” as the month after the tax month closes. Non-electronic payment is due by the 19th of that same month, and the same split applies to the Class 1A deadline in July.',
     },
     {
       id: 'P-4-09', unitKey: 'tpfb', lo: 4, criteria: ['TPFB-4.2.8'],
@@ -3680,11 +3725,20 @@
       exp: 'Loss of records must be reported straight away, and the employer is expected to rebuild what it can from bank records, payslips and the submissions already made. The obligation does not disappear with the paperwork. Filing estimated figures silently turns an accident into a false return, which is a far worse position than the fire left the employer in.',
     },
     {
-      id: 'P-4-41', unitKey: 'tpfb', lo: 4, criteria: ['TPFB-4.1.5'], recall: true,
-      type: 'numeric',
-      q: 'For how many years after the end of the tax year they relate to must payroll records be kept?',
-      answer: 3,
-      exp: '' + T.payroll.records.retentionYears.value + ' years from the END of the tax year concerned. It is a different period from the six years required for VAT records, and the two are the most confused pair in this unit — a business subject to both keeps its VAT records twice as long as its payroll ones.',
+      id: 'P-4-41', unitKey: 'tpfb', lo: 4, criteria: ['TPFB-4.1.5'],
+      /* WAS “for how many years must payroll records be kept?” — a figure §20 of
+         the reference material supplies. Both retention periods are now run
+         against real dates, which is where the confusion between them actually
+         bites: on one date, one set of records may go and the other may not. */
+      type: 'truefalse',
+      q: 'On 1 June 2029 a business reviews which records it may now destroy. Identify whether each set must still be kept.',
+      statements: [
+        { text: 'Payroll records for the tax year ended 5 April 2026.', answer: false },
+        { text: 'Payroll records for the tax year ended 5 April 2027.', answer: true },
+        { text: 'VAT records for the quarter ended 31 March 2023.', answer: false },
+        { text: 'VAT records for the quarter ended 31 March 2026.', answer: true },
+      ],
+      exp: 'Payroll records run ' + T.payroll.records.retentionYears.value + ' years from the END of the tax year. So the year to 5 April 2026 came free on 5 April 2029, while the year to 5 April 2027 runs to 2030. VAT records run ' + T.records.retentionYears.value + ' years, so the quarter to 31 March 2023 came free on 31 March 2029. The quarter to 31 March 2026 still has years to go. Three against six is the most confused pair in this unit: a business subject to both keeps its VAT records twice as long as its payroll ones.',
     },
     {
       id: 'P-4-42', unitKey: 'tpfb', lo: 4, criteria: ['TPFB-4.1.5'],
@@ -4223,11 +4277,14 @@
     },
     {
       id: 'P-1-18', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.4.2'],
-      type: 'numeric', recall: true,
-      
-      q: 'A business on annual accounting makes nine monthly interim payments. What percentage of the previous year’s liability is each one?',
-      answer: 10, unit: '%',
-      exp: 'Nine monthly instalments of 10% each, due at the end of months 4 to 12. The alternative is three quarterly instalments of 25%, due at the end of months 4, 7 and 10. Either way a balancing payment follows with the annual return.',
+      /* WAS a bare lookup of the 10%, which §15.1 of the reference material
+         prints alongside the quarterly 25%. The percentage is now an input:
+         the reader has to know there are nine of them, apply the rate to LAST
+         year’s liability rather than this one’s, and take the difference. */
+      type: 'numeric',
+      q: 'A business on annual accounting had a VAT liability of £42,000 last year and makes monthly interim payments. Its actual liability for this year is £47,400. What balancing payment is due with the annual return, in pounds?',
+      answer: 9600, unit: '£',
+      exp: 'Each interim payment is 10% of LAST year’s liability: £42,000 × 10% = £4,200. There are nine of them, at the end of months 4 to 12, so £4,200 × 9 = £37,800 is paid during the year. The balancing payment is what is left: £47,400 − £37,800 = £9,600, due with the return two months after the year end. The quarterly alternative is three payments of 25%, at the end of months 4, 7 and 10.',
     },
     {
       id: 'P-1-19', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.4.2'],
@@ -4595,15 +4652,20 @@
     {
       id: 'P-2-26', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.2.1'],
       type: 'mcq',
-      q: 'Within what period must a VAT invoice normally be issued?',
+      /* WAS a bare lookup of the 30-day limit, which §10 of the reference
+         material supplies. Both periods are now applied to one set of dates,
+         which is the only way to find out whether a reader has told them
+         apart: 21 days is too late to move the tax point and comfortably
+         inside the limit for issuing the invoice. */
+      q: 'Goods are delivered on 3 June and the supplier issues its VAT invoice on 24 June. What is the tax point, and was the invoice issued in time?',
       opts: [
-        '30 days of the basic tax point',
-        '14 days of the basic tax point',
-        '7 days of the basic tax point',
-        '3 months of the basic tax point',
+        '24 June, and the invoice was issued in time',
+        '3 June, and the invoice was issued in time',
+        '3 June, and the invoice was issued late',
+        '24 June, and the invoice was issued late',
       ],
-      ans: 0,
-      exp: 'A VAT invoice must normally be issued within ' + T.invoicing.issueWithinDays.value + ' days of the basic tax point. The ' + T.invoicing.actualTaxPointDays.value + '-day rule is a different thing — an invoice issued within 14 days AFTER the basic tax point moves the tax point to the invoice date.',
+      ans: 1,
+      exp: 'Two different periods, and they are not the same rule. The basic tax point is the delivery date, 3 June. An invoice issued within ' + T.invoicing.actualTaxPointDays.value + ' days AFTER the basic tax point moves the tax point to the invoice date. Here the invoice came 21 days later, so the tax point stays at 3 June. The ' + T.invoicing.issueWithinDays.value + '-day limit for issuing the invoice runs to 3 July, so the invoice itself is in time.',
     },
     {
       id: 'P-2-27', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.3.13'],
