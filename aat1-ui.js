@@ -2091,12 +2091,12 @@
     return h;
   }
 
-  /* The same two thresholds Level 3 uses — see the note there, including why
-     the gold band is only five questions wide at this setting. Three was two
-     answers into a run, so the gold was on for most of a session and meant
-     little; twenty is worth reaching and twenty-five is worth marking again. */
+  /* The same two thresholds Level 3 uses — see the note there, including the
+     fifteen-question band between them. Three was two answers into a run, so
+     the gold was on for most of a session and meant little; twenty is worth
+     reaching and thirty-five is worth marking again. */
   var STREAK_GOLD = 20;
-  var STREAK_SPARKLE = 25;
+  var STREAK_SPARKLE = 35;
   /* AND THE TWO MILESTONES THE RUN CELEBRATES. The overlay at fifty and a
      hundred passes in seconds and the badge used to go back to looking exactly
      as it had at twenty-five, so a reader had nothing to show for it a minute

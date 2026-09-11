@@ -316,8 +316,8 @@ LEVELS.forEach(L => {
 /* ── 3b. The streak badge earns each of its two tiers ──────────────────────────
  *
  * The badge went gold at THREE, which is two answers into a run. It was lit for
- * most of a session, so being lit meant nothing. Ten now turns it gold and
- * twenty-five adds sparkles.
+ * most of a session, so being lit meant nothing. Twenty now turns it gold and
+ * thirty-five adds sparkles.
  *
  * BOTH BOUNDARIES FROM BOTH SIDES. A threshold is the one part of this that can
  * be wrong by one and look right: `> 10` and `>= 10` differ on exactly one
@@ -377,21 +377,21 @@ TIERS.forEach(L => {
     `${L.name}: nineteen is still not gold (got "${at[19]}")`);
   ok(at[20] !== null && at[20].indexOf('is-hot') !== -1,
     `${L.name}: twenty turns it gold (got "${at[20]}")`);
-  /* THE BAND BETWEEN THE TIERS, asserted because it is now five questions
-     wide rather than fifteen. Gold at twenty and sparkle at twenty-five leave
-     very little room, so if either moves again this says whether gold still
-     has a stretch of its own to be seen in at all. */
-  ok(at[24] !== null && at[24].indexOf('is-sparkling') === -1,
-    `${L.name}: gold still has a band of its own before sparkle (got "${at[24]}")`);
-  ok(at[24] !== null && at[24].indexOf('is-sparkling') === -1,
-    `${L.name}: twenty-four is gold without sparkles (got "${at[24]}")`);
-  ok(at[25] !== null && at[25].indexOf('is-sparkling') !== -1,
-    `${L.name}: twenty-five sparkles (got "${at[25]}")`);
-  /* Additive, not a swap: the sparkle tier keeps the gold it earned at ten. */
-  ok(at[25] !== null && at[25].indexOf('is-hot') !== -1,
-    `${L.name}: and is still gold at twenty-five (got "${at[25]}")`);
-  ok(at[26] !== null && at[26].indexOf('is-sparkling') !== -1,
-    `${L.name}: and stays sparkling past it (got "${at[26]}")`);
+  /* THE BAND BETWEEN THE TIERS. Gold at twenty and sparkle at thirty-five
+     leave fifteen questions in which gold is the whole of what the badge is
+     doing. Read at the midpoint rather than at the boundary, so this says the
+     band genuinely exists rather than that its last question does. */
+  ok(at[27] !== null && at[27].indexOf('is-hot') !== -1 && at[27].indexOf('is-sparkling') === -1,
+    `${L.name}: gold has a band of its own before sparkle (got "${at[27]}")`);
+  ok(at[34] !== null && at[34].indexOf('is-sparkling') === -1,
+    `${L.name}: thirty-four is gold without sparkles (got "${at[34]}")`);
+  ok(at[35] !== null && at[35].indexOf('is-sparkling') !== -1,
+    `${L.name}: thirty-five sparkles (got "${at[35]}")`);
+  /* Additive, not a swap: the sparkle tier keeps the gold it earned at twenty. */
+  ok(at[35] !== null && at[35].indexOf('is-hot') !== -1,
+    `${L.name}: and is still gold at thirty-five (got "${at[35]}")`);
+  ok(at[36] !== null && at[36].indexOf('is-sparkling') !== -1,
+    `${L.name}: and stays sparkling past it (got "${at[36]}")`);
 
   /* THE TWO MILESTONE TIERS, BOTH BOUNDARIES FROM BOTH SIDES. These are what
      the reader has to show for a milestone once the overlay has gone, so they
@@ -432,7 +432,7 @@ TIERS.forEach(L => {
 ['aat3-ui.js', 'aat1-ui.js'].forEach(f => {
   const src = fs.readFileSync(path.join(ROOT, f), 'utf8');
   ok(/var STREAK_GOLD = 20;/.test(src), `${f}: names the gold threshold`);
-  ok(/var STREAK_SPARKLE = 25;/.test(src), `${f}: names the sparkle threshold`);
+  ok(/var STREAK_SPARKLE = 35;/.test(src), `${f}: names the sparkle threshold`);
   ok(/var STREAK_BLAZE = 50;/.test(src), `${f}: names the blaze threshold`);
   ok(/var STREAK_LEGEND = 100;/.test(src), `${f}: names the legend threshold`);
 });

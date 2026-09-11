@@ -382,34 +382,68 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
    prefers-reduced-motion the twinkle stops, so without something unanimated a
    streak of twenty-five would look identical to one of ten for any reader who
    asked the animation to stop — which is most of the point of the tier. */
+/* FOUR POINTS, NOT TWO, AND A GLOW THAT BREATHES. Two small stars at 10px
+   with a flat 10px shadow read as a badge with a decoration on it. The tier is
+   thirty-five right answers in a row, which almost nobody reaches, so it is
+   worth more than a decoration.
+
+   The extra pair hangs off the LABEL rather than off the badge, because an
+   element has only two pseudo-elements and the badge has spent both. The label
+   is `position: static`, so absolutely-positioned children of it anchor to the
+   badge exactly as the first pair do — four corners, no extra markup.
+
+   The four are deliberately not identical: the second pair is smaller and on a
+   different phase, so the badge twinkles rather than pulsing in lockstep. */
 .a3-streak.is-sparkling {
   position: relative;
-  box-shadow: 0 0 10px -2px var(--a3-gold);
+  box-shadow: 0 0 18px -3px var(--a3-gold), 0 0 38px -10px var(--a3-gold);
+  animation: a3-sparkle-glow 2.4s ease-in-out infinite;
 }
 .a3-streak.is-sparkling::before,
-.a3-streak.is-sparkling::after {
-  content: ''; position: absolute; width: 10px; height: 10px;
+.a3-streak.is-sparkling::after,
+.a3-streak.is-sparkling .a3-streak-l::before,
+.a3-streak.is-sparkling .a3-streak-l::after {
+  content: ''; position: absolute; width: 13px; height: 13px;
   background: var(--a3-gold); pointer-events: none;
   /* A four-point star. NOT rotated by the animation: a 45-degree turn lands it
      on the diagonal, where the same shape reads as a small x rather than as a
      sparkle. It grows and fades instead. */
   clip-path: polygon(50% 0%, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0% 50%, 39% 39%);
-  animation: a3-sparkle 2.2s ease-in-out infinite;
+  animation: a3-sparkle 1.5s ease-in-out infinite;
 }
-.a3-streak.is-sparkling::before { top: -4px; right: -4px; }
-/* Offset by less than half the cycle, so the two are rarely both at their
-   dimmest and the badge never looks like it has simply stopped. */
-.a3-streak.is-sparkling::after { bottom: -4px; left: -4px; animation-delay: .8s; }
+.a3-streak.is-sparkling::before { top: -5px; right: -5px; }
+/* Offset by less than half the cycle, so no two are at their dimmest together
+   and the badge never looks like it has simply stopped. */
+.a3-streak.is-sparkling::after { bottom: -5px; left: -5px; animation-delay: .55s; }
+/* The second pair: smaller, tucked into the other two corners, on their own
+   phases so all four are never doing the same thing at once. */
+.a3-streak.is-sparkling .a3-streak-l::before {
+  width: 9px; height: 9px; top: -4px; left: -6px; animation-delay: .95s;
+}
+.a3-streak.is-sparkling .a3-streak-l::after {
+  width: 9px; height: 9px; bottom: -4px; right: -6px; animation-delay: 1.3s;
+}
 @keyframes a3-sparkle {
-  0%, 100% { opacity: .45; transform: scale(.6); }
-  50%      { opacity: 1;   transform: scale(1.15); }
+  0%, 100% { opacity: .25; transform: scale(.4); }
+  50%      { opacity: 1;   transform: scale(1.4); }
+}
+@keyframes a3-sparkle-glow {
+  0%, 100% { box-shadow: 0 0 14px -4px var(--a3-gold), 0 0 30px -12px var(--a3-gold); }
+  50%      { box-shadow: 0 0 24px -2px var(--a3-gold), 0 0 48px -6px var(--a3-gold); }
 }
 @media (prefers-reduced-motion: reduce) {
   .a3-streak { transition: none; }
   /* Held at full size rather than hidden: they are the tier's mark, and a
-     reader who stops the motion should still see they reached it. */
+     reader who stops the motion should still see they reached it. The badge
+     glow is held at its bright end for the same reason. */
   .a3-streak.is-sparkling::before,
-  .a3-streak.is-sparkling::after { animation: none; opacity: 1; transform: none; }
+  .a3-streak.is-sparkling::after,
+  .a3-streak.is-sparkling .a3-streak-l::before,
+  .a3-streak.is-sparkling .a3-streak-l::after { animation: none; opacity: 1; transform: none; }
+  .a3-streak.is-sparkling {
+    animation: none;
+    box-shadow: 0 0 24px -2px var(--a3-gold), 0 0 48px -6px var(--a3-gold);
+  }
 }
 
 /* ── The two milestone tiers the badge KEEPS ──────────────────────────────────
@@ -431,10 +465,15 @@ body[data-subject="aat3"] .a3-streak.is-blazing {
 body[data-subject="aat3"] .a3-streak.is-blazing .a3-streak-n,
 body[data-subject="aat3"] .a3-streak.is-blazing .a3-streak-l { color: #fff; }
 body[data-subject="aat3"] .a3-streak.is-blazing .a3-streak-n { font-size: 22px; }
-/* The sparkles it earned at twenty-five turn white so they read against the
-   plate rather than disappearing into it. */
+/* The sparkles it earned at thirty-five turn white so they read against the
+   plate rather than disappearing into it. ALL FOUR, including the pair that
+   hangs off the label: gold stars on a gold plate are invisible, and the two
+   added when the effect was intensified would have gone missing at exactly
+   the tier that shows them off most. */
 body[data-subject="aat3"] .a3-streak.is-blazing::before,
-body[data-subject="aat3"] .a3-streak.is-blazing::after { background: #fff; }
+body[data-subject="aat3"] .a3-streak.is-blazing::after,
+body[data-subject="aat3"] .a3-streak.is-blazing .a3-streak-l::before,
+body[data-subject="aat3"] .a3-streak.is-blazing .a3-streak-l::after { background: #fff; }
 
 /* A HUNDRED IS A DIFFERENT OBJECT AGAIN: a dark plate ringed by a gold halo
    that turns, with the number in gold. Where fifty inverted the badge, this
