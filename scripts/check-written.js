@@ -38,6 +38,10 @@
 
 const D3 = require('./lib/aat3-driver.js');
 const D1 = require('./lib/aat1-driver.js');
+
+/* How far a mock paper is walked before the walk is treated as broken. Real
+   papers run to about forty questions; this is the ceiling, not the size. */
+const WALK_LIMIT = 200;
 const CONTENT = require('./lib/aat3-content.js');
 
 const RED = '\x1b[31m', GREEN = '\x1b[32m';
@@ -86,8 +90,28 @@ const LEVEL3 = (() => {
     },
     /* Sat repeatedly, because the draw is random and one clean paper proves
        nothing about the next. */
+    /* WALK THE WHOLE PAPER, AND SAY SO IF YOU CANNOT. This stopped at 40
+       questions, which was comfortably more than a paper held when it was
+       written and stopped being so once the banks grew: two papers in a
+       120-paper run reached 40 and 42. Both consequences were bad and only one
+       of them was visible.
+
+       The invisible one is the point of this check. §7 looks at each question
+       as it passes to see whether a written task is being served, so a paper
+       walked half way is a paper half checked — the assertion quietly stopped
+       covering the tail of the longest papers, which are exactly the ones most
+       likely to reach a task.
+
+       The visible one is that a mock left part-finished never clears the
+       countdown `startMockClock` sets, so this file printed its pass line and
+       then hung for ever on the leaked interval — three of them, one per
+       abandoned paper.
+
+       The bound stays, because an unbounded walk is a hang of its own the day
+       `mocknext` stops disappearing. It now sits far above any real paper, and
+       reaching it is reported as a failure rather than shrugged off. */
     mocks(sawWritten) {
-      let papers = 0;
+      let papers = 0, unfinished = 0, longest = 0;
       ['tpfb', 'faps', 'mats'].forEach(unit => {
         for (let i = 0; i < 40; i++) {
           const M = D3.loadUI(D3.fakeStore());
@@ -96,14 +120,17 @@ const LEVEL3 = (() => {
           M.AAT3_UI.mount(el);
           D3.click(el, 'startmock');
           papers++;
-          for (let k = 0; k < 40; k++) {
+          let k = 0;
+          for (; k < WALK_LIMIT; k++) {
             if (D3.nodes(el, 'wrinput').length) sawWritten();
             if (!D3.nodes(el, 'mocknext').length) break;
             D3.click(el, 'mocknext');
           }
+          if (k > longest) longest = k;
+          if (k >= WALK_LIMIT) unfinished++;
         }
       });
-      return papers;
+      return { papers: papers, unfinished: unfinished, longest: longest };
     },
     /* EVERY UNIT WHOSE ASSESSMENT IS PARTLY HUMAN MARKED. Read the marking type
        from the syllabus rather than listing units here: MATS is "partially
@@ -149,8 +176,9 @@ const LEVEL1 = (() => {
       const p = data.practice || {};
       return { rec: (p.qs || {})[q.id] || null, lo: (p.los || {})[String(q.lo || 1)] || {} };
     },
+    /* Same walk, same reason — see the note on the Level 3 one above. */
     mocks(sawWritten) {
-      let papers = 0;
+      let papers = 0, unfinished = 0, longest = 0;
       for (let i = 0; i < 60; i++) {
         const M = D1.loadUI(D1.fakeStore());
         const el = D1.fakeEl();
@@ -158,13 +186,16 @@ const LEVEL1 = (() => {
         M.AAT1_UI.mount(el);
         D1.click(el, 'startmock');
         papers++;
-        for (let k = 0; k < 40; k++) {
+        let k = 0;
+        for (; k < WALK_LIMIT; k++) {
           if (D1.nodes(el, 'wrinput').length) sawWritten();
           if (!D1.nodes(el, 'mocknext').length) break;
           D1.click(el, 'mocknext');
         }
+        if (k > longest) longest = k;
+        if (k >= WALK_LIMIT) unfinished++;
       }
-      return papers;
+      return { papers: papers, unfinished: unfinished, longest: longest };
     },
     /* No floor. Bookkeeping Fundamentals is computer marked, so written tasks
        are a study technique here rather than a rehearsal of the format, and
@@ -410,8 +441,14 @@ PLAYERS.forEach(P => {
   section('  and never under exam conditions');
   {
     let served = 0;
-    const papers = P.mocks(() => { served++; });
+    const { papers, unfinished, longest } = P.mocks(() => { served++; });
     ok(papers > 0, `${P.name}: mocks were actually sat (${papers})`);
+    ok(unfinished === 0,
+      `${P.name}: every paper was walked to its end, so every question was seen ` +
+      `(${unfinished} of ${papers} hit the ${WALK_LIMIT}-question limit; longest was ${longest})`);
+    ok(longest < WALK_LIMIT - 20,
+      `${P.name}: the walk limit still has room above the longest paper ` +
+      `(longest ${longest}, limit ${WALK_LIMIT}) — raise it before it starts truncating`);
     ok(served === 0, `${P.name}: no written task appeared in ${papers} timed papers (found ${served})`);
   }
 
