@@ -606,7 +606,39 @@ const QUESTION_FLOORS = {
   'POC-1.1': 36, 'POC-1.2': 20, 'POC-1.3': 5, 'POC-1.4': 6, 'POC-1.5': 4, 'POC-1.6': 5,
   'POC-2.1': 6, 'POC-2.2': 11, 'POC-2.3': 18, 'POC-2.4': 8, 'POC-2.5': 9,
   'POC-3.1': 5, 'POC-3.2': 7, 'POC-4.1': 8, 'POC-4.2': 7,
-  'BESY-1.1': 5, 'BESY-1.2': 4, 'BESY-1.4': 4, 'BESY-3.4': 4, 'BESY-5.3': 6, 'BESY-6.1': 6,
+  /* BESY audited the same way, and it was the largest job: 6 of 22 criteria
+     carried a tag, now 22 of 22, with 111 of the bank's questions read against
+     the scope of content and tagged.
+
+     Six criteria were taught and tested by nothing. 1.3 was the starkest —
+     key features of contracts is the heart of the contract law outcome, and
+     while classifications of law, sources of law and remedies all had questions
+     behind them, offer, acceptance, consideration and discharge had none.
+     3.3 held one question against five fundamental principles. 4.2, 4.3, 5.1,
+     6.3 and 7.1 were untested outright, so a reader could meet the statutory
+     books, company formation, the functions of a business, planning a workload
+     and the characteristics of useful information in the lessons and never be
+     asked about any of them. Twenty-three questions now cover the six.
+
+     The audit's own lesson was that an id prefix is not a unit. Fifty-one more
+     BESY questions were carrying no tag because their ids begin dd-, sc-, gf-,
+     tf-, ms-, tfq- or wr- rather than besy-, and a first pass that matched on
+     the prefix walked straight past them — including all sixteen written
+     tasks, which are what 6.2 exists to assess. They are tagged by what they
+     test, which is why 6.2 holds 21.
+
+     Five BESY questions stay untagged: two on mission statements, two on
+     franchises and one on market segmentation. Nothing in this unit's scope of
+     content mentions any of the three. They are not wrong, but they are not
+     this syllabus, and tagging them to the nearest criterion would say the
+     criterion is tested when it is not. */
+  'BESY-1.1': 7, 'BESY-1.2': 5, 'BESY-1.3': 6, 'BESY-1.4': 5,
+  'BESY-2.1': 25, 'BESY-2.2': 27, 'BESY-2.3': 9,
+  'BESY-3.1': 12, 'BESY-3.2': 7, 'BESY-3.3': 11, 'BESY-3.4': 8,
+  'BESY-4.1': 25, 'BESY-4.2': 10, 'BESY-4.3': 4,
+  'BESY-5.1': 4, 'BESY-5.2': 8, 'BESY-5.3': 9,
+  'BESY-6.1': 8, 'BESY-6.2': 21, 'BESY-6.3': 4,
+  'BESY-7.1': 11, 'BESY-7.2': 14,
 };
 const bankByCriterion = new Map();
 BANK.forEach(q => {

@@ -2465,7 +2465,7 @@ window.ALL_QUESTIONS = [
 
 
   /* -- THE BUSINESS ENVIRONMENT (BESY) -- */
-  { id: 'besy-001', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-001', topic: 'besy', difficulty: 'easy', criteria: ['BESY-1.3'],
     q: '"Consideration" in contract law is:',
     opts: [
       'Something of value given by each party to the agreement',
@@ -2476,7 +2476,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Consideration is something of value exchanged by each party — a payment, service or promise to act or refrain from acting.' },
 
-  { id: 'besy-002', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-002', topic: 'besy', difficulty: 'easy', criteria: ['BESY-4.1'],
     q: '"Limited liability" for shareholders means:',
     opts: [
       'Their loss is limited to the amount they paid or agreed to pay for shares',
@@ -2487,13 +2487,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Limited liability protects shareholders\' personal assets — their loss is capped at the amount paid (or agreed to be paid) for their shares.' },
 
-  { id: 'besy-003', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-003', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.1'],
     q: 'A business operating in perfect competition is characterised by:',
     opts: ['Many buyers and sellers', 'Single seller', 'High barriers to entry', 'Price control by firms'],
     ans: 0,
     exp: 'Perfect competition is a theoretical market structure with many buyers and sellers, homogeneous products and free entry — firms are price takers.' },
 
-  { id: 'besy-004', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-004', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.1'],
     q: 'A characteristic of monopolistic competition is:',
     opts: [
       'Many sellers offering differentiated but similar products',
@@ -2504,7 +2504,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Monopolistic competition has many firms selling differentiated (but similar) products — for example restaurants or hairdressers.' },
 
-  { id: 'besy-005', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-005', topic: 'besy', difficulty: 'easy', criteria: ['BESY-3.1'],
     q: 'A conflict between stakeholders occurs when:',
     opts: [
       'Different stakeholder groups pursue objectives that clash',
@@ -2515,25 +2515,25 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Stakeholder conflict arises when different stakeholders pursue competing objectives — for example shareholders seeking dividends vs employees seeking pay rises.' },
 
-  { id: 'besy-006', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-006', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.1'],
     q: 'Which of the following would cause demand for a normal good to fall?',
     opts: ['A rise in consumer income', 'A decrease in the price of substitutes', 'A decrease in the price of complements', 'A larger market population'],
     ans: 1,
     exp: 'When a close substitute becomes cheaper, consumers switch away from this good toward the cheaper alternative — reducing demand for this good. The other options would each tend to raise demand.' },
 
-  { id: 'besy-007', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-007', topic: 'besy', difficulty: 'easy', criteria: ['BESY-4.1'],
     q: 'A defining feature of a sole trader is:',
     opts: ['Limited liability', 'Shares traded on a stock exchange', 'Unlimited personal liability for business debts', 'Separate legal personality registered at Companies House'],
     ans: 2,
     exp: 'A sole trader has unlimited liability — personal assets can be used to meet business debts. There is no legal separation between the owner and the business.' },
 
-  { id: 'besy-008', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-008', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.3'],
     q: 'A fall in exchange rate typically makes exports:',
     opts: ['More expensive abroad', 'Cheaper abroad', 'Unchanged', 'Illegal'],
     ans: 1,
     exp: 'A weaker domestic currency makes exports cheaper to foreign buyers, improving export competitiveness.' },
 
-  { id: 'besy-009', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-009', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.2'],
     q: 'A fiscal policy tool is:',
     opts: [
       'Taxation and public spending decided by the government',
@@ -2555,7 +2555,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A franchisee operates under the franchisor\'s brand and business model, typically paying initial fees and ongoing royalties.' },
 
-  { id: 'besy-011', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-011', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.3'],
     q: 'A key economic factor for businesses trading internationally is:',
     opts: [
       'Fluctuations in the exchange rate between currencies',
@@ -2566,7 +2566,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Exchange rate movements affect import costs and export competitiveness — a critical factor for any business trading across borders.' },
 
-  { id: 'besy-012', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-012', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.2'],
     q: 'A key reason governments regulate businesses is to:',
     opts: [
       'To protect consumers and maintain competition in markets',
@@ -2577,7 +2577,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Regulation is used to protect consumers, ensure fair competition and prevent the abuse of market power.' },
 
-  { id: 'besy-013', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-013', topic: 'besy', difficulty: 'easy', criteria: ['BESY-4.1'],
     q: 'A limited company\'s separate legal personality means it:',
     opts: [
       'It can own property and sue or be sued in its own name',
@@ -2599,13 +2599,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A mission statement summarises the organisation\'s purpose, core values and strategic aims, providing direction for decision-making.' },
 
-  { id: 'besy-015', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-015', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.1'],
     q: 'A monopoly firm typically:',
     opts: ['Is price taker', 'Sets its own prices', 'Has no control over output', 'Has infinite competitors'],
     ans: 1,
     exp: 'A monopolist is the sole or dominant supplier in its market, with the power to set prices (subject to consumer demand and any regulation).' },
 
-  { id: 'besy-016', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-016', topic: 'besy', difficulty: 'easy', criteria: ['BESY-4.1'],
     q: 'A not-for-profit organisation:',
     opts: [
       'Exists primarily to fulfil a social, charitable or community purpose',
@@ -2616,7 +2616,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Not-for-profit organisations (charities, social enterprises) exist to serve a social or community purpose rather than to generate profit for owners.' },
 
-  { id: 'besy-017', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-017', topic: 'besy', difficulty: 'easy', criteria: ['BESY-4.1'],
     q: 'A PLC differs from a Ltd company because it:',
     opts: [
       'It can offer its shares to the public, including on a stock exchange',
@@ -2627,7 +2627,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A PLC can sell shares to the general public to raise larger amounts of capital and may be listed on a stock exchange. A Ltd company cannot do this.' },
 
-  { id: 'besy-018', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-018', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.1'],
     q: 'A price war usually leads to:',
     opts: [
       'Lower prices across the market and reduced profit margins',
@@ -2638,7 +2638,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Competing on price alone drives prices down for all participants and compresses margins. It may force weaker firms out over time, but it does not create a monopoly immediately, and it plainly changes the competitive position.' },
 
-  { id: 'besy-019', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-019', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.1'],
     q: 'A primary economic objective of firms is often to:',
     opts: [
       'Maximise profit for the owners of the business',
@@ -2649,7 +2649,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Profit maximisation is the standard assumption for a commercial firm, though real businesses also pursue growth, market share, survival and social objectives. Not-for-profit organisations pursue a purpose rather than a return to owners.' },
 
-  { id: 'besy-020', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-020', topic: 'besy', difficulty: 'easy', criteria: ['BESY-4.1'],
     q: 'A primary objective of a not-for-profit organisation is:',
     opts: [
       'Providing a social, charitable or community benefit',
@@ -2660,7 +2660,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Not-for-profit organisations exist to deliver a social, charitable or community benefit rather than to maximise returns to owners.' },
 
-  { id: 'besy-021', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-021', topic: 'besy', difficulty: 'easy', criteria: ['BESY-4.1'],
     q: 'A public limited company raises capital by:',
     opts: [
       'Offering its shares for sale to the general public',
@@ -2671,7 +2671,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The defining feature of a plc is that it may offer shares to the public, often through a stock-exchange listing. A private limited company cannot. Reducing equity and raising wages both take money out rather than raise it.' },
 
-  { id: 'besy-022', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-022', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.2'],
     q: 'A recession is typically characterised by:',
     opts: [
       'Negative economic growth over two consecutive quarters',
@@ -2682,7 +2682,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The conventional definition is two consecutive quarters of falling GDP. One weak quarter is not a recession, and the label matters commercially because it shapes credit conditions, consumer confidence and government policy.' },
 
-  { id: 'besy-023', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-023', topic: 'besy', difficulty: 'easy', criteria: ['BESY-4.1'],
     q: 'A sole trader expanding may incorporate to:',
     opts: [
       'Gain limited liability, capping the owner\'s loss at what they invested',
@@ -2693,7 +2693,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Incorporating creates a company with separate legal personality, so the shareholder\'s loss is limited to what they paid or agreed to pay for their shares. VAT registration depends on turnover and is unaffected. The trade-off is the opposite of the last option: a company must file accounts publicly.' },
 
-  { id: 'besy-024', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-024', topic: 'besy', difficulty: 'easy', criteria: ['BESY-3.1'],
     q: 'A stakeholder with high power and high interest should be:',
     opts: [
       'Managed closely, with active engagement in decisions',
@@ -2704,7 +2704,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Mendelow\'s power–interest matrix places high-power, high-interest stakeholders in the manage-closely quadrant. High power with low interest means keep satisfied; low power with high interest means keep informed; low on both means monitor.' },
 
-  { id: 'besy-025', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-025', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.1'],
     q: 'A substitute good is one that:',
     opts: [
       'Can be used in place of another to satisfy the same need',
@@ -2715,7 +2715,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Substitutes satisfy the same want — tea and coffee, or rail and coach travel. Price is irrelevant to the definition. Goods consumed together are complements, and cross elasticity of demand between substitutes is positive.' },
 
-  { id: 'besy-026', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-026', topic: 'besy', difficulty: 'easy', criteria: ['BESY-3.3'],
     q: 'An ethical issue for an accountant would be:',
     opts: [
       'Being asked to falsify entries in the financial records',
@@ -2726,7 +2726,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Accountants must act with integrity. The AAT Code of Professional Ethics requires honesty, objectivity and professional behaviour at all times.' },
 
-  { id: 'besy-027', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-027', topic: 'besy', difficulty: 'easy', criteria: ['BESY-3.1'],
     q: 'An example of internal stakeholder is:',
     opts: [
       'An employee working within the organisation',
@@ -2737,7 +2737,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Internal stakeholders are inside the organisation — employees, managers and directors. Customers, suppliers, lenders and government are all external, however closely they deal with the business.' },
 
-  { id: 'besy-028', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-028', topic: 'besy', difficulty: 'easy', criteria: ['BESY-1.3'],
     q: 'An implied term in a contract is one which:',
     opts: [
       'It is not expressly stated but is read into the contract by law or custom',
@@ -2748,7 +2748,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Implied terms are read into a contract without being stated, by statute, by custom in a trade, or by a court making the contract workable. They bind just as express terms do, and some cannot be excluded however the contract is worded.' },
 
-  { id: 'besy-029', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-029', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.2'],
     q: 'An increase in interest rates usually leads to:',
     opts: [
       'Lower borrowing and reduced consumer spending',
@@ -2759,7 +2759,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Raising rates makes borrowing dearer and saving more attractive, dampening demand. Because higher rates are the standard response to inflation, expecting them to raise it immediately reverses the causation.' },
 
-  { id: 'besy-030', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-030', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.1'],
     q: 'An oligopoly is characterised by:',
     opts: [
       'A small number of large firms dominating the market',
@@ -2770,7 +2770,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'An oligopoly is dominated by a few large firms — UK supermarkets and mobile networks are typical. One seller is a monopoly; many small sellers is perfect or monopolistic competition. Oligopolists compete intensely, often on factors other than price.' },
 
-  { id: 'besy-031', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-031', topic: 'besy', difficulty: 'easy', criteria: ['BESY-1.4'],
     q: 'Breach of contract means:',
     opts: [
       'The innocent party may claim damages or, in some cases, terminate',
@@ -2781,7 +2781,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A breach entitles the innocent party to damages (compensation) and, where the breach is sufficiently serious, to treat the contract as terminated.' },
 
-  { id: 'besy-032', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-032', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.1'],
     q: 'Cross price elasticity of demand measures:',
     opts: [
       'How demand for one good responds to a change in the price of another',
@@ -2792,7 +2792,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Cross price elasticity of demand (XED) measures how the demand for one good responds to a change in the price of another (substitute or complement).' },
 
-  { id: 'besy-033', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-033', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.2'],
     q: 'GDP measures:',
     opts: [
       'The total value of goods and services produced in an economy',
@@ -2803,7 +2803,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Gross Domestic Product (GDP) measures the total value of goods and services produced in an economy over a period.' },
 
-  { id: 'besy-034', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-034', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.1'],
     q: 'If demand is price inelastic, a price increase will:',
     opts: [
       'Increase total revenue, as demand falls proportionately less',
@@ -2814,7 +2814,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Inelastic demand means quantity falls by proportionately less than price rises, so price × quantity increases. This is why necessities can be priced up. With elastic demand the reverse holds and revenue falls.' },
 
-  { id: 'besy-035', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-035', topic: 'besy', difficulty: 'easy', criteria: ['BESY-4.1'],
     q: 'In a general partnership, partners\' liability is:',
     opts: [
       'Unlimited — each partner is personally liable for the firm\'s debts',
@@ -2825,7 +2825,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'An ordinary partnership has no separate legal personality, so partners are jointly liable without limit and a creditor may pursue any one of them for the whole debt. Limiting liability requires incorporation as a company or an LLP.' },
 
-  { id: 'besy-036', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-036', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.1'],
     q: 'Income elasticity of demand measures:',
     opts: [
       'How demand responds to a change in consumer income',
@@ -2836,7 +2836,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Income elasticity measures responsiveness to income. Responsiveness to the good\'s own price is price elasticity; responsiveness to another good\'s price is cross elasticity. Normal goods have positive income elasticity; inferior goods negative.' },
 
-  { id: 'besy-037', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-037', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.2'],
     q: 'Inflation is:',
     opts: [
       'A general and sustained rise in the level of prices',
@@ -2847,7 +2847,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Inflation is a sustained rise in the general price level, not a one-off increase in a single product. Its practical effect is that money buys less over time, which is why holding cash through an inflationary period carries a real cost.' },
 
-  { id: 'besy-038', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-038', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.2'],
     q: 'Inflation reduces:',
     opts: [
       'The purchasing power of money held by the business',
@@ -2869,7 +2869,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Market segmentation divides a market into distinct groups (by demographics, behaviour, geography, etc.) so marketing can be targeted effectively.' },
 
-  { id: 'besy-040', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-040', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.1'],
     q: 'Price elasticity of demand measures:',
     opts: [
       'How responsive demand is to a change in the selling price',
@@ -2880,7 +2880,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Price elasticity of demand (PED) measures the percentage change in quantity demanded relative to the percentage change in price.' },
 
-  { id: 'besy-041', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-041', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.2'],
     q: 'Rising interest rates tend to:',
     opts: [
       'Reduce consumer spending as borrowing becomes more expensive',
@@ -2891,7 +2891,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Higher interest rates reduce consumers\' disposable income (via higher mortgage payments) and increase borrowing costs for businesses, both of which tend to reduce spending.' },
 
-  { id: 'besy-042', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-042', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.2'],
     q: 'Rising interest rates typically cause:',
     opts: [
       'Lower borrowing and a reduction in overall demand',
@@ -2902,7 +2902,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Higher rates raise the cost of credit and the return on saving, so borrowing-financed spending falls and demand weakens. Exchange rate effects on exports are indirect and not guaranteed.' },
 
-  { id: 'besy-043', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-043', topic: 'besy', difficulty: 'easy', criteria: ['BESY-3.2'],
     q: 'The accounting function\'s role regarding sustainability includes:',
     opts: [
       'Recording environmental costs and helping measure the carbon footprint',
@@ -2915,7 +2915,7 @@ window.ALL_QUESTIONS = [
 
 
 
-  { id: 'besy-046', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-046', topic: 'besy', difficulty: 'easy', criteria: ['BESY-1.3'],
     q: 'The essential elements of a legally binding contract include:',
     opts: [
       'Offer, acceptance, consideration and intention to be bound',
@@ -2926,7 +2926,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A contract requires an offer, an acceptance, consideration (something of value exchanged) and an intention to create legal relations.' },
 
-  { id: 'besy-047', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-047', topic: 'besy', difficulty: 'easy', criteria: ['BESY-5.2'],
     q: 'The finance function primarily:',
     opts: [
       'Records and reports financial information to support decision-making',
@@ -2937,7 +2937,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The finance function maintains records, prepares financial reports, manages cash flow, supports budgeting and provides information for decisions.' },
 
-  { id: 'besy-048', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-048', topic: 'besy', difficulty: 'easy', criteria: ['BESY-7.2'],
     q: 'The UK GDPR / Data Protection Act 2018:',
     opts: [
       'Regulates how organisations collect, hold and use personal data',
@@ -2948,7 +2948,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The UK GDPR / DPA 2018 gives individuals rights over their personal data and requires organisations to handle it lawfully, fairly and securely.' },
 
-  { id: 'besy-049', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-049', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.2'],
     q: 'What happens when interest rates rise?',
     opts: [
       'Borrowing becomes more expensive for households and businesses',
@@ -2959,7 +2959,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'When interest rates rise, the cost of borrowing for households (e.g. mortgages) and businesses (e.g. loans) increases.' },
 
-  { id: 'besy-050', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-050', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.1'],
     q: 'What is a barrier to entry?',
     opts: [
       'An obstacle that makes it difficult for new competitors to enter a market',
@@ -2970,13 +2970,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Barriers to entry — for example high capital costs, regulation, patents or strong incumbent brands — prevent or slow new firms from entering a market.' },
 
-  { id: 'besy-051', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-051', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.3'],
     q: 'What is a consequence of a weak currency?',
     opts: ['Cheaper imports', 'More expensive imports', 'Lower inflation always', 'No trade impact'],
     ans: 1,
     exp: 'A weaker domestic currency means more domestic currency is needed to buy the same foreign goods, making imports more expensive.' },
 
-  { id: 'besy-052', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-052', topic: 'besy', difficulty: 'easy', criteria: ['BESY-1.3'],
     q: 'Which of the following is required for a contract to be legally binding?',
     opts: ['A profit element', 'Consideration', 'A tax certificate', 'An auditor’s signature'],
     ans: 1,
@@ -3004,13 +3004,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A mission statement sets out the organisation\'s purpose, values and aims, providing strategic direction.' },
 
-  { id: 'besy-055', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-055', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.1'],
     q: 'What is a monopoly?',
     opts: ['Many sellers', 'One dominant seller', 'No sellers', 'Government-only market'],
     ans: 1,
     exp: 'A monopoly is a market with a single dominant supplier, giving that firm significant power to set prices and restrict output.' },
 
-  { id: 'besy-056', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-056', topic: 'besy', difficulty: 'easy', criteria: ['BESY-4.1'],
     q: 'What is a key advantage of a public limited company (PLC)?',
     opts: [
       'It can raise large amounts of capital by offering shares to the public',
@@ -3021,13 +3021,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A PLC can offer shares to the public, including via a stock exchange, allowing it to raise substantial capital from a wide investor base.' },
 
-  { id: 'besy-057', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-057', topic: 'besy', difficulty: 'easy', criteria: ['BESY-4.1'],
     q: 'What is a disadvantage of operating as a sole trader?',
     opts: ['Liability for business debts is limited', 'Unlimited personal liability for business debts', 'Control over the business is shared out', 'A higher amount of start-up capital is required'],
     ans: 1,
     exp: 'A sole trader has unlimited personal liability — personal assets can be used to settle business debts.' },
 
-  { id: 'besy-058', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-058', topic: 'besy', difficulty: 'easy', criteria: ['BESY-3.1'],
     q: 'What is a stakeholder conflict?',
     opts: [
       'Different stakeholder groups pursuing objectives that clash',
@@ -3039,7 +3039,7 @@ window.ALL_QUESTIONS = [
     exp: 'Stakeholder conflict occurs when different groups have competing objectives — for example shareholders favouring profit and employees favouring higher wages.' },
 
 
-  { id: 'besy-060', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-060', topic: 'besy', difficulty: 'easy', criteria: ['BESY-3.4'],
     q: 'What is ethical behaviour?',
     opts: [
       'Acting honestly and with integrity, in the spirit as well as the letter of the law',
@@ -3050,7 +3050,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Ethics goes beyond legal compliance: something can be lawful and still be wrong. Deferring to seniority is the opposite of objectivity, which requires that professional judgement is not overridden by others.' },
 
-  { id: 'besy-061', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-061', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.3'],
     q: 'What is exchange rate risk?',
     opts: [
       'The risk that movements in currency values affect the business',
@@ -3061,13 +3061,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Exchange rate risk is the risk that movements in currency rates will adversely affect the value of foreign-currency receipts, payments or investments.' },
 
-  { id: 'besy-062', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-062', topic: 'besy', difficulty: 'easy', criteria: ['BESY-3.1'],
     q: 'Which of the following is an external stakeholder?',
     opts: ['A line manager', 'A supplier', 'An employee', 'A director'],
     ans: 1,
     exp: 'Suppliers are outside the organisation and therefore external stakeholders. Managers, employees and directors are internal.' },
 
-  { id: 'besy-063', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-063', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.2'],
     q: 'What is fiscal policy?',
     opts: [
       'Government decisions on taxation and public spending levels',
@@ -3078,7 +3078,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Fiscal policy is the use of government taxation and spending to influence the level of activity in the economy.' },
 
-  { id: 'besy-064', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-064', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.2'],
     q: 'What is GDP?',
     opts: [
       'The total value of goods and services produced in an economy',
@@ -3089,13 +3089,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Gross Domestic Product (GDP) is the total value of goods and services produced in an economy in a given period.' },
 
-  { id: 'besy-065', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-065', topic: 'besy', difficulty: 'easy', criteria: ['BESY-7.2'],
     q: 'What is the UK GDPR / Data Protection Act 2018 primarily about?',
     opts: ['Taxation of digital services', 'Protection of personal data', 'Setting wage rates', 'Preparing statutory accounts'],
     ans: 1,
     exp: 'The UK GDPR and Data Protection Act 2018 govern how organisations collect, store, use and share personal data, and give individuals rights over it. Breaches must be assessed and, where serious, reported — concealing one makes the position considerably worse.' },
 
-  { id: 'besy-066', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-066', topic: 'besy', difficulty: 'easy', criteria: ['BESY-7.2'],
     q: 'What is the main purpose of the UK GDPR?',
     opts: [
       'To protect personal data and give individuals rights over how it is used',
@@ -3106,7 +3106,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The UK GDPR protects personal data and gives individuals rights to access, correct and restrict the use of their data.' },
 
-  { id: 'besy-067', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-067', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.2'],
     q: 'What is inflation?',
     opts: [
       'A general and sustained rise in the level of prices',
@@ -3117,7 +3117,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Inflation is a general and sustained rise in the price level of goods and services across the economy.' },
 
-  { id: 'besy-068', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-068', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.2'],
     q: 'What is a typical effect of a rise in interest rates on consumer spending?',
     opts: [
       'Spending falls, because borrowing becomes more expensive',
@@ -3128,13 +3128,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Higher interest rates raise borrowing costs and mortgage payments, reducing disposable income and so reducing consumer spending.' },
 
-  { id: 'besy-069', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-069', topic: 'besy', difficulty: 'easy', criteria: ['BESY-4.1'],
     q: 'What is limited liability?',
     opts: ['Unlimited personal debt', 'Loss limited to investment', 'No responsibility', 'Government guarantee'],
     ans: 1,
     exp: 'Limited liability means shareholders\' loss is limited to the amount they have invested (or agreed to pay) for their shares — personal assets are protected.' },
 
-  { id: 'besy-070', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-070', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.2'],
     q: 'Which of the following is a macroeconomic factor?',
     opts: [
       'An economy-wide influence such as inflation, GDP growth or interest rates',
@@ -3145,7 +3145,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Macroeconomic factors operate at the level of the whole economy — for example inflation, GDP growth, unemployment and interest rates.' },
 
-  { id: 'besy-071', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-071', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.1'],
     q: 'What is price elasticity of demand used to measure?',
     opts: [
       'How responsive demand is to a change in the selling price',
@@ -3156,7 +3156,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Price elasticity measures how much demand moves in response to a price change. Above 1 demand is elastic and a price rise cuts total revenue; below 1 it is inelastic and a price rise raises revenue. Necessities tend to be inelastic, luxuries elastic.' },
 
-  { id: 'besy-072', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-072', topic: 'besy', difficulty: 'easy', criteria: ['BESY-4.1'],
     q: 'What does "separate legal personality" mean for a limited company?',
     opts: [
       'It is treated in law as an entity separate from its own shareholders',
@@ -3167,7 +3167,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A limited company has a legal existence separate from its shareholders. It can own assets, enter contracts and sue or be sued in its own name.' },
 
-  { id: 'besy-073', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-073', topic: 'besy', difficulty: 'easy', criteria: ['BESY-3.1'],
     q: 'Who is a stakeholder?',
     opts: [
       'Any individual or group with an interest in, or affected by, the business',
@@ -3178,7 +3178,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A stakeholder is any individual or group with an interest in the organisation — including shareholders, employees, customers, suppliers, lenders and the wider community.' },
 
-  { id: 'besy-074', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-074', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.1'],
     q: 'Which factors primarily affect supply?',
     opts: [
       'Production costs and the productivity of the resources used',
@@ -3189,7 +3189,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Supply depends primarily on production costs, the productivity of inputs and the prices of related inputs. Consumer demand and tastes shape the demand curve, not the supply curve — and price alone is not the whole story on either side.' },
 
-  { id: 'besy-075', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-075', topic: 'besy', difficulty: 'easy', criteria: ['BESY-3.2'],
     q: 'What is sustainability reporting?',
     opts: [
       'Reporting the organisation\'s environmental and social impact',
@@ -3200,7 +3200,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Sustainability reporting communicates an organisation’s environmental, social and governance (ESG) performance and impact.' },
 
-  { id: 'besy-076', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-076', topic: 'besy', difficulty: 'easy', criteria: ['BESY-3.1'],
     q: 'What is the purpose of stakeholder analysis?',
     opts: [
       'To identify each stakeholder\'s interests and their influence',
@@ -3211,13 +3211,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Stakeholder analysis identifies stakeholders, their interests and their influence, so the organisation can prioritise communication and management accordingly.' },
 
-  { id: 'besy-077', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-077', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.2'],
     q: 'What is the typical effect of higher unemployment on consumer demand?',
     opts: ['Higher overall demand', 'Lower overall demand', 'Higher inflation always', 'No effect'],
     ans: 1,
     exp: 'Unemployment reduces household income and dents confidence even among those still in work, so spending falls across the economy. Businesses selling discretionary goods feel it first; those selling essentials are more insulated.' },
 
-  { id: 'besy-078', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-078', topic: 'besy', difficulty: 'easy', criteria: ['BESY-4.1'],
     q: 'What is unlimited liability?',
     opts: [
       'The owner is personally responsible for the debts of the business',
@@ -3228,7 +3228,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Unlimited liability means the owner is personally responsible for all the debts of the business. Personal assets can be used to settle business debts.' },
 
-  { id: 'besy-079', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-079', topic: 'besy', difficulty: 'easy', criteria: ['BESY-4.1'],
     q: 'Which business structure offers all members limited liability?',
     opts: [
       'A private limited company registered at Companies House',
@@ -3239,19 +3239,19 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A private limited company provides limited liability — shareholders can lose only the amount they have invested in or agreed to pay for their shares.' },
 
-  { id: 'besy-080', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-080', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.2'],
     q: 'Which factor is external to a business?',
     opts: ['Management style', 'Employee skills', 'Government policy', 'Production method'],
     ans: 2,
     exp: 'Government policy (tax, regulation, spending) is an external (PESTLE) factor that the business does not control but must respond to.' },
 
-  { id: 'besy-081', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-081', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.1'],
     q: 'Which factor reduces demand?',
     opts: ['Income increase', 'Price decrease', 'Substitute price increase', 'Complement price increase'],
     ans: 3,
     exp: 'A rise in the price of a complementary good (e.g. petrol for cars) makes the joint purchase more expensive, reducing demand for the related good.' },
 
-  { id: 'besy-082', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-082', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.1'],
     q: 'Which is a microeconomic factor?',
     opts: [
       'The prices charged by a business\'s direct competitors',
@@ -3262,7 +3262,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Microeconomic factors operate at the level of individual firms and markets — for example competitor pricing, consumer preferences and input costs.' },
 
-  { id: 'besy-083', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-083', topic: 'besy', difficulty: 'easy', criteria: ['BESY-4.1'],
     q: 'Which of the following is a feature of a PLC?',
     opts: [
       'It can offer its shares for sale to the general public',
@@ -3273,13 +3273,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A PLC can offer shares to the public, including listing on a stock exchange. A private limited company cannot.' },
 
-  { id: 'besy-084', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-084', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.2'],
     q: 'Which of the following is a macroeconomic factor affecting business?',
     opts: ['A competitor launching a new product', 'The unemployment rate', 'A key employee resigning', 'Moving to new premises'],
     ans: 1,
     exp: 'Macroeconomic factors (unemployment, inflation, interest rates, GDP) are economy-wide influences largely outside the control of any individual business.' },
 
-  { id: 'besy-085', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-085', topic: 'besy', difficulty: 'easy', criteria: ['BESY-3.1'],
     q: 'Which of these stakeholders is external to the business?',
     opts: [
       'A supplier providing goods to the business',
@@ -3290,20 +3290,20 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'External stakeholders sit outside the organisation — suppliers, customers, lenders, government, the local community. Employees, managers and directors are all internal, whatever their level.' },
 
-  { id: 'besy-086', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-086', topic: 'besy', difficulty: 'easy', criteria: ['BESY-3.1'],
     q: 'Which stakeholder is primarily concerned with profit distribution?',
     opts: ['Government', 'Shareholders', 'Customers', 'Suppliers'],
     ans: 1,
     exp: 'Shareholders provide the capital and bear the residual risk, so their return comes from dividends and growth in the value of their shares. Employees are concerned with pay and security, lenders with being repaid, and customers with price and quality.' },
 
 
-  { id: 'besy-088', topic: 'besy', difficulty: 'medium',
+  { id: 'besy-088', topic: 'besy', difficulty: 'medium', criteria: ['BESY-2.3'],
     q: 'A depreciation of the domestic currency will:',
     opts: ['Make exports cheaper', 'Make imports cheaper', 'Have no effect on trade', 'Reduce inflation immediately'],
     ans: 0,
     exp: 'A weaker domestic currency makes exports cheaper to foreign buyers and imports more expensive — generally improving the trade balance.' },
 
-  { id: 'besy-089', topic: 'besy', difficulty: 'medium',
+  { id: 'besy-089', topic: 'besy', difficulty: 'medium', criteria: ['BESY-3.2'],
     q: 'A negative externality leads to:',
     opts: [
       'A cost falling on third parties outside the transaction',
@@ -3314,13 +3314,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A negative externality is a cost imposed on third parties not involved in a transaction — for example pollution.' },
 
-  { id: 'besy-090', topic: 'besy', difficulty: 'medium',
+  { id: 'besy-090', topic: 'besy', difficulty: 'medium', criteria: ['BESY-3.2'],
     q: 'A positive externality results in:',
     opts: ['Private cost only', 'Benefit to third parties', 'Higher taxes only', 'Reduced supply, and nothing else'],
     ans: 1,
     exp: 'A positive externality is a benefit that spills over to third parties not directly involved in a transaction — for example education improving wider society.' },
 
-  { id: 'besy-091', topic: 'besy', difficulty: 'medium',
+  { id: 'besy-091', topic: 'besy', difficulty: 'medium', criteria: ['BESY-3.2'],
     q: 'An external cost (negative externality) is:',
     opts: [
       'A cost imposed on third parties who are not part of the transaction',
@@ -3331,7 +3331,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'An external cost (negative externality) is a cost imposed on third parties who are not part of the transaction.' },
 
-  { id: 'besy-092', topic: 'besy', difficulty: 'medium',
+  { id: 'besy-092', topic: 'besy', difficulty: 'medium', criteria: ['BESY-3.1'],
     q: 'What is an example of CSR?',
     opts: [
       'Publishing a report on the organisation\'s environmental impact',
@@ -3342,13 +3342,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Corporate Social Responsibility (CSR) includes voluntary actions such as environmental reporting, ethical sourcing and community engagement.' },
 
-  { id: 'besy-093', topic: 'besy', difficulty: 'medium',
+  { id: 'besy-093', topic: 'besy', difficulty: 'medium', criteria: ['BESY-2.2'],
     q: 'Which policy tool directly affects money supply?',
     opts: ['Fiscal policy', 'Monetary policy', 'CSR policy', 'Marketing policy'],
     ans: 1,
     exp: 'Monetary policy uses the Bank of England\'s interest rate and asset purchases to influence the money supply and overall economic activity.' },
 
-  { id: 'besy-094', topic: 'besy', difficulty: 'medium',
+  { id: 'besy-094', topic: 'besy', difficulty: 'medium', criteria: ['BESY-2.2'],
     q: 'Which situation is most likely during economic recession?',
     opts: ['Rising demand', 'Falling demand', 'Stable exports', 'Currency appreciation'],
     ans: 1,
@@ -3826,7 +3826,7 @@ window.ALL_QUESTIONS.push(
 
 
   /* -- THE BUSINESS ENVIRONMENT (BESY) -- */
-  { id: 'besy-num-001', topic: 'besy', difficulty: 'easy', type: 'numeric', unit: '%', tolerance: 0.05,
+  { id: 'besy-num-001', topic: 'besy', difficulty: 'easy', type: 'numeric', unit: '%', tolerance: 0.05, criteria: ['BESY-2.2'],
     generate: function () {
       const base = window._QH.pick([100, 102, 104, 105, 108, 110, 112, 115, 118, 120]);
       const rise = window._QH.r(2, 12);
@@ -3844,7 +3844,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'besy-num-002', topic: 'besy', difficulty: 'easy', type: 'numeric', unit: '$', tolerance: 0.05,
+  { id: 'besy-num-002', topic: 'besy', difficulty: 'easy', type: 'numeric', unit: '$', tolerance: 0.05, criteria: ['BESY-2.3'],
     generate: function () {
       const rate = window._QH.pick([1.10, 1.15, 1.20, 1.22, 1.25, 1.28, 1.30, 1.35, 1.40]);
       const gbp = window._QH.rs(50, 1000, 50);
@@ -3861,7 +3861,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'besy-num-003', topic: 'besy', difficulty: 'medium', type: 'numeric', tolerance: 0.05,
+  { id: 'besy-num-003', topic: 'besy', difficulty: 'medium', type: 'numeric', tolerance: 0.05, criteria: ['BESY-2.1'],
     generate: function () {
       const incomePct = window._QH.pick([4, 5, 8, 10, 12]);
       const factor = window._QH.pick([1.5, 2, 2.5, 3]);
@@ -3879,7 +3879,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'besy-num-004', topic: 'besy', difficulty: 'medium', type: 'numeric', tolerance: 0.05,
+  { id: 'besy-num-004', topic: 'besy', difficulty: 'medium', type: 'numeric', tolerance: 0.05, criteria: ['BESY-2.1'],
     generate: function () {
       const pricePct = window._QH.pick([4, 5, 8, 10]);
       const factor = window._QH.pick([0.6, 0.8, 1.2, 1.5, 1.6, 2]);
@@ -3897,7 +3897,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'besy-num-005', topic: 'besy', difficulty: 'hard', type: 'numeric', unit: '£',
+  { id: 'besy-num-005', topic: 'besy', difficulty: 'hard', type: 'numeric', unit: '£', criteria: ['BESY-2.1'],
     generate: function () {
       const oldUnits = window._QH.rs(500, 2000, 100);
       const oldPrice = window._QH.r(15, 30);
@@ -3920,7 +3920,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'besy-num-006', topic: 'besy', difficulty: 'easy', type: 'numeric', unit: '£', tolerance: 0.05,
+  { id: 'besy-num-006', topic: 'besy', difficulty: 'easy', type: 'numeric', unit: '£', tolerance: 0.05, criteria: ['BESY-2.2'],
     generate: function () {
       // UK National Minimum/Living Wage rates from April 2026
       const rate = window._QH.pick([8.00, 10.85, 12.71]);
@@ -4187,7 +4187,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Four formulas that between them carry most of the calculation marks in Principles of Costing. Note that cost per unit divides the total by the units — adding the per-unit rates together instead misses the fixed cost per unit entirely.' },
 
-  { id: 'dd-007', topic: 'besy', difficulty: 'easy', type: 'dragdrop',
+  { id: 'dd-007', topic: 'besy', difficulty: 'easy', type: 'dragdrop', criteria: ['BESY-4.1'],
     q: 'Match each business structure to its liability characteristic.',
     pairs: [
       { left: 'Sole trader', right: 'Unlimited personal liability' },
@@ -4315,7 +4315,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'A full bank-reconciliation workflow — update the cash book, then reconcile to the statement via timing differences.' },
 
-  { id: 'sc-004', topic: 'besy', difficulty: 'medium', type: 'scenario',
+  { id: 'sc-004', topic: 'besy', difficulty: 'medium', type: 'scenario', criteria: ['BESY-4.1', 'BESY-2.3'],
     setup: 'Helen runs a small bakery as a sole trader. The business is growing and she is considering incorporating as a private limited company (Ltd). She also exports to Ireland and is concerned about exchange-rate movements between £ and €.',
     parts: [
       { type: 'mcq', q: 'A defining feature of Helen’s current sole-trader status is:',
@@ -4426,7 +4426,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'The denominator is always the budget, because the budget is the standard being measured against. And the threshold comes from the organisation’s policy rather than from judgement on the day, which is what makes an exception report consistent from month to month.' },
 
-  { id: 'gf-011', topic: 'besy', difficulty: 'easy', type: 'gapfill',
+  { id: 'gf-011', topic: 'besy', difficulty: 'easy', type: 'gapfill', criteria: ['BESY-4.1'],
     q: 'Complete the statement about business structures and liability.',
     template: 'A {0} has unlimited personal liability, whereas the shareholders of a {1} have limited liability.',
     gaps: [
@@ -4435,7 +4435,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'A sole trader bears unlimited liability; incorporation gives a company\'s shareholders limited liability — losses capped at the amount invested.' },
 
-  { id: 'gf-012', topic: 'besy', difficulty: 'medium', type: 'gapfill',
+  { id: 'gf-012', topic: 'besy', difficulty: 'medium', type: 'gapfill', criteria: ['BESY-2.1'],
     q: 'Complete the statement about price elasticity of demand.',
     template: 'If demand for a good is price {0}, a rise in price will {1} total revenue.',
     gaps: [
@@ -4529,7 +4529,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'FIFO issues the oldest stock first, so closing inventory is valued at the most recent prices. AVCO recalculates a weighted average after each receipt. LIFO issues the newest first and is not permitted under UK GAAP or IFRS.' },
 
-  { id: 'dd-018', topic: 'besy', difficulty: 'medium', type: 'dragdrop',
+  { id: 'dd-018', topic: 'besy', difficulty: 'medium', type: 'dragdrop', criteria: ['BESY-2.1'],
     q: 'Match each market structure to its key feature.',
     pairs: [
       { left: 'Perfect competition', right: 'Many firms, identical products, price takers' },
@@ -4539,7 +4539,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'The number of suppliers decides who sets the price. Under perfect competition each firm is too small to influence it and must take the market price; a monopoly faces no competitor and sets its own; oligopoly and monopolistic competition sit between the two.' },
 
-  { id: 'dd-019', topic: 'besy', difficulty: 'easy', type: 'dragdrop',
+  { id: 'dd-019', topic: 'besy', difficulty: 'easy', type: 'dragdrop', criteria: ['BESY-3.1'],
     q: 'Match each stakeholder to their main interest in a business.',
     pairs: [
       { left: 'Shareholders', right: 'Dividends and growth in share value' },
@@ -4549,7 +4549,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Each group wants something different from the same business: owners want return, employees want pay and security, suppliers want to be paid on time, customers want value, and lenders want evidence the debt can be serviced.' },
 
-  { id: 'dd-020', topic: 'besy', difficulty: 'medium', type: 'dragdrop',
+  { id: 'dd-020', topic: 'besy', difficulty: 'medium', type: 'dragdrop', criteria: ['BESY-2.2', 'BESY-2.3'],
     q: 'Match each economic change to its likely effect on a UK business.',
     pairs: [
       { left: 'Interest rates rise', right: 'Borrowing costs increase; consumer spending tends to fall' },
@@ -4669,7 +4669,7 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'FIFO issues the oldest stock first, so the 250 units come from the 100 at £4 and then 150 of the £5 batch: 400 + 750 = £1,150. The 50 units left are the newest, valued at £5 each, so closing inventory is £250.' },
 
-  { id: 'tf-015', topic: 'besy', difficulty: 'medium', type: 'tablefill',
+  { id: 'tf-015', topic: 'besy', difficulty: 'medium', type: 'tablefill', criteria: ['BESY-2.2'],
     q: 'Complete the calculation of weekly gross pay and the inflation rate.',
     table: {
       title: 'Pay and inflation',
@@ -4786,7 +4786,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Job costing in the order the assessment asks for it: prime cost, then absorbed overhead, then total production cost.' },
 
-  { id: 'sc-014', topic: 'besy', difficulty: 'medium', type: 'scenario',
+  { id: 'sc-014', topic: 'besy', difficulty: 'medium', type: 'scenario', criteria: ['BESY-4.1', 'BESY-5.3'],
     setup: 'Two friends, Priya and Sam, run a graphic-design business together as a general partnership. They are considering incorporating as a private limited company. They also have a major client who has not paid a £4,000 invoice that is now 90 days overdue.',
     parts: [
       { type: 'mcq', q: 'As a general partnership, Priya and Sam\'s liability for business debts is:',
@@ -4801,7 +4801,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Business structures, limited liability, and the cash-flow impact of overdue receivables.' },
 
-  { id: 'sc-015', topic: 'besy', difficulty: 'medium', type: 'scenario',
+  { id: 'sc-015', topic: 'besy', difficulty: 'medium', type: 'scenario', criteria: ['BESY-2.3', 'BESY-2.2'],
     setup: 'Coastline Imports buys stock from suppliers in the USA and sells to UK customers. The current exchange rate is £1 = $1.25. The Bank of England has just raised interest rates, and inflation in the UK is rising.',
     parts: [
       { type: 'numeric', q: 'Coastline orders stock costing $10,000. At £1 = $1.25, what is the cost in pounds?', answer: 8000, unit: '£', exp: 'With £1 buying $1.25, divide the dollar cost by the rate: $10,000 ÷ 1.25 = £8,000. If the pound then weakens, the same order costs more in sterling — which is the exchange-rate risk an importer carries.' },
@@ -4817,7 +4817,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'External economic factors: exchange rates, interest rates and inflation affecting an importer.' },
 
-  { id: 'sc-016', topic: 'besy', difficulty: 'hard', type: 'scenario',
+  { id: 'sc-016', topic: 'besy', difficulty: 'hard', type: 'scenario', criteria: ['BESY-3.3', 'BESY-3.4', 'BESY-3.2'],
     setup: 'Anya works as an accounting technician at a manufacturing company. Her manager asks her to delay recording several supplier invoices until after the year end so that this year\'s profit looks higher. The company also wants to start reporting on its environmental impact.',
     parts: [
       { type: 'mcq', q: 'Under the AAT Code of Professional Ethics, what should Anya do?',
@@ -4936,7 +4936,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'AVCO inventory valuation: recalculating weighted average after every purchase.' },
 
-  { id: 'sc-023', topic: 'besy', difficulty: 'medium', type: 'scenario',
+  { id: 'sc-023', topic: 'besy', difficulty: 'medium', type: 'scenario', criteria: ['BESY-4.1', 'BESY-4.2'],
     setup: 'Stella is considering leaving employment to set up her own business selling handmade ceramics. She is deciding between operating as a sole trader or incorporating as a private limited company (Ltd). She expects revenues of £90,000 in year 1 and a net profit of £35,000.',
     parts: [
       { type: 'mcq', q: 'As a sole trader, Stella\'s personal liability if the business fails would be:',
@@ -4954,7 +4954,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Business structures: sole trader vs private limited company — liability, share issuance and compliance.' },
 
-  { id: 'sc-024', topic: 'besy', difficulty: 'hard', type: 'scenario',
+  { id: 'sc-024', topic: 'besy', difficulty: 'hard', type: 'scenario', criteria: ['BESY-2.1'],
     setup: 'A coffee shop currently sells 600 cups per day at £3.00 each. Market research shows a 10% price increase would reduce demand to 480 cups per day. Meanwhile, a rival coffee shop increases its price by 20%, and demand for Bella\'s shop rises by 15%.',
     parts: [
       { type: 'mcq', q: 'The price elasticity of demand (PED) for the coffee shop\'s own product is:',
@@ -5544,7 +5544,7 @@ window.ALL_QUESTIONS.push(
 window.ALL_QUESTIONS.push(
 
   /* ── Task 4 shape: process a transaction, then communicate it ── */
-  { id: 'wr-001', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-comms', marks: 8, minWords: 70,
+  { id: 'wr-001', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-comms', marks: 8, minWords: 70, criteria: ['BESY-6.2'],
     setup: 'You are an accounts assistant at Pemberton Blinds Ltd. A customer, Halewood Interiors, has emailed to say their statement shows £2,880 outstanding but their own records show £2,400. You check the sales ledger and find that invoice 4471 for £480 was issued on 28 June for a made-to-measure blind that Halewood cancelled on 26 June. The cancellation was never processed.',
     task: 'Draft an email to Halewood Interiors explaining the difference and what you will do about it.',
     rubric: [
@@ -5557,7 +5557,7 @@ window.ALL_QUESTIONS.push(
     modelAnswer: 'Subject: Your account — difference of £480 on the June statement\n\nDear Halewood Interiors,\n\nThank you for getting in touch about your statement.\n\nI have checked your account and the difference is £480: our statement shows £2,880 outstanding, while your records show £2,400.\n\nThe cause is invoice 4471, raised on 28 June for £480. This related to a made-to-measure blind that you cancelled on 26 June. The cancellation was not processed at our end, so the invoice was issued in error.\n\nI will raise a credit note for £480 today, which will bring your balance in line with your own records at £2,400. You will receive a copy by email once it has been posted.\n\nI am sorry for the confusion. Please contact me if anything else on the statement does not look right.\n\nKind regards,\nAccounts Assistant, Pemberton Blinds Ltd',
     exp: 'The marks are for identifying the figure, explaining the cause and stating a concrete action — not for length. Always quantify the difference and name the document that caused it.' },
 
-  { id: 'wr-002', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-comms', marks: 6, minWords: 60,
+  { id: 'wr-002', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-comms', marks: 6, minWords: 60, criteria: ['BESY-6.2'],
     setup: 'You work in the finance team at Ardley Tools Ltd. The sales manager has asked why a large credit customer, Crowther Fixings, has been placed on stop, which is blocking a new order worth £6,000. Crowther Fixings has an agreed credit limit of £5,000 and a balance of £7,200, of which £3,100 is more than 60 days overdue.',
     task: 'Draft a short email to the sales manager explaining why the account is on stop and what would need to happen for the order to be released.',
     rubric: [
@@ -5569,7 +5569,7 @@ window.ALL_QUESTIONS.push(
     modelAnswer: 'Subject: Crowther Fixings — account on stop\n\nHi,\n\nCrowther Fixings is on stop for two reasons. Their balance is £7,200 against an agreed credit limit of £5,000, so they are £2,200 over the limit. Of that balance, £3,100 is more than 60 days overdue.\n\nTo release the £6,000 order we would need either payment of the £3,100 overdue amount, which brings the account back within terms, or a credit limit increase authorised by the finance manager.\n\nHappy to chase the overdue invoices today if that helps — let me know if you would like me to contact them directly.\n\nThanks,\nFinance team',
     exp: 'Credit control questions want the specific figures and a route forward. Naming who can authorise an exception (the finance manager) shows you understand the control, not just the rule.' },
 
-  { id: 'wr-003', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-comms', marks: 6, minWords: 60,
+  { id: 'wr-003', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-comms', marks: 6, minWords: 60, criteria: ['BESY-6.2'],
     setup: 'You are an accounts assistant at Vellacott Catering Supplies. A colleague in the warehouse has emailed asking you to "just pay" a supplier invoice for £1,450 from Northgate Produce because the supplier is chasing. There is no purchase order on file and no goods received note, and the invoice is addressed to a slightly different company name.',
     task: 'Draft a reply explaining why you cannot process the payment yet and what you need.',
     rubric: [
@@ -5581,7 +5581,7 @@ window.ALL_QUESTIONS.push(
     modelAnswer: 'Subject: Northgate Produce invoice £1,450 — on hold pending checks\n\nHi,\n\nI am not able to process this one yet. Three things need resolving first.\n\nThere is no purchase order on file, so I cannot confirm the goods were ordered or at what price. There is also no goods received note, so I cannot confirm the goods actually arrived and were checked.\n\nThe invoice is also addressed to a slightly different company name from ours. That may be a simple error, but it can also be a sign of a fraudulent or misdirected invoice, so I need to verify it before any payment goes out.\n\nIf you can send me the purchase order number and the GRN, and confirm the delivery took place, I will get this paid in the next payment run.\n\nThanks,\nAccounts',
     exp: 'The three-way match — purchase order, goods received note, invoice — is the core purchases control. A mismatched company name is a classic invoice-fraud indicator and should always be flagged rather than assumed to be a typo.' },
 
-  { id: 'wr-004', topic: 'besy', difficulty: 'hard', type: 'written', skill: 'besy-comms', marks: 8, minWords: 80,
+  { id: 'wr-004', topic: 'besy', difficulty: 'hard', type: 'written', skill: 'besy-comms', marks: 8, minWords: 80, criteria: ['BESY-6.2'],
     setup: 'You work at Redmayne Joinery Ltd. You have completed the bank reconciliation for October. The cash book shows a balance of £14,320 but the bank statement shows £11,905. You have identified: unpresented cheques of £3,150; an outstanding lodgement of £4,900; bank charges of £45 not yet in the cash book; and a direct debit for insurance of £320 not yet in the cash book.',
     task: 'Draft a note to the finance manager explaining the reconciliation and what needs to be adjusted in the cash book.',
     rubric: [
@@ -5594,7 +5594,7 @@ window.ALL_QUESTIONS.push(
     modelAnswer: 'Note: October bank reconciliation — Redmayne Joinery Ltd\n\nTwo items need posting to the cash book because they are genuine transactions the bank has processed and we have not recorded: bank charges of £45 and the insurance direct debit of £320. Once posted, the corrected cash book balance is £14,320 − £45 − £320 = £13,955.\n\nThe unpresented cheques of £3,150 and the outstanding lodgement of £4,900 are timing differences, not errors. They are correctly in our cash book and will clear the bank shortly, so no adjustment is made for them.\n\nReconciling from the statement: £11,905 plus the outstanding lodgement £4,900 less unpresented cheques £3,150 gives £13,655. That leaves £300 against the corrected cash book balance of £13,955, which does not reconcile. I recommend we review October cash book postings for a transposition or an omitted item before signing off.\n\nAccounts Assistant',
     exp: 'The distinction that earns marks is between items needing a cash book adjustment (bank charges, direct debits, standing orders, interest) and timing differences (unpresented cheques, outstanding lodgements). Noting that the reconciliation does not fully agree — rather than forcing it — is what a real assistant should do.' },
 
-  { id: 'wr-005', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-comms', marks: 6, minWords: 60,
+  { id: 'wr-005', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-comms', marks: 6, minWords: 60, criteria: ['BESY-6.2'],
     setup: 'You are an accounts assistant at Thornbury Print. A junior colleague has posted a purchase of stationery for £240 (net) plus VAT of £48 as: Dr Stationery £288, Cr Bank £288. The business is VAT registered and the payment was made by bank transfer.',
     task: 'Draft a short message to your colleague explaining what is wrong with the entry and how to correct it.',
     rubric: [
@@ -5606,7 +5606,7 @@ window.ALL_QUESTIONS.push(
     modelAnswer: 'Hi,\n\nSmall fix needed on the stationery purchase. The total of £288 has gone entirely to Stationery, but £48 of that is VAT.\n\nThe entry should be:\nDr Stationery £240\nDr VAT £48\nCr Bank £288\n\nIt matters for two reasons. As we are VAT registered, the £48 input VAT is reclaimable from HMRC, and posting it to Stationery means we lose it. It also overstates the stationery expense by £48, which will distort the cost figures.\n\nEasy one to miss — give me a shout if you want to go through the VAT postings together.\n\nThanks',
     exp: 'Always split gross into net and VAT for a registered business. The double entry has three lines: two debits (expense and VAT) and one credit (bank), and it still balances at £288.' },
 
-  { id: 'wr-006', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-comms', marks: 6, minWords: 60,
+  { id: 'wr-006', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-comms', marks: 6, minWords: 60, criteria: ['BESY-6.2'],
     setup: 'You work at Calder Fabrications Ltd. The sales ledger control account shows a balance of £48,600 but the total of the sales ledger individual accounts is £48,150. You have found that a credit note for £450 was posted to the customer\'s individual account but not to the control account.',
     task: 'Draft a note explaining the difference and the correcting entry required.',
     rubric: [
@@ -5618,7 +5618,7 @@ window.ALL_QUESTIONS.push(
     modelAnswer: 'Note: SLCA reconciliation difference\n\nThe sales ledger control account shows £48,600 and the total of the individual customer accounts is £48,150 — a difference of £450.\n\nThe cause is a credit note for £450 posted to the customer\'s individual account but omitted from the control account. The individual accounts are therefore correct and the control account is overstated.\n\nThe correction is to credit the sales ledger control account with £450 (with the corresponding debit to sales returns). Once posted, the control account will show £48,150 and agree with the list of individual balances.\n\nAccounts Assistant',
     exp: 'Work out which side is wrong before writing the journal. Here the subsidiary ledger was right, so the control account moves — a credit reduces the receivables balance to match.' },
 
-  { id: 'wr-007', topic: 'besy', difficulty: 'hard', type: 'written', skill: 'besy-comms', marks: 8, minWords: 80,
+  { id: 'wr-007', topic: 'besy', difficulty: 'hard', type: 'written', skill: 'besy-comms', marks: 8, minWords: 80, criteria: ['BESY-6.2'],
     setup: 'You are an accounts assistant at Levenshulme Foods Ltd. Your manager has asked you to explain to a new trainee why the business keeps both a sales day book and a sales ledger control account, as the trainee thinks it is "doing the same job twice".',
     task: 'Draft an explanation for the trainee covering what each record does and why both are needed.',
     rubric: [
@@ -5631,7 +5631,7 @@ window.ALL_QUESTIONS.push(
     modelAnswer: 'Hi,\n\nGood question — they look similar but they do different jobs.\n\nThe sales day book is a book of prime entry. It is the first place a credit sale is written down: date, customer, invoice number, net, VAT and gross. Nothing is posted to the ledgers until it goes through here, so it is a listing rather than an account.\n\nThe sales ledger control account is a real account in the general ledger. It holds the total owed by all credit customers in one figure, so the trial balance has a single receivables balance rather than hundreds of them.\n\nThe reason we keep both is control. Each customer also has their own account in the sales ledger. At month end we add up all those individual balances and compare the total to the control account. If the two agree, the postings are very likely right. If they do not, we know there is an error and we can find it before it reaches the financial statements.\n\nSo the day book captures, the control account summarises, and the comparison between the control account and the individual accounts is what catches mistakes.\n\nHope that helps',
     exp: 'Books of prime entry capture; ledger accounts record; control accounts verify. The point of the control account is that it is built from a different route than the individual accounts, so agreement between them is meaningful evidence.' },
 
-  { id: 'wr-008', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-comms', marks: 6, minWords: 60,
+  { id: 'wr-008', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-comms', marks: 6, minWords: 60, criteria: ['BESY-6.2'],
     setup: 'You work at Ormskirk Garden Centre. A supplier has phoned to say an invoice for £1,260 is overdue. You check and find the invoice was received but is still awaiting authorisation by the department head, who has been on leave for three weeks.',
     task: 'Draft a reply to the supplier. You must not disclose internal staffing matters.',
     rubric: [
@@ -5644,7 +5644,7 @@ window.ALL_QUESTIONS.push(
     exp: 'Confidentiality applies to internal matters as well as customer data. "Awaiting internal authorisation" is honest and sufficient; naming an absent colleague is neither necessary nor appropriate.' },
 
   /* ── Task 7 shape: bookkeeping systems, receipts, payments, data security ── */
-  { id: 'wr-009', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-tech', marks: 8, minWords: 70,
+  { id: 'wr-009', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-tech', marks: 8, minWords: 70, criteria: ['BESY-6.2', 'BESY-7.2'],
     setup: 'You work at Haslingden Supplies Ltd. A colleague has emailed you a spreadsheet containing the full customer list — names, addresses, phone numbers and bank details — to their personal webmail account so they can "work on it at home this weekend". They have asked you to do the same with the supplier list.',
     task: 'Draft a reply explaining why you will not do this and what the risks are.',
     rubric: [
@@ -5657,7 +5657,7 @@ window.ALL_QUESTIONS.push(
     modelAnswer: 'Hi,\n\nI am not able to send you the supplier list that way, and I would ask you not to send any more of our data to a personal account.\n\nThe customer list contains personal data — names, addresses, phone numbers — plus bank details. Sending it to a personal webmail account is a data breach risk under data protection law, and we could be liable for it.\n\nThe specific problems are that the transfer is not encrypted or controlled by us; once it is in a personal account we have no way of knowing who can access it or how long it is retained; and if the home device is lost, stolen or shared, that data goes with it.\n\nIf you need to work at the weekend, please use the approved remote access to our systems, where the data stays on company servers and access is logged.\n\nOne more thing: the email you have already sent should be reported to our data protection lead so it can be assessed and, if necessary, recorded. I would rather flag it now than have it found later.\n\nThanks',
     exp: 'Data security answers should name the risk, the specific harms and the compliant alternative. Reporting a breach that has already happened is part of the answer — concealing it makes the position worse.' },
 
-  { id: 'wr-010', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-tech', marks: 6, minWords: 60,
+  { id: 'wr-010', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-tech', marks: 6, minWords: 60, criteria: ['BESY-6.2', 'BESY-7.2'],
     setup: 'You are an accounts assistant at Brindley Motors. An email has arrived, apparently from a regular supplier, saying their bank details have changed and asking that the £4,800 payment due this week be sent to a new account. The email address is very similar to the supplier\'s usual one but not identical, and the message stresses urgency.',
     task: 'Draft a note to your manager setting out your concerns and what you propose to do.',
     rubric: [
@@ -5669,7 +5669,7 @@ window.ALL_QUESTIONS.push(
     modelAnswer: 'Note to manager — suspected mandate fraud\n\nWe have received an email asking us to redirect this week\'s £4,800 payment to a new bank account. I think this is a mandate fraud attempt.\n\nThree things concern me. The sender\'s address is very close to the supplier\'s usual one but is not identical. The request stresses urgency, which is a standard pressure tactic. And a change of bank details has arrived unprompted, immediately before a known payment falls due.\n\nI propose we hold the payment until we have verified the change. I will telephone the supplier on the number we already hold on file — not any number given in the email — and speak to a known contact to confirm whether the request is genuine.\n\nI will not amend the supplier record until that call is made.\n\nAccounts Assistant',
     exp: 'The rule is: never verify a change of bank details using contact details supplied in the same message. Independent verification against records you already hold is the control that defeats this fraud.' },
 
-  { id: 'wr-011', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-tech', marks: 6, minWords: 60,
+  { id: 'wr-011', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-tech', marks: 6, minWords: 60, criteria: ['BESY-7.1', 'BESY-7.2'],
     setup: 'You work at Dunham Textiles Ltd, which is moving its bookkeeping from a desktop package to a cloud accounting system. Your manager has asked you to summarise the benefits and the risks for a short briefing.',
     task: 'Draft a summary covering the main benefits and the main risks of the move.',
     rubric: [
@@ -5681,7 +5681,7 @@ window.ALL_QUESTIONS.push(
     modelAnswer: 'Cloud accounting — briefing summary\n\nBenefits. The data is accessible from any location with an internet connection, which suits remote and multi-site working. Backups and software updates are handled by the provider, so we are always on the current version and no longer depend on someone remembering to back up. Bank feeds import transactions automatically, which cuts manual entry and keying errors. Several people can work in the system at once.\n\nRisks. We become dependent on our internet connection — no connection means no access to the ledgers. Our data is held on a third party\'s servers, so we are relying on their security and their continuity. It moves us from a one-off licence to an ongoing subscription cost. And because the system is reachable from anywhere, weak passwords or over-generous access rights are more dangerous than they were on a desktop system.\n\nMitigations. I would recommend multi-factor authentication for all users, access rights set by role rather than given in full to everyone, and a check of the provider\'s data location and retention terms before we commit.\n\nAccounts Assistant',
     exp: 'A balanced answer earns more than an enthusiastic one. The examiner is looking for genuine risks alongside the benefits, and at least one concrete control.' },
 
-  { id: 'wr-012', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-tech', marks: 6, minWords: 60,
+  { id: 'wr-012', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-tech', marks: 6, minWords: 60, criteria: ['BESY-7.2'],
     setup: 'You are an accounts assistant at Kirkstall Engineering. The business has one shared login for the accounting system, and the password — written on a note by the printer — has not been changed for two years. Everyone in the office uses it, including temporary staff.',
     task: 'Draft a note to your manager explaining the risks and recommending improvements.',
     rubric: [
@@ -5693,7 +5693,7 @@ window.ALL_QUESTIONS.push(
     modelAnswer: 'Note: access controls on the accounting system\n\nWe currently have one shared login. I think this needs to change.\n\nThe most serious problem is that we have no audit trail. Every posting looks identical in the system, so if an entry is wrong — or deliberately falsified — there is no way to establish who made it. That removes both accountability and any real deterrent.\n\nThe password is also written on a note by the printer, so anyone passing through the office can read it, including visitors. It has not been changed in two years, and temporary staff who have long since left still know it.\n\nI recommend individual logins for every user, with access rights set by role so that staff can only reach the parts of the system their job requires. We should adopt a password policy with periodic changes, remove the written note, and make deactivating a login part of the leaver process for permanent and temporary staff alike.\n\nAccounts Assistant',
     exp: 'Shared logins destroy the audit trail, which is the point examiners want. Segregation of duties and accountability both depend on knowing which individual made each entry.' },
 
-  { id: 'wr-013', topic: 'besy', difficulty: 'hard', type: 'written', skill: 'besy-ethics', marks: 8, minWords: 80,
+  { id: 'wr-013', topic: 'besy', difficulty: 'hard', type: 'written', skill: 'besy-ethics', marks: 8, minWords: 80, criteria: ['BESY-6.2', 'BESY-3.3', 'BESY-3.4'],
     setup: 'You are an accounts assistant at Netherfield Ltd. Two days before the year end, your manager asks you to date three sales invoices totalling £27,000 as 31 March rather than 3 April, "so the figures land in the right year". The goods were despatched on 3 April.',
     task: 'Draft a note setting out your position and what you intend to do.',
     rubric: [
@@ -5706,7 +5706,7 @@ window.ALL_QUESTIONS.push(
     modelAnswer: 'Note: request to date April invoices as 31 March\n\nI am not able to date these invoices 31 March. The goods were despatched on 3 April, so the sales were earned in the new financial year and belong in it. Dating them 31 March would overstate this year\'s revenue by £27,000 and understate next year\'s by the same amount.\n\nThis is not a presentational judgement. Recording a transaction on a date it did not occur is falsification of the accounting records, and it would mislead anyone relying on the financial statements.\n\nIt also puts me in breach of two fundamental ethical principles. Integrity requires me to be straightforward and honest, and not to be knowingly associated with information that is materially false or misleading. Objectivity requires that my professional judgement is not overridden by pressure from others.\n\nI will therefore process the three invoices with their correct date of 3 April. If there is a commercial reason this year\'s figures need to be understood differently, I am happy to help prepare a note explaining the timing. If the request stands, I will need to raise it with the finance director.\n\nAccounts Assistant',
     exp: 'Ethics answers need the principle named and the action stated. Declining is not enough on its own — the expected response is to decline, explain, offer a legitimate alternative, and escalate if the pressure continues.' },
 
-  { id: 'wr-014', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-ethics', marks: 6, minWords: 60,
+  { id: 'wr-014', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-ethics', marks: 6, minWords: 60, criteria: ['BESY-3.3', 'BESY-3.4'],
     setup: 'You work at Sandbach Interiors. A supplier you deal with regularly has offered you a weekend break worth around £400 "as a thank you for the smooth working relationship". You are the person who decides which supplier gets the next contract.',
     task: 'Draft a reply to the supplier and note what you will do internally.',
     rubric: [
@@ -5718,7 +5718,7 @@ window.ALL_QUESTIONS.push(
     modelAnswer: 'Dear Supplier,\n\nThank you for the kind offer, which I am afraid I have to decline.\n\nI am the person who decides which supplier is awarded the next contract. Accepting a gift of this value from you while that decision is pending would create a clear threat to my objectivity, and it would be reasonable for anyone looking at it from outside to question whether the decision had been influenced.\n\nA small token of nominal value would be a different matter, but at around £400 this is not trivial, and the timing makes it more difficult still.\n\nI value the working relationship and it will not be affected by this. I will record the offer in our gifts and hospitality register and mention it to my manager, which is our normal process.\n\nKind regards,\nSandbach Interiors',
     exp: 'The test is whether an informed third party would consider objectivity compromised. Value and timing both matter, and declaring the offer — not just refusing it — is what the register exists for.' },
 
-  { id: 'wr-015', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-finance', marks: 6, minWords: 60,
+  { id: 'wr-015', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-finance', marks: 6, minWords: 60, criteria: ['BESY-6.2', 'BESY-5.2', 'BESY-7.1'],
     setup: 'You work in the finance function at Padgate Ltd. The operations manager has asked why the finance team needs their weekly output figures, saying "you do the money, we do the making".',
     task: 'Draft a reply explaining how the finance function uses operational information and why it benefits operations.',
     rubric: [
@@ -5730,7 +5730,7 @@ window.ALL_QUESTIONS.push(
     modelAnswer: 'Hi,\n\nFair question — here is why we ask.\n\nWe cannot cost what you produce without knowing how much of it there is. Weekly output figures let us work out the cost per unit, which feeds directly into the price we quote and the margin we make.\n\nThey are also used in a few other places. We use them to build and flex the budget, so that when we compare actual against budget we are comparing like with like rather than penalising you for producing more. They drive variance analysis, which tells us whether a cost movement came from price or from volume. And they underpin the inventory valuation in the year-end accounts.\n\nThe benefit is not one-way. Better output data means the budget you are measured against is realistic, and it means that when you ask for investment we can evidence the case with real numbers rather than estimates.\n\nHappy to walk through what we do with them if that would be useful.\n\nThanks,\nFinance',
     exp: 'The finance function is a service function. Answers score best when they show the two-way flow — finance needs operational data, and operations gets better budgets and evidence in return.' },
 
-  { id: 'wr-016', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-finance', marks: 6, minWords: 60,
+  { id: 'wr-016', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-finance', marks: 6, minWords: 60, criteria: ['BESY-6.2', 'BESY-4.2'],
     setup: 'You are an accounts assistant at Wetherby Components Ltd, a limited company. A new colleague has asked why the business has to file accounts at Companies House when "the tax people already get everything they need".',
     task: 'Draft an explanation covering who receives what and why.',
     rubric: [
@@ -5754,7 +5754,7 @@ window.ALL_QUESTIONS.push(
    ──────────────────────────────────────────────────────────────────────── */
 window.ALL_QUESTIONS.push(
 
-  { id: 'tfq-001', topic: 'besy', difficulty: 'easy', type: 'truefalse', skill: 'besy-structure',
+  { id: 'tfq-001', topic: 'besy', difficulty: 'easy', type: 'truefalse', skill: 'besy-structure', criteria: ['BESY-4.1'],
     q: 'Identify whether the following statements about charities are true or false.',
     statements: [
       { text: 'A charity exists for public benefit, such as for religious, educational or scientific purposes.', answer: true },
@@ -5764,7 +5764,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Two of these are false. Charities are generally exempt from corporation tax on income applied to charitable purposes, so the tax statement is wrong. And a charity may certainly run a surplus — what it must not do is distribute it to trustees or members, because the surplus has to be applied to the charitable purposes.' },
 
-  { id: 'tfq-002', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-structure',
+  { id: 'tfq-002', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-structure', criteria: ['BESY-4.1', 'BESY-4.2'],
     q: 'Identify whether the following statements about limited companies are true or false.',
     statements: [
       { text: 'A limited company has a separate legal personality from its shareholders.', answer: true },
@@ -5774,7 +5774,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Two are false. Shareholders have LIMITED liability: they risk only what they paid for their shares. And separate legal personality gives the company perpetual succession — it continues to exist however often its shares change hands, which is exactly what makes shares saleable.' },
 
-  { id: 'tfq-003', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-structure',
+  { id: 'tfq-003', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-structure', criteria: ['BESY-4.1', 'BESY-4.2'],
     q: 'Identify whether the following statements about sole traders and partnerships are true or false.',
     statements: [
       { text: 'A sole trader is personally liable for the debts of the business without limit.', answer: true },
@@ -5784,7 +5784,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Two are false. An ordinary partnership is not a separate legal person, which is why its partners are personally liable; an LLP is, which is why it must file accounts publicly. And with no written agreement the Partnership Act 1890 shares profits EQUALLY, regardless of what each partner put in.' },
 
-  { id: 'tfq-004', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-law',
+  { id: 'tfq-004', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-law', criteria: ['BESY-1.3'],
     q: 'Identify whether the following statements about contract law are true or false.',
     statements: [
       { text: 'Goods displayed in a shop window with a price ticket constitute an offer that the customer can accept.', answer: false },
@@ -5794,7 +5794,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Goods on display are an invitation to treat, not an offer: the customer makes the offer at the till and the retailer may decline it. That is the classic trap in this topic.' },
 
-  { id: 'tfq-005', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-law',
+  { id: 'tfq-005', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-law', criteria: ['BESY-1.1', 'BESY-1.2'],
     q: 'Identify whether the following statements about the English legal system are true or false.',
     statements: [
       { text: 'Common law is developed by judges through their decisions in individual cases.', answer: true },
@@ -5804,7 +5804,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Two are false. Criminal law concerns offences against the state and is prosecuted by the state, whereas disputes between private parties are civil law. And delegated legislation exists precisely to AVOID a new Act each time: Parliament grants authority for the detail to be set by statutory instrument.' },
 
-  { id: 'tfq-006', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-ethics',
+  { id: 'tfq-006', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-ethics', criteria: ['BESY-3.3'],
     q: 'Identify whether the following statements about professional ethics are true or false.',
     statements: [
       { text: 'Confidentiality means client information may never be disclosed under any circumstances.', answer: false },
@@ -5814,7 +5814,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Confidentiality has limits: disclosure is required where there is a legal or professional duty, such as a suspicion of money laundering. Treating it as absolute is the common error.' },
 
-  { id: 'tfq-007', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-ethics',
+  { id: 'tfq-007', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-ethics', criteria: ['BESY-3.1', 'BESY-3.2'],
     q: 'Identify whether the following statements about sustainability and corporate social responsibility are true or false.',
     statements: [
       { text: 'Sustainable development meets the needs of the present without compromising the ability of future generations to meet their own needs.', answer: true },
@@ -5824,7 +5824,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'CSR is voluntary — it is a business choice, not a statutory obligation, though some reporting requirements do apply to larger companies. Do not confuse a widely adopted practice with a legal duty.' },
 
-  { id: 'tfq-008', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-finance',
+  { id: 'tfq-008', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-finance', criteria: ['BESY-5.2', 'BESY-5.3'],
     q: 'Identify whether the following statements about the finance function are true or false.',
     statements: [
       { text: 'The finance function provides information that supports decision-making across the whole organisation.', answer: true },
@@ -5834,7 +5834,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Two are false. Management accounts are internal, so their format is whatever management finds useful — no statutory format applies to them. And segregation of duties is the opposite of one person handling a transaction throughout: splitting the work is what stops a single person both causing an error and concealing it.' },
 
-  { id: 'tfq-009', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-finance',
+  { id: 'tfq-009', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-finance', criteria: ['BESY-6.1', 'BESY-7.1'],
     q: 'Identify whether the following statements about the finance function\'s information sources are true or false.',
     statements: [
       { text: 'Internal information includes payroll records, sales day books and production output data.', answer: true },
@@ -5844,7 +5844,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Non-financial information such as output volumes, staff turnover and customer complaints matters just as much; the finance function converts it into cost and performance measures.' },
 
-  { id: 'tfq-010', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-tech',
+  { id: 'tfq-010', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-tech', criteria: ['BESY-7.2'],
     q: 'Identify whether the following statements about data security are true or false.',
     statements: [
       { text: 'A shared login used by several staff removes the audit trail showing who made each entry.', answer: true },
@@ -5854,7 +5854,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Two are false. Phishing is social engineering — it deceives a person into revealing credentials rather than attacking hardware. And access should follow least privilege, granted according to what a role actually requires: blanket access for everyone removes the protection altogether.' },
 
-  { id: 'tfq-011', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-tech',
+  { id: 'tfq-011', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-tech', criteria: ['BESY-7.1', 'BESY-7.2'],
     q: 'Identify whether the following statements about accounting software and technology are true or false.',
     statements: [
       { text: 'Cloud accounting allows several users to work in the same ledgers at the same time.', answer: true },
@@ -5864,7 +5864,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Cloud systems make access control more important, not less: the ledgers are reachable from anywhere, so weak passwords and over-broad rights carry more risk than on an isolated desktop machine.' },
 
-  { id: 'tfq-012', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-comms',
+  { id: 'tfq-012', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-comms', criteria: ['BESY-6.2'],
     q: 'Identify whether the following statements about business communication are true or false.',
     statements: [
       { text: 'An email to an external customer about an account discrepancy should state the amount in question.', answer: true },
@@ -5874,7 +5874,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Match the register to the audience. Writing to a non-finance colleague means explaining terms rather than assuming them — clarity is what earns the communication marks.' },
 
-  { id: 'tfq-013', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-econ',
+  { id: 'tfq-013', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-econ', criteria: ['BESY-2.1', 'BESY-2.2'],
     q: 'Identify whether the following statements about the external business environment are true or false.',
     statements: [
       { text: 'The Bank of England is responsible for monetary policy, including setting the base rate.', answer: true },
@@ -5935,7 +5935,7 @@ window.ALL_QUESTIONS.push(
    ──────────────────────────────────────────────────────────────────────── */
 window.ALL_QUESTIONS.push(
 
-  { id: 'ms-001', topic: 'besy', difficulty: 'medium', type: 'multiselect', skill: 'besy-law', selectCount: 2,
+  { id: 'ms-001', topic: 'besy', difficulty: 'medium', type: 'multiselect', skill: 'besy-law', selectCount: 2, criteria: ['BESY-1.1'],
     q: 'Which TWO of the following statements about common law are NOT correct?',
     opts: [
       'It is the body of law developed by judges through their determination of individual cases',
@@ -5946,7 +5946,7 @@ window.ALL_QUESTIONS.push(
     answers: [1, 3],
     exp: 'Law created by Parliament is statute law, not common law. And where the two conflict, statute always prevails — the courts cannot question the validity of an Act of Parliament.' },
 
-  { id: 'ms-002', topic: 'besy', difficulty: 'medium', type: 'multiselect', skill: 'besy-law', selectCount: 2,
+  { id: 'ms-002', topic: 'besy', difficulty: 'medium', type: 'multiselect', skill: 'besy-law', selectCount: 2, criteria: ['BESY-1.3'],
     q: 'Which TWO of the following are essential elements required for a legally binding contract?',
     opts: [
       'Consideration passing between the parties to the agreement',
@@ -5957,7 +5957,7 @@ window.ALL_QUESTIONS.push(
     answers: [0, 1],
     exp: 'Offer, acceptance, consideration and intention to create legal relations are the essentials. Most contracts need no writing, witness or legal approval at all — a verbal agreement can bind.' },
 
-  { id: 'ms-003', topic: 'besy', difficulty: 'medium', type: 'multiselect', skill: 'besy-ethics', selectCount: 2,
+  { id: 'ms-003', topic: 'besy', difficulty: 'medium', type: 'multiselect', skill: 'besy-ethics', selectCount: 2, criteria: ['BESY-3.3'],
     q: 'Which TWO of the following are fundamental principles in the AAT Code of Professional Ethics?',
     opts: [
       'Objectivity — not allowing bias or undue influence to override professional judgement',
@@ -5968,7 +5968,7 @@ window.ALL_QUESTIONS.push(
     answers: [0, 1],
     exp: 'The five principles are integrity, objectivity, professional competence and due care, confidentiality, and professional behaviour. Deferring to seniority is the opposite of objectivity.' },
 
-  { id: 'ms-004', topic: 'besy', difficulty: 'medium', type: 'multiselect', skill: 'besy-ethics', selectCount: 2,
+  { id: 'ms-004', topic: 'besy', difficulty: 'medium', type: 'multiselect', skill: 'besy-ethics', selectCount: 2, criteria: ['BESY-3.3'],
     q: 'An accountant is offered a significant gift by a supplier whose contract they are about to review. Which TWO threats to the fundamental principles does this most clearly create?',
     opts: [
       'A self-interest threat, because a financial benefit could influence the accountant\'s judgement',
@@ -5979,7 +5979,7 @@ window.ALL_QUESTIONS.push(
     answers: [0, 1],
     exp: 'Advocacy concerns promoting a client\'s position; self-review concerns reassessing your own earlier work. Neither applies to accepting a gift — the threats here are self-interest and familiarity.' },
 
-  { id: 'ms-005', topic: 'besy', difficulty: 'medium', type: 'multiselect', skill: 'besy-structure', selectCount: 2,
+  { id: 'ms-005', topic: 'besy', difficulty: 'medium', type: 'multiselect', skill: 'besy-structure', selectCount: 2, criteria: ['BESY-4.1'],
     q: 'Which TWO of the following business types give their owners limited liability?',
     opts: [
       'A private limited company incorporated at Companies House',
@@ -5990,7 +5990,7 @@ window.ALL_QUESTIONS.push(
     answers: [0, 1],
     exp: 'Limited liability requires incorporation. A trading name changes nothing about a sole trader\'s legal position, and ordinary partners remain jointly liable without limit.' },
 
-  { id: 'ms-006', topic: 'besy', difficulty: 'medium', type: 'multiselect', skill: 'besy-tech', selectCount: 2,
+  { id: 'ms-006', topic: 'besy', difficulty: 'medium', type: 'multiselect', skill: 'besy-tech', selectCount: 2, criteria: ['BESY-7.2'],
     q: 'Which TWO of the following are the strongest indicators that an email requesting a change of supplier bank details may be fraudulent?',
     opts: [
       'The sender\'s address is very similar to the supplier\'s usual address but not identical',
@@ -6001,7 +6001,7 @@ window.ALL_QUESTIONS.push(
     answers: [0, 1],
     exp: 'A near-miss sender address and manufactured urgency are the classic mandate-fraud signals. Arriving in working hours is unremarkable, and quoting a genuine invoice number is easily done from a compromised mailbox — it is not reassurance.' },
 
-  { id: 'ms-007', topic: 'besy', difficulty: 'medium', type: 'multiselect', skill: 'besy-finance', selectCount: 2,
+  { id: 'ms-007', topic: 'besy', difficulty: 'medium', type: 'multiselect', skill: 'besy-finance', selectCount: 2, criteria: ['BESY-6.1', 'BESY-7.1'],
     q: 'Which TWO of the following are internal sources of information for the finance function?',
     opts: [
       'The payroll records showing hours worked and wages paid in the period',
@@ -6012,7 +6012,7 @@ window.ALL_QUESTIONS.push(
     answers: [0, 1],
     exp: 'Internal information is generated by the organisation\'s own systems. Base rates and competitor pricing come from outside it, however routinely they are monitored.' },
 
-  { id: 'ms-008', topic: 'besy', difficulty: 'medium', type: 'multiselect', skill: 'besy-econ', selectCount: 2,
+  { id: 'ms-008', topic: 'besy', difficulty: 'medium', type: 'multiselect', skill: 'besy-econ', selectCount: 2, criteria: ['BESY-2.2'],
     q: 'Which TWO of the following would normally be expected during a period of rising inflation?',
     opts: [
       'Suppliers increase their prices, raising the cost of the business\'s purchases',
@@ -6023,7 +6023,7 @@ window.ALL_QUESTIONS.push(
     answers: [0, 1],
     exp: 'Inflation erodes the purchasing power of cash rather than increasing it, and the usual monetary response to rising inflation is to raise the base rate, not cut it.' },
 
-  { id: 'ms-009', topic: 'besy', difficulty: 'medium', type: 'multiselect', skill: 'besy-comms', selectCount: 2,
+  { id: 'ms-009', topic: 'besy', difficulty: 'medium', type: 'multiselect', skill: 'besy-comms', selectCount: 2, criteria: ['BESY-6.2'],
     q: 'You must tell a credit customer that their account has exceeded its limit. Which TWO of the following should the email do?',
     opts: [
       'State the current balance and the agreed credit limit so the customer can see the difference',
@@ -6079,7 +6079,7 @@ window.ALL_QUESTIONS.push(
    ──────────────────────────────────────────────────────────────────────── */
 window.ALL_QUESTIONS.push(
 
-  { id: 'besy-301', topic: 'besy', difficulty: 'medium', skill: 'besy-finance',
+  { id: 'besy-301', topic: 'besy', difficulty: 'medium', skill: 'besy-finance', criteria: ['BESY-5.2'],
     q: 'What is the primary purpose of the finance function within an organisation?',
     opts: [
       'To record financial transactions and provide information that supports decision-making',
@@ -6090,7 +6090,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'Finance is a service function: it records what happened and turns it into information others can act on. Maximising reported profit is not its purpose, and purchasing negotiation belongs to procurement.' },
 
-  { id: 'besy-302', topic: 'besy', difficulty: 'medium', skill: 'besy-finance',
+  { id: 'besy-302', topic: 'besy', difficulty: 'medium', skill: 'besy-finance', criteria: ['BESY-5.2'],
     q: 'Which of the following best distinguishes financial accounting from management accounting?',
     opts: [
       'Financial accounting reports to external users in a regulated format; management accounting reports internally in any useful format',
@@ -6101,7 +6101,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'The split is audience and regulation. Financial accounts serve shareholders, lenders and HMRC in a prescribed form; management accounts serve internal decision-makers in whatever form helps.' },
 
-  { id: 'besy-303', topic: 'besy', difficulty: 'medium', skill: 'besy-finance',
+  { id: 'besy-303', topic: 'besy', difficulty: 'medium', skill: 'besy-finance', criteria: ['BESY-7.1'],
     q: 'Why does the finance function need non-financial information such as production output volumes?',
     opts: [
       'Because costs cannot be attributed to units of output without knowing how many units were produced',
@@ -6112,7 +6112,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'Unit costing, budget flexing and inventory valuation all depend on volume data. It is an input to the numbers, not a disclosure requirement or a substitute for the ledgers.' },
 
-  { id: 'besy-304', topic: 'besy', difficulty: 'medium', skill: 'besy-finance',
+  { id: 'besy-304', topic: 'besy', difficulty: 'medium', skill: 'besy-finance', criteria: ['BESY-5.3'],
     q: 'What is the main control benefit of segregating duties within the finance function?',
     opts: [
       'No single individual can both perpetrate an error or fraud and conceal it in the normal course of their work',
@@ -6123,7 +6123,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'Segregation works by requiring collusion. It typically needs more people rather than fewer, and it complements reconciliations rather than replacing them.' },
 
-  { id: 'besy-305', topic: 'besy', difficulty: 'medium', skill: 'besy-finance',
+  { id: 'besy-305', topic: 'besy', difficulty: 'medium', skill: 'besy-finance', criteria: ['BESY-4.2'],
     q: 'A business submits its annual accounts to Companies House. What is the primary purpose of this filing?',
     opts: [
       'To place the company\'s financial position on the public record in exchange for limited liability',
@@ -6134,7 +6134,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'Companies House filings are the public-transparency counterpart of limited liability. Tax is settled with HMRC, and PAYE registration is a separate HMRC process.' },
 
-  { id: 'besy-306', topic: 'besy', difficulty: 'medium', skill: 'besy-finance',
+  { id: 'besy-306', topic: 'besy', difficulty: 'medium', skill: 'besy-finance', criteria: ['BESY-5.2'],
     q: 'Which of the following best describes the relationship between the finance function and other departments?',
     opts: [
       'Finance depends on operational data from other departments and returns analysis those departments can act on',
@@ -6145,7 +6145,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'The flow runs both ways. Finance cannot cost or budget without operational data, and the departments supplying it get realistic budgets and evidence in return.' },
 
-  { id: 'besy-307', topic: 'besy', difficulty: 'easy', skill: 'besy-finance',
+  { id: 'besy-307', topic: 'besy', difficulty: 'easy', skill: 'besy-finance', criteria: ['BESY-4.2'],
     q: 'Which external body is responsible for collecting corporation tax and VAT from UK businesses?',
     opts: [
       'HM Revenue and Customs, the UK government department responsible for tax collection',
@@ -6156,7 +6156,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'HMRC collects tax. Companies House registers companies, the FCA regulates financial services, and the Bank of England runs monetary policy — none of them collect tax.' },
 
-  { id: 'besy-308', topic: 'besy', difficulty: 'medium', skill: 'besy-finance',
+  { id: 'besy-308', topic: 'besy', difficulty: 'medium', skill: 'besy-finance', criteria: ['BESY-7.1'],
     q: 'The finance function produces a monthly report three weeks after the month end. What quality of useful information does this most clearly fail?',
     opts: [
       'Timeliness — information produced too late to influence a decision has little practical value',
@@ -6167,7 +6167,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'Timeliness is the failing: the figures may be entirely accurate and complete, but if the decision has already been made the report cannot influence it.' },
 
-  { id: 'besy-309', topic: 'besy', difficulty: 'medium', skill: 'besy-finance',
+  { id: 'besy-309', topic: 'besy', difficulty: 'medium', skill: 'besy-finance', criteria: ['BESY-7.1'],
     q: 'Why is a budget prepared before the start of an accounting period?',
     opts: [
       'To set a financial plan against which actual performance can later be compared',
@@ -6178,7 +6178,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'A budget is a plan and a control benchmark. It is not the reported result, not a tax computation, and not a legal publication requirement.' },
 
-  { id: 'besy-310', topic: 'besy', difficulty: 'medium', skill: 'besy-finance',
+  { id: 'besy-310', topic: 'besy', difficulty: 'medium', skill: 'besy-finance', criteria: ['BESY-5.2'],
     q: 'Which of the following is a responsibility of the credit control function within finance?',
     opts: [
       'Monitoring customer balances against agreed limits and pursuing amounts that fall overdue',
@@ -6189,7 +6189,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'Credit control manages the receivables risk. Pricing is a commercial decision, and depreciation and payroll sit elsewhere in the finance function.' },
 
-  { id: 'besy-311', topic: 'besy', difficulty: 'medium', skill: 'besy-comms',
+  { id: 'besy-311', topic: 'besy', difficulty: 'medium', skill: 'besy-comms', criteria: ['BESY-6.2'],
     q: 'You need to explain a bookkeeping discrepancy to a colleague outside the finance team. Which approach is most appropriate?',
     opts: [
       'Explain the cause and the effect in plain language, defining any technical terms you must use',
@@ -6200,7 +6200,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'Communication marks are awarded for being understood. Unexplained jargon, raw data and omitted causes all fail that test even when the underlying accounting is right.' },
 
-  { id: 'besy-312', topic: 'besy', difficulty: 'medium', skill: 'besy-comms',
+  { id: 'besy-312', topic: 'besy', difficulty: 'medium', skill: 'besy-comms', criteria: ['BESY-6.2'],
     q: 'A supplier telephones to chase an invoice that is awaiting internal authorisation. What should you tell them?',
     opts: [
       'That the invoice has been received and is going through authorisation, with a realistic date for payment',
@@ -6211,7 +6211,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'Be honest and specific without disclosing internal staffing matters. Inventing a lost invoice is dishonest, and naming an absent colleague breaches confidentiality unnecessarily.' },
 
-  { id: 'besy-313', topic: 'besy', difficulty: 'medium', skill: 'besy-comms',
+  { id: 'besy-313', topic: 'besy', difficulty: 'medium', skill: 'besy-comms', criteria: ['BESY-6.2'],
     q: 'Which communication medium is most appropriate for formally notifying a customer that legal proceedings may follow non-payment?',
     opts: [
       'A formal letter, which creates a dated written record appropriate to the seriousness of the notice',
@@ -6222,7 +6222,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'Match the medium to the gravity and to the need for evidence. A formal notice needs a dated, retrievable written record; the other three either lack formality or lack proof of service.' },
 
-  { id: 'besy-314', topic: 'besy', difficulty: 'medium', skill: 'besy-comms',
+  { id: 'besy-314', topic: 'besy', difficulty: 'medium', skill: 'besy-comms', criteria: ['BESY-6.2'],
     q: 'What should an email reporting a month-end variance to a department manager contain?',
     opts: [
       'The size of the variance, its likely cause, and what action is proposed or requested',
@@ -6233,7 +6233,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'Figure, cause, action is the structure that earns communication marks. A transaction dump shifts the analytical work back onto the reader.' },
 
-  { id: 'besy-315', topic: 'besy', difficulty: 'medium', skill: 'besy-comms',
+  { id: 'besy-315', topic: 'besy', difficulty: 'medium', skill: 'besy-comms', criteria: ['BESY-6.2'],
     q: 'When writing to an external customer about an error made by your own organisation, what tone is most appropriate?',
     opts: [
       'Professional and factual, acknowledging the error and stating clearly how it will be put right',
@@ -6244,7 +6244,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'Acknowledge, quantify, commit. Defensiveness and vagueness both damage the relationship the communication is meant to protect.' },
 
-  { id: 'besy-316', topic: 'besy', difficulty: 'medium', skill: 'besy-comms',
+  { id: 'besy-316', topic: 'besy', difficulty: 'medium', skill: 'besy-comms', criteria: ['BESY-6.2'],
     q: 'Why should an email about an account discrepancy state the specific amount in question?',
     opts: [
       'It allows the recipient to identify the transaction and check it against their own records',
@@ -6255,7 +6255,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'Precision makes the message actionable — the recipient can find the item. None of the other three describe a real effect of stating a figure.' },
 
-  { id: 'besy-317', topic: 'besy', difficulty: 'medium', skill: 'besy-tech',
+  { id: 'besy-317', topic: 'besy', difficulty: 'medium', skill: 'besy-tech', criteria: ['BESY-7.2'],
     q: 'What is the main risk created by staff sharing a single login to the accounting system?',
     opts: [
       'The audit trail cannot identify which individual made any given entry in the ledgers',
@@ -6266,7 +6266,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'Accountability is the casualty. Without individual logins there is no way to attribute an entry, which undermines both segregation of duties and any investigation.' },
 
-  { id: 'besy-318', topic: 'besy', difficulty: 'medium', skill: 'besy-tech',
+  { id: 'besy-318', topic: 'besy', difficulty: 'medium', skill: 'besy-tech', criteria: ['BESY-7.2'],
     q: 'A business backs up its accounting data daily to a separate location. Which aspect of information security does this primarily protect?',
     opts: [
       'Availability — the data can still be recovered and used if the original is lost or corrupted',
@@ -6277,7 +6277,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'Backups address availability. Confidentiality is handled by access controls and encryption; integrity by validation and audit trails.' },
 
-  { id: 'besy-319', topic: 'besy', difficulty: 'medium', skill: 'besy-tech',
+  { id: 'besy-319', topic: 'besy', difficulty: 'medium', skill: 'besy-tech', criteria: ['BESY-7.2'],
     q: 'What is phishing?',
     opts: [
       'An attempt to deceive a person into revealing credentials or making a payment, usually by email',
@@ -6288,7 +6288,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'Phishing is social engineering — it targets the person, not the system, which is why staff awareness is the primary control against it.' },
 
-  { id: 'besy-320', topic: 'besy', difficulty: 'medium', skill: 'besy-tech',
+  { id: 'besy-320', topic: 'besy', difficulty: 'medium', skill: 'besy-tech', criteria: ['BESY-7.2'],
     q: 'Which of the following is a genuine risk of moving from a desktop accounting package to a cloud system?',
     opts: [
       'Access to the ledgers depends on an internet connection and on a third party\'s continuity',
@@ -7502,7 +7502,249 @@ window.ALL_QUESTIONS.push(
       'It cannot be attributed, so the publisher cannot be named in a report',
       'It was probably gathered for a different sector from the one that is being examined',
     ], ans: 0,
-    exp: 'A perfectly reliable statistic from four years ago can be badly wrong today, which is why the date matters as much as the publisher. The commonest failure in practice is not fabrication but staleness, and an undated figure is one you cannot defend.' }
+    exp: 'A perfectly reliable statistic from four years ago can be badly wrong today, which is why the date matters as much as the publisher. The commonest failure in practice is not fabrication but staleness, and an undated figure is one you cannot defend.' },
+
+  /* ── BESY-3.3  The fundamental principles of ethics ─────────────────── */
+
+  { id: 'besy-426', topic: 'besy', difficulty: 'medium', skill: 'besy-ethics', criteria: ['BESY-3.3'],
+    q: 'You prepare the accounts of a company in which your brother is a shareholder. Which fundamental principle is threatened?',
+    opts: [
+      'Objectivity, because a family interest may bias the judgements you make',
+      'Confidentiality, because a relative could learn the figures before they are published',
+      'Professional competence and due care, because family work needs a higher standard',
+      'Professional behaviour, because working for a relative brings the profession into disrepute',
+    ], ans: 0,
+    exp: 'Objectivity is the principle that your judgement must not be swayed by bias, conflict of interest or the influence of others. A family shareholding is a self-interest threat to exactly that. The work is not forbidden, but the threat has to be identified and safeguarded — by disclosure, or by someone else reviewing what you produce.' },
+
+  { id: 'besy-427', topic: 'besy', difficulty: 'medium', skill: 'besy-ethics', criteria: ['BESY-3.3'],
+    q: 'Your manager asks you to prepare a corporation tax computation, which you have never done and were not trained to do. What does the ethical code require?',
+    opts: [
+      'Say so and get training or supervision before the work is done',
+      'Attempt it, because refusing work assigned by a manager is unprofessional',
+      'Attempt it and add a note to the file recording that you were not trained',
+      'Decline permanently, because unfamiliar work may never be undertaken',
+    ], ans: 0,
+    exp: 'Professional competence and due care means working only where you have the knowledge and skill to do the job properly, and keeping that knowledge current. The answer is not a permanent refusal — it is saying so, then getting the training or the supervision. Recording the gap on the file does nothing to close it.' },
+
+  { id: 'besy-428', topic: 'besy', difficulty: 'medium', skill: 'besy-ethics', criteria: ['BESY-3.3'],
+    q: 'A friend at a social event asks how one of your employer’s customers is doing financially. What does confidentiality require?',
+    opts: [
+      'Say nothing about the customer, and do not use what you know for your own gain',
+      'Answer in general terms only, as long as no specific figures are mentioned',
+      'Answer freely, because the duty applies only to information marked confidential',
+      'Answer only if the friend agrees to keep what you tell them to themselves',
+    ], ans: 0,
+    exp: 'Confidentiality covers information acquired through work whether or not anyone labelled it confidential, and it has two limbs: do not disclose it, and do not use it for personal advantage. General terms still disclose. Passing the duty on to the listener does not discharge it — the obligation is yours, and it outlasts the job.' },
+
+  { id: 'besy-429', topic: 'besy', difficulty: 'hard', skill: 'besy-ethics', criteria: ['BESY-3.3'],
+    q: 'An accounting technician posts a comment online mocking a client’s staff. No confidential figures are revealed. Is a fundamental principle breached?',
+    opts: [
+      'Yes, professional behaviour, because the conduct discredits the profession',
+      'No, because no confidential information was disclosed in the post',
+      'No, because a personal social media account is outside the scope of the code',
+      'Yes, objectivity, because the comment shows bias against the client',
+    ], ans: 0,
+    exp: 'Professional behaviour is the principle that catches conduct a reasonable person would think discredits the profession, and it is not limited to working hours or work accounts. Nothing confidential needs to leak for it to be breached. Objectivity is about bias in your judgements, not about discourtesy.' },
+
+  /* ── BESY-4.2  The legal administration of a business ───────────────── */
+
+  { id: 'besy-430', topic: 'besy', difficulty: 'medium', skill: 'besy-structure', criteria: ['BESY-4.2'],
+    q: 'For how long must a sole trader keep the records supporting a self assessment tax return?',
+    opts: [
+      'Five years after the 31 January submission deadline for that tax year',
+      'Five years after the end of the tax year the records relate to',
+      'Until the return has been submitted and the tax for the year paid',
+      'Indefinitely, because HMRC may open an enquiry at any time in the future',
+    ], ans: 0,
+    exp: 'The clock runs from the filing deadline, not from the end of the tax year — five years after the 31 January on which the return was due. The two are nearly ten months apart, which is what the question is testing. Paying the tax does not close the window, because an enquiry can follow.' },
+
+  { id: 'besy-431', topic: 'besy', difficulty: 'medium', skill: 'besy-structure', criteria: ['BESY-4.2'],
+    q: 'What does a company’s confirmation statement filed at Companies House contain?',
+    opts: [
+      'A check that the registered details held for the company are still correct',
+      'The profit or loss the company made during the year just ended',
+      'The corporation tax the company calculates it owes for the year',
+      'A forecast of the trading the company expects in the year ahead',
+    ], ans: 0,
+    exp: 'The confirmation statement is a check on the register, not a financial return: registered office, directors, shareholders, share capital and what the company does. It is filed at least once every twelve months. The financial results reach Companies House separately, in the annual accounts, and the tax reaches HMRC separately again.' },
+
+  { id: 'besy-432', topic: 'besy', difficulty: 'medium', skill: 'besy-structure', criteria: ['BESY-4.2'],
+    q: 'Which of these is a statutory book that a limited company must maintain?',
+    opts: [
+      'The register of members, recording who holds the company’s shares',
+      'The purchases day book, listing the invoices received from suppliers',
+      'The petty cash book, recording small payments made in cash',
+      'The non-current asset register, listing what the company owns',
+    ], ans: 0,
+    exp: 'Statutory books are the registers company law requires — members, directors, people with significant control, and charges over the company’s assets. The other three are accounting records. Good practice keeps them all, but only the registers are demanded by the Companies Act, and only they are open to inspection.' },
+
+  { id: 'besy-433', topic: 'besy', difficulty: 'medium', skill: 'besy-structure', criteria: ['BESY-4.2'],
+    q: 'Under Making Tax Digital, what must a VAT registered business do?',
+    opts: [
+      'Keep its VAT records digitally and file returns using compatible software',
+      'File a VAT return every month rather than once a quarter',
+      'Submit a scanned copy of every sales invoice alongside the VAT return',
+      'Have its VAT records reviewed by an accountant before each return is filed',
+    ], ans: 0,
+    exp: 'Making Tax Digital changes how the records are kept and how the return travels, not how often it is due or what backing paperwork goes with it. The records must be digital, and the figures must reach HMRC from that software rather than being retyped into a website.' },
+
+  /* ── BESY-4.3  Business formation ───────────────────────────────────── */
+
+  { id: 'besy-434', topic: 'besy', difficulty: 'medium', skill: 'besy-structure', criteria: ['BESY-4.3'],
+    q: 'What is needed to bring a private limited company into existence?',
+    opts: [
+      'Registration at Companies House, with a memorandum and articles of association',
+      'A written partnership agreement signed by all of the intended shareholders',
+      'Registration with HMRC for self assessment by the person setting it up',
+      'A bank account opened in the company name and share capital paid into it',
+    ], ans: 0,
+    exp: 'A company exists only once the registrar issues the certificate of incorporation, and that follows registration with a memorandum and articles. A sole trader by contrast simply tells HMRC, and an ordinary partnership needs no registration at all — which is the distinction being tested. Opening a bank account creates nothing.' },
+
+  { id: 'besy-435', topic: 'besy', difficulty: 'hard', skill: 'besy-structure', criteria: ['BESY-4.3'],
+    q: 'What is the main advantage of buying an “off the shelf” company?',
+    opts: [
+      'It already exists, so trading can begin without waiting for incorporation',
+      'It costs less in total than registering a new company at Companies House',
+      'It carries a trading history that makes credit easier to obtain from suppliers',
+      'It is exempt from filing accounts for its first year after it is bought',
+    ], ans: 0,
+    exp: 'An off the shelf company is one a formation agent incorporated in advance and has never traded. Speed is the whole point. It has no trading history to lend it credit, no filing exemption, and the shares and often the name and articles must then be changed — which is the cost that offsets the convenience.' },
+
+  { id: 'besy-436', topic: 'besy', difficulty: 'hard', skill: 'besy-structure', criteria: ['BESY-4.3'],
+    q: 'Someone signs a supply contract on behalf of a company that has not yet been incorporated. Who is liable on that contract?',
+    opts: [
+      'The person who signed it, personally, because the company did not yet exist',
+      'The company, once it is incorporated and begins to trade under the contract',
+      'Nobody, because a contract made for a non-existent party is void from the start',
+      'The supplier, who should have checked the register before agreeing to supply',
+    ], ans: 0,
+    exp: 'A company cannot make a contract before it exists, and it cannot later adopt one it was not party to. The signatory is personally liable on a pre-incorporation contract. The way round it is to make a fresh contract once the company is formed — which is exactly why some businesses use one.' },
+
+  { id: 'besy-437', topic: 'besy', difficulty: 'medium', skill: 'besy-structure', criteria: ['BESY-4.3'],
+    q: 'Which of these would prevent a proposed company name from being registered?',
+    opts: [
+      'It is the same as a name already on the register of companies',
+      'It is longer than the name of any company already on the register',
+      'It does not describe the trade the company intends to carry on',
+      'It uses a family surname that the founders do not themselves hold',
+    ], ans: 0,
+    exp: 'The register cannot hold two identical names, and names that are offensive, or that imply a connection with government, or that use a sensitive word without approval, are also refused. Nothing requires a name to describe the trade or to match anybody’s surname — and length is not a test at all.' },
+
+  /* ── BESY-5.1  The different functions of a business ────────────────── */
+
+  { id: 'besy-438', topic: 'besy', difficulty: 'easy', skill: 'besy-finance', criteria: ['BESY-5.1'],
+    q: 'Which business function is responsible for recruitment, training and staff welfare?',
+    opts: [
+      'Human resources',
+      'Operations',
+      'Distribution and logistics',
+      'Sales and marketing',
+    ], ans: 0,
+    exp: 'Human resources handles the people: recruiting them, training them, paying attention to their welfare and holding the employment records. Operations makes the product, distribution moves it, and sales and marketing find the customer for it. Finance meets all four, because each of them spends money and generates data.' },
+
+  { id: 'besy-439', topic: 'besy', difficulty: 'medium', skill: 'besy-finance', criteria: ['BESY-5.1'],
+    q: 'In a business of eight people, one person handles invoicing, payroll and the bank. What does this show?',
+    opts: [
+      'Functions are often combined in a small organisation, so roles overlap',
+      'The business has no need of the functions a larger organisation would have',
+      'The business is in breach of the law, because the functions must be separated',
+      'The functions are being outsourced rather than carried out in the business',
+    ], ans: 0,
+    exp: 'The functions still exist in a small business; there are simply fewer people to spread them across, so one person wears several hats. No law forbids it. It does make segregation of duties harder, which is why small businesses lean more heavily on the owner reviewing what is done.' },
+
+  { id: 'besy-440', topic: 'besy', difficulty: 'medium', skill: 'besy-finance', criteria: ['BESY-5.1'],
+    q: 'A sale is entered once and the stock figure, the invoice and the delivery note all follow from it. What does this illustrate?',
+    opts: [
+      'Technology connecting the functions, so one entry serves several of them',
+      'Operations taking over work that properly belongs to the finance function',
+      'A control weakness, because a single entry should never update several records',
+      'Distribution and logistics being merged into the sales and marketing function',
+    ], ans: 0,
+    exp: 'An integrated system is what lets one transaction serve sales, finance, inventory and despatch at once. That is the interconnection technology brings, and it removes the rekeying that used to introduce errors. It is a strength rather than a weakness — though it does make the accuracy of the single entry matter more.' },
+
+  { id: 'besy-441', topic: 'besy', difficulty: 'medium', skill: 'besy-finance', criteria: ['BESY-5.1'],
+    q: 'How does the information technology function contribute to business success?',
+    opts: [
+      'It keeps the systems the other functions depend on running and secure',
+      'It decides the prices at which the organisation sells its products',
+      'It negotiates the terms on which suppliers deliver goods to the business',
+      'It prepares the statutory financial statements at the end of the year',
+    ], ans: 0,
+    exp: 'IT is a supporting function: it keeps the systems available, connected and secure so that operations, sales, finance and the rest can do their own work. Pricing belongs to sales and marketing, purchasing terms to operations or procurement, and the statutory accounts to finance.' },
+
+  /* ── BESY-6.3  Plan workload to meet the needs of the organisation ──── */
+
+  { id: 'besy-442', topic: 'besy', difficulty: 'medium', skill: 'besy-comms', criteria: ['BESY-6.3'],
+    q: 'Two tasks are outstanding: a VAT return due tomorrow, and a filing job with no deadline. How should they be ordered?',
+    opts: [
+      'The VAT return first, because it is both urgent and important',
+      'The filing first, because it can be cleared quickly and reduce the list',
+      'Whichever was asked for first, so that requests are dealt with in order',
+      'The filing first, because a VAT return can be submitted late without consequence',
+    ], ans: 0,
+    exp: 'Prioritising weighs urgency against importance. A statutory deadline carrying a penalty scores high on both, so it goes first. Clearing quick jobs to shorten the list feels productive and is how deadlines get missed, and a late VAT return does have consequences — that is the whole reason it is urgent.' },
+
+  { id: 'besy-443', topic: 'besy', difficulty: 'medium', skill: 'besy-comms', criteria: ['BESY-6.3'],
+    q: 'You realise on Monday that a report due Friday cannot be finished on time. What should you do?',
+    opts: [
+      'Tell your manager now, with what is achievable and what you need',
+      'Work on and tell your manager on Friday if it has not been finished',
+      'Submit an incomplete report on Friday without drawing attention to the gaps',
+      'Ask a colleague to take the task over without telling your manager',
+    ], ans: 0,
+    exp: 'A deadline problem raised on Monday can still be solved — by help, by moving the date, or by cutting the scope. The same problem raised on Friday cannot. Telling someone early is not an admission of failure; silence, a quietly incomplete report, or a private handover all remove their chance to act.' },
+
+  { id: 'besy-444', topic: 'besy', difficulty: 'medium', skill: 'besy-comms', criteria: ['BESY-6.3'],
+    q: 'Why does a bank reconciliation left undone matter beyond your own workload?',
+    opts: [
+      'Others rely on it, so the delay passes down the chain to their work',
+      'The reconciliation becomes impossible to complete once the month has closed',
+      'The bank will refuse to issue further statements until it has been done',
+      'The error it would have found is automatically corrected by the software',
+    ], ans: 0,
+    exp: 'Work in a finance team is a chain. An unreconciled bank balance holds up the management accounts, which hold up the decisions taken from them, so the cost of the delay falls on people other than you. The reconciliation stays perfectly possible later — it is just later, and by then the error has been reported.' },
+
+  { id: 'besy-445', topic: 'besy', difficulty: 'medium', skill: 'besy-comms', criteria: ['BESY-6.3'],
+    q: 'What is the purpose of reviewing a work plan after the tasks in it are finished?',
+    opts: [
+      'To see what the estimates got wrong, so the next plan is better',
+      'To produce a record that proves the deadlines set were all achieved',
+      'To identify which colleagues were responsible for any time that was lost',
+      'To confirm the plan was followed exactly as it was originally written',
+    ], ans: 0,
+    exp: 'Planning is a cycle: prioritise, monitor as you go, review at the end. The review earns its place by comparing what things actually took against what you thought they would, so the next set of estimates is better. A review aimed at proving success, or at finding someone to blame, teaches nobody anything.' },
+
+  /* ── BESY-7.1  The role of information in the finance function ──────── */
+
+  { id: 'besy-446', topic: 'besy', difficulty: 'hard', skill: 'besy-tech', criteria: ['BESY-7.1'],
+    q: 'A business changes how it splits costs between departments and does not restate last year. Which characteristic of useful information suffers?',
+    opts: [
+      'Comparability, because this year and last year no longer measure the same thing',
+      'Relevance, because departmental cost splits do not bear on any decision',
+      'Timeliness, because restating a prior year always delays the current report',
+      'Understandability, because the new split is harder for a reader to follow',
+    ], ans: 0,
+    exp: 'Comparability is what lets a reader set one period against another and draw a conclusion. Change the basis without restating, and the movement they see is partly the change of method rather than the business. The cure is to restate the comparative, or to say plainly that the basis changed.' },
+
+  { id: 'besy-447', topic: 'besy', difficulty: 'medium', skill: 'besy-tech', criteria: ['BESY-7.1'],
+    q: 'A remittance advice arrives from a customer. What does the finance function learn from it?',
+    opts: [
+      'Which invoices the payment received is intended to settle',
+      'What the customer expects to order from the business next',
+      'Whether the customer has been granted a credit limit',
+      'What the goods on the original order actually cost to make',
+    ], ans: 0,
+    exp: 'A remittance advice is the note that travels with a payment to say what it is for. Without it a round-sum receipt has to be allocated by guesswork, and the sales ledger stops matching what the customer thinks they owe. It says nothing about future orders, credit limits or costs.' },
+
+  { id: 'besy-448', topic: 'besy', difficulty: 'medium', skill: 'besy-tech', criteria: ['BESY-7.1'],
+    q: 'Which of these is a document produced by the finance function and sent out to a customer?',
+    opts: [
+      'A statement of account listing the invoices still outstanding',
+      'A purchase order requesting goods from one of the suppliers',
+      'A supplier invoice charging the business for goods delivered',
+      'A goods received note recording what arrived at the warehouse',
+    ], ans: 0,
+    exp: 'Finance sends out sales invoices, credit notes and statements of account. The other three travel the other way or stay inside the business: a purchase order goes to a supplier, a supplier invoice comes in, and a goods received note is raised in the warehouse when a delivery arrives.' },
 
 );
 
