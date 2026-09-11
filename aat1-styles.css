@@ -763,8 +763,9 @@ body[data-subject="aat1"] #app { background: var(--a1-paper); }
   font-size: .6rem; letter-spacing: .1em; text-transform: uppercase;
   font-weight: 800; color: var(--a1-ink-3);
 }
-/* Ten in a row, not three — see the matching note in aat3-styles.css for why
-   the old threshold made the lit badge meaningless. STREAK_GOLD in aat1-ui.js. */
+/* Twenty in a row, not three — see the matching note in aat3-styles.css for
+   why the old threshold made the lit badge meaningless. STREAK_GOLD in
+   aat1-ui.js. */
 .a1-streak.is-hot {
   background: var(--a1-accent-wash); border-color: var(--a1-accent); transform: scale(1.04);
 }

@@ -3424,13 +3424,21 @@
 
      It used to turn gold at three, which is two answers into a run — often
      enough that the gold said almost nothing, and a reader saw the badge lit
-     for most of a session. Ten is far enough in to be worth reaching, and
-     twenty-five is rare enough to be worth marking differently again.
+     for most of a session. It then sat at ten for a while. Twenty is where it
+     is now: far enough in that reaching it is an achievement rather than a
+     formality.
 
-     Named rather than written into the markup because the two numbers are a
+     THE GOLD BAND IS NARROW AT THIS SETTING. Sparkle is still twenty-five, so
+     gold now lasts five questions rather than fifteen before the next tier
+     takes over. That is deliberate at the moment — the request was to move
+     gold, not to move sparkle — but if gold starts to feel like a flicker on
+     the way to sparkle, the fix is to space the two out rather than to pull
+     gold back down.
+
+     Named rather than written into the markup because the numbers are a
      scale: a threshold changed here and not in the stylesheet's comment about
      it is how the two drift apart, and the same pair is used on Level 1. */
-  var STREAK_GOLD = 10;
+  var STREAK_GOLD = 20;
   var STREAK_SPARKLE = 25;
   /* AND THE TWO MILESTONES THE RUN CELEBRATES. The overlay at fifty and a
      hundred lasts four seconds and then the badge went back to looking exactly

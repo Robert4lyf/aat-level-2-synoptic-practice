@@ -373,10 +373,16 @@ TIERS.forEach(L => {
      comment: every other assertion here passes just as well at three. */
   ok(at[3] !== null && at[3].indexOf('is-hot') === -1,
     `${L.name}: three in a row no longer lights it (got "${at[3]}")`);
-  ok(at[9] !== null && at[9].indexOf('is-hot') === -1,
-    `${L.name}: nine is still not gold (got "${at[9]}")`);
-  ok(at[10] !== null && at[10].indexOf('is-hot') !== -1,
-    `${L.name}: ten turns it gold (got "${at[10]}")`);
+  ok(at[19] !== null && at[19].indexOf('is-hot') === -1,
+    `${L.name}: nineteen is still not gold (got "${at[19]}")`);
+  ok(at[20] !== null && at[20].indexOf('is-hot') !== -1,
+    `${L.name}: twenty turns it gold (got "${at[20]}")`);
+  /* THE BAND BETWEEN THE TIERS, asserted because it is now five questions
+     wide rather than fifteen. Gold at twenty and sparkle at twenty-five leave
+     very little room, so if either moves again this says whether gold still
+     has a stretch of its own to be seen in at all. */
+  ok(at[24] !== null && at[24].indexOf('is-sparkling') === -1,
+    `${L.name}: gold still has a band of its own before sparkle (got "${at[24]}")`);
   ok(at[24] !== null && at[24].indexOf('is-sparkling') === -1,
     `${L.name}: twenty-four is gold without sparkles (got "${at[24]}")`);
   ok(at[25] !== null && at[25].indexOf('is-sparkling') !== -1,
@@ -425,7 +431,7 @@ TIERS.forEach(L => {
    so the two levels cannot drift to different numbers unnoticed. */
 ['aat3-ui.js', 'aat1-ui.js'].forEach(f => {
   const src = fs.readFileSync(path.join(ROOT, f), 'utf8');
-  ok(/var STREAK_GOLD = 10;/.test(src), `${f}: names the gold threshold`);
+  ok(/var STREAK_GOLD = 20;/.test(src), `${f}: names the gold threshold`);
   ok(/var STREAK_SPARKLE = 25;/.test(src), `${f}: names the sparkle threshold`);
   ok(/var STREAK_BLAZE = 50;/.test(src), `${f}: names the blaze threshold`);
   ok(/var STREAK_LEGEND = 100;/.test(src), `${f}: names the legend threshold`);

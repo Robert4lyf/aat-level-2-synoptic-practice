@@ -361,9 +361,11 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
   font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase;
   font-weight: 800; color: var(--a3-ink-3);
 }
-/* Ten in a row is where a streak starts to feel like one. It was three, which
-   is two answers in — the badge was gold for most of a session, so the gold
-   said nothing. The number lives in aat3-ui.js as STREAK_GOLD. */
+/* Twenty in a row is where a streak starts to feel like one. It was three,
+   which is two answers in — the badge was gold for most of a session, so the
+   gold said nothing — and then ten for a while. The number lives in
+   aat3-ui.js as STREAK_GOLD, with a note there on the narrow band between
+   this tier and sparkle at twenty-five. */
 .a3-streak.is-hot {
   background: var(--a3-gold-wash); border-color: var(--a3-gold); transform: scale(1.04);
 }
