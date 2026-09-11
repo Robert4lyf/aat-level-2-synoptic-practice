@@ -484,30 +484,47 @@ function countOf(html, re) { return (html.match(re) || []).length; }
    only the typed boxes and the pills, the review told them they had left the
    question blank and threw the only work they did on it away. */
 {
-  const ctx = openMock('tpfb');
-  let found = null;
-  for (let i = 0; i < 60; i++) {
-    const q = onScreen(ctx.el);
-    if (!q) break;
-    if (!found && q.type === 'task' && (q.parts || []).some(p => p.type === 'grid')) {
-      /* THE GRID ONLY. Every box and pill on the task is left alone, so the
-         only thing separating this from a blank is what went into the table. */
-      const p = q.parts.find(x => x.type === 'grid');
-      const cols = GRID.entryCols(p);
-      GRID.entryRows(p).forEach((r, ri) => cols.forEach((c, ci) => {
-        if (GRID.isGiven(r, ci)) return;
-        const cell = D.nodes(ctx.el, 'egcell').find(n => n.getAttribute('data-c') === `${ri}:${ci}`);
-        if (!cell) return;
-        const key = GRID.cellKey(r, ci);
-        cell.value = key == null ? '' : String(key);
-        cell.fire('input');
-      }));
-      found = { q, at: i };
+  /* SEVERAL PAPERS, NOT ONE. This opened a single seeded paper and assumed a
+     grid task would be on it. Roughly four papers in five carry one, so the
+     assertion was a coin toss that happened to be landing heads: any edit to
+     the question bank reshuffles the draw, and one did — the check failed on a
+     change that had nothing to do with grids, tasks or the mock.
+
+     Tuning the seed until it passed again would have left the same trap set
+     for the next edit. Drawing up to five papers instead makes the check
+     deterministic in the way that matters: at the measured rate, five papers
+     without a grid between them is a one-in-three-thousand event, so a failure
+     here now means grid tasks have genuinely become hard to meet on a mock —
+     which is worth failing over, and is the thing this was always meant to
+     stand for. */
+  const ATTEMPTS = 5;
+  let ctx = null, found = null, papers = 0;
+  while (papers < ATTEMPTS && !found) {
+    papers++;
+    ctx = openMock('tpfb');
+    for (let i = 0; i < 60; i++) {
+      const q = onScreen(ctx.el);
+      if (!q) break;
+      if (!found && q.type === 'task' && (q.parts || []).some(p => p.type === 'grid')) {
+        /* THE GRID ONLY. Every box and pill on the task is left alone, so the
+           only thing separating this from a blank is what went into the table. */
+        const p = q.parts.find(x => x.type === 'grid');
+        const cols = GRID.entryCols(p);
+        GRID.entryRows(p).forEach((r, ri) => cols.forEach((c, ci) => {
+          if (GRID.isGiven(r, ci)) return;
+          const cell = D.nodes(ctx.el, 'egcell').find(n => n.getAttribute('data-c') === `${ri}:${ci}`);
+          if (!cell) return;
+          const key = GRID.cellKey(r, ci);
+          cell.value = key == null ? '' : String(key);
+          cell.fire('input');
+        }));
+        found = { q, at: i };
+      }
+      if (!D.nodes(ctx.el, 'mocknext').length) break;
+      D.click(ctx.el, 'mocknext');
     }
-    if (!D.nodes(ctx.el, 'mocknext').length) break;
-    D.click(ctx.el, 'mocknext');
   }
-  ok(!!found, 'a mock paper carries a task with a grid on it');
+  ok(!!found, `a mock paper carries a task with a grid on it (${papers} papers drawn of ${ATTEMPTS})`);
   if (found) {
     D.click(ctx.el, 'review');
     const rows = D.nodes(ctx.el, 'reviewq').length;
