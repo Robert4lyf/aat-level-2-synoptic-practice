@@ -1838,7 +1838,12 @@ function finish() {
           const el = document.querySelector('.a3-calcsheet');
           if (!el) return null;
           const r = el.getBoundingClientRect();
-          return { x: Math.round(r.left), y: Math.round(r.top), w: Math.round(r.width), h: Math.round(r.height) };
+          /* The SCROLL OFFSET travels with the rect. getBoundingClientRect is
+             viewport-relative, so if the page scrolls between the two readings
+             the calculator appears to have moved when it has not — and the
+             drag below is measured as a difference of two such readings. */
+          return { x: Math.round(r.left), y: Math.round(r.top), w: Math.round(r.width), h: Math.round(r.height),
+                   sx: Math.round(window.scrollX || 0), sy: Math.round(window.scrollY || 0) };
         });
 
         /* 1. It moves, and by the distance the pointer moved. */
@@ -1848,10 +1853,28 @@ function finish() {
         await page4.mouse.move(opened.screen.x - 260, opened.screen.y - 180, { steps: 8 });
         await page4.mouse.up();
         const after = await rect();
-        const dx = after.x - before.x, dy = after.y - before.y;
+        /* MEASURED IN PAGE COORDINATES, NOT VIEWPORT ONES. This read the
+           difference between two viewport rects, which is the distance the
+           calculator moved ONLY while the page does not scroll. It failed once
+           in a full suite run at "-262, -188" — 2px out horizontally, well
+           inside the tolerance, and 8px out vertically, just outside it — and
+           passed three times alone immediately afterwards. A vertical-only
+           discrepancy that appears under load is what a scroll during the drag
+           looks like, so the scroll offset is now added back before the
+           comparison. That is the correct measurement whether or not it is
+           what happened here: it is a no-op when nothing scrolled.
+
+           The tolerance is NOT loosened. A flaky gate is worse than no gate,
+           but so is one widened until it stops failing, and ±6px on a 260px
+           drag is already as much slack as this should ever need. If it fails
+           again the message now names the scroll, so the next person does not
+           have to guess the way I did. */
+        const sdx = after.sx - before.sx, sdy = after.sy - before.sy;
+        const dx = (after.x + after.sx) - (before.x + before.sx);
+        const dy = (after.y + after.sy) - (before.y + before.sy);
         ok(Math.abs(dx + 260) <= 6 && Math.abs(dy + 180) <= 6,
           `dragging the screen 260px left and 180px up moves the calculator the same way ` +
-          `(it moved ${dx}, ${dy})`);
+          `(it moved ${dx}, ${dy}; the page scrolled ${sdx}, ${sdy} during the drag)`);
 
         /* 2. A KEY IS NOT A HANDLE. The whole pad is inside the panel, so a
            drag bound to the panel rather than to its screen would move the
