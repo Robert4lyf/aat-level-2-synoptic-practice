@@ -181,14 +181,43 @@ const sheetIds = Object.values(sheetOf).map(c => c.id).filter(Boolean);
 if (new Set(sheetIds).size !== sheetIds.length) errors.push('Two cheat sheets share an id.');
 notes.push(`${sheetIds.length} cheat sheets, one per shipped outcome.`);
 
-/* Practice coverage is reported rather than enforced. A bank that reaches every
-   scope item would be enormous; what matters is that every OUTCOME is
-   practisable, since the picker offers a run per outcome. */
+/* Every OUTCOME is practisable, since the picker offers a run per outcome. */
 if (practice.length) {
   const los = new Set(practice.map(q => q.lo));
   S.SYLLABUS.units.bkfn.outcomes.forEach(o => {
     if (!los.has(o.n)) errors.push(`the practice bank has no questions for Outcome ${o.n}, but the picker offers a run for it.`);
   });
+}
+
+/* ── And every scope item can be practised more than once ─────────────────
+   This used to say practice coverage was "reported rather than enforced",
+   because a bank reaching every scope item would be enormous. The bank got
+   there anyway: the thinnest item carries four questions and the median
+   carries seven. What was left unguarded was the floor, and the sweep that
+   set this floor on Level 3 found eighty-five concepts there sitting at one
+   or two — healthy outcome totals with thin concepts underneath them.
+
+   Three, for the reason it is three on Level 3: two questions on one item can
+   be one question asked twice, and a reader working an item meets its whole
+   bank in a sitting. The floor is not a ratchet at today's count, so a
+   question can still be retired or retagged without this failing. */
+if (practice.length) {
+  const FLOOR = 3;
+  const byItem = new Map();
+  practice.forEach(q => (q.criteria || []).forEach(t => byItem.set(t, (byItem.get(t) || 0) + 1)));
+  const items = S.concepts('bkfn');
+  const thin = items.filter(c => (byItem.get(c.tag) || 0) < FLOOR)
+                    .map(c => `${c.id} (${byItem.get(c.tag) || 0})`);
+  if (thin.length) {
+    errors.push(`${thin.length} scope items have fewer than ${FLOOR} practice questions, ` +
+      `so a reader meets the same ones every time: ${thin.slice(0, 8).join(', ')}${thin.length > 8 ? '…' : ''}`);
+  }
+  /* The scope is asserted for the same reason it is on Level 3: a rule that
+     silently stops seeing the items it governs passes for free. */
+  if (items.length !== 51) {
+    errors.push(`the practice floor was applied to ${items.length} scope items, not the 51 the syllabus holds.`);
+  }
+  notes.push(`${items.length} scope items checked for a practice floor of ${FLOOR}`);
 }
 
 /* ── Report ──────────────────────────────────────────────────────────────── */

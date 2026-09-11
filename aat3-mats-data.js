@@ -8404,6 +8404,88 @@
       modelAnswer: 'Both figures are right, and they are answering different questions. Profit asks whether the business earned more than it spent over the year, counting a sale when it is made. Cash asks what was actually in the bank on the day. A business can do well on the first and badly on the second, and this year Thurlby did.\n\nFour things account for the gap. The van cost £26,000 and all of it left the bank at once, but only this year\'s depreciation reached the profit figure — the rest of the cost will reach profit over the years the van is used. Your drawings of £52,000 came out of the bank and are not an expense at all, so they reduce cash without touching profit by a penny. Stocking the new ranges put £19,000 into inventory, which is cash converted into goods that have not been sold yet. And customers are taking 63 days to pay against terms of 30, so a month of sales that should be in the bank is sitting in their accounts instead.\n\nWhat I would do first is the receivables, because that money is already earned and already owed and collecting it needs nobody\'s permission. Bringing 63 days back to 40 would release a substantial sum once and keep it released. After that I would look at whether the new ranges are turning over quickly enough to justify the stock they are tying up.',
       exp: 'The task tests one idea and then asks for evidence of it. The idea is that profit and cash measure different things; the evidence is the four specific items in the scenario, each traced to the right column. A candidate who explains the principle without touching the van, the drawings, the inventory and the receivables has written half an answer — and the recommendation should start with the receivables, because that is the fastest and cheapest cash in the list.',
     },
+
+    /* ── Depth pass: concepts that had fewer than three questions ─────────
+       Counted per key concept rather than per outcome. Every MATS outcome
+       held 40 questions, and seven concepts underneath them held two. */
+    {
+      id: 'M-2-43', unitKey: 'mats', lo: 2, criteria: ['MATS-2.5.1'],
+      type: 'mcq',
+      q: 'A bakery makes 500 identical loaves in one run, then switches the line to make 300 rolls. Which costing system fits?',
+      opts: [
+        'Batch costing, since identical units are made together in a run',
+        'Job costing, since each loaf is a separate customer order',
+        'Process costing, since the output never separates into runs',
+        'Service costing, since a composite cost unit is needed here',
+      ],
+      ans: 0,
+      exp: 'A batch is a group of identical units made together, so the run is costed as one job and then divided by the number of units in it. Job costing suits work done to a customer\u2019s own specification, one job at a time. Process costing suits continuous output that cannot be separated into runs at all. Service costing belongs where there is no physical product.',
+    },
+    {
+      id: 'M-2-44', unitKey: 'mats', lo: 2, criteria: ['MATS-2.5.3'],
+      type: 'numeric',
+      q: 'A haulage firm\u2019s costs for the month are \u00a384,000. It carried 2,800 tonnes an average of 150 kilometres each. What is the cost per tonne-kilometre, in pounds?',
+      answer: 0.2, unit: '\u00a3',
+      exp: 'A composite cost unit multiplies the two measures before anything is divided: 2,800 \u00d7 150 = 420,000 tonne-kilometres. Then \u00a384,000 \u00f7 420,000 = \u00a30.20 per tonne-kilometre. Dividing by tonnes alone gives \u00a330 and by kilometres alone \u00a3560, and neither figure compares journeys of different length.',
+    },
+    {
+      id: 'M-4-43', unitKey: 'mats', lo: 4, criteria: ['MATS-4.2.2'],
+      type: 'numeric',
+      q: 'A budget for 5,000 units allows 10,000 labour hours costing \u00a3120,000. Actual output was 5,500 units, using 11,500 hours costing \u00a3135,700. What is the labour cost variance against the flexed budget, in pounds?',
+      answer: 3700, unit: '\u00a3',
+      exp: 'Flex the budget to actual output before comparing anything: \u00a3120,000 \u00f7 5,000 = \u00a324 a unit, so 5,500 units allows \u00a3132,000. Against actual spend of \u00a3135,700 that is \u00a33,700 ADVERSE. Comparing with the unflexed \u00a3120,000 would report \u00a315,700 adverse and blame the workforce for making 500 extra units.',
+    },
+    {
+      id: 'M-5-44', unitKey: 'mats', lo: 5, criteria: ['MATS-5.3.1'],
+      type: 'mcq',
+      q: 'A cost model takes a department code that must be one of six values. Typing anything else quietly produces a wrong allocation. What prevents it?',
+      opts: [
+        'A data validation list on the input cell',
+        'Conditional formatting that colours an unexpected code',
+        'A cell comment naming the six codes that are valid',
+        'Protecting the sheet so the cell cannot be changed',
+      ],
+      ans: 0,
+      exp: 'Data validation refuses the entry, and it is the only one of these that stops a wrong value getting in at all. Conditional formatting and a comment both depend on somebody looking, and the failure described here is silent. Protecting the cell would stop the entry being made, which defeats the purpose of an input cell.',
+    },
+    {
+      id: 'M-7-43', unitKey: 'mats', lo: 7, criteria: ['MATS-7.2.1'],
+      type: 'mcq',
+      q: 'A business wins a large contract, buys inventory and pays staff, but the customer pays 90 days later. What is this position called, and what is the risk?',
+      opts: [
+        'Overtrading \u2014 it runs out of cash while the order book grows',
+        'Overcapitalisation \u2014 it holds more cash than the business needs',
+        'Insolvency \u2014 its liabilities already exceed its total assets',
+        'Under-absorption \u2014 it has recovered less overhead than incurred',
+      ],
+      ans: 0,
+      exp: 'Overtrading is growth outrunning the cash that funds it: the profit is real and arrives later, but wages and suppliers fall due now. It is why a fast-growing business can fail in a good year. Overcapitalisation is the opposite position, insolvency is a balance sheet test rather than a cash one, and under-absorption is an overhead matter.',
+    },
+    {
+      id: 'M-7-44', unitKey: 'mats', lo: 7, criteria: ['MATS-7.2.2'],
+      type: 'truefalse',
+      q: 'Identify whether each action improves the cash position within the next month.',
+      statements: [
+        { text: 'Offering a settlement discount to customers who pay early.', answer: true },
+        { text: 'Negotiating longer credit terms with suppliers.', answer: true },
+        { text: 'Revaluing a freehold property upwards in the accounts.', answer: false },
+        { text: 'Switching depreciation from reducing balance to straight line.', answer: false },
+      ],
+      exp: 'Cash moves when a receipt arrives sooner or a payment leaves later, which is what a settlement discount and longer supplier terms each do. A revaluation and a change of depreciation method both change the accounts and move no cash at all. They are the classic distractors: the statements look different while the bank balance stays exactly where it was.',
+    },
+    {
+      id: 'M-7-45', unitKey: 'mats', lo: 7, criteria: ['MATS-7.2.4'],
+      type: 'mcq',
+      q: 'A finance assistant wants to see what happens to the cash position if the largest customer pays 30 days later than agreed. Which tool answers that?',
+      opts: [
+        'A what-if scenario run on the cash flow model',
+        'A dashboard showing the current bank balance',
+        'An aged receivables report for last month',
+        'An automated payment reminder to that customer',
+      ],
+      ans: 0,
+      exp: 'A what-if changes one assumption and shows the consequence, which is exactly the question being asked. A dashboard and an aged report both describe where things stand now rather than where they would go. The reminder is a sensible action but answers nothing \u2014 it is what you might do after the scenario has shown the shortfall.',
+    },
   ];
 
   /* Grouped for the by-outcome picker. */
