@@ -49,11 +49,15 @@ const errors = [];
 let checks = 0;
 const ok = () => { checks++; };
 
-/* The most a second run may repeat, on average, out of a run of ten. At 4.0 a
-   reader meets six questions they have not seen; below that the run stops
-   feeling like practice and starts feeling like a replay. It is one number, on
-   purpose: every judgement this file makes terminates here. */
-const CEILING = 4.0;
+/* The most a second run may repeat, on average, out of a run of ten. It is one
+   number, on purpose: every judgement this file makes terminates here.
+
+   IT RATCHETS. It was 4.0 when this gate was written, which was the standard
+   the thinnest pools could then meet. Every Level 3 outcome now holds at least
+   forty questions, so the ceiling comes down to 3.0 — a reader meets seven
+   questions they have not seen rather than six. Tightening it after the work
+   is what stops the gain being given back one question at a time. */
+const CEILING = 3.0;
 
 /* Outcomes that do not meet the ceiling yet, each with a reason. It is EMPTY,
    and the emptiness is the point: BUAW Outcomes 4 and 5 were listed here when
