@@ -1781,13 +1781,13 @@ window.ALL_QUESTIONS = [
 
 
   /* -- PRINCIPLES OF COSTING (POC) -- */
-  { id: 'poc-001', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-001', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.2'],
     q: 'A basic wage plus a bonus per unit produced is an example of:',
     opts: ['A fixed cost', 'A variable cost', 'A semi-variable cost', 'An indirect cost'],
     ans: 2,
     exp: 'Basic wage (fixed) + per-unit bonus (variable) = a semi-variable cost with both fixed and variable elements.' },
 
-  { id: 'poc-002', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-002', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.5'],
     q: 'A cost centre is:',
     opts: [
       'A department or location to which costs are charged and controlled',
@@ -1809,14 +1809,14 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A cost driver is any factor whose change causes a cost to change — for example machine hours driving maintenance cost or sales volume driving delivery cost.' },
 
-  { id: 'poc-004', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-004', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'A cost increases in steps at certain activity levels. This is called:',
     opts: ['Variable cost', 'Step cost', 'Fixed cost', 'Direct cost'],
     ans: 1,
     exp: 'A step cost holds steady across a range of activity, then jumps when a capacity limit is crossed — a second supervisor, another delivery van, an extra shift. Within each range it behaves like a fixed cost; across ranges it plainly does not.' },
 
 
-  { id: 'poc-006', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-006', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'A cost unit is:',
     opts: [
       'A unit of product or service for which costs are measured',
@@ -1829,7 +1829,7 @@ window.ALL_QUESTIONS = [
 
 
 
-  { id: 'poc-009', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-009', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.5'],
     q: 'A profit centre is:',
     opts: [
       'A part of the business responsible for both revenue and costs',
@@ -1840,7 +1840,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A profit centre is responsible for both generating revenue and controlling costs, so its profitability can be measured directly.' },
 
-  { id: 'poc-010', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-010', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'A semi-variable cost is split into:',
     opts: [
       'A fixed element and a variable element',
@@ -1851,7 +1851,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Splitting a semi-variable cost separates the standing charge, which is incurred whatever the usage, from the charge that varies with it. Direct against indirect is a different classification altogether, answering a different question about the same cost.' },
 
-  { id: 'poc-011', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-011', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'A semi-variable cost:',
     opts: [
       'Contains both a fixed element and a variable element',
@@ -1862,7 +1862,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A semi-variable cost has a standing charge that is incurred regardless of use, plus a usage charge that varies with it — an electricity bill is the standard example. Both elements sit inside one cost, which is why it has to be separated before the cost can be forecast at a new level of output.' },
 
-  { id: 'poc-012', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-012', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'A step cost changes when:',
     opts: [
       'Activity reaches a threshold requiring extra capacity',
@@ -1873,7 +1873,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Step costs stay flat within a capacity band and jump when that band is exceeded. Recognising the threshold matters: a decision that looks marginally profitable can become a loss once it pushes activity past the step.' },
 
-  { id: 'poc-013', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-013', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.2'],
     q: 'Absorption costing involves:',
     opts: [
       'Allocating and apportioning overheads to cost centres, then absorbing them into products',
@@ -1884,7 +1884,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Absorption costing: (1) allocate/apportion overheads to cost centres, (2) calculate an OAR for each, (3) absorb overheads into product cost.' },
 
-  { id: 'poc-014', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-014', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'If activity doubles and total cost increases less than proportionally, cost is:',
     opts: [
       'Semi-variable, containing both a fixed and a variable element',
@@ -1895,7 +1895,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Total cost rises less than proportionally with output, indicating a semi-variable cost (a mix of fixed and variable elements).' },
 
-  { id: 'poc-015', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-015', topic: 'poc', difficulty: 'easy', criteria: ['POC-2.4'],
     q: 'If production increases but fixed costs remain constant, fixed cost per unit will:',
     opts: [
       'Decrease, as the same total is spread over more units',
@@ -1908,7 +1908,7 @@ window.ALL_QUESTIONS = [
 
 
 
-  { id: 'poc-018', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-018', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'Labour costs that can be directly traced to a specific product are:',
     opts: [
       'The wages of employees working directly on the product',
@@ -1931,7 +1931,7 @@ window.ALL_QUESTIONS = [
     exp: 'Labour turnover measures how frequently employees leave and need replacing. High turnover increases recruitment and training costs.' },
 
 
-  { id: 'poc-021', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-021', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'Overheads are:',
     opts: [
       'Indirect costs that cannot be attributed to a specific cost unit',
@@ -1942,7 +1942,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Overheads are indirect costs — for example factory rent, supervisor wages and utilities — that cannot be traced to specific units.' },
 
-  { id: 'poc-022', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-022', topic: 'poc', difficulty: 'easy', criteria: ['POC-2.5'],
     q: 'Prime cost is:',
     opts: [
       'Direct materials plus direct labour plus direct expenses',
@@ -1953,7 +1953,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Prime cost = direct materials + direct labour + direct expenses — the total direct cost before any overheads.' },
 
-  { id: 'poc-023', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-023', topic: 'poc', difficulty: 'easy', criteria: ['POC-2.3'],
     q: 'Under-absorbed overhead results in:',
     opts: [
       'Lower reported profit, as the shortfall is charged to the income statement',
@@ -1964,7 +1964,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Under-absorption means less overhead was charged to products than was actually incurred, so product costs were understated. The shortfall is debited to the income statement, reducing profit. Over-absorption has the opposite effect.' },
 
-  { id: 'poc-024', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-024', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'Variable cost per unit:',
     opts: [
       'Remains constant however many units are produced',
@@ -1975,7 +1975,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Variable cost per unit is constant — £5 of materials per unit whether you make 10 or 10,000 — while the total rises with output. Fixed cost behaves the opposite way: constant in total, falling per unit.' },
 
-  { id: 'poc-025', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-025', topic: 'poc', difficulty: 'easy', criteria: ['POC-2.4'],
     q: 'What happens to unit fixed cost as output increases?',
     opts: [
       'It decreases, as the fixed total is spread more thinly',
@@ -1986,7 +1986,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Unit fixed cost = total fixed cost ÷ units. The numerator is unchanged, so raising the denominator lowers the result. Total fixed cost is what stays constant.' },
 
-  { id: 'poc-026', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-026', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.5'],
     q: 'What is a cost centre?',
     opts: [
       'An area of the business to which costs are charged and accumulated',
@@ -1997,7 +1997,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A cost centre is a location, department or activity to which costs are accumulated for management control.' },
 
-  { id: 'poc-027', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-027', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.5'],
     q: 'What is a profit centre?',
     opts: [
       'A part of the business responsible for both revenue and costs',
@@ -2009,13 +2009,13 @@ window.ALL_QUESTIONS = [
     exp: 'A profit centre is responsible for both revenue and costs, so its profitability can be measured directly.' },
 
 
-  { id: 'poc-029', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-029', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.2'],
     q: 'On what basis can overheads be absorbed?',
     opts: ['Units or hours', 'Tax rate', 'Sales value', 'Profit margin'],
     ans: 0,
     exp: 'Overheads are typically absorbed using an activity measure — most commonly labour hours, machine hours or units produced.' },
 
-  { id: 'poc-030', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-030', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.2'],
     q: 'What is absorption costing?',
     opts: [
       'Including a share of overheads in the cost of each product',
@@ -2026,7 +2026,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Absorption costing values products at the full cost of production — direct materials, direct labour, direct expenses and a share of production overheads.' },
 
-  { id: 'poc-031', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-031', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'What is cost behaviour analysis used for?',
     opts: [
       'Planning future activity and supporting management decisions',
@@ -2037,7 +2037,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Knowing how a cost behaves is what makes planning possible: you cannot flex a budget, forecast a total cost at a different level of output, or work out a cost per unit without separating what varies with activity from what does not.' },
 
-  { id: 'poc-032', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-032', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'What is cost behaviour?',
     opts: [
       'How total costs change as the level of activity changes',
@@ -2048,7 +2048,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Cost behaviour describes how a cost changes (or does not change) with the level of activity — fixed, variable or semi-variable.' },
 
-  { id: 'poc-033', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-033', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'What is a cost unit?',
     opts: [
       'The unit of product or service for which cost is measured',
@@ -2059,7 +2059,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A cost unit is a quantitative unit of a product or service for which costs are ascertained — for example one tonne of steel.' },
 
-  { id: 'poc-034', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-034', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'What is a direct cost?',
     opts: [
       'A cost that can be traced directly to a specific cost unit',
@@ -2070,13 +2070,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A direct cost is a cost that can be traced directly to a specific cost unit — for example raw materials in a finished product.' },
 
-  { id: 'poc-035', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-035', topic: 'poc', difficulty: 'easy', criteria: ['POC-2.4'],
     q: 'As output increases, what happens to fixed cost per unit?',
     opts: ['It increases', 'It decreases', 'It stays constant', 'It becomes variable'],
     ans: 1,
     exp: 'Total fixed cost is unchanged but is spread over more units, so fixed cost per unit falls as output rises.' },
 
-  { id: 'poc-036', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-036', topic: 'poc', difficulty: 'easy', criteria: ['POC-2.5'],
     q: 'What is included in prime cost?',
     opts: [
       'Direct materials and direct labour used in production',
@@ -2087,14 +2087,14 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Prime cost is the sum of direct materials, direct labour and direct expenses — everything traceable to the cost unit. Overheads are excluded by definition; adding absorbed production overhead to prime cost gives total production cost.' },
 
-  { id: 'poc-037', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-037', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'How is labour cost classified by traceability?',
     opts: ['Only as fixed', 'As direct or indirect', 'Only as sales-related', 'As capital'],
     ans: 1,
     exp: 'Labour cost is direct when traceable to a specific cost unit (e.g. assembly workers) and indirect when it cannot be (e.g. supervisors, cleaners).' },
 
 
-  { id: 'poc-039', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-039', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.2'],
     q: 'What is overhead absorption?',
     opts: [
       'Charging a share of production overheads to each unit of output',
@@ -2105,13 +2105,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Overhead absorption charges indirect costs to cost units using a predetermined absorption rate (OAR).' },
 
-  { id: 'poc-040', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-040', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'What is an overhead?',
     opts: ['Direct material', 'Indirect cost', 'Sales', 'Cash'],
     ans: 1,
     exp: 'An overhead is an indirect cost of production that cannot be traced directly to a specific cost unit — for example factory rent or utilities.' },
 
-  { id: 'poc-041', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-041', topic: 'poc', difficulty: 'easy', criteria: ['POC-2.5'],
     q: 'What is prime cost?',
     opts: [
       'Direct materials plus direct labour plus direct expenses',
@@ -2122,56 +2122,56 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Prime cost is the sum of the three direct elements and deliberately excludes overheads. Adding absorbed production overhead to prime cost gives total production cost.' },
 
-  { id: 'poc-042', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-042', topic: 'poc', difficulty: 'easy', criteria: ['POC-2.3'],
     q: 'What is the effect of under-absorbing overheads?',
     opts: ['Profit increases', 'Profit decreases', 'No impact', 'Sales increase'],
     ans: 1,
     exp: 'Under-absorbing overheads charges the shortfall to the income statement as an additional expense, reducing reported profit.' },
 
-  { id: 'poc-043', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-043', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'Which classification of costs is based on how costs behave with changes in output?',
     opts: ['By nature', 'By function', 'By behaviour', 'By responsibility'],
     ans: 2,
     exp: 'Cost behaviour classification (fixed, variable, semi-variable) examines how total costs change as activity changes.' },
 
-  { id: 'poc-044', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-044', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'Which cost increases directly with production volume?',
     opts: ['Fixed cost', 'Variable cost', 'Stepped cost', 'Indirect cost'],
     ans: 1,
     exp: 'A variable cost rises in total in direct proportion to output — for example raw materials, where double the output uses double the materials.' },
 
 
-  { id: 'poc-046', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-046', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'Which cost is indirect?',
     opts: ['Materials', 'Factory rent', 'Direct labour', 'Sales commission'],
     ans: 1,
     exp: 'Factory rent benefits all output and cannot be traced to any one unit, making it an indirect cost. It is charged to production by apportionment and absorption rather than attaching directly, which is what separates it from direct materials or direct labour.' },
 
-  { id: 'poc-047', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-047', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'Which cost is not affected by output changes?',
     opts: ['Variable cost', 'Fixed cost', 'Direct cost', 'Semi-variable cost'],
     ans: 1,
     exp: 'A fixed cost stays the same in total whatever the level of output, within the relevant range. Note the qualifier: fixed cost per unit falls as output rises, because the same total is spread more thinly. Confusing total with per-unit behaviour is the standard trap.' },
 
-  { id: 'poc-048', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-048', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'Which cost remains unchanged within a relevant range of activity?',
     opts: ['Variable cost', 'Fixed cost', 'Direct cost', 'Semi-variable cost'],
     ans: 1,
     exp: 'A fixed cost is unchanged in total within the relevant range of activity. Outside that range it may step up or down, which is exactly what a stepped cost does — a fixed cost measured over a wider span of output.' },
 
-  { id: 'poc-049', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-049', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'Which increases variable cost total?',
     opts: ['More output', 'Higher interest rates', 'Lower wages', 'Fixed rent'],
     ans: 0,
     exp: 'Total variable cost increases as more units are produced. Variable cost per unit, however, stays constant.' },
 
-  { id: 'poc-050', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-050', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'Which is a fixed cost?',
     opts: ['Materials', 'Rent', 'Packaging', 'Sales commission'],
     ans: 1,
     exp: 'Rent is contracted for a period and does not move with output, making it fixed in total. Its per-unit effect is the opposite: the more units produced, the smaller the share of rent each one carries.' },
 
-  { id: 'poc-051', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-051', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'Which is direct labour?',
     opts: [
       'A machine operator producing units on the factory production line',
@@ -2182,7 +2182,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A machine operator works on the product itself, so their wages can be traced to units of output and are direct labour. Supervisors, cleaners and maintenance staff support production without being traceable to any one unit, making them indirect.' },
 
-  { id: 'poc-052', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-052', topic: 'poc', difficulty: 'easy', criteria: ['POC-2.5'],
     q: 'Which is included in prime cost?',
     opts: [
       'Direct labour worked on the product being manufactured',
@@ -2193,13 +2193,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Direct labour is one of the three elements of prime cost, alongside direct materials and direct expenses. Rent, insurance and supervision are indirect and reach the product only through overhead absorption.' },
 
-  { id: 'poc-053', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-053', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'Which is indirect labour?',
     opts: ['Assembly worker', 'Cleaner', 'Machine operator', 'Assembler'],
     ans: 1,
     exp: 'A cleaner supports production but cannot be traced to any particular unit, so the cost is indirect labour and forms part of production overhead. The test is always traceability to the cost unit, not how important the role is.' },
 
-  { id: 'poc-054', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-054', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'Which is semi-variable?',
     opts: [
       'An electricity bill with a standing charge plus a usage element',
@@ -2210,7 +2210,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'An electricity bill typically has a fixed standing charge plus a usage charge — a semi-variable cost.' },
 
-  { id: 'poc-055', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-055', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'Which of the following is a direct cost?',
     opts: [
       'Raw materials consumed directly in making the product',
@@ -2221,19 +2221,19 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Direct costs are directly traceable to a specific product — for example raw materials used in making it.' },
 
-  { id: 'poc-056', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-056', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'Which of the following is a production overhead?',
     opts: ['Sales commission', 'Delivery costs to customers', 'Factory rent', 'Directors\' fees'],
     ans: 2,
     exp: 'Production overheads are indirect costs related to manufacturing. Factory rent relates directly to the production facility.' },
 
-  { id: 'poc-057', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-057', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'Which of the following is an indirect cost?',
     opts: ['Wood used to make furniture', 'Assembly line workers\' wages', 'The factory manager\'s salary', 'Product-specific packaging'],
     ans: 2,
     exp: 'Indirect costs cannot be traced to a specific unit. The factory manager oversees the whole facility, not a single product.' },
 
-  { id: 'poc-058', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-058', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.2'],
     q: 'Which statement about absorption costing is correct?',
     opts: [
       'It allocates and absorbs overheads into the cost of products',
@@ -2244,7 +2244,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Absorption costing allocates and apportions overheads to cost centres and then absorbs them into product cost using an absorption rate (the OAR).' },
 
-  { id: 'poc-059', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-059', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'Which statement about variable costs is correct?',
     opts: ['They are constant in total', 'They are constant per unit', 'They never change', 'They are fixed per unit'],
     ans: 1,
@@ -2252,7 +2252,7 @@ window.ALL_QUESTIONS = [
 
 
 
-  { id: 'poc-062', topic: 'poc', difficulty: 'medium',
+  { id: 'poc-062', topic: 'poc', difficulty: 'medium', criteria: ['POC-2.3'],
     q: 'Absorbed overhead is compared to actual overhead to determine:',
     opts: [
       'Whether overheads have been under-absorbed or over-absorbed',
@@ -2263,7 +2263,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'If absorbed overheads exceed actual overheads, there is over-absorption; if actual overheads exceed absorbed, there is under-absorption.' },
 
-  { id: 'poc-063', topic: 'poc', difficulty: 'medium',
+  { id: 'poc-063', topic: 'poc', difficulty: 'medium', criteria: ['POC-1.2'],
     q: 'AVCO values inventory at:',
     opts: [
       'A weighted average of all the purchase prices paid',
@@ -2277,7 +2277,7 @@ window.ALL_QUESTIONS = [
 
 
 
-  { id: 'poc-067', topic: 'poc', difficulty: 'medium',
+  { id: 'poc-067', topic: 'poc', difficulty: 'medium', criteria: ['POC-1.2'],
     q: 'FIFO compared to AVCO typically results in:',
     opts: [
       'Higher closing inventory when purchase prices are rising',
@@ -2288,13 +2288,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Under FIFO, closing inventory consists of the most recent purchases. In a period of rising prices these are the highest-priced, so closing inventory is valued higher than under AVCO.' },
 
-  { id: 'poc-068', topic: 'poc', difficulty: 'medium',
+  { id: 'poc-068', topic: 'poc', difficulty: 'medium', criteria: ['POC-1.2'],
     q: 'FIFO inventory valuation assumes:',
     opts: ['Newest items sold first', 'Oldest items sold first', 'Average cost applied', 'Random selection'],
     ans: 1,
     exp: 'FIFO (First In, First Out) assumes the earliest items purchased are issued or sold first, leaving the most recent purchases in closing inventory.' },
 
-  { id: 'poc-069', topic: 'poc', difficulty: 'medium',
+  { id: 'poc-069', topic: 'poc', difficulty: 'medium', criteria: ['POC-1.1'],
     q: 'Fixed costs are best described as:',
     opts: [
       'Costs that remain constant in total regardless of output',
@@ -2308,19 +2308,19 @@ window.ALL_QUESTIONS = [
 
 
 
-  { id: 'poc-073', topic: 'poc', difficulty: 'medium',
+  { id: 'poc-073', topic: 'poc', difficulty: 'medium', criteria: ['POC-2.3'],
     q: 'Over-absorption of overheads occurs when:',
     opts: ['Actual overheads exceed absorbed overheads', 'Absorbed overheads exceed actual overheads', 'Output is below budget', 'Fixed costs rise unexpectedly'],
     ans: 1,
     exp: 'Over-absorption: overheads absorbed (using the OAR) exceed the actual overheads incurred. The over-absorption is credited to the income statement.' },
 
-  { id: 'poc-074', topic: 'poc', difficulty: 'medium',
+  { id: 'poc-074', topic: 'poc', difficulty: 'medium', criteria: ['POC-1.2'],
     q: 'The FIFO method of inventory valuation assumes that:',
     opts: ['The newest items are used first', 'The oldest items are used first', 'An average cost is used', 'Market price is used'],
     ans: 1,
     exp: 'FIFO (First In, First Out) assumes the earliest inventory purchased is used or sold first. Closing inventory is therefore valued at the most recent prices.' },
 
-  { id: 'poc-075', topic: 'poc', difficulty: 'medium',
+  { id: 'poc-075', topic: 'poc', difficulty: 'medium', criteria: ['POC-2.3'],
     q: 'Under-absorption of overheads means:',
     opts: [
       'Insufficient overhead has been charged, so profit is overstated',
@@ -2331,7 +2331,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Under-absorption: actual overheads exceed absorbed overheads. The shortfall is debited to the income statement (i.e. profit is reduced).' },
 
-  { id: 'poc-076', topic: 'poc', difficulty: 'medium',
+  { id: 'poc-076', topic: 'poc', difficulty: 'medium', criteria: ['POC-2.3'],
     q: 'What happens in over-absorption?',
     opts: [
       'Absorbed overhead exceeds the overhead actually incurred',
@@ -2342,14 +2342,14 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Over-absorption occurs when absorbed overheads (based on the OAR) exceed actual overheads incurred. The surplus is credited to the income statement.' },
 
-  { id: 'poc-077', topic: 'poc', difficulty: 'medium',
+  { id: 'poc-077', topic: 'poc', difficulty: 'medium', criteria: ['POC-1.2'],
     q: 'When is the AVCO average inventory cost recalculated?',
     opts: ['After each sale only', 'After each purchase', 'Only at year end', 'When cash is paid'],
     ans: 1,
     exp: 'AVCO recalculates a weighted average cost after each new purchase. Subsequent issues are valued at this updated average.' },
 
 
-  { id: 'poc-079', topic: 'poc', difficulty: 'medium',
+  { id: 'poc-079', topic: 'poc', difficulty: 'medium', criteria: ['POC-1.2'],
     q: 'What is the FIFO inventory assumption?',
     opts: ['Newest items are sold first', 'Oldest items are sold first', 'Cost is averaged', 'Items are selected randomly'],
     ans: 1,
@@ -2359,7 +2359,7 @@ window.ALL_QUESTIONS = [
 
 
 
-  { id: 'poc-084', topic: 'poc', difficulty: 'medium',
+  { id: 'poc-084', topic: 'poc', difficulty: 'medium', criteria: ['POC-1.1'],
     q: 'Which is a variable cost?',
     opts: [
       'The raw materials consumed in making the product',
@@ -2370,19 +2370,19 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Raw materials are consumed in proportion to output, so the total rises with production while the cost per unit stays constant. Rent, insurance and depreciation are fixed in total and fall per unit as output rises.' },
 
-  { id: 'poc-085', topic: 'poc', difficulty: 'medium',
+  { id: 'poc-085', topic: 'poc', difficulty: 'medium', criteria: ['POC-1.2'],
     q: 'Which is NOT part of absorption costing?',
     opts: ['Overhead allocation', 'OAR calculation', 'Direct materials only', 'Overhead absorption'],
     ans: 2,
     exp: 'Absorption costing includes a fair share of production overhead in each unit alongside the direct costs. Charging direct materials alone would understate the cost of production and lead to prices set below true cost.' },
 
-  { id: 'poc-086', topic: 'poc', difficulty: 'medium',
+  { id: 'poc-086', topic: 'poc', difficulty: 'medium', criteria: ['POC-1.2'],
     q: 'Which method averages inventory cost?',
     opts: ['FIFO', 'AVCO', 'LIFO', 'Specific'],
     ans: 1,
     exp: 'AVCO (Average Cost) values inventory using a weighted average of all purchase prices, recalculated after each new purchase.' },
 
-  { id: 'poc-087', topic: 'poc', difficulty: 'medium',
+  { id: 'poc-087', topic: 'poc', difficulty: 'medium', criteria: ['POC-1.2'],
     q: 'Which method spreads overheads using activity levels?',
     opts: [
       'Absorption costing, which charges overheads to products via an absorption rate',
@@ -2393,7 +2393,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Overheads are spread across products using a chosen activity base — typically labour hours, machine hours or units produced. Allocation comes earlier in the same process and charges a whole overhead to one centre rather than spreading it.' },
 
-  { id: 'poc-088', topic: 'poc', difficulty: 'medium',
+  { id: 'poc-088', topic: 'poc', difficulty: 'medium', criteria: ['POC-1.2'],
     q: 'Which method values closing inventory at most recent purchases?',
     opts: [
       'FIFO, which issues the oldest units first so the newest remain',
@@ -2404,14 +2404,14 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'FIFO assumes the earliest purchases are issued first, so whatever remains in closing inventory is the most recent — and in a rising market, the most expensive. AVCO gives a figure between the two; LIFO is prohibited by IAS 2; absorption costing is a method of charging overheads, not of valuing stock movements.' },
 
-  { id: 'poc-089', topic: 'poc', difficulty: 'medium',
+  { id: 'poc-089', topic: 'poc', difficulty: 'medium', criteria: ['POC-1.2'],
     q: 'Which of the following are recognised methods of inventory valuation?',
     opts: ['FIFO, LIFO and AVCO', 'PAYE, NIC and VAT', 'Fixed, variable and semi-variable', 'Direct, indirect and overhead'],
     ans: 0,
     exp: 'FIFO, LIFO and AVCO are the three classic inventory valuation methods, and the Level 2 syllabus requires all three. LIFO is examined for internal management accounting use only, because it is not permitted for financial reporting under IFRS or UK GAAP.' },
 
 
-  { id: 'poc-091', topic: 'poc', difficulty: 'hard',
+  { id: 'poc-091', topic: 'poc', difficulty: 'hard', criteria: ['POC-1.1'],
     q: 'A cost increases from £5,000 to £7,000 when output rises from 1,000 to 2,000 units. What type of cost is this?',
     opts: [
       'A semi-variable cost, with a fixed and a variable element',
@@ -2424,13 +2424,13 @@ window.ALL_QUESTIONS = [
 
 
 
-  { id: 'poc-094', calc: true, topic: 'poc', difficulty: 'hard',
+  { id: 'poc-094', calc: true, topic: 'poc', difficulty: 'hard', criteria: ['POC-2.4'],
     q: 'Fixed costs are £10,000; variable cost is £5 per unit; 2,000 units are produced. Total cost is:',
     opts: ['£10,000', '£20,000', '£10,005', '£15,000'],
     ans: 1,
     exp: 'Total cost = fixed + (variable per unit × units) = £10,000 + (£5 × 2,000) = £20,000. Note the per-unit figure: £20,000 ÷ 2,000 = £10, of which £5 is variable and £5 is the fixed cost spread across output.' },
 
-  { id: 'poc-095', topic: 'poc', difficulty: 'hard',
+  { id: 'poc-095', topic: 'poc', difficulty: 'hard', criteria: ['POC-2.3'],
     q: 'Fixed overheads absorbed are £12,000 and actual overheads are £11,200. What is the result?',
     opts: ['Under-absorption of £800', 'Over-absorption of £800', 'No difference', 'Profit reduction of £12,000'],
     ans: 1,
@@ -2439,25 +2439,25 @@ window.ALL_QUESTIONS = [
 
 
 
-  { id: 'poc-099', topic: 'poc', difficulty: 'hard',
+  { id: 'poc-099', topic: 'poc', difficulty: 'hard', criteria: ['POC-2.3'],
     q: 'The overhead absorption rate (OAR) is calculated as:',
     opts: ['Actual overheads ÷ actual activity', 'Budgeted overheads ÷ budgeted activity', 'Actual overheads ÷ budgeted activity', 'Budgeted overheads ÷ actual activity'],
     ans: 1,
     exp: 'OAR = budgeted overheads ÷ budgeted activity level. It is calculated in advance to absorb overheads into product costs.' },
 
-  { id: 'poc-100', topic: 'poc', difficulty: 'hard',
+  { id: 'poc-100', topic: 'poc', difficulty: 'hard', criteria: ['POC-2.4'],
     q: 'Total cost function is C = 8,000 + 3x. What is fixed cost?',
     opts: ['3x', '8,000', '11,000', 'Variable cost'],
     ans: 1,
     exp: 'In the total-cost function C = a + bx, "a" is the fixed cost (£8,000) and "b" is the variable cost per unit (£3).' },
 
-  { id: 'poc-101', calc: true, topic: 'poc', difficulty: 'hard',
+  { id: 'poc-101', calc: true, topic: 'poc', difficulty: 'hard', criteria: ['POC-2.4'],
     q: 'Total cost is £50,000 and units are 5,000. Average cost per unit is:',
     opts: ['£5', '£10', '£15', '£20'],
     ans: 1,
     exp: 'Average cost per unit = total cost ÷ units = £50,000 ÷ 5,000 = £10. Be careful using this figure for decisions: it blends fixed and variable cost, so it changes with volume and is not the cost of making one more unit.' },
 
-  { id: 'poc-102', topic: 'poc', difficulty: 'hard',
+  { id: 'poc-102', topic: 'poc', difficulty: 'hard', criteria: ['POC-2.3'],
     q: 'When machine hours are the OAR basis, the rate is:',
     opts: ['Budgeted overheads ÷ budgeted labour hours', 'Budgeted overheads ÷ budgeted machine hours', 'Actual overheads ÷ actual machine hours', 'Total costs ÷ units produced'],
     ans: 1,
@@ -3641,7 +3641,7 @@ window.ALL_QUESTIONS.push(
 
 
   /* -- PRINCIPLES OF COSTING (POC) -- */
-  { id: 'poc-num-001', topic: 'poc', difficulty: 'easy', type: 'numeric', unit: '£',
+  { id: 'poc-num-001', topic: 'poc', difficulty: 'easy', type: 'numeric', unit: '£', criteria: ['POC-2.4'],
     generate: function () {
       const fc = window._QH.rs(4000, 25000, 500);
       const vc = window._QH.r(2, 12);
@@ -3659,7 +3659,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'poc-num-002', topic: 'poc', difficulty: 'easy', type: 'numeric', unit: '£', tolerance: 0.01,
+  { id: 'poc-num-002', topic: 'poc', difficulty: 'easy', type: 'numeric', unit: '£', tolerance: 0.01, criteria: ['POC-2.4'],
     generate: function () {
       const perUnit = window._QH.pick([4, 5, 6, 7, 8, 10, 12, 15]);
       const units = window._QH.pick([500, 1000, 2000, 3000, 4000, 5000, 6000, 8000, 10000]);
@@ -3675,7 +3675,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'poc-num-003', topic: 'poc', difficulty: 'easy', type: 'numeric', unit: '£',
+  { id: 'poc-num-003', topic: 'poc', difficulty: 'easy', type: 'numeric', unit: '£', criteria: ['POC-2.5'],
     generate: function () {
       const dm = window._QH.rs(2000, 9000, 250);
       const dl = window._QH.rs(2000, 9000, 250);
@@ -3693,7 +3693,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'poc-num-004', topic: 'poc', difficulty: 'medium', type: 'numeric', unit: '£',
+  { id: 'poc-num-004', topic: 'poc', difficulty: 'medium', type: 'numeric', unit: '£', criteria: ['POC-2.3'],
     generate: function () {
       const rate = window._QH.pick([3, 4, 5, 6, 7, 8, 10, 12, 15]);
       const hours = window._QH.rs(8000, 30000, 1000);
@@ -3710,7 +3710,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'poc-num-005', topic: 'poc', difficulty: 'medium', type: 'numeric', unit: '£',
+  { id: 'poc-num-005', topic: 'poc', difficulty: 'medium', type: 'numeric', unit: '£', criteria: ['POC-2.3'],
     generate: function () {
       const oar = window._QH.r(3, 12);
       const hours = window._QH.rs(8000, 30000, 500);
@@ -3726,7 +3726,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'poc-num-006', topic: 'poc', difficulty: 'medium', type: 'numeric', unit: '£',
+  { id: 'poc-num-006', topic: 'poc', difficulty: 'medium', type: 'numeric', unit: '£', criteria: ['POC-2.3'],
     generate: function () {
       const absorbed = window._QH.rs(80000, 200000, 1000);
       const diff = window._QH.rs(2000, 12000, 500);
@@ -3743,7 +3743,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'poc-num-007', topic: 'poc', difficulty: 'medium', type: 'numeric', unit: '£',
+  { id: 'poc-num-007', topic: 'poc', difficulty: 'medium', type: 'numeric', unit: '£', criteria: ['POC-2.2'],
     generate: function () {
       const rate = window._QH.pick([10, 12, 14, 16]);
       const basicH = window._QH.r(35, 40);
@@ -3761,7 +3761,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'poc-num-008', topic: 'poc', difficulty: 'hard', type: 'numeric', unit: '£',
+  { id: 'poc-num-008', topic: 'poc', difficulty: 'hard', type: 'numeric', unit: '£', criteria: ['POC-2.3'],
     generate: function () {
       const oar = window._QH.pick([4, 5, 6, 8, 10]);
       const actH = window._QH.rs(8000, 15000, 500);
@@ -3780,7 +3780,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'poc-num-009', topic: 'poc', difficulty: 'hard', type: 'numeric',
+  { id: 'poc-num-009', topic: 'poc', difficulty: 'hard', type: 'numeric', criteria: ['POC-2.2'],
     generate: function () {
       const r1 = window._QH.pick([2, 3, 4]);
       const r2 = r1 + 1;
@@ -3800,7 +3800,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'poc-num-010', topic: 'poc', difficulty: 'hard', type: 'numeric', unit: '£',
+  { id: 'poc-num-010', topic: 'poc', difficulty: 'hard', type: 'numeric', unit: '£', criteria: ['POC-2.1'],
     generate: function () {
       const openingUnits = window._QH.rs(80, 200, 20);
       const p1 = window._QH.r(3, 6);
@@ -4167,7 +4167,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Timing differences (cheques, lodgements) are reflected on the reconciliation; missing entries (DDs, charges) are added to the cash book first.' },
 
-  { id: 'dd-005', topic: 'poc', difficulty: 'easy', type: 'dragdrop',
+  { id: 'dd-005', topic: 'poc', difficulty: 'easy', type: 'dragdrop', criteria: ['POC-1.1'],
     q: 'Match each cost to its behaviour classification.',
     pairs: [
       { left: 'Factory rent', right: 'Fixed cost' },
@@ -4177,7 +4177,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Cost behaviour: fixed (constant in total), variable (proportional to output), semi-variable (mixed), step (jumps at thresholds).' },
 
-  { id: 'dd-006', topic: 'poc', difficulty: 'medium', type: 'dragdrop',
+  { id: 'dd-006', topic: 'poc', difficulty: 'medium', type: 'dragdrop', criteria: ['POC-1.2'],
     q: 'Match each costing term to its formula.',
     pairs: [
       { left: 'Prime cost', right: 'Direct materials + direct labour + direct expenses' },
@@ -4245,7 +4245,7 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'VAT = Net × 20%; Gross = Net + VAT. So 400×20% = 80, gross 480; 750×20% = 150, gross 900; 1,250×20% = 250, gross 1,500.' },
 
-  { id: 'tf-004', topic: 'poc', difficulty: 'medium', type: 'tablefill',
+  { id: 'tf-004', topic: 'poc', difficulty: 'medium', type: 'tablefill', criteria: ['POC-2.5'],
     q: 'Complete the cost of sales calculation.',
     table: {
       title: 'Cost of sales',
@@ -4399,7 +4399,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'An error of commission is posting to the wrong account of the correct type. Both debit and credit are still recorded, so the trial balance still balances.' },
 
-  { id: 'gf-008', topic: 'poc', difficulty: 'medium', type: 'gapfill',
+  { id: 'gf-008', topic: 'poc', difficulty: 'medium', type: 'gapfill', criteria: ['POC-1.2'],
     q: 'Complete the costing formulas.',
     template: 'An overhead absorption rate is budgeted overhead divided by {0}. The full production cost of one unit is prime cost plus {1}.',
     gaps: [
@@ -4408,7 +4408,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'The rate is set from budgeted figures before the period starts, which is what lets a cost be quoted while the work is still being planned. Prime cost is the direct costs; adding the absorbed production overhead gives the full production cost, and non-production overheads stay out of it.' },
 
-  { id: 'gf-009', topic: 'poc', difficulty: 'easy', type: 'gapfill',
+  { id: 'gf-009', topic: 'poc', difficulty: 'easy', type: 'gapfill', criteria: ['POC-1.1'],
     q: 'Complete the statement about fixed cost behaviour.',
     template: 'As output increases, total fixed cost stays {0}, while fixed cost per unit {1}.',
     gaps: [
@@ -4417,7 +4417,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Total fixed cost is unchanged within the relevant range; spread over more units, fixed cost per unit falls.' },
 
-  { id: 'gf-010', topic: 'poc', difficulty: 'medium', type: 'gapfill',
+  { id: 'gf-010', topic: 'poc', difficulty: 'medium', type: 'gapfill', criteria: ['POC-3.2'],
     q: 'Complete the statements about reporting variances.',
     template: 'A variance is expressed as a percentage by dividing it by {0}. Under exception reporting, only variances above a threshold set by {1} are reported.',
     gaps: [
@@ -4509,7 +4509,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Each control answers one risk. Segregation of duties stops one person both making and concealing an error; authorisation limits stop unapproved spending; reconciliations catch omissions and duplicates; and physical controls protect assets from theft.' },
 
-  { id: 'dd-016', topic: 'poc', difficulty: 'medium', type: 'dragdrop',
+  { id: 'dd-016', topic: 'poc', difficulty: 'medium', type: 'dragdrop', criteria: ['POC-1.1'],
     q: 'Match each cost to whether it is direct or indirect for a furniture manufacturer.',
     pairs: [
       { left: 'Wood used in a table', right: 'Direct cost' },
@@ -4519,7 +4519,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'A direct cost can be traced to one unit of output — the timber in a particular table. An indirect cost cannot, even when it is plainly caused by production: factory rent and the supervisor’s salary are incurred whatever number of tables is made.' },
 
-  { id: 'dd-017', topic: 'poc', difficulty: 'medium', type: 'dragdrop',
+  { id: 'dd-017', topic: 'poc', difficulty: 'medium', type: 'dragdrop', criteria: ['POC-1.2'],
     q: 'Match each inventory valuation method to its assumption.',
     pairs: [
       { left: 'FIFO', right: 'Oldest items are issued first' },
@@ -4631,7 +4631,7 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'Work from the statement to the cash book: 3,500 + 1,800 outstanding lodgement − 900 unpresented cheques = 4,400. Both adjustments are timing differences the bank has not yet processed, not errors in either record.' },
 
-  { id: 'tf-012', topic: 'poc', difficulty: 'medium', type: 'tablefill',
+  { id: 'tf-012', topic: 'poc', difficulty: 'medium', type: 'tablefill', criteria: ['POC-2.3'],
     q: 'Complete the overhead absorption calculation.',
     table: {
       title: 'Overhead absorption',
@@ -4651,7 +4651,7 @@ window.ALL_QUESTIONS.push(
     exp: 'The absorption rate is set from the budget: 90,000 ÷ 18,000 = £5 per hour. Overhead absorbed then uses the ACTUAL hours worked: £5 × 17,000 = £85,000. Mixing budgeted rate with budgeted hours is the usual error.' },
 
 
-  { id: 'tf-014', topic: 'poc', difficulty: 'hard', type: 'tablefill',
+  { id: 'tf-014', topic: 'poc', difficulty: 'hard', type: 'tablefill', criteria: ['POC-2.1'],
     q: 'Complete the FIFO stores record. 100 units are held at £4, then 200 are bought at £5, then 250 units are issued.',
     table: {
       title: 'FIFO inventory',
@@ -4763,7 +4763,7 @@ window.ALL_QUESTIONS.push(
 /* ── EXPANDED CONTENT: additional scenario questions (POC / BESY) ── */
 window.ALL_QUESTIONS.push(
 
-  { id: 'sc-012', topic: 'poc', difficulty: 'hard', type: 'scenario',
+  { id: 'sc-012', topic: 'poc', difficulty: 'hard', type: 'scenario', criteria: ['POC-2.3'],
     setup: 'Delta Manufacturing absorbs production overheads on a labour-hour basis. Budgeted overheads were £150,000 and budgeted labour hours were 30,000. In the period, actual overheads were £148,000 and 29,000 labour hours were actually worked.',
     parts: [
       { type: 'numeric', q: 'What is the overhead absorption rate per labour hour?', answer: 5, unit: '£', exp: 'The absorption rate is set in advance from budgeted figures: £150,000 ÷ 30,000 = £5 per hour. It has to be budgeted, because a price has to be quoted before the actual overhead for the period is known.' },
@@ -4777,7 +4777,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Overhead absorption end to end: OAR, overhead absorbed, and the under/over-absorption adjustment.' },
 
-  { id: 'sc-013', topic: 'poc', difficulty: 'medium', type: 'scenario',
+  { id: 'sc-013', topic: 'poc', difficulty: 'medium', type: 'scenario', criteria: ['POC-2.5'],
     setup: 'Greenleaf Ltd is costing a job before quoting for it. The job needs direct materials of £1,200 and direct labour of £800. Production overheads are absorbed at 50% of direct labour cost.',
     parts: [
       { type: 'numeric', q: 'What is the prime cost of the job?', answer: 2000, unit: '£', exp: 'Prime cost is the total of the direct costs: £1,200 materials + £800 labour = £2,000. Overheads are excluded by definition — prime cost is what can be traced to the job itself.' },
@@ -4906,7 +4906,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Payroll: overtime calculation, gross pay, net pay and employer NIC cost.' },
 
-  { id: 'sc-021', topic: 'poc', difficulty: 'hard', type: 'scenario',
+  { id: 'sc-021', topic: 'poc', difficulty: 'hard', type: 'scenario', criteria: ['POC-2.3'],
     setup: 'A factory produces one product. Budgeted fixed production overhead is £84,000 for the month and budgeted production is 8,000 units. Actual production was 7,500 units. The overhead absorption rate is based on units produced.',
     parts: [
       { type: 'mcq', q: 'Based on budgeted production, the overhead absorption rate per unit is:',
@@ -4918,7 +4918,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Overhead absorption: setting the rate from budgeted figures, then finding the under- or over-absorption once actual output is known.' },
 
-  { id: 'sc-022', topic: 'poc', difficulty: 'medium', type: 'scenario',
+  { id: 'sc-022', topic: 'poc', difficulty: 'medium', type: 'scenario', criteria: ['POC-2.1'],
     setup: 'Meridian Co uses AVCO to value inventory. At 1 May: 200 units @ £5.00 each. Purchased 6 May: 300 units @ £6.50 each. Sold 10 May: 350 units. Purchased 15 May: 150 units @ £7.00 each. Sold 20 May: 200 units.',
     parts: [
       { type: 'mcq', q: 'After the 6 May purchase, the weighted average cost per unit is:',
@@ -4990,7 +4990,7 @@ window.ALL_QUESTIONS.push(
 
 
 
-{ id: 'sc-028', topic: 'poc', difficulty: 'medium', type: 'scenario',
+{ id: 'sc-028', topic: 'poc', difficulty: 'medium', type: 'scenario', criteria: ['POC-2.1'],
   setup: 'Birch Furniture buys and sells chairs. April inventory: Opening 20 units @ £45. Purchase 1 (5 Apr): 30 units @ £50. Purchase 2 (20 Apr): 50 units @ £54. Sale (25 Apr): 60 units at £90 each. All purchases are on credit.',
   parts: [
     { type: 'mcq', q: 'Weighted average cost per unit after both purchases:',
@@ -5207,6 +5207,82 @@ window.ALL_QUESTIONS.push(
     ans: 1,
     exp: 'Statement balance = £3,800 + £650 − £420 = £4,030. The bank has not yet processed the unpresented cheques (so its balance is higher) and has not yet shown the lodgements (so its balance is lower than the cash book after lodgements).' },
 
+  // ── POC 1.6 and 3.1 ─────────────────────────────────────────────────────
+  // The same audit found two POC criteria taught and tested by nothing. 1.6 is
+  // carried by L-poc-1 and L-poc-18 (cost coding, and the manufacturing
+  // account in five cards); 3.1 by L-poc-6 and L-poc-11. The 3.1 gap was the
+  // odd one: 3.2, reporting on significant variances, had seven questions
+  // behind it while 3.1, CALCULATING the variance in the first place, had
+  // none — a reader could be asked to judge a number they were never asked to
+  // work out.
+  { id: 'poc-210', topic: 'poc', difficulty: 'medium', type: 'mcq', criteria: ['POC-1.6'],
+    q: 'Which of these belongs in a manufacturing account?',
+    opts: ['Depreciation of production machinery', 'Depreciation of delivery vehicles', 'The sales director\u2019s salary', 'Carriage outwards on finished goods'],
+    ans: 0,
+    exp: 'One rule decides every line: PRODUCTION costs only. Machinery used to make the product is production overhead and goes in. Delivery vehicles, the sales director and carriage outwards are all selling and distribution \u2014 period costs, and they belong in the statement of profit or loss below the cost of sales.' },
+
+  { id: 'poc-211', calc: true, topic: 'poc', difficulty: 'hard', type: 'mcq', criteria: ['POC-1.6'],
+    q: 'Raw materials: opening \u00a38,000, purchases \u00a390,000, carriage inwards \u00a32,000, closing \u00a311,000. Direct labour is \u00a345,000 and direct expenses \u00a36,000. What is prime cost?',
+    opts: ['\u00a3140,000', '\u00a3149,000', '\u00a3138,000', '\u00a3151,000'],
+    ans: 0,
+    exp: 'Materials CONSUMED first, not purchased: \u00a38,000 + \u00a390,000 + \u00a32,000 \u2212 \u00a311,000 = \u00a389,000. Carriage inwards is added because it is part of what the materials cost to acquire. Prime cost is then materials consumed plus direct labour plus direct expenses: \u00a389,000 + \u00a345,000 + \u00a36,000 = \u00a3140,000. Production overhead comes after prime cost, not before it.' },
+
+  { id: 'poc-212', topic: 'poc', difficulty: 'medium', type: 'mcq', criteria: ['POC-1.6'],
+    q: 'A manufacturer holds three kinds of inventory. Where does the WORK IN PROGRESS adjustment sit?',
+    opts: ['At the foot of the manufacturing account, reaching cost of goods manufactured', 'At the head of the manufacturing account, with raw materials', 'In cost of sales, outside the manufacturing account', 'It is not adjusted for, being incomplete at the year end'],
+    ans: 0,
+    exp: 'Three inventories, three places. Raw materials adjust at the TOP, to give materials consumed. Work in progress adjusts at the BOTTOM, turning manufacturing cost into cost of goods manufactured. Finished goods adjust in cost of sales, outside this account altogether. Keeping the three apart is most of the discipline in this topic.' },
+
+  { id: 'poc-213', topic: 'poc', difficulty: 'easy', type: 'mcq', criteria: ['POC-1.6'],
+    q: 'A business codes its costs as "PR-MAT-01", where PR is the production department and MAT is materials. What kind of coding system is this?',
+    opts: ['Alphanumeric \u2014 it uses letters and numbers together', 'Numeric \u2014 the code ends in a number', 'Alphabetic \u2014 the code begins with letters', 'Sequential \u2014 the codes run in order'],
+    ans: 0,
+    exp: 'Letters and digits in one code makes it alphanumeric, which is the commonest form in costing because the letters can carry meaning a reader recognises \u2014 PR for production, MAT for materials \u2014 while the digits keep each item distinct. A purely numeric code is faster to enter and tells the reader nothing on sight.' },
+
+  { id: 'poc-214', topic: 'poc', difficulty: 'medium', type: 'truefalse', criteria: ['POC-1.6'],
+    q: 'Identify whether each cost is included in the manufacturing account.',
+    statements: [
+      { text: 'Factory rent and rates.', answer: true },
+      { text: 'The production supervisor\u2019s salary.', answer: true },
+      { text: 'Office stationery.', answer: false },
+      { text: 'Interest on the business loan.', answer: false }
+    ],
+    exp: 'Factory costs and the people supervising production are production overhead and belong in the account. Office stationery is administration and loan interest is a finance cost \u2014 both are period costs, charged in the statement of profit or loss rather than absorbed into what the goods cost to make.' },
+
+  { id: 'poc-215', calc: true, topic: 'poc', difficulty: 'medium', type: 'mcq', criteria: ['POC-3.1'],
+    q: 'Budgeted materials cost is \u00a370,000 and the actual cost is \u00a371,800. What is the variance?',
+    opts: ['\u00a31,800 adverse', '\u00a31,800 favourable', '\u00a370,000 adverse', '\u00a31,800, neither adverse nor favourable'],
+    ans: 0,
+    exp: 'The arithmetic is a subtraction; the skill is the label. Spending \u00a31,800 MORE than budgeted on a cost reduces profit, so the variance is adverse. The direction reverses for income: earning more than budgeted is favourable. A variance reported without adverse or favourable attached is an incomplete answer.' },
+
+  { id: 'poc-216', calc: true, topic: 'poc', difficulty: 'medium', type: 'mcq', criteria: ['POC-3.1'],
+    q: 'Budgeted revenue is \u00a3240,000 and actual revenue is \u00a3228,000. What is the variance as a percentage of budget?',
+    opts: ['5.0% adverse', '5.0% favourable', '5.3% adverse', '4.8% adverse'],
+    ans: 0,
+    exp: 'The variance is \u00a3240,000 \u2212 \u00a3228,000 = \u00a312,000, and earning LESS income than budgeted is adverse. As a percentage: \u00a312,000 \u00f7 \u00a3240,000 \u00d7 100 = 5.0%. The denominator is always the BUDGET, because the budget is the standard being measured against \u2014 dividing by the actual gives 5.3% and answers a different question.' },
+
+  { id: 'poc-217', calc: true, topic: 'poc', difficulty: 'hard', type: 'mcq', criteria: ['POC-3.1'],
+    q: 'A business budgets for 10,000 units: materials at 2 kg per unit costing \u00a34 per kg, labour at 0.5 hours per unit at \u00a312 per hour, and fixed overheads of \u00a325,000. What is the total budgeted cost?',
+    opts: ['\u00a3165,000', '\u00a3140,000', '\u00a3185,000', '\u00a3105,000'],
+    ans: 0,
+    exp: 'Three lines flex with output and the fourth does not. Materials: 10,000 \u00d7 2 \u00d7 \u00a34 = \u00a380,000. Labour: 10,000 \u00d7 0.5 \u00d7 \u00a312 = \u00a360,000. Fixed overheads are a total for the period at \u00a325,000 and do not move with units. Together: \u00a380,000 + \u00a360,000 + \u00a325,000 = \u00a3165,000. Keeping the units of measurement visible is what stops the per-unit and per-hour figures being multiplied in the wrong order.' },
+
+  { id: 'poc-218', topic: 'poc', difficulty: 'medium', type: 'mcq', criteria: ['POC-3.1'],
+    q: 'A fixed budget assumed 10,000 units; the business actually made 12,000 and spent more on materials than budgeted. Why is comparing the two misleading?',
+    opts: ['More units were always going to cost more \u2014 the budget must be flexed first', 'A fixed budget may not be used for control at any level of output', 'Materials are a fixed cost, so the spend should not have changed', 'The variance should be measured against actual cost, not budget'],
+    ans: 0,
+    exp: 'A fixed budget is the right tool for planning and for asking whether the target was met. It is a poor tool for judging PERFORMANCE, because reporting the extra material cost of 2,000 extra units as an adverse variance blames the production manager for making more. Flexing the budget to actual output first is what makes the comparison fair.' },
+
+  { id: 'poc-219', topic: 'poc', difficulty: 'medium', type: 'truefalse', criteria: ['POC-3.1'],
+    q: 'Identify whether each variance is favourable.',
+    statements: [
+      { text: 'Actual labour cost is below the budgeted labour cost.', answer: true },
+      { text: 'Actual income is above the budgeted income.', answer: true },
+      { text: 'Actual overheads are above the budgeted overheads.', answer: false },
+      { text: 'Actual income is below the budgeted income.', answer: false }
+    ],
+    exp: 'A variance is favourable when it makes profit HIGHER than planned, and the direction reverses between costs and income. Costs below budget and income above budget both raise profit. Costs above budget and income below budget both lower it. Reading the label off the arithmetic without asking what it does to profit is how this goes wrong.' },
+
   // ── POBC 2.1 payment methods ────────────────────────────────────────────
   // The audit that tagged this bank found 2.1 taught by L-pobc-15 and tested by
   // nothing at all: every other POBC criterion had questions behind it and this
@@ -5258,13 +5334,13 @@ window.ALL_QUESTIONS.push(
 
 
 
-  { id: 'poc-202', calc: true, topic: 'poc', difficulty: 'hard', type: 'mcq',
+  { id: 'poc-202', calc: true, topic: 'poc', difficulty: 'hard', type: 'mcq', criteria: ['POC-2.3'],
     q: 'Budgeted factory overheads are £54,000 and budgeted machine hours are 9,000. Actual overheads incurred were £56,200 and actual machine hours worked were 9,000. What is the overhead absorption rate (OAR)?',
     opts: ['£6.00 per machine hour', '£6.24 per machine hour', '£54,000 in total', '£56,200 in total'],
     ans: 0,
     exp: 'OAR = Budgeted overheads ÷ Budgeted activity = £54,000 ÷ 9,000 = £6.00 per machine hour. The OAR is ALWAYS calculated using budgeted figures, not actual.' },
 
-  { id: 'poc-203', calc: true, topic: 'poc', difficulty: 'hard', type: 'mcq',
+  { id: 'poc-203', calc: true, topic: 'poc', difficulty: 'hard', type: 'mcq', criteria: ['POC-2.3'],
     q: 'Using the OAR of £6 per machine hour: actual machine hours worked were 9,000 but actual overheads incurred were £56,200. What is the absorption outcome?',
     opts: [
       'Over-absorbed by £2,200 — credit P&L',
@@ -5276,7 +5352,7 @@ window.ALL_QUESTIONS.push(
 
 
 
-  { id: 'poc-206', topic: 'poc', difficulty: 'hard', type: 'mcq',
+  { id: 'poc-206', topic: 'poc', difficulty: 'hard', type: 'mcq', criteria: ['POC-1.1'],
     q: 'Which of these is a direct cost of production?',
     opts: [
       'Factory manager\'s salary',
@@ -5286,14 +5362,14 @@ window.ALL_QUESTIONS.push(
     ans: 2,
     exp: 'A direct cost is directly traceable to a specific unit of output. Timber used in a chair can be measured per chair — it is a direct material. Factory manager salary, depreciation and rent cannot be traced to individual units; they are indirect (overhead) costs.' },
 
-  { id: 'poc-207', calc: true, topic: 'poc', difficulty: 'hard', type: 'mcq',
+  { id: 'poc-207', calc: true, topic: 'poc', difficulty: 'hard', type: 'mcq', criteria: ['POC-2.1'],
     q: 'Inventory records using AVCO: opening balance 200 units at £4.00. Purchase: 300 units at £5.00. What is the new weighted average cost per unit (to 2 d.p.)?',
     opts: ['£4.50', '£4.60', '£4.00', '£5.00'],
     ans: 1,
     exp: 'New AVCO = Total cost ÷ Total units = ((200 × £4.00) + (300 × £5.00)) ÷ (200 + 300) = (£800 + £1,500) ÷ 500 = £2,300 ÷ 500 = £4.60 per unit.' },
 
 
-  { id: 'poc-209', calc: true, topic: 'poc', difficulty: 'hard', type: 'mcq',
+  { id: 'poc-209', calc: true, topic: 'poc', difficulty: 'hard', type: 'mcq', criteria: ['POC-2.5'],
     q: 'A job requires 15 kg of material at £8/kg, 6 hours of direct labour at £12/hr, and overheads absorbed at £5 per labour hour. What is the total job cost?',
     opts: ['£282', '£252', '£222', '£312'],
     ans: 2,
@@ -5341,7 +5417,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'A full bank reconciliation workflow — cash book updates for bank-only items, then timing-difference reconciliation.' },
 
-  { id: 'sc-032', topic: 'poc', difficulty: 'hard', type: 'scenario',
+  { id: 'sc-032', topic: 'poc', difficulty: 'hard', type: 'scenario', criteria: ['POC-2.1'],
     setup: 'Oakwood Furniture Ltd has the following inventory movements for timber in March: Opening balance 100 units @ £10.00. Purchase 1: 200 units @ £11.00. Issue to production: 150 units. Purchase 2: 100 units @ £12.00. Issue to production: 180 units.',
     parts: [
       { type: 'numeric', q: 'Using FIFO, what is the cost of the first issue of 150 units (£)?',
@@ -5418,7 +5494,7 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'Total Dr: £8,400 + £41,200 = £49,600. Total Cr: £32,600 + £1,800 + £950 + £400 + balance c/d = £49,600. Balance c/d = £49,600 − £35,750 = £13,850.' },
 
-  { id: 'tf-017', topic: 'poc', difficulty: 'medium', type: 'tablefill',
+  { id: 'tf-017', topic: 'poc', difficulty: 'medium', type: 'tablefill', criteria: ['POC-2.5'],
     q: 'Complete the job cost card for Job 47. OAR = £8 per labour hour.',
     table: {
       title: 'Job Cost Card — Job 47',

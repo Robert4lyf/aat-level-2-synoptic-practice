@@ -596,7 +596,16 @@ const QUESTION_FLOORS = {
   'POBC-2.1': 6, 'POBC-2.2': 7, 'POBC-2.3': 21,
   'POBC-3.1': 17, 'POBC-3.2': 31, 'POBC-3.3': 14,
   'POBC-4.1': 8, 'POBC-4.2': 7,
-  'POC-1.3': 5, 'POC-1.4': 6, 'POC-2.2': 9, 'POC-3.2': 6, 'POC-4.1': 8, 'POC-4.2': 7,
+  /* POC audited the same way: 5 of 15 criteria carried a tag, now 15 of 15.
+     Two were taught and tested by nothing. 1.6 is carried by L-poc-1 and
+     L-poc-18, five cards on the manufacturing account alone. 3.1 was the odd
+     one and the more telling: 3.2 — reporting on significant variances — had
+     seven questions behind it while 3.1, CALCULATING the variance in the first
+     place, had none, so a reader could be asked to judge a number they had
+     never been asked to work out. Five questions each now cover them. */
+  'POC-1.1': 36, 'POC-1.2': 20, 'POC-1.3': 5, 'POC-1.4': 6, 'POC-1.5': 4, 'POC-1.6': 5,
+  'POC-2.1': 6, 'POC-2.2': 11, 'POC-2.3': 18, 'POC-2.4': 8, 'POC-2.5': 9,
+  'POC-3.1': 5, 'POC-3.2': 7, 'POC-4.1': 8, 'POC-4.2': 7,
   'BESY-1.1': 5, 'BESY-1.2': 4, 'BESY-1.4': 4, 'BESY-3.4': 4, 'BESY-5.3': 6, 'BESY-6.1': 6,
 };
 const bankByCriterion = new Map();
