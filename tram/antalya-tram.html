@@ -93,6 +93,8 @@
     border: 1px solid var(--line); border-radius: 12px;
   }
   .track { fill: none; stroke-width: 5; stroke-linejoin: round; stroke-linecap: round; opacity: 0.7; }
+  .track.back { stroke-width: 9; opacity: 0.18; }
+  .tram.back { stroke-width: 2.5; fill-opacity: 0.4; }
   .stopdot { fill: var(--dim); opacity: 0.45; }
   .here { fill: none; stroke: var(--ink); stroke-width: 4; }
   .tram { stroke: var(--card); stroke-width: 3; }
@@ -358,7 +360,8 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
             lat: parseFloat(b.lat), lng: parseFloat(b.lng),
             seq: byId[b.stopId], plate: b.plateNumber
           };
-        })
+        }),
+        times: times
       };
     }
 
@@ -382,6 +385,23 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
         return trips.map(function (t) { return t[0] + t[i + 1]; });
       },
       buses: []
+    };
+  }
+
+  /* The other direction, for the map only. Vehicles run up and down one pair
+     of rails, and T3's three trams were all on the return leg while the board
+     showed the outward one — which read as "no trams" when there were three. */
+  function otherWay() {
+    var live = state.live[state.code + '|' + (state.dir === '0' ? '1' : '0')];
+    if (!live) return null;
+    var p = live.path;
+    return {
+      points: (p.pointList || []).map(function (q) {
+        return { lat: parseFloat(q.lat), lng: parseFloat(q.lng) };
+      }),
+      buses: (p.busList || []).map(function (b) {
+        return { lat: parseFloat(b.lat), lng: parseFloat(b.lng), plate: b.plateNumber };
+      })
     };
   }
 
@@ -589,6 +609,34 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
     };
   }
 
+  /* THE DRAWN LINE IS COARSE. pointList gives 55 vertices for T1B's 26 km and
+     leaves gaps of up to 2.6 km, so where the real track curves the drawing
+     cuts the corner — and a tram sitting exactly on the rails then appears to
+     float beside the line. Measured against the drawn segments (not just the
+     vertices, which is what fooled me first) the trams are 0 to 14 m off it.
+     So a vehicle within 400 m of the line is drawn ON the line, at its nearest
+     point; one further out than that is drawn where the feed puts it, hollow,
+     because then the feed really is saying something odd. */
+  var SNAP_M = 400;
+
+  function snap(pos, pts) {
+    if (pts.length < 2) return { lat: pos.lat, lng: pos.lng, off: 0 };
+    var k = 111320 * Math.cos(pos.lat * Math.PI / 180), best = null, i;
+    for (i = 0; i < pts.length - 1; i++) {
+      var ax = pts[i].lng * k, ay = pts[i].lat * 111320;
+      var bx = pts[i + 1].lng * k, by = pts[i + 1].lat * 111320;
+      var px = pos.lng * k, py = pos.lat * 111320;
+      var vx = bx - ax, vy = by - ay, L = vx * vx + vy * vy;
+      var t = L === 0 ? 0 : Math.max(0, Math.min(1, ((px - ax) * vx + (py - ay) * vy) / L));
+      var cx = ax + t * vx, cy = ay + t * vy;
+      var d = Math.sqrt((px - cx) * (px - cx) + (py - cy) * (py - cy));
+      if (!best || d < best.d) best = { d: d, lat: cy / 111320, lng: cx / k };
+    }
+    return best.d <= SNAP_M
+      ? { lat: best.lat, lng: best.lng, off: best.d }
+      : { lat: pos.lat, lng: pos.lng, off: best.d };
+  }
+
   function svg(tag, attrs) {
     var n = document.createElementNS('http://www.w3.org/2000/svg', tag), k;
     for (k in attrs) n.setAttribute(k, attrs[k]);
@@ -597,17 +645,25 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
 
   function renderMap(M, now) {
     var pts = M.points.length ? M.points : M.stops;
-    var proj = projector(pts.concat(M.buses));
+    var back = otherWay();
+    var mine = M.buses.map(function (b) { return snap(b, pts); });
+    var theirs = back ? back.buses.map(function (b) { return snap(b, back.points); }) : [];
+    var proj = projector(pts.concat(back ? back.points : []).concat(mine, theirs));
     el.map.setAttribute('viewBox', '0 0 ' + VB_W + ' ' + Math.round(proj.h));
     el.map.innerHTML = '';
     var stroke = colour(state.code);
 
-    el.map.appendChild(svg('path', {
-      d: pts.map(function (p, i) {
-        return (i ? 'L' : 'M') + proj.x(p.lng).toFixed(1) + ' ' + proj.y(p.lat).toFixed(1);
-      }).join(' '),
-      class: 'track', stroke: stroke
-    }));
+    function path(list, cls) {
+      if (list.length < 2) return;
+      el.map.appendChild(svg('path', {
+        d: list.map(function (q, i) {
+          return (i ? 'L' : 'M') + proj.x(q.lng).toFixed(1) + ' ' + proj.y(q.lat).toFixed(1);
+        }).join(' '),
+        class: cls, stroke: stroke
+      }));
+    }
+    if (back) path(back.points, 'track back');
+    path(pts, 'track');
 
     M.stops.forEach(function (s) {
       el.map.appendChild(svg('circle', {
@@ -620,16 +676,26 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
       cx: proj.x(here.lng).toFixed(1), cy: proj.y(here.lat).toFixed(1), r: 16, class: 'here'
     }));
 
-    M.buses.forEach(function (b) {
+    /* The way you are going is filled; the way back is an outline, so the map
+       shows every vehicle on the line without pretending they all serve you. */
+    var stray = 0;
+    theirs.forEach(function (b) {
+      if (b.off > SNAP_M) stray++;
+      el.map.appendChild(svg('circle', {
+        cx: proj.x(b.lng).toFixed(1), cy: proj.y(b.lat).toFixed(1),
+        r: 9, class: 'tram back', stroke: stroke, fill: stroke
+      }));
+    });
+    mine.forEach(function (b) {
+      if (b.off > SNAP_M) stray++;
       el.map.appendChild(svg('circle', {
         cx: proj.x(b.lng).toFixed(1), cy: proj.y(b.lat).toFixed(1),
         r: 11, class: 'tram', fill: stroke
       }));
     });
 
-    /* Both ends named and nothing else: at 390px there is room for two words. */
     var labels = svg('g', {});
-    [M.stops[0], M.stops[M.stops.length - 1]].forEach(function (s, i) {
+    [M.stops[0], M.stops[M.stops.length - 1]].forEach(function (s) {
       if (!s) return;
       var x = proj.x(s.lng), t = svg('text', {
         x: x, y: proj.y(s.lat) - 16, class: 'maplabel',
@@ -640,15 +706,27 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
     });
     el.map.appendChild(labels);
 
+    if (M.source !== 'live') {
+      el.mapcount.textContent =
+        'Offline: positions worked out from the 2023 timetable, not where the trams are.';
+      return;
+    }
     var word = COLOUR[state.code] ? 'tram' : 'bus';
-    var n = M.buses.length;
-    el.mapcount.textContent = M.source === 'live'
-      ? (n
-        ? n + ' ' + word + (n === 1 ? '' : word === 'bus' ? 'es' : 's') +
-          ' on this direction right now, where the feed says they are. The ring is your stop.'
-        : 'No ' + word + (word === 'bus' ? 'es' : 's') +
-          ' on this direction right now. The ring is your stop.')
-      : 'Offline: positions worked out from the 2023 timetable, not where the trams are.';
+    var plural = word === 'bus' ? 'buses' : 'trams';
+    var txt;
+    if (!mine.length && !theirs.length) {
+      txt = 'No ' + plural + ' on this line right now. The ring is your stop.';
+    } else {
+      var bits = [mine.length + ' ' + (mine.length === 1 ? word : plural) + ' going your way'];
+      if (back) bits.push(theirs.length + ' coming back');
+      txt = bits.join(', ') + '. The ring is your stop.';
+      if (!mine.length) txt += ' Nothing on your side of the line at the moment.';
+    }
+    if (stray) {
+      txt += ' ' + (stray === 1 ? 'One is' : stray + ' are') +
+        ' drawn off the line: that is where the feed puts it.';
+    }
+    el.mapcount.textContent = txt;
   }
 
   /* ---- saved stops ----------------------------------------------------- */
@@ -706,8 +784,12 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
     }
     if (M.source === 'live') {
       var age = Math.round((Date.now() - state.live[key()].at) / 1000);
-      el.status.textContent = 'Live from Kentkart · updated ' +
-        (age < 10 ? 'just now' : age + 's ago');
+      var txt = 'Live from Kentkart · updated ' + (age < 10 ? 'just now' : age + 's ago');
+      /* T1D runs once a day and T1C eight times. An empty board on those is
+         the timetable, not a fault, so the line says which it is. */
+      var n = (M.times || []).length;
+      if (n && n <= 12) txt += ' · only ' + n + (n === 1 ? ' departure' : ' departures') + ' today';
+      el.status.textContent = txt;
       el.status.className = 'status live';
     } else {
       el.status.textContent = state.offline
@@ -738,10 +820,12 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
       state.offline = true;
       render();
     });
-    /* The other direction, quietly: it costs one request and means the button
-       names where that way goes before you tap it. */
+    /* The other direction, quietly: it costs one request, names where that way
+       goes before you tap it, and puts its vehicles on the map — which is a
+       full render, not just the buttons, or the trams coming back never
+       appear. */
     var other = state.dir === '0' ? '1' : '0';
-    fetchPath(state.code, other).then(function () { renderDirs(model(antalyaNow())); })
+    fetchPath(state.code, other).then(render)
       .catch(function () { /* the selected direction is the one that matters */ });
   }
 
