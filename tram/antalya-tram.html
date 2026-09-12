@@ -117,6 +117,8 @@
   .tram { stroke: var(--card); stroke-width: 3; stroke-width: calc(3px / var(--z, 1)); }
   /* Hollow where the feed put it somewhere the line is not. */
   .tram.stray { stroke-width: 4; stroke-width: calc(4px / var(--z, 1)); }
+  /* Faded: on your side of the line, going your way, and already past you. */
+  .tram.past { fill-opacity: 0.35; }
   .maplabel {
     fill: var(--dim); font-weight: 600;
     font-size: 28px; font-size: calc(28px / var(--z, 1));
@@ -324,6 +326,33 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
   catch (e) { PLATFORM = /([A-Za-zÂÇĞİIÎÖŞÜÛâçğıîöşüû])[12]$/; }
   function stopName(n) { return String(n).replace(PLATFORM, '$1'); }
   function key() { return state.code + '|' + state.dir; }
+  function otherKey() { return state.code + '|' + (state.dir === '0' ? '1' : '0'); }
+
+  /* Six missed refreshes. Past that the positions are still worth drawing —
+     they are the last real ones — but a row worked out from them is not a
+     live row any more, and the arithmetic would be wrong by however long the
+     feed has been quiet. The status line says how old they are. */
+  var STALE_MS = 120000;
+  function fresh(k) {
+    var c = state.live[k];
+    return !!c && Date.now() - c.at <= STALE_MS;
+  }
+
+  /* Kentkart answers with about 30 KB a route, and this page is meant to stay
+     open all week. Only the last dozen routes looked at are kept. */
+  function trim() {
+    var keys = Object.keys(state.live);
+    while (keys.length > 12) {
+      var oldest = null;
+      keys.forEach(function (k) {
+        if (k === key() || k === otherKey()) return;
+        if (!oldest || state.live[k].at < state.live[oldest].at) oldest = k;
+      });
+      if (!oldest) return;
+      delete state.live[oldest];
+      keys = Object.keys(state.live);
+    }
+  }
 
   /* ---- the live feed --------------------------------------------------- */
 
@@ -365,6 +394,7 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
          prefetch of the other one succeeding while this one fails used to
          leave the status line saying "loading" for ever. */
       if (code === state.code && dir === state.dir) state.offline = false;
+      trim();
       return p;
     });
   }
@@ -503,6 +533,7 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
      from there out to your stop. It assumes it turns straight round, which is
      why it is worded as an estimate and not put on the board as a live row. */
   function inbound(M, idx) {
+    if (!fresh(otherKey())) return [];
     var back = otherWay();
     if (!back || !back.stops.length) return [];
     /* The inbound run ends at the station your direction starts from, so its
@@ -530,6 +561,7 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
      last reported to wherever I am standing. */
   function liveRows(M, idx, now) {
     var out = [];
+    if (!fresh(key())) return out;
     M.buses.forEach(function (b) {
       if (b.seq === undefined || b.seq === null || b.seq >= idx) return;
       var wait = M.stops[idx].off - M.stops[b.seq].off;
@@ -574,6 +606,20 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
 
   function colour(code) { return COLOUR[code] || BUS_COLOUR; }
 
+  /* FEVZİ ÇAKMAK is unfindable by anyone typing on an English keyboard, and
+     Turkish casing does not help: capital I lowercases to ı, not i. Both the
+     query and the names are folded to plain ASCII before matching. */
+  var FOLD = {
+    'İ': 'i', 'I': 'i', 'ı': 'i', 'Ş': 's', 'ş': 's', 'Ğ': 'g', 'ğ': 'g',
+    'Ç': 'c', 'ç': 'c', 'Ö': 'o', 'ö': 'o', 'Ü': 'u', 'ü': 'u',
+    'Â': 'a', 'â': 'a', 'Î': 'i', 'î': 'i', 'Û': 'u', 'û': 'u'
+  };
+  function fold(t) {
+    return String(t).replace(/[İIıŞşĞğÇçÖöÜüÂâÎîÛû]/g, function (c) {
+      return FOLD[c];
+    }).toLowerCase();
+  }
+
   /* The page re-renders every 20 seconds. Rebuilding the pickers each time
      shut the dropdown on a phone mid-scroll and dropped focus, so each one is
      rebuilt only when what it contains has actually changed. */
@@ -608,10 +654,10 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
   }
 
   function renderRoutes() {
-    var q = (el.routefilter.value || '').toLocaleLowerCase('tr');
+    var q = fold(el.routefilter.value || '').trim();
     if (!changed('routes', q + '|' + state.code)) return;
     var shown = ROUTES.filter(function (r) {
-      return !q || (r[0] + ' ' + r[1]).toLocaleLowerCase('tr').indexOf(q) >= 0;
+      return !q || fold(r[0] + ' ' + r[1]).indexOf(q) >= 0;
     });
     el.routecount.textContent = q ? '(' + shown.length + ' of ' + ROUTES.length + ')'
       : '(' + ROUTES.length + ')';
@@ -675,7 +721,9 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
   /* Rows leave the board as their trams go, so the open row cannot be "the
      third one" — twenty seconds later that is a different departure. */
   function rowId(r) {
-    return (r.live ? 'L' + r.seq + '@' : 'T@') + Math.round(r.at);
+    /* A live row's time moves with the clock, so it cannot be part of its
+       name — the plate does not move. */
+    return r.live ? 'L' + (r.plate || r.seq) : 'T@' + Math.round(r.at);
   }
 
   function renderBoard(M, now) {
@@ -729,7 +777,13 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
     /* Once something on your side of the line is tracked, the board itself is
        the live answer and the note would only repeat it. */
     var tracked = rows.some(function (r) { return r.live; });
-    if (M.source !== 'live' || tracked) { el.inbound.hidden = true; return; }
+    /* Nothing to say while the feed is quiet: the status line is already
+       saying how old the positions are, and "nothing tracked" would be a
+       claim about now that this page cannot make. */
+    if (M.source !== 'live' || tracked || !fresh(key()) || !fresh(otherKey())) {
+      el.inbound.hidden = true;
+      return;
+    }
     var arr = inbound(M, idx);
     el.inbound.hidden = false;
     if (!arr.length) {
@@ -913,7 +967,11 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
     var backPts = back ? back.points : [];
     function place(list, along) {
       var line = along.length > 1 ? along : pts;
-      return list.map(function (b) { return snap(b, line); });
+      return list.map(function (b) {
+        var at = snap(b, line);
+        at.seq = b.seq;          /* the stop it last called at */
+        return at;
+      });
     }
     var mineAll = place(M.buses, pts);
     var theirsAll = place(back ? back.buses : [], backPts);
@@ -930,6 +988,9 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
       el.mapcount.textContent = 'No usable positions for this route in the feed.';
       return;
     }
+    var idx = M.stops.map(function (q) { return q.id; }).indexOf(state.stop);
+    if (idx < 0) idx = 0;
+    var h = M.stops[idx];
     /* A different route, or a track that has changed shape, starts fresh. */
     var shape = state.code + '|' + state.dir + '|' + pts.length + '|' + backPts.length;
     var same = mapState && mapState.shape === shape;
@@ -941,11 +1002,8 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
     var proj = (same && view.k > 1) ? mapState.proj : projector(frame);
     mapState = {
       shape: shape, h: proj.h, proj: proj, dots: dots, pts: pts, backPts: backPts,
-      mine: mine, theirs: theirs,
-      here: (function () {
-        var h = M.stops[M.stops.map(function (s) { return s.id; }).indexOf(state.stop)];
-        return h && onEarth(h) ? h : null;
-      })()
+      mine: mine, theirs: theirs, idx: idx,
+      here: (h && onEarth(h)) ? h : null
     };
     el.mapctl.hidden = false;
     paintMap();
@@ -955,16 +1013,40 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
         'Offline: positions worked out from the 2023 timetable, not where the trams are.';
       return;
     }
+    /* The board stops calling rows live when the feed goes quiet; the caption
+       has to stop saying "coming to you" for the same reason. The dots stay:
+       they are the last real positions, and the line above says how old. */
+    if (!fresh(key())) {
+      var mins = Math.round((Date.now() - state.live[key()].at) / 60000);
+      el.mapcount.textContent = 'Where they were ' + mins + ' min ago. ' +
+        'The feed has gone quiet, so nothing here is current.';
+      return;
+    }
     var word = COLOUR[state.code] ? 'tram' : 'bus';
     var plural = word === 'bus' ? 'buses' : 'trams';
     var txt;
     if (!mineAll.length && !theirsAll.length) {
       txt = 'No ' + plural + ' on this line right now. The ring is your stop.';
     } else {
-      var bits = [mineAll.length + ' ' + (mineAll.length === 1 ? word : plural) + ' going your way'];
-      if (back) bits.push(theirsAll.length + ' coming back');
+      var reach = mineAll.filter(function (b) {
+        return b.seq !== undefined && b.seq !== null && b.seq < idx;
+      }).length;
+      /* WHICH OF THEM CAN ACTUALLY COME AND GET YOU. One on your side of the
+         line that has already called at your stop is going your way and is no
+         use to you: "1 going your way" with nothing live on the board reads
+         like a fault, when the truth is that it left before you looked. Those
+         are faded on the map and counted separately here. */
+      function noun(n) { return n + ' ' + (n === 1 ? word : plural); }
+      var gone = mineAll.length - reach;
+      var bits = [];
+      if (reach) bits.push(noun(reach) + ' coming to you');
+      if (gone) bits.push((bits.length ? gone : noun(gone)) + ' already past your stop');
+      if (back) {
+        bits.push((theirsAll.length
+          ? (bits.length ? theirsAll.length : noun(theirsAll.length))
+          : 'none') + ' coming back');
+      }
       txt = bits.join(', ') + '. The ring is your stop.';
-      if (!mineAll.length) txt += ' Nothing on your side of the line at the moment.';
     }
     if (strays.length) {
       txt += ' ' + (strays.length === 1 ? 'One is' : strays.length + ' are') +
@@ -1054,9 +1136,12 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
        shows every vehicle on the line without pretending they all serve you. */
     function vehicle(b, r, cls) {
       var off = b.off > SNAP_M;
+      var past = cls === 'tram' && b.seq !== undefined && b.seq !== null &&
+        b.seq >= mapState.idx;
       el.map.appendChild(svg('circle', {
         cx: proj.x(b.lng).toFixed(1), cy: proj.y(b.lat).toFixed(1),
-        r: (r / z).toFixed(2), class: cls + (off ? ' stray' : ''),
+        r: (r / z).toFixed(2),
+        class: cls + (off ? ' stray' : '') + (past ? ' past' : ''),
         stroke: stroke, fill: off ? 'none' : stroke
       }));
     }
@@ -1236,11 +1321,15 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
     });
   }
 
+  var stored = '';
   function store() {
+    var now = JSON.stringify({
+      code: state.code, dir: state.dir, stop: state.stop, favs: state.favs
+    });
+    if (now === stored) return;   /* every twenty seconds, otherwise */
+    stored = now;
     try {
-      localStorage.setItem('antalya-tram', JSON.stringify({
-        code: state.code, dir: state.dir, stop: state.stop, favs: state.favs
-      }));
+      localStorage.setItem('antalya-tram', now);
     } catch (e) { /* private browsing — it just forgets */ }
   }
 
