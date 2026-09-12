@@ -1,78 +1,187 @@
-# Antalya tram board — T1A
+# Antalya transit board
 
-A one-page departure board for T1A, Fatih to the airport. Open
-`antalya-tram.html`, pick a direction and a stop, and it counts down the next
-six trams. Tap a departure to see when that tram reaches every stop further
-down the line. Below the board, a map of the line puts every tram where the
-timetable says it should be.
+A one-page board for every Antalya route: the six rail lines — T1A, T1B, T1C,
+T1D, T3 and the nostalgic NT07 — as chips, and all 163 bus routes behind a
+filter. Open `antalya-tram.html`, pick a route, a direction and a stop, and it
+counts down what is coming. Below the board, a map of the route shows the
+vehicles where the feed says they are.
 
-ONE LINE ON PURPOSE. T1B, T2 and T3 are in the same feed and are deliberately
-not carried; rebuild them by widening the route filter in step 1 below.
+WHAT IT LOOKS LIKE, and why. The next departure is the question, so it is the
+biggest thing on the page: one accent colour taken from the line you are
+reading, the first row sized and outlined, the five behind it a plain list. The
+six rails are chips and the other 163 routes sit one tap behind a disclosure,
+which opens itself if a bus is what you are looking at. Direction is a two-way
+switch labelled by where each way ENDS — "To HAVALİMANI" against "To FATİH" —
+because the two head signs differ only in the middle, which is the hardest
+place to spot a difference. Only live rows are marked: a badge on every row,
+most of them reading "timed", marked nothing and made the row harder to read,
+so the timetable is the unmarked default and one line under the board says so.
 
-ONE FILE, ON PURPOSE. Markup, styles, timetable and logic are all in
-`antalya-tram.html` — no build, no imports, no network calls at runtime, no
-service worker. Open it from anywhere: a phone's downloads, a memory stick, any
-static host. It works with no signal, and the timetable is frozen at the moment
-it was captured.
+ONE FILE. Markup, styles, logic and a fallback timetable are all in
+`antalya-tram.html` — no build, no imports, no service worker.
 
-IT IS NOT PART OF THIS SITE. `.assetsignore` keeps it out of the deploy, so it
-never reaches the password gate — which is the point, since a tram board you
-have to log in to is no use standing on a platform. Its inline scripts would
-also be refused by the site's `script-src 'self'` policy, and relaxing that
-policy to host a tram timetable would be the wrong trade.
+IT IS NOT PART OF THIS SITE. The root `.assetsignore` keeps it out of that
+deploy: it has inline scripts, which the site's `script-src 'self'` refuses, it
+calls a third-party host, which `connect-src` refuses, and it would sit behind
+the password gate — no use standing on a platform.
 
-## What it is not
+## Putting it somewhere it can be live
 
-It is not live tracking. Antalya publishes no public real-time feed for the
-trams — the Kentkart API behind the AntalyaKart app exposes route and stop
-lists but no vehicle positions, and `antray.antalyaulasim.com.tr` is not a
-documented API. So a tram running ten minutes late still shows at its booked
-time here.
+The page needs to reach service.kentkart.com, which rules out both the study
+site and the Artifact viewer (whose CSP refuses third-party hosts, and no
+artifact capability grants plain HTTP). So it deploys as its own Worker, from
+this folder alone:
 
-## Where the timetable comes from
+```
+npx wrangler deploy --config tram/wrangler.jsonc
+```
 
-The GTFS feed published by Otobus Tramvay (`agency_url` is
-antalyaulasim.com.tr), as mirrored by [transitous.org](https://transitous.org),
-whose feed list points at a Dropbox-hosted `antalya.zip`. That is the newest
-public copy there is, and it is not new: `stop_times.txt` is dated September
-2023 and `routes.txt` September 2024. Its `calendar.txt` runs to 2030, so
-nothing anywhere marks it stale — this paragraph is the only thing that does.
+That publishes `https://antalya-transit.<your-subdomain>.workers.dev/`, which
+`_redirects` points at the page. No password, no build, no secrets — an
+assets-only Worker with nothing running in front of it. Delete it in the
+Cloudflare dashboard when the trip is over.
 
-To rebuild the timetable, download that zip and flatten it:
+FROM A PHONE, with no terminal, the same thing through the dashboard:
+Workers & Pages → Create → Import a repository → this repo → set the deploy
+command to `npx wrangler deploy --config tram/wrangler.jsonc` and leave the
+build command empty. A second project on the same repository is fine; it
+deploys on push like the study site does.
 
-1. `trips.txt` — keep `route_id` T1A (or whichever lines you want); note
-   `service_id` and `direction_id`.
-2. `stop_times.txt` — group by `trip_id`, order by `stop_sequence`, and write
-   each trip as `[departure minute, then minutes after departure at each stop]`
-   into the `window.TRAM` object at the top of `antalya-tram.html`.
-3. `stops.txt` — name and coordinates for each stop id.
+Failing that, any static host will do — the page is one file with no build and
+no server side.
 
-THE FEED'S CALENDARS DISAGREE WITH THEMSELVES, and taking them literally is a
-bug I shipped once. There are three: `H`, `C` and `P`. `C` departs at exactly
-the same minutes as `H` and `P` at different ones — plainly weekday, Saturday
-and Sunday — but all three are marked `1` for all seven days, so read literally
-they put the weekday and the Sunday timetable on the road simultaneously. The
-first cut of this page did that and offered Sunday trams that do not run: 99
-departures a day against the real 61. Each day now takes the one calendar meant
-for it: 63 weekday departures, 63 Saturday, 61 Sunday.
+OR JUST OPEN THE FILE. A `file://` page may call a cross-origin endpoint when
+that endpoint sends `access-control-allow-origin: *`, and this one does —
+tested in Chromium, which fetches it from `file://` without complaint. I had
+written the opposite here, from a test that failed for a different reason (the
+browser in that sandbox had no network at all).
 
-Stop names keep the feed's trailing `1`/`2`, which marks the two sides of the
-track; the page strips it, because the sign on the street does not have it.
+Whether a given browser allows it is the browser's business, not something
+this page can promise, and Safari has historically been stricter about file
+origins. The page says which mode it is in on the line under its title —
+"Live from Kentkart" or "Offline — showing the 2023 timetable" — so open it
+and read that. If it says Offline, serve the folder over HTTP instead:
 
-## No live feed exists, and here is where I looked
+```
+python3 -m http.server 8000 --directory tram
+```
 
-- **Kentkart** (`service.kentkart.com/rl1/api`, Antalya is region `026`) is the
-  service behind the AntalyaKart app. `route/list` and `trip/search` answer
-  unauthenticated; roughly 400 probed paths and parameter names turned up no
-  vehicle-position endpoint. The app has live buses, so the data exists — it is
-  just not exposed.
-- **transitous.org** carries no GTFS-Realtime for any Turkish feed.
-- **antray.antalyaulasim.com.tr** refuses connections from outside Turkey, so
-  it had to be checked from a Turkish one: it is a journey-time lookup — line,
-  boarding stop, alighting stop, day — over the same scheduled data, with no
-  vehicle positions anywhere on it.
-- **acikveri.antalya.bel.tr** (the city's open data portal) resolves in DNS and
-  serves nothing. It hangs on load from a Turkish connection too, so it is down
-  rather than merely blocked.
-- **Moovit** shows Antalya trams and advertises live arrivals, but has no
-  public API.
+and open `http://localhost:8000/antalya-tram.html`, where the call is an
+ordinary cross-origin request and works everywhere.
+
+## There is a live feed, and this uses it
+
+Kentkart's own passenger API answers unauthenticated, over CORS
+(`access-control-allow-origin: *`), with the trams' GPS:
+
+```
+GET https://service.kentkart.com/rl1/web/pathInfo
+    ?region=026&lang=tr&direction=0&displayRouteCode=T1A&resultType=111110
+```
+
+`route/list` RETURNS MORE THAN ROUTES. Fifty of the 219 entries are five-digit
+codes named after streets (`10006 ATATÜRK BLV-1`), and `pathInfo` answers every
+one of them `Sonuç Bulunamadı` — no stops, no vehicles, no timetable. They are
+left out of `window.ROUTES`. A route that answers that way anyway says so on
+the status line, which is not the same message as a dead network.
+
+`region=026` is Antalya, and it makes no distinction between modes:
+`displayRouteCode=KL08` tracks that bus exactly as `T1A` tracks the tram — 9
+vehicles were on KL08 when this was written. The route codes come from
+`/rl1/api/route/list?region=026` and are baked into `window.ROUTES`. `resultType` is a bitmask, most significant first:
+
+| bit | gives | used for |
+|-----|-------|----------|
+| 1 | `pointList` | the real shape of the track, so the map is not straight lines between stops |
+| 2 | `busList` | **the vehicles on the road now** — lat, lng, plate, and the stop each last called at |
+| 3 | `busStopList` | the stops, with `departure_offset` in seconds from the start of the line |
+| 4 | `timeTableList` | a window of departures around now |
+| 5 | `scheduleList` | the current timetable, one entry per service day |
+
+A service day is named by a seven-letter string, Monday first, with the days it
+runs capitalised: `MTWTFss` is the weekday service, `mtwtfSs` Saturday,
+`mtwtfsS` Sunday.
+
+THE BOARD MIXES TWO KINDS OF ROW. A **live** row is a tram the feed can see:
+its arrival is the booked run time from the stop it last called at to yours,
+which is `departure_offset` differences. A **timed** row is that line's current
+timetable. A timed tram within three minutes of a live one is taken to be the
+same tram rather than a second one.
+
+A live row needs a tracked vehicle *behind* your stop, which at the end of a
+line is impossible and on a three-tram line is often just untrue. The map's
+caption counts the same way — "1 tram coming to you" against "1 already past
+your stop", and the ones past are drawn faded — because "1 tram going your
+way" with nothing live on the board reads like a fault, when the truth is that
+it left before you looked. So when
+nothing on your side of the line is tracked, the note above the board gives
+the nearest vehicle that can still reach you — the one coming the other way,
+its run time to the far end plus the booked run out to your stop, if it turns
+straight round. It says so in those words: at a mid-route stop the timetable
+below is usually sooner, and reading that note as "the next tram" would be
+worse than showing nothing.
+
+THE FILTER IGNORES THE TURKISH LETTERS. Nobody types FEVZİ ÇAKMAK on an
+English keyboard, and Turkish casing does not help — capital I lowercases to
+ı, not i — so both the query and the route names are folded to plain ASCII
+before matching: `calli` finds ÇALLI, `muze` finds MÜZE, `kisla` finds KIŞLA.
+
+STOP NAMES END IN DIGITS THAT MATTER. The two tram platforms are `FATİH1` and
+`FATİH2`, and showing both as `FATİH` reads better — but `CEBESOY CD-11`,
+`CEBESOY CD-12` and `100 YIL BLV-1` are bus stops whose names simply end in a
+number. Stripping a trailing 1 or 2 unconditionally turned CD-11 and CD-12 into
+two stops both called `CD-1`. The rule is now: strip it only where a letter
+comes immediately before it.
+
+THE MAP ZOOMS to about forty times the fitted view — pinch, double-tap, or the
+buttons under it, which centre on your stop rather than on the middle of the
+bounding box (a diagonal route leaves most of that box empty). One finger still
+scrolls the page until you have zoomed in; after that it pans. A plain wheel
+belongs to the page, not the map, which is the thing everyone hates about
+embedded maps; a trackpad pinch (a wheel with ctrlKey) and a wheel over a map
+already zoomed in are the map's. Every
+radius, stroke and letter is divided by the magnification, so nothing fattens
+as you go in, and past about three times the stop names on screen appear.
+The frame is fitted to the track, not to the vehicles, so the picture does not
+shift under you every twenty seconds as they move — and while you are zoomed in
+the projection is frozen outright, since a vehicle reported off the line joins
+the frame and one arriving would otherwise move everything under you. Bear in mind what zoom
+cannot fix: `pointList` leaves gaps of up to 2.6 km, so far enough in the drawn
+track visibly cuts the corners the real rails go round.
+
+Vehicles move visibly in well under a minute — one T3 tram moved 310 m in the
+46 seconds between two polls — so the page refreshes every 20 seconds, and on
+returning to the tab. If six of those refreshes pass without an answer the page
+keeps the last positions but stops calling anything live: the status line says
+how old they are, the live rows and the note above the board go, and the map's
+caption changes to "where they were N min ago". Stale arithmetic dressed as a
+countdown is the one thing worse than no countdown.
+
+## The fallback, and why it is still here
+
+With no signal the page falls back to `window.TRAM`, a timetable flattened from
+the city's 2023 GTFS export, and the status line says so rather than passing it
+off as live. The fallback carries T1A, T1B, T3 and the nostalgic line (which
+that export calls T2); T1C and T1D postdate it and are live-only.
+
+To rebuild the fallback, download the GTFS zip that
+[transitous.org](https://transitous.org) points at for Antalya and flatten
+`trips.txt`, `stop_times.txt` and `stops.txt` into `window.TRAM`: each trip
+becomes `[departure minute, then minutes after departure at each stop]`.
+
+THAT EXPORT'S CALENDARS DISAGREE WITH THEMSELVES, and taking them literally is
+a bug this page shipped once. `H`, `C` and `P` are plainly weekday, Saturday and
+Sunday, but all three are marked as running on all seven days — so read
+literally they put the weekday and the Sunday timetable on the road at the same
+time, and the first cut offered 99 Sunday departures against the real 61. Each
+day takes the one calendar meant for it.
+
+## What was checked before the live feed was found
+
+Kept because it says where not to bother looking again: `/rl1/api/…` carries
+only `route/*`, `trip/search`, `poi/list` and `taxi/*`, and roughly 550 probed
+paths under it returned nothing for vehicles — the positions live under
+`/rl1/web/`, a namespace with flat command names rather than group/verb.
+transitous.org carries no GTFS-Realtime for any Turkish feed;
+`acikveri.antalya.bel.tr` is down even from Turkey; and
+`antray.antalyaulasim.com.tr` is a journey-time lookup over scheduled data.
