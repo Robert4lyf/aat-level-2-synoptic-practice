@@ -6,6 +6,17 @@ filter. Open `antalya-tram.html`, pick a route, a direction and a stop, and it
 counts down what is coming. Below the board, a map of the route shows the
 vehicles where the feed says they are.
 
+WHAT IT LOOKS LIKE, and why. The next departure is the question, so it is the
+biggest thing on the page: one accent colour taken from the line you are
+reading, the first row sized and outlined, the five behind it a plain list. The
+six rails are chips and the other 163 routes sit one tap behind a disclosure,
+which opens itself if a bus is what you are looking at. Direction is a two-way
+switch labelled by where each way ENDS — "To HAVALİMANI" against "To FATİH" —
+because the two head signs differ only in the middle, which is the hardest
+place to spot a difference. Only live rows are marked: a badge on every row,
+most of them reading "timed", marked nothing and made the row harder to read,
+so the timetable is the unmarked default and one line under the board says so.
+
 ONE FILE. Markup, styles, logic and a fallback timetable are all in
 `antalya-tram.html` — no build, no imports, no service worker.
 

@@ -6,93 +6,188 @@
 <title>Antalya Tram Board</title>
 <meta name="theme-color" content="#0d1117">
 <style>
+  /* One accent, set from the line you are looking at (--pick), and a plain
+     palette around it. Three theme states, not two: an explicit choice stamps
+     data-theme on the root and the default setting stamps nothing at all, so
+     the media query has to be guarded and the stamped dark case written again. */
   :root {
-    --bg: #f6f7f9; --card: #ffffff; --ink: #14181d; --dim: #5c6672;
-    --line: #e2e6ea; --accent: #b3123c; --ok: #1c7c4a;
+    --bg: #f4f6f8; --card: #ffffff; --sunk: #eef1f4; --ink: #12171c;
+    --dim: #5b6670; --faint: #8c959e; --edge: #dde3e8;
+    --hot: #b3123c; --ok: #17784a; --pick: #d81e3f;
   }
-  /* Three states, not two: an explicit choice stamps data-theme on the root,
-     and the default setting stamps nothing at all — so the media query has to
-     be guarded, and the stamped dark case written out again. */
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --bg: #0d1117; --card: #161b22; --ink: #e8edf3; --dim: #98a3b0;
-      --line: #262d36; --accent: #ff6b8a; --ok: #4bd189;
+      --bg: #0b0f14; --card: #151b22; --sunk: #1c232b; --ink: #e9eef4;
+      --dim: #9aa5b1; --faint: #737f8b; --edge: #262f39;
+      --hot: #ff738f; --ok: #4cd38c;
     }
   }
   :root[data-theme="dark"] {
-      --bg: #0d1117; --card: #161b22; --ink: #e8edf3; --dim: #98a3b0;
-      --line: #262d36; --accent: #ff6b8a; --ok: #4bd189;
+    --bg: #0b0f14; --card: #151b22; --sunk: #1c232b; --ink: #e9eef4;
+    --dim: #9aa5b1; --faint: #737f8b; --edge: #262f39;
+    --hot: #ff738f; --ok: #4cd38c;
   }
   * { box-sizing: border-box; }
   body {
-    margin: 0; padding: 0 14px 40px; background: var(--bg); color: var(--ink);
+    margin: 0 auto; padding: 0 14px 34px; max-width: 620px;
+    background: var(--bg); color: var(--ink);
     font: 16px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    max-width: 620px; margin-inline: auto; -webkit-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
   }
-  header { padding: 18px 0 4px; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
-  h1 { font-size: 19px; margin: 0; letter-spacing: -0.01em; }
-  #clock { margin-left: auto; font-variant-numeric: tabular-nums; font-weight: 600; color: var(--dim); }
-  .status { font-size: 12px; color: var(--dim); margin: 0 0 10px; }
+  button, select, input { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+
+  /* ---- the top: which line, what time, how current ---------------------- */
+  header {
+    position: sticky; top: 0; z-index: 5; margin: 0 -14px; padding: 10px 14px 8px;
+    background: var(--bg); border-bottom: 1px solid var(--edge);
+    display: flex; align-items: center; gap: 10px;
+  }
+  #badge {
+    font-weight: 700; font-size: 13px; letter-spacing: 0.02em; color: #fff;
+    background: var(--pick); border-radius: 7px; padding: 4px 8px; flex: none;
+  }
+  #where {
+    font-size: 14px; font-weight: 600; overflow: hidden;
+    text-overflow: ellipsis; white-space: nowrap;
+  }
+  #clock {
+    margin-left: auto; font-variant-numeric: tabular-nums; font-weight: 700;
+    font-size: 15px; color: var(--dim); flex: none;
+  }
+  .status { font-size: 12px; color: var(--dim); margin: 8px 0 12px; }
   .status.live::before {
     content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%;
     background: var(--ok); margin-right: 6px; vertical-align: 1px;
   }
-  button { font: inherit; color: inherit; cursor: pointer; }
-  .chips { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 10px; }
+
+  /* ---- the pickers ------------------------------------------------------ */
+  /* Wrapping, not scrolling: six chips fit in two rows on the narrowest phone,
+     and a sideways scroller hides whichever line falls off the edge. */
+  .chips { display: flex; gap: 7px; flex-wrap: wrap; margin: 0 0 12px; }
   .chip {
-    border: 1px solid var(--line); background: var(--card); border-radius: 999px;
-    padding: 7px 13px; font-weight: 600; font-size: 14px;
+    border: 1px solid var(--edge); background: var(--card);
+    border-radius: 999px; padding: 7px 14px; font-weight: 600; font-size: 14px;
+    color: var(--dim);
   }
-  .chip[aria-pressed="true"] { border-color: currentColor; }
-  .dir { display: grid; gap: 6px; margin-bottom: 10px; }
-  .dir button {
-    text-align: left; border: 1px solid var(--line); background: var(--card);
-    border-radius: 10px; padding: 9px 12px; font-size: 14px; color: var(--dim);
-    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  .chip[aria-pressed="true"] {
+    background: var(--pick); border-color: var(--pick); color: #fff;
   }
-  .dir button[aria-pressed="true"] { color: var(--ink); font-weight: 600; border-color: var(--ink); }
-  label { display: block; font-size: 13px; color: var(--dim); margin: 12px 0 5px; }
-  select {
-    width: 100%; font: inherit; padding: 11px 12px; border-radius: 10px;
-    border: 1px solid var(--line); background: var(--card); color: var(--ink);
+  .lookup { display: grid; gap: 7px; margin-bottom: 14px; }
+  .lookup summary {
+    font-size: 13px; color: var(--dim); cursor: pointer; padding: 2px 0;
+    list-style: none;
   }
-  .row { display: flex; gap: 8px; align-items: center; }
-  .row select { flex: 1; }
-  input[type="search"] {
-    width: 100%; font: inherit; padding: 10px 12px; border-radius: 10px;
-    border: 1px solid var(--line); background: var(--card); color: var(--ink);
+  .lookup summary::-webkit-details-marker { display: none; }
+  .lookup summary::before { content: "▸ "; color: var(--faint); }
+  .lookup[open] summary::before { content: "▾ "; }
+  select, input[type="search"] {
+    width: 100%; padding: 11px 12px; border-radius: 11px;
+    border: 1px solid var(--edge); background: var(--card); color: var(--ink);
   }
-  #route { margin-top: 6px; }
-  #routecount { color: var(--dim); font-weight: 400; }
-  #fav { border: 1px solid var(--line); background: var(--card); border-radius: 10px; padding: 10px 13px; }
-  #board { margin: 16px 0 0; padding: 0; list-style: none; }
+  /* ---- direction: two halves of one switch, named by where they go ------ */
+  .seg {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px;
+    background: var(--sunk); border-radius: 13px; margin-bottom: 12px;
+  }
+  .seg button {
+    border: 0; background: none; border-radius: 9px; padding: 9px 8px;
+    font-size: 14px; color: var(--dim); overflow: hidden;
+    text-overflow: ellipsis; white-space: nowrap; min-width: 0;
+  }
+  .seg button small { display: block; font-size: 11px; color: var(--faint); }
+  .seg button[aria-pressed="true"] {
+    background: var(--card); color: var(--ink); font-weight: 700;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.13);
+  }
+  .seg button[aria-pressed="true"] small { color: var(--dim); }
+
+  .stoprow { display: flex; gap: 8px; align-items: center; margin-bottom: 4px; }
+  .stoprow label {
+    font-size: 12px; color: var(--faint); text-transform: uppercase;
+    letter-spacing: 0.06em; font-weight: 700; flex: none;
+  }
+  .stoprow select { flex: 1; font-weight: 600; }
+  #fav {
+    flex: none; width: 44px; height: 44px; border: 1px solid var(--edge);
+    background: var(--card); border-radius: 11px; font-size: 18px; line-height: 1;
+  }
+
+  /* ---- the note above the board ----------------------------------------- */
+  .inbound {
+    margin: 14px 0 0; padding: 11px 13px; font-size: 13px; line-height: 1.5;
+    color: var(--dim); background: var(--card); border: 1px solid var(--edge);
+    border-left: 3px solid var(--pick); border-radius: 4px 11px 11px 4px;
+  }
+  .inbound b { color: var(--ink); }
+
+  /* ---- the board -------------------------------------------------------- */
+  #board { margin: 14px 0 0; padding: 0; list-style: none; }
   #board li {
-    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    background: var(--card); border: 1px solid var(--edge); border-radius: 14px;
     margin-bottom: 8px; overflow: hidden;
   }
-  .dep { display: flex; align-items: center; gap: 12px; padding: 12px 14px; width: 100%; background: none; border: 0; text-align: left; }
-  .badge {
-    font-weight: 700; font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase;
-    padding: 3px 8px; border-radius: 6px; border: 1.5px solid currentColor;
-    min-width: 50px; text-align: center;
+  .dep {
+    display: grid; grid-template-columns: auto 1fr auto; align-items: center;
+    gap: 12px; padding: 12px 14px; width: 100%; background: none;
+    border: 0; text-align: left;
   }
-  .to { flex: 1; font-size: 14px; color: var(--dim); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .when { text-align: right; font-variant-numeric: tabular-nums; }
-  .when b { display: block; font-size: 19px; }
-  .when span { font-size: 12px; color: var(--dim); }
-  li.soon .when b { color: var(--accent); }
-  .calls { margin: 0; padding: 2px 14px 12px; list-style: none; font-size: 13px; color: var(--dim); border-top: 1px dashed var(--line); }
-  .calls li { display: flex; justify-content: space-between; padding: 3px 0; }
+  .mins {
+    font-variant-numeric: tabular-nums; font-weight: 700; font-size: 21px;
+    line-height: 1.1; letter-spacing: -0.02em; min-width: 74px;
+  }
+  .mins u { display: block; font-size: 11px; font-weight: 600; color: var(--faint);
+    text-decoration: none; letter-spacing: 0.04em; text-transform: uppercase; }
+  .mid { min-width: 0; }
+  .to { font-size: 14px; color: var(--dim); overflow: hidden;
+    text-overflow: ellipsis; white-space: nowrap; }
+  .at { font-variant-numeric: tabular-nums; font-size: 14px; color: var(--dim); }
+  /* The first one is the one you are catching. */
+  #board li.first .dep { padding: 16px 14px; }
+  #board li.first .mins { font-size: 32px; min-width: 104px; }
+  #board li.first .to { font-size: 15px; color: var(--ink); }
+  #board li.first { border-color: var(--pick); }
+  li.soon .mins { color: var(--hot); }
+  /* Live is marked; the timetable is the unmarked default, and the legend
+     under the board says so once instead of a badge on every row. */
+  .tag {
+    display: inline-flex; align-items: center; gap: 5px; font-size: 11px;
+    font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+    color: var(--ok); margin-top: 3px;
+  }
+  .tag::before {
+    content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--ok);
+  }
+  .legend { font-size: 12px; color: var(--faint); margin: 2px 0 0; }
+  .legend i {
+    display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--ok); margin-right: 5px; vertical-align: 1px;
+  }
+  .calls {
+    margin: 0; padding: 4px 14px 12px; list-style: none; font-size: 13px;
+    color: var(--dim); border-top: 1px dashed var(--edge);
+  }
+  .calls li { display: flex; justify-content: space-between; gap: 10px; padding: 3px 0; }
   .calls b { font-weight: 600; font-variant-numeric: tabular-nums; color: var(--ink); }
   .empty { color: var(--dim); font-size: 14px; padding: 16px 2px; }
-  .inbound { margin: 14px 0 0; font-size: 13px; line-height: 1.5; color: var(--dim); }
-  .inbound b { color: var(--ink); }
-  #mapwrap { margin-top: 24px; }
-  #mapwrap h2 { font-size: 15px; margin: 0 0 2px; }
-  #mapwrap p { margin: 0 0 8px; font-size: 12px; color: var(--dim); }
+
+  /* ---- saved stops ------------------------------------------------------ */
+  .favs { display: flex; gap: 6px; flex-wrap: wrap; margin: 0 0 10px; }
+  .favs button {
+    font-size: 13px; border: 1px solid var(--edge); background: var(--card);
+    border-radius: 999px; padding: 6px 12px; color: var(--dim);
+  }
+
+  /* ---- the map ---------------------------------------------------------- */
+  #mapwrap { margin-top: 26px; }
+  #mapwrap h2 {
+    font-size: 12px; margin: 0 0 6px; color: var(--faint); font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  #mapcount { margin: 0 0 8px; font-size: 13px; color: var(--dim); }
   #map {
     display: block; width: 100%; height: auto; background: var(--card);
-    border: 1px solid var(--line); border-radius: 12px;
+    border: 1px solid var(--edge); border-radius: 14px;
     --z: 1;
     /* One finger still scrolls the page past the map; once you have zoomed in
        it pans instead. Either way the browser never takes the pinch. */
@@ -104,10 +199,10 @@
      fatten as you go in. Each is divided by the magnification; the plain value
      first is what an engine without calc() in SVG falls back to. */
   .track {
-    fill: none; stroke-linejoin: round; stroke-linecap: round; opacity: 0.7;
+    fill: none; stroke-linejoin: round; stroke-linecap: round; opacity: 0.75;
     stroke-width: 5; stroke-width: calc(5px / var(--z, 1));
   }
-  .track.back { stroke-width: 9; stroke-width: calc(9px / var(--z, 1)); opacity: 0.18; }
+  .track.back { stroke-width: 9; stroke-width: calc(9px / var(--z, 1)); opacity: 0.16; }
   .tram.back { stroke-width: 2.5; stroke-width: calc(2.5px / var(--z, 1)); fill-opacity: 0.4; }
   .stopdot { fill: var(--dim); opacity: 0.45; }
   .here {
@@ -115,7 +210,6 @@
     stroke-width: 4; stroke-width: calc(4px / var(--z, 1));
   }
   .tram { stroke: var(--card); stroke-width: 3; stroke-width: calc(3px / var(--z, 1)); }
-  /* Hollow where the feed put it somewhere the line is not. */
   .tram.stray { stroke-width: 4; stroke-width: calc(4px / var(--z, 1)); }
   /* Faded: on your side of the line, going your way, and already past you. */
   .tram.past { fill-opacity: 0.35; }
@@ -128,23 +222,36 @@
   .maplabel.small { fill: var(--ink); opacity: 0.75; }
   .mapctl {
     display: flex; align-items: center; gap: 6px; margin-top: 8px;
-    font-size: 12px; color: var(--dim); flex-wrap: wrap;
+    font-size: 12px; color: var(--faint); flex-wrap: wrap;
   }
   .mapctl button {
-    min-width: 40px; border: 1px solid var(--line); background: var(--card);
-    border-radius: 8px; padding: 5px 9px; font-weight: 600;
+    min-width: 42px; border: 1px solid var(--edge); background: var(--card);
+    border-radius: 9px; padding: 6px 10px; font-weight: 600;
     font-variant-numeric: tabular-nums;
   }
   .mapctl span { margin-left: auto; text-align: right; }
-  footer { margin-top: 22px; font-size: 12px; line-height: 1.6; color: var(--dim); }
-  .favs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 4px; }
-  .favs button { font-size: 13px; border: 1px solid var(--line); background: var(--card); border-radius: 999px; padding: 5px 11px; }
+  .maplegend {
+    margin: 8px 0 0; font-size: 11px; color: var(--faint);
+    display: flex; gap: 4px; flex-wrap: wrap; align-items: center;
+  }
+  .maplegend i {
+    display: inline-block; width: 9px; height: 9px; border-radius: 50%;
+    margin: 0 2px 0 8px; flex: none;
+  }
+  .maplegend i:first-child { margin-left: 0; }
+  .maplegend .me { border: 2px solid var(--ink); }
+  .maplegend .go { background: var(--pick); }
+  .maplegend .bk { background: var(--pick); opacity: 0.4; }
+  .maplegend .off { border: 2px solid var(--pick); }
+
+  footer { margin-top: 22px; font-size: 11px; line-height: 1.6; color: var(--faint); }
 </style>
 </head>
 <body>
 <header>
-  <h1>Antalya Transit</h1>
-  <div id="clock">--:--</div>
+  <span id="badge">T1A</span>
+  <span id="where">Antalya transit</span>
+  <span id="clock">--:--</span>
 </header>
 <p class="status" id="status">Loading live data…</p>
 
@@ -152,22 +259,23 @@
 
 <div class="chips" id="lines"></div>
 
-<label for="route">Any route <span id="routecount"></span></label>
-<div class="row">
-  <input id="routefilter" type="search" placeholder="filter by number or place" autocomplete="off">
-</div>
-<select id="route"></select>
+<details class="lookup" id="lookup">
+  <summary>Any of the <span id="routecount">169</span> routes</summary>
+  <input id="routefilter" type="search" placeholder="number, or where it goes" autocomplete="off">
+  <select id="route" aria-label="Route"></select>
+</details>
 
-<div class="dir" id="dirs"></div>
+<div class="seg" id="dirs"></div>
 
-<label for="stop">Stop</label>
-<div class="row">
+<div class="stoprow">
+  <label for="stop">From</label>
   <select id="stop"></select>
-  <button id="fav" type="button" title="Save this stop">&#9734;</button>
+  <button id="fav" type="button" title="Save this stop" aria-label="Save this stop">&#9734;</button>
 </div>
 
 <p class="inbound" id="inbound" hidden></p>
 <ul id="board"></ul>
+<p class="legend" id="legend" hidden><i></i>live — a vehicle the feed can see. The rest are today's timetable.</p>
 
 <section id="mapwrap">
   <h2>Where they are now</h2>
@@ -179,6 +287,10 @@
     <button id="zoomin" type="button" aria-label="Zoom in">+</button>
     <span>pinch or double-tap to zoom &middot; drag to pan</span>
   </div>
+  <p class="maplegend">
+    <i class="me"></i>your stop <i class="go"></i>going your way
+    <i class="bk"></i>coming back <i class="off"></i>off the line
+  </p>
 </section>
 
 <footer>
@@ -310,9 +422,9 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
   function countdown(mins) {
     if (mins < 0.5) return 'now';
     var t = Math.round(mins);
-    if (t < 60) return 'in ' + t + ' min';
+    if (t < 60) return t + ' min';
     var h = Math.floor(t / 60), m = t % 60;
-    return 'in ' + h + ' h ' + (m < 10 ? '0' : '') + m;
+    return h + ' h ' + (m < 10 ? '0' : '') + m;
   }
 
   /* The tram platforms are named FATİH1 / FATİH2 — one digit welded onto the
@@ -601,7 +713,7 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
   var el = {};
   ['clock', 'lines', 'dirs', 'stop', 'fav', 'favs', 'board', 'src', 'status',
     'map', 'mapcount', 'route', 'routefilter', 'routecount', 'inbound',
-    'mapctl', 'zoom', 'zoomin', 'zoomout']
+    'mapctl', 'zoom', 'zoomin', 'zoomout', 'badge', 'where', 'legend', 'lookup']
     .forEach(function (id) { el[id] = document.getElementById(id); });
 
   function colour(code) { return COLOUR[code] || BUS_COLOUR; }
@@ -639,6 +751,12 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
   /* The rails get chips because they are the six you actually choose between;
      the other 213 routes are buses, and a chip each would be a wall. */
   function renderLines() {
+    /* One accent for the whole page, so a glance tells you which line you are
+       reading — the chip, the first departure's border and the drawn track are
+       all the same colour. */
+    document.documentElement.style.setProperty('--pick', colour(state.code));
+    el.badge.textContent = state.code;
+    el.where.textContent = NAME[state.code] || '';
     if (!changed('lines', state.code)) return;
     el.lines.innerHTML = '';
     RAIL.forEach(function (r) {
@@ -646,7 +764,6 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
       b.type = 'button';
       b.className = 'chip';
       b.setAttribute('aria-pressed', r[0] === state.code ? 'true' : 'false');
-      if (r[0] === state.code) b.style.color = colour(r[0]);
       b.textContent = r[0] === 'NT07' ? 'Nostalgic' : r[0];
       b.onclick = function () { pick(r[0]); };
       el.lines.appendChild(b);
@@ -654,13 +771,16 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
   }
 
   function renderRoutes() {
+    /* The six rails are chips; the 163 bus routes are one tap behind a
+       disclosure so the page opens on what it is mostly for. But if a bus IS
+       what you are looking at, hiding the picker that says so is no help. */
+    if (!COLOUR[state.code] && !el.lookup.open) el.lookup.open = true;
     var q = fold(el.routefilter.value || '').trim();
     if (!changed('routes', q + '|' + state.code)) return;
     var shown = ROUTES.filter(function (r) {
       return !q || fold(r[0] + ' ' + r[1]).indexOf(q) >= 0;
     });
-    el.routecount.textContent = q ? '(' + shown.length + ' of ' + ROUTES.length + ')'
-      : '(' + ROUTES.length + ')';
+    el.routecount.textContent = q ? shown.length + ' matching' : ROUTES.length;
     el.route.innerHTML = '';
     [[1, 'Trams'], [0, 'Buses']].forEach(function (g) {
       var rows = shown.filter(function (r) { return !!r[2] === !!g[0]; });
@@ -678,21 +798,37 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
     });
   }
 
+  /* "T1A · FATİH DURAĞI -HAVALİMANI DURAĞI" against "T1A · HAVALİMANI DURAĞI -
+     FATİH DURAĞI" is two long strings that differ in the middle, which is the
+     hardest thing to tell apart at a glance. Where it ends is the whole
+     question, so that is the label. */
+  function dirEnd(d) {
+    var c = state.live[state.code + '|' + d];
+    if (!c) return null;
+    var list = c.path.busStopList || [];
+    if (list.length) return stopName(list[list.length - 1].stopName);
+    var bits = String(c.path.headSign || '').split('-');
+    return stopName(bits[bits.length - 1].replace(/DURA[ĞG]I/i, '').trim()) || null;
+  }
+
   function renderDirs(M) {
-    var sig = ['0', '1'].map(function (d) {
-      var c = state.live[state.code + '|' + d];
-      return c ? c.path.headSign : '';
-    }).join('~') + '|' + state.code + '|' + state.dir + '|' + (M ? M.head : '');
+    var sig = ['0', '1'].map(dirEnd).join('~') + '|' + state.code + '|' + state.dir;
     if (!changed('dirs', sig)) return;
     el.dirs.innerHTML = '';
     ['0', '1'].forEach(function (d) {
       var b = document.createElement('button');
       b.type = 'button';
       b.setAttribute('aria-pressed', d === state.dir ? 'true' : 'false');
+      var end = dirEnd(d);
+      b.appendChild(document.createTextNode(
+        end ? 'To ' + end : (d === '0' ? 'One way' : 'The other way')));
       var cached = state.live[state.code + '|' + d];
-      var label = cached ? cached.path.headSign
-        : (d === state.dir && M ? M.head : (d === '0' ? 'one way' : 'the other way'));
-      b.textContent = state.code + ' · ' + label;
+      var n = cached && (cached.path.busStopList || []).length;
+      if (n) {
+        var small = document.createElement('small');
+        small.textContent = n + ' stops';
+        b.appendChild(small);
+      }
       b.onclick = function () {
         state.dir = d; state.stop = null; state.open = null; fitMap(); load(); render();
       };
@@ -732,6 +868,7 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
     var rows = board(M, idx, now);
     renderInbound(M, idx, rows);
     el.board.innerHTML = '';
+    el.legend.hidden = !rows.length;
     if (!rows.length) {
       var p = document.createElement('li');
       p.className = 'empty';
@@ -739,33 +876,43 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
       el.board.appendChild(p);
       return;
     }
-    rows.forEach(function (r) {
+    /* THE ONE YOU ARE CATCHING IS THE FIRST ONE. It gets the size, the accent
+       and the room; the five behind it are a list. And only the live rows are
+       marked — a badge on every row, most of them reading "timed", made the
+       marking worthless and the row hard to scan. */
+    rows.forEach(function (r, i) {
       var wait = r.at - now.minutes;
       var li = document.createElement('li');
-      if (wait < 5) li.className = 'soon';
+      li.className = (i ? '' : 'first ') + (wait < 5 ? 'soon' : '');
 
       var row = document.createElement('button');
       row.type = 'button';
       row.className = 'dep';
 
-      var badge = document.createElement('span');
-      badge.className = 'badge' + (r.live ? ' livebadge' : '');
-      badge.style.color = r.live ? 'var(--ok)' : 'var(--dim)';
-      badge.textContent = r.live ? 'live' : 'timed';
+      var mins = document.createElement('span');
+      mins.className = 'mins';
+      mins.textContent = countdown(wait);
 
+      var mid = document.createElement('span');
+      mid.className = 'mid';
       var to = document.createElement('span');
       to.className = 'to';
       to.textContent = r.live
         ? 'tracked from ' + M.stops[r.seq].name
         : 'to ' + M.stops[M.stops.length - 1].name;
+      mid.appendChild(to);
+      if (r.live) {
+        var tag = document.createElement('span');
+        tag.className = 'tag';
+        tag.textContent = 'live';
+        mid.appendChild(tag);
+      }
 
-      var when = document.createElement('span');
-      when.className = 'when';
-      when.innerHTML = '<b></b><span></span>';
-      when.querySelector('b').textContent = countdown(wait);
-      when.querySelector('span').textContent = hhmm(r.at);
+      var at = document.createElement('span');
+      at.className = 'at';
+      at.textContent = hhmm(r.at);
 
-      row.appendChild(badge); row.appendChild(to); row.appendChild(when);
+      row.appendChild(mins); row.appendChild(mid); row.appendChild(at);
       row.onclick = function () { state.open = state.open === rowId(r) ? null : rowId(r); render(); };
       li.appendChild(row);
       if (state.open === rowId(r)) li.appendChild(calls(M, idx, r));
@@ -787,7 +934,7 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
     var arr = inbound(M, idx);
     el.inbound.hidden = false;
     if (!arr.length) {
-      el.inbound.textContent = 'Nothing tracked on either side of the line from ' +
+      el.inbound.textContent = 'Nothing tracked either side of the line from ' +
         'here, so the times below are the timetable.';
       return;
     }
@@ -801,10 +948,10 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
         'one is about ' + Math.round(first.wait) + ' min away';
       el.inbound.appendChild(b);
       el.inbound.appendChild(document.createTextNode(
-        ' (tracked from ' + first.from + ')' +
-        (arr.length > 1 ? ', and ' + (arr.length - 1) + ' more behind it' : '') +
-        '. One of those turns round and becomes your departure, so the times ' +
-        'below are the timetable until a tram is on your side of the line.'));
+        ' (from ' + first.from + ')' +
+        (arr.length > 1 ? ', and ' + (arr.length - 1) + ' behind it' : '') +
+        '. One of those turns round to become your departure. Times below are ' +
+        'the timetable.'));
       return;
     }
     /* Say plainly that this one is NOT the next departure — it is the nearest
@@ -812,15 +959,15 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
        quicker. Reading it as "34 minutes until a tram" would be worse than
        showing nothing. */
     el.inbound.appendChild(document.createTextNode(
-      'Nothing tracked between here and the start of the line. The nearest one ' +
-      'that can still reach you is coming the other way: '));
+      'Nothing tracked on your side yet. The nearest one that can reach you is ' +
+      'coming the other way: '));
     var b2 = document.createElement('b');
     b2.textContent = 'about ' + Math.round(first.wait) + ' min off';
     el.inbound.appendChild(b2);
     el.inbound.appendChild(document.createTextNode(
-      ' — ' + Math.round(first.turn) + ' min to ' + end + ' from ' + first.from +
-      ', then ' + Math.round(first.wait - first.turn) + ' out to you, if it turns ' +
-      'straight round. Anything sooner below is the timetable.'));
+      ' (' + Math.round(first.turn) + ' to ' + end + ', then ' +
+      Math.round(first.wait - first.turn) + ' back out to you, if it turns ' +
+      'straight round). Anything sooner below is the timetable.'));
   }
 
   /* The rest of the journey from my stop, at this tram's pace. */
@@ -1026,7 +1173,7 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
     var plural = word === 'bus' ? 'buses' : 'trams';
     var txt;
     if (!mineAll.length && !theirsAll.length) {
-      txt = 'No ' + plural + ' on this line right now. The ring is your stop.';
+      txt = 'No ' + plural + ' on this line right now.';
     } else {
       var reach = mineAll.filter(function (b) {
         return b.seq !== undefined && b.seq !== null && b.seq < idx;
@@ -1046,7 +1193,7 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
           ? (bits.length ? theirsAll.length : noun(theirsAll.length))
           : 'none') + ' coming back');
       }
-      txt = bits.join(', ') + '. The ring is your stop.';
+      txt = bits.join(', ') + '.';
     }
     if (strays.length) {
       txt += ' ' + (strays.length === 1 ? 'One is' : strays.length + ' are') +
@@ -1398,6 +1545,7 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
        lists no stops against. Everything below indexes into that list. */
     if (!M || !M.stops.length) {
       el.board.innerHTML = '';
+      el.legend.hidden = true;
       el.map.innerHTML = '';
       el.mapctl.hidden = true;
       mapState = null;
