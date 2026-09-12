@@ -1,17 +1,34 @@
-# Antalya tram board
+# Antalya transit board
 
-A one-page board for Antalya's trams — T1A, T1B, T1C, T1D, T3 and the nostalgic
-NT07. Open `antalya-tram.html`, pick a line, a direction and a stop, and it
-counts down what is coming. Below the board, a map of the line shows the trams
-where the feed says they are.
+A one-page board for every Antalya route: the six rail lines — T1A, T1B, T1C,
+T1D, T3 and the nostalgic NT07 — as chips, and all 213 bus routes behind a
+filter. Open `antalya-tram.html`, pick a route, a direction and a stop, and it
+counts down what is coming. Below the board, a map of the route shows the
+vehicles where the feed says they are.
 
 ONE FILE. Markup, styles, logic and a fallback timetable are all in
 `antalya-tram.html` — no build, no imports, no service worker.
 
-IT IS NOT PART OF THIS SITE. `.assetsignore` keeps it out of the deploy: it has
-inline scripts, which this site's `script-src 'self'` refuses, it calls a
-third-party host, which `connect-src` refuses, and it would sit behind the
-password gate — no use standing on a platform.
+IT IS NOT PART OF THIS SITE. The root `.assetsignore` keeps it out of that
+deploy: it has inline scripts, which the site's `script-src 'self'` refuses, it
+calls a third-party host, which `connect-src` refuses, and it would sit behind
+the password gate — no use standing on a platform.
+
+## Putting it somewhere it can be live
+
+The page needs to reach service.kentkart.com, which rules out both the study
+site and the Artifact viewer (whose CSP refuses third-party hosts, and no
+artifact capability grants plain HTTP). So it deploys as its own Worker, from
+this folder alone:
+
+```
+npx wrangler deploy --config tram/wrangler.jsonc
+```
+
+That publishes `https://antalya-transit.<your-subdomain>.workers.dev/`, which
+`_redirects` points at the page. No password, no build, no secrets — an
+assets-only Worker with nothing running in front of it. Delete it in the
+Cloudflare dashboard when the trip is over.
 
 ## There is a live feed, and this uses it
 
@@ -23,8 +40,10 @@ GET https://service.kentkart.com/rl1/web/pathInfo
     ?region=026&lang=tr&direction=0&displayRouteCode=T1A&resultType=111110
 ```
 
-`region=026` is Antalya — buses as well as trams, so `displayRouteCode=KL08`
-tracks a bus just as well. `resultType` is a bitmask, most significant first:
+`region=026` is Antalya, and it makes no distinction between modes:
+`displayRouteCode=KL08` tracks that bus exactly as `T1A` tracks the tram — 9
+vehicles were on KL08 when this was written. The route codes come from
+`/rl1/api/route/list?region=026` and are baked into `window.ROUTES`. `resultType` is a bitmask, most significant first:
 
 | bit | gives | used for |
 |-----|-------|----------|

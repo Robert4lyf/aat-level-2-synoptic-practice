@@ -1,0 +1,23 @@
+{
+  // A SECOND, SEPARATE Cloudflare Worker, nothing to do with the study site.
+  //
+  // The study site next door is password-gated and its CSP refuses both inline
+  // scripts and third-party hosts, either of which would break this page. So
+  // this deploys the tram board on its own, from this one folder:
+  //
+  //   npx wrangler deploy --config tram/wrangler.jsonc
+  //
+  // It lands at https://antalya-transit.<your-subdomain>.workers.dev/ and
+  // needs no password, no build step and no secrets. Delete the Worker in the
+  // Cloudflare dashboard when the trip is over.
+  "$schema": "../node_modules/wrangler/config-schema.json",
+  "name": "antalya-transit",
+  "compatibility_date": "2026-08-15",
+
+  // No "main": an assets-only Worker, so Cloudflare serves the file directly
+  // and nothing runs in front of it. .assetsignore keeps this config and the
+  // README off the public URL; _redirects sends / to the page.
+  "assets": {
+    "directory": "."
+  }
+}

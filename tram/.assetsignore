@@ -1,0 +1,4 @@
+# Kept out of the public upload: the deploy config and the notes.
+/wrangler.jsonc
+/README.md
+/.assetsignore

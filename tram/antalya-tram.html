@@ -58,6 +58,12 @@
   }
   .row { display: flex; gap: 8px; align-items: center; }
   .row select { flex: 1; }
+  input[type="search"] {
+    width: 100%; font: inherit; padding: 10px 12px; border-radius: 10px;
+    border: 1px solid var(--line); background: var(--card); color: var(--ink);
+  }
+  #route { margin-top: 6px; }
+  #routecount { color: var(--dim); font-weight: 400; }
   #fav { border: 1px solid var(--line); background: var(--card); border-radius: 10px; padding: 10px 13px; }
   #board { margin: 16px 0 0; padding: 0; list-style: none; }
   #board li {
@@ -101,7 +107,7 @@
 </head>
 <body>
 <header>
-  <h1>Antalya Tram</h1>
+  <h1>Antalya Transit</h1>
   <div id="clock">--:--</div>
 </header>
 <p class="status" id="status">Loading live data…</p>
@@ -109,6 +115,13 @@
 <div class="favs" id="favs" hidden></div>
 
 <div class="chips" id="lines"></div>
+
+<label for="route">Any route <span id="routecount"></span></label>
+<div class="row">
+  <input id="routefilter" type="search" placeholder="filter by number or place" autocomplete="off">
+</div>
+<select id="route"></select>
+
 <div class="dir" id="dirs"></div>
 
 <label for="stop">Stop</label>
@@ -120,19 +133,30 @@
 <ul id="board"></ul>
 
 <section id="mapwrap">
-  <h2>Where the trams are</h2>
+  <h2>Where they are now</h2>
   <p id="mapcount">Loading&hellip;</p>
-  <svg id="map" role="img" aria-label="Map of the selected tram line with the trams currently on it"></svg>
+  <svg id="map" role="img" aria-label="Map of the selected route with the vehicles currently on it"></svg>
 </section>
 
 <footer>
   <p id="src"></p>
-  <p><strong>Live where it can be.</strong> Kentkart's passenger API reports the
-  trams' own GPS, and a <em>live</em> row is a tram the feed can actually see, its
+  <p><strong>Live where it can be.</strong> Every Antalya route is here — 6 tram
+  lines and 213 bus routes, all from the same feed. Kentkart's passenger API
+  reports the vehicles' own GPS, and a <em>live</em> row is a tram the feed can actually see, its
   arrival worked out from the stop it last called at. A <em>timed</em> row is the
   timetable — the current one, fetched with the positions. With no signal the page
-  falls back to a timetable baked in from a 2023 export and says so above.</p>
+  falls back to a timetable baked in from a 2023 export and says so above — that
+  export covers the trams only, so a bus with no signal has nothing to show.</p>
 </footer>
+
+<script>
+/* Every route Kentkart lists for region 026 — Antalya — as
+ * [code, name, 1 if it runs on rails]. From
+ * /rl1/api/route/list?region=026, which is a static list; the live feed is
+ * asked for one of these codes at a time. 219 of them, so the picker filters.
+ */
+window.ROUTES = [["T1A","FATİH-HAVALİMANI",1],["T1B","FATİH-EXPO",1],["T1C","FATİH-AKSU",1],["T1D","FATİH-KIŞLA",1],["T3","VARSAK-MÜZE",1],["NT07","NOSTALJİ TRAMVAY AMBARI-MÜZE",1],["AA01","Alanya Otogar-Antalya Otogar",0],["AK01","Korkuteli Terminal-Antalya Otogarı",0],["EA01","Antalya Terminal-Elmalı Terminal",0],["FT01","Finike Otogar-Turunçova",0],["GAN01","Gazipaşa Merkez-Antalya Terminal",0],["HT01","Kumluca Terminal-Temel Egitim",0],["VF01","VARSAK-FAKÜLTE",0],["GAL02","Gazipaşa Merkez-Alanya",0],["KF02","Kumluca Otogar-Finike Otogar",0],["AC03","AKSU-MINICITY",0],["AK03","Antalya Terminal-Kınık",0],["TO03","Kumluca Terminal-Ortaköy",0],["AF04","AKSU-BANIO KAVŞAĞI",0],["AF04A","AKSU-BANIO KAVŞAĞI",0],["AC05","AKSU-ALAYLI",0],["AC05A","AKSU-ALAYLI",0],["AC05B","AKSU-GULOLUK",0],["T5","10259 - TIP FAKÜLTESİ-10001 - AKDENİZ  BLV-1",0],["TS05","Kumluca Terminal-Salur",0],["TYF05","Devlet Hastanesi-Turunçova çarşı",0],["DA6","ORGANİZE SANAYİ-DÖŞEMEALTI",0],["DA6A","ORGANİZE SANAYİ-DÖŞEMEALTI",0],["FH06","Finike Otogar-Hasyurt",0],["KC06","SARISU-GÜZELOBA PAZAR YERİ",0],["AB07","ORGANİZE SANAYİ-AKDENİZ ÜNİVERSİTESİ",0],["KA07","Kemer Terminal-Antalya Terminal",0],["LC07A","KUNDU-OTOGAR DEPOLAMA",0],["KL08","SARISU-GÜZELOBA DEPOLAMA",0],["KL08G","SARISU-GÜZELOBA",0],["TA08","Tekirova Kavşak-Antalya Otogar",0],["TH08","Kumluca Terminal-Kavakköy",0],["LF09","UNSAL-GÜZELOBA",0],["TC09","Kumluca Terminal-Camkırığı",0],["LF10","UNSAL-GÜZELOBA",0],["UC11","MEYDAN-GÜRSU DEPOLAMA",0],["MC12","MEYDAN-ŞEHİR HASTANESİ",0],["MC12A","MEYDAN DEPOLAMA-ŞEHİR HASTANESİ",0],["TT12","Kumluca Terminal-Turunçova",0],["VL13","VARSAK-GUZELOBA",0],["VL13A","VARSAK-GUZELOBA",0],["CV14","VARSAK-IŞIKLAR CADDESİ",0],["DC15","MEYDAN-DOSEMEALTI",0],["DC15A","MEYDAN-DOSEMEALTI",0],["TC16","UNSAL-ERMENEK",0],["TC16A","UNSAL DEPOLAMA-ERMENEK",0],["CV17","VARSAK ALTIAYAK-DOGUGARAJI",0],["CV17A","VARSAK ALTIAYAK-DOGUGARAJI",0],["VS18","SARISU-VARSAK",0],["D19","ORGANİZE-SEHİR HASTANESİ",0],["D19A","ORGANİZE SANAYİ-SEHİR HASTANESİ",0],["SA19","Serik-Antalya",0],["SD20","SARISU-ORGANIZE SANAYI",0],["SD20A","SARISU DEPOLAMA-DOSEMEALTI",0],["KL21","GURSU-ALTINTAS",0],["BA22","Boğazkent-Antalya",0],["ML22","MEYDAN-HURMA",0],["TY23","TERMİNAL-KEPEZ DEVLET HASTANESİ",0],["GM24","TRT KAMPI SAHIL-MASADAGI",0],["VY24","VARSAK YAYLASI-VARSAK",0],["MD25","MEYDAN DEPOLAMA-DOYRAN",0],["ÜA26","OTOGAR DEPOLAMA-KEPEZ DEVLET HASTANESI",0],["DC27","OTOGAR DEPOLAMA-BADEMAGACI",0],["ÜK28","ÜNSAL-KEPEZ DEVLET HASTANESİ",0],["ÜS29","ÜNSAL DEPOLAMA-SARISU",0],["TR30","OTOGAR DEPOLAMA-RAUF DENKTAŞ CAD.",0],["UC32","SARISU DEPOLAMA-DEMIRCILER CARSISI",0],["KC33","GURSU DEPOLAMA-SEHİR HASTANESİ",0],["KC34","GURSU DEPOLAMA-ALTINTAS",0],["KC34A","GURSU DEPOLAMA-ALTINTAS",0],["35","VARSAK ALTIAYAK DEPOLAMA-MEYDAN DEPOLAMA",0],["KC35A","VARSAK ALTIAYAK-GURSU",0],["T35","10001 - AKDENİZ  BLV-1-10003 - AKDENİZ  BLV-3",0],["TK36","OTOGAR-KARACAOGLAN",0],["BB38","SARISU DEPOLAMA-BALIKÇI BARINAĞI",0],["CV39","VARSAK-ANDIZLI MEZARLIGI",0],["MF40","GURSU DEPOLAMA-ŞEHİR HASTANESİ",0],["HM42","MEYDAN DEPOLAMA-SEHİR HASTANESİ",0],["TCP45","OTOGAR DEPOLAMA-VARSAK ALTIAYAK",0],["46","MEYDAN DEPOLAMA-ALTINOVA",0],["46A","MEYDAN DEPOLAMA-ALTINOVA MAHALLESİ",0],["CV47","MEYDAN DEPOLAMA-TÜRKAY OTEL",0],["MAN47","Manavgat Otogarı-Antalya Otogarı",0],["CV48","VARSAK AKTARMA-BANİO KAVŞAĞI",0],["TCD49","UNSAL-KEPEZ DEVLET HASTANESİ",0],["TCD49A","UNSAL-YENI HAL",0],["TK51","OTOGAR DEPOLAMA-AKDAMLAR",0],["TK51A","OTOGAR DEPOLAMA-DOYRAN",0],["KF52","SARISU DEPOLAMA-FATIH",0],["VC53","VARSAK ALTIAYAK-TÜRKAY KAVŞAĞI",0],["VML54","VARSAK-ALTINTAS",0],["VML54A","VARSAK-ALTINTAS",0],["VML55","VARSAK-KIPA KAVSAGI",0],["VC57","VARSAK ALTIAYAK-MİNİCİTY",0],["MC58","OTOGAR-ŞEHİR HASTANESİ",0],["VC59","VARSAK-GÜRSU DEPOLAMA",0],["GCK60","OTOGAR DEPOLAMA-GÜZELOBA DEPOLAMA",0],["KM61","SARISU DEPOLAMA-ŞEHİR HASTANESİ",0],["SM62","SARISU DEPOLAMA-ŞEHİR HASTANESİ",0],["VF63","VARSAK-EGITIM ARASTIRMA HASTANESI",0],["SA64","SARISU DEPOLAMA-ALTINTAŞ",0],["SA65","SARISU-ALTINTAŞ",0],["VF66","VARSAK ALTIAYAK-ADLIYE",0],["CV67","MEYDAN DEPOLAMA-MİNİCİTY",0],["MC68","OTOGAR DEPOLAMA-FATIH TRAMVAY",0],["TB72","OTOGAR DEPOLAMA-BARAJ MAHALLESI",0],["GCK76A","GUZELOBA DEPOLAMA-HURMA",0],["MD77","OTOGAR DEPOLAMA-DUACI",0],["MD77A","OTOGAR DEPOLAMA-DUACI",0],["MZ78","MEYDAN DEPOLAMA-ZEYTINLIK MAHALLESI",0],["DC79","DOSEMEALTI-SIGORTA",0],["MK80","KURŞUNLU ŞELALESİ-DEMIRCILER",0],["MK80A","GAZİLER-DOĞU GARAJI",0],["MK81","AKSU DEPOLAMA-TOPALLI",0],["MK81A","AKSU-YORUKLER MAHALLESI",0],["FL82","UNSAL DEPOLAMA-GÜZELOBA DEPOLAMA",0],["KPZ83","VARSAK-ANDIZLI MEZARLIGI",0],["DM85","OTOGAR DEPOLAMA-KİLLİK",0],["DM85A","OTOGAR DEPOLAMA-EKSILI",0],["DM86","OTOGAR DEPOLAMA-KARAVELILER",0],["TH88","OTOGAR DEPOLAMA-ŞEHİR HASTANESİ",0],["VH89","VARSAK AKTARMA-SEHİR HASTANESİ",0],["MH90","MEYDAN DEPOLAMA-SEHİR HASTANESİ",0],["THG91","OTOGAR DEPOLAMA-AKSU DEPOLAMA",0],["TL94","TERMINAL-GUZELOBA",0],["AÜ102","ADLİ TIP-MELTEM KAPISI",0],["AÜ103","ADLİ TIP-MELTEM KAPISI",0],["104","GÜRSU MAHALLESİ-KONYAALTI",0],["106","OTOGAR DEPOLAMA-ÇALLI KAVŞAĞI",0],["107","SARISU-KADINLAR PLAJI",0],["112","VARSAK BELEDIYE-KEPEZ DEVLET HASTANESI",0],["113","DEEPO-MALL OF ANTALYA-SEHİR HASTANESİ",0],["114","ŞEHİR HASTANESİ-FATİH",0],["183","OTOGAR DEPOLAMA-YÜZÜNCÜ YIL",0],["188","UNCALI MEZARLIGI-KURSUNLU MEZARLIGI",0],["400","SARISU DEPOLAMA-HAVALIMANI",0],["503","OTOGAR DEPOLAMA-ASAGI KARAMAN",0],["506","MEYDAN DEPOLAMA-YAGCA",0],["506A","MEYDAN-YAĞCA",0],["507","VARSAK-KIRISCILER-KIZILLI",0],["508","VARSAK-CAMLICA-KIZILLI",0],["509","OTOGAR DEPOLAMA-KIRISCILER",0],["511","OTOGAR DEPOLAMA-KUNDU",0],["512","GÜZELOBA DEPOLAMA-GUZELBAG",0],["513","GÜZELOBA DEPOLAMA-ERMENEK",0],["513A","GÜZELOBA DEPOLAMA-ERMENEK MAHALLESI",0],["514","AKSU DEPOLAMA-KARAÖZ",0],["514A","AKSU DEPOLAMA-YEŞİLKARAMAN",0],["515","OTOGAR-SOGUTCUMASI",0],["515A","OTOGAR DEPOLAMA-SOGUTCUMASI",0],["521","OTOGAR DEPOLAMA-FESLİKAN YAYLASI",0],["521A","OTOGAR DEPOLAMA-AKDAMLAR",0],["521B","OTOGAR-HACISEKILILER-KUM MEVKII",0],["521C","SARISU DEPOLAMA-GEYİKBAYIRI",0],["526","AKSU DEPOLAMA-KEPEZ BELEDIYESI",0],["527","AKSU-KUNDU",0],["527A","AKSU-KUNDU",0],["528","AKSU-GUZELOBA",0],["531","MEYDAN DEPOLAMA-MURENLER",0],["531T","MEYDAN DEPOLAMA-MURATPAŞA BELEDİYESİ",0],["600","OTOGAR-HAVAALANI",0],["600G","TERMİNAL-HAVAALANI",0],["800","MEYDAN DEPOLAMA-HAVALİMANI",0],["998","ZERDALİLİK-MÜZE",0],["10001","AKDENİZ  BLV-1",0],["10003","AKDENİZ  BLV-3",0],["10004","AKDENİZ BLV-4",0],["10005","AKDENİZ BLV-5",0],["10006","ATATÜRK BLV-1",0],["10008","ATATÜRK BLV-2",0],["10009","ATATÜRK BLV-3",0],["10010","ATATÜRK BLV-4",0],["10011","ATATÜRK BLV-5",0],["10012","ATATÜRK BLV-6",0],["10013","ATATÜRK BLV-7",0],["10014","ATATÜRK BLV-8",0],["10015","TÜRKAY HOTEL",0],["10016","KONYAALTI BELEDİYESİ-1",0],["10017","ATATÜRK BLV-11",0],["10018","ATATÜRK BLV-12",0],["10020","ATATÜRK BLV-13",0],["10021","ATATÜRK BLV-14",0],["10023","MİGROS",0],["10024","ATATÜRK KÜLTÜR MERKEZİ",0],["10025","SAKIP SABANCI BLV-2",0],["10026","100 YIL BLV-5",0],["10027","GAZİ LİSESİ",0],["10029","100 YIL BLV-8",0],["10030","KOVANLIK MH-8",0],["10031","ANAFARTALAR CD-4",0],["10032","KOVANLIK MH-1",0],["10033","GÜLLÜK",0],["10034","D650 AKDENİZ BLV-17",0],["10035","CUMHURİYET MEYDANI",0],["10036","D650 AKDENİZ BLV-18",0],["10037","MURATPAŞA ÜÇ KAPILAR",0],["10038","VEYSEL KARANİ CD-1",0],["10039","IŞIKLAR CD-1",0],["10040","VEYSEL KARANİ CD-2",0],["10041","IŞIKLAR CD-2",0],["10042","ORHAN GAZİ CD-1",0],["10043","IŞIKLAR CD-4",0],["10044","ORHAN GAZİ CD-4",0],["10045","METİN KASAPOĞLU CD-1",0],["10046","ORHAN GAZİ CD-2",0],["10048","ORHAN GAZİ CD-3",0],["10049","METİN KASAPOĞLU CD-3",0],["10050","AT ALANI CD-1",0],["10051","METİN KASAPOĞLU CD-4",0],["10052","AT ALANI CD-2",0],["10053","İSMET GÖKŞEN CD-1",0],["10054","İSMET GÖKŞEN CD-2",0],["10055","İSMET GÖKŞEN CD-3",0],["10056","İSMET GÖKŞEN CD-4",0]];
+</script>
 
 <script>
 /* Antalya tram timetable, flattened from the GTFS feed published by Otobus
@@ -191,14 +215,15 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
 
   /* The live API knows two lines the 2023 export did not (T1C to Aksu, T1D to
      Kışla) and calls the nostalgic line NT07 rather than T2. */
-  var LINES = [
-    { code: 'T1A', label: 'T1A', colour: '#d81e3f' },
-    { code: 'T1B', label: 'T1B', colour: '#1667c2' },
-    { code: 'T1C', label: 'T1C', colour: '#0f9bd7' },
-    { code: 'T1D', label: 'T1D', colour: '#7a4fd0' },
-    { code: 'T3', label: 'T3', colour: '#2f8f5b' },
-    { code: 'NT07', label: 'Nostalgic', colour: '#97682a' }
-  ];
+  var COLOUR = {
+    T1A: '#d81e3f', T1B: '#1667c2', T1C: '#0f9bd7',
+    T1D: '#7a4fd0', T3: '#2f8f5b', NT07: '#97682a'
+  };
+  var BUS_COLOUR = '#0f766e';
+  var ROUTES = window.ROUTES || [];
+  var RAIL = ROUTES.filter(function (r) { return r[2]; });
+  var NAME = {};
+  ROUTES.forEach(function (r) { NAME[r[0]] = r[1]; });
   var BAKED_FOR = { T1A: 'T1A', T1B: 'T1B', T3: 'T3', NT07: 'T2' };
 
   var state = {
@@ -395,27 +420,53 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
 
   var el = {};
   ['clock', 'lines', 'dirs', 'stop', 'fav', 'favs', 'board', 'src', 'status',
-    'map', 'mapcount'].forEach(function (id) { el[id] = document.getElementById(id); });
+    'map', 'mapcount', 'route', 'routefilter', 'routecount']
+    .forEach(function (id) { el[id] = document.getElementById(id); });
 
-  function line(code) {
-    for (var i = 0; i < LINES.length; i++) if (LINES[i].code === code) return LINES[i];
-    return LINES[0];
+  function colour(code) { return COLOUR[code] || BUS_COLOUR; }
+
+  function pick(code) {
+    state.code = code; state.dir = '0'; state.stop = null;
+    load(); render();
   }
 
+  /* The rails get chips because they are the six you actually choose between;
+     the other 213 routes are buses, and a chip each would be a wall. */
   function renderLines() {
     el.lines.innerHTML = '';
-    LINES.forEach(function (L) {
+    RAIL.forEach(function (r) {
       var b = document.createElement('button');
       b.type = 'button';
       b.className = 'chip';
-      b.setAttribute('aria-pressed', L.code === state.code ? 'true' : 'false');
-      if (L.code === state.code) b.style.color = L.colour;
-      b.textContent = L.label;
-      b.onclick = function () {
-        state.code = L.code; state.dir = '0'; state.stop = null;
-        load(); render();
-      };
+      b.setAttribute('aria-pressed', r[0] === state.code ? 'true' : 'false');
+      if (r[0] === state.code) b.style.color = colour(r[0]);
+      b.textContent = r[0] === 'NT07' ? 'Nostalgic' : r[0];
+      b.onclick = function () { pick(r[0]); };
       el.lines.appendChild(b);
+    });
+  }
+
+  function renderRoutes() {
+    var q = (el.routefilter.value || '').toLocaleLowerCase('tr');
+    var shown = ROUTES.filter(function (r) {
+      return !q || (r[0] + ' ' + r[1]).toLocaleLowerCase('tr').indexOf(q) >= 0;
+    });
+    el.routecount.textContent = q ? '(' + shown.length + ' of ' + ROUTES.length + ')'
+      : '(' + ROUTES.length + ')';
+    el.route.innerHTML = '';
+    [[1, 'Trams'], [0, 'Buses']].forEach(function (g) {
+      var rows = shown.filter(function (r) { return !!r[2] === !!g[0]; });
+      if (!rows.length) return;
+      var og = document.createElement('optgroup');
+      og.label = g[1];
+      rows.forEach(function (r) {
+        var o = document.createElement('option');
+        o.value = r[0];
+        o.textContent = r[0] + ' · ' + r[1];
+        if (r[0] === state.code) o.selected = true;
+        og.appendChild(o);
+      });
+      el.route.appendChild(og);
     });
   }
 
@@ -549,13 +600,13 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
     var proj = projector(pts.concat(M.buses));
     el.map.setAttribute('viewBox', '0 0 ' + VB_W + ' ' + Math.round(proj.h));
     el.map.innerHTML = '';
-    var colour = line(state.code).colour;
+    var stroke = colour(state.code);
 
     el.map.appendChild(svg('path', {
       d: pts.map(function (p, i) {
         return (i ? 'L' : 'M') + proj.x(p.lng).toFixed(1) + ' ' + proj.y(p.lat).toFixed(1);
       }).join(' '),
-      class: 'track', stroke: colour
+      class: 'track', stroke: stroke
     }));
 
     M.stops.forEach(function (s) {
@@ -572,7 +623,7 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
     M.buses.forEach(function (b) {
       el.map.appendChild(svg('circle', {
         cx: proj.x(b.lng).toFixed(1), cy: proj.y(b.lat).toFixed(1),
-        r: 11, class: 'tram', fill: colour
+        r: 11, class: 'tram', fill: stroke
       }));
     });
 
@@ -589,11 +640,14 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
     });
     el.map.appendChild(labels);
 
+    var word = COLOUR[state.code] ? 'tram' : 'bus';
+    var n = M.buses.length;
     el.mapcount.textContent = M.source === 'live'
-      ? (M.buses.length
-        ? M.buses.length + (M.buses.length === 1 ? ' tram' : ' trams') +
+      ? (n
+        ? n + ' ' + word + (n === 1 ? '' : word === 'bus' ? 'es' : 's') +
           ' on this direction right now, where the feed says they are. The ring is your stop.'
-        : 'No trams on this direction right now. The ring is your stop.')
+        : 'No ' + word + (word === 'bus' ? 'es' : 's') +
+          ' on this direction right now. The ring is your stop.')
       : 'Offline: positions worked out from the 2023 timetable, not where the trams are.';
   }
 
@@ -646,7 +700,10 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
   /* ---- wiring ---------------------------------------------------------- */
 
   function status(M) {
-    if (!M) { el.status.textContent = 'No data for this line offline.'; return; }
+    if (!M) {
+      el.status.textContent = 'Offline, and the baked timetable covers the trams only.';
+      return;
+    }
     if (M.source === 'live') {
       var age = Math.round((Date.now() - state.live[key()].at) / 1000);
       el.status.textContent = 'Live from Kentkart · updated ' +
@@ -664,6 +721,7 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
     var now = antalyaNow();
     el.clock.textContent = now.clock;
     renderLines();
+    renderRoutes();
     var M = model(now);
     renderDirs(M);
     status(M);
@@ -688,6 +746,8 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
   }
 
   el.stop.onchange = function () { state.stop = el.stop.value; state.open = null; render(); };
+  el.route.onchange = function () { pick(el.route.value); };
+  el.routefilter.oninput = renderRoutes;
   el.fav.onclick = function () {
     var id = favId(), i = state.favs.indexOf(id);
     if (i >= 0) state.favs.splice(i, 1); else state.favs.push(id);
