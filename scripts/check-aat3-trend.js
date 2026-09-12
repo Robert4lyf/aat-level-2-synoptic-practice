@@ -302,6 +302,92 @@ console.log(`${BOLD}Accuracy over time${RESET}  ${DIM}the history behind the cha
   }
 }
 
+/* ── §5 every line can be switched off, one at a time ─────────────────────
+   Six lines on a phone is more than anyone reads at once, so each legend entry
+   is the switch for its own line. The three ways this breaks are all silent:
+   a legend that renders as text again and simply stops toggling, a choice
+   keyed by colour slot so it hides whichever line inherited the slot this
+   week, and a hidden line whose column stays in the table.
+
+   THE MARKUP IS ASSERTED HERE AND THE CLICK IS ASSERTED IN THE BROWSER, in
+   check-subjects-render.js, because `closest` and `classList` are real DOM and
+   this file drives a stub. What this can prove is that the switches exist, are
+   real buttons with a state, are keyed to something stable, and that a stored
+   choice reaches the painted screen — which is the half that a stub can see
+   and the half that carries the data. */
+{
+  const D = require('./lib/aat3-driver.js');
+  const day = n => {
+    const d = new Date(); d.setDate(d.getDate() - n);
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  };
+  const hist = {}, los = {};
+  for (let d = 6; d >= 0; d--) {
+    hist[day(d)] = {};
+    for (let n = 1; n <= 5; n++) hist[day(d)][String(n)] = { a: 20, c: 13 + ((d + n) % 6) };
+  }
+  for (let n = 1; n <= 5; n++) los[String(n)] = { attempted: 140, correct: 100 + n };
+
+  /* Rendered twice: once with nothing hidden, once with a stored choice, so
+     the second can be compared against the first rather than against a guess
+     about what the screen contains. */
+  function paint(stored) {
+    const seed = { 'prep_v2_aat3': JSON.stringify({ lessons: {}, xp: 0,
+      practice: { units: { tpfb: { runs: 9, mocks: 0, mockBest: 0, los: los, qs: {}, hist: hist } } } }) };
+    if (stored) seed['prep_v2_aat3_trendoff'] = JSON.stringify(stored);
+    const keep = global.localStorage;
+    global.localStorage = D.fakeStore(seed);
+    for (const k of Object.keys(require.cache)) if (/aat3-ui\.js$/.test(k)) delete require.cache[k];
+    const M = require(path.join(ROOT, 'aat3-ui.js'));
+    M.AAT3_SYLLABUS = require(path.join(ROOT, 'aat3-syllabus.js')).SYLLABUS;
+    M.AAT3_PRACTICE = require(path.join(ROOT, 'aat3-practice-data.js')).AAT3_PRACTICE;
+    M.AAT3_LEARN_PATH = require(path.join(ROOT, 'aat3-learn-data.js')).AAT3_LEARN_PATH;
+    const el = D.fakeEl();
+    M.AAT3_UI.mount(el);
+    D.click(el, 'practice');
+    const html = el.innerHTML;
+    const i = html.indexOf('<section class="a3-tr"');
+    global.localStorage = keep;
+    return i === -1 ? '' : html.slice(i, html.indexOf('</section>', i) + 10);
+  }
+
+  const open = paint(null);
+  ok(open.length > 0, '§5 the practice screen drew no trend section to switch lines in');
+
+  const btns = open.match(/data-a3="trendseries"/g) || [];
+  ok(btns.length === 6,
+    `§5 the legend offers ${btns.length} switches, want 6 — five outcomes and the whole-unit line`);
+  ok((open.match(/<button[^>]*data-a3="trendseries"/g) || []).length === 6,
+    '§5 the legend entries are not real <button>s, so they are not reachable by keyboard');
+  ok((open.match(/aria-pressed="true"/g) || []).length === 6,
+    '§5 with nothing hidden every switch should read aria-pressed="true"');
+
+  /* KEYED BY OUTCOME NUMBER, NOT BY COLOUR SLOT. The slots are handed out by
+     how much each outcome was answered in the window, so a choice stored
+     against "slot 3" hides Outcome 4 this week and Outcome 2 the next. */
+  const keys = [...open.matchAll(/data-a3="trendseries" data-key="([^"]+)"/g)].map(m => m[1]);
+  ok(JSON.stringify(keys) === JSON.stringify(['total', '1', '2', '3', '4', '5']),
+    `§5 the switches are keyed ${JSON.stringify(keys)} — want the outcome numbers and "total", ` +
+    `never the colour slot, which is reassigned as practice moves`);
+
+  ok(open.indexOf('a3-tr-foot') === -1,
+    '§5 the explanatory footnote is back under the chart');
+
+  /* A STORED CHOICE HAS TO REACH THE PAINT, or it survives the reload and then
+     the chart draws the line anyway. */
+  const hidden = paint({ tpfb: { '3': 1, total: 1 } });
+  ok((hidden.match(/aria-pressed="false"/g) || []).length === 2,
+    '§5 a stored choice did not reach the legend on the next paint');
+  const offMarks = (hidden.match(/class="a3-tr-(line|dot) [^"]*is-off"/g) || []).length;
+  ok(offMarks > 0, '§5 a stored choice left every line drawn — the marks carry no is-off');
+  ok((hidden.match(/class="a3-tr-col is-off"/g) || []).length > 0,
+    '§5 a hidden line kept its column in the table, so the reader is half obeyed');
+  /* The choice is per unit: FAPS must not inherit TPFB's hidden outcomes. */
+  const other = paint({ faps: { '3': 1 } });
+  ok((other.match(/aria-pressed="false"/g) || []).length === 0,
+    '§5 one unit\'s hidden lines are being applied to another unit\'s chart');
+}
+
 if (errors.length) {
   console.log(`${RED}${BOLD}── FAILURES (${errors.length}) ──${RESET}`);
   errors.forEach(e => console.log(`  ${RED}✗${RESET} ${e}`));

@@ -2328,14 +2328,50 @@ body[data-subject="aat3"] .a3-eg-key { text-align: right; font-variant-numeric: 
    reads as one dot rather than as a smudge. */
 .a3-tr-dot { fill: var(--s); stroke: var(--a3-surface); stroke-width: 1.5; }
 
-.a3-tr-key { display: flex; flex-wrap: wrap; gap: 3px var(--a3-3); list-style: none;
+/* The plot and its empty state share a box, so the note lands where the chart
+   was rather than shifting the legend up when the last line goes off. */
+.a3-tr-plot { position: relative; }
+.a3-tr-plot.is-empty .a3-tr-svg { opacity: .25; }
+.a3-tr-none { display: none; }
+.a3-tr-plot.is-empty .a3-tr-none {
+  display: block; position: absolute; inset: 0; margin: 0;
+  align-content: center; text-align: center;
+  font-size: 12px; color: var(--a3-ink-2);
+}
+
+/* A HIDDEN MARK IS GONE, NOT FADED. `display: none` on an SVG child removes it
+   from the drawing entirely; anything short of that leaves a ghost for the eye
+   to follow, which is the opposite of what the reader asked for. */
+.a3-tr-line.is-off, .a3-tr-dot.is-off, .a3-tr-col.is-off { display: none; }
+
+.a3-tr-key { display: flex; flex-wrap: wrap; gap: 3px var(--a3-2); list-style: none;
   margin: var(--a3-3) 0 0; padding: 0; }
-/* Legend text wears an ink token, never the series colour — the swatch beside
+/* EVERY LEGEND ENTRY IS THE SWITCH FOR ITS OWN LINE. It is a real <button>, so
+   it is reachable by keyboard and announced as a toggle; the styling is what
+   makes it not look like a form control sitting under a chart.
+
+   Legend text wears an ink token, never the series colour — the swatch beside
    it is what carries identity. */
 .a3-tr-keyitem { display: inline-flex; align-items: center; gap: 5px;
-  font-size: 11.5px; color: var(--a3-ink-2); }
+  font-size: 11.5px; color: var(--a3-ink-2);
+  background: none; border: 0; border-radius: var(--a3-r-sm);
+  padding: 4px 6px; margin: 0; font-family: inherit; line-height: 1.2;
+  cursor: pointer; -webkit-tap-highlight-color: transparent; }
+button.a3-tr-keyitem:hover { background: var(--a3-surface-2); color: var(--a3-ink); }
+button.a3-tr-keyitem:focus-visible { outline: 2px solid var(--a3-brand); outline-offset: 1px; }
+/* OFF IS NOT COLOUR ALONE EITHER: the label is struck through and dimmed, so
+   the state survives a greyscale screen and a reader who cannot tell the
+   swatch's colour from its neighbour's. The swatch keeps its hue, because the
+   entry still has to say which line it turns back on. */
+button.a3-tr-keyitem[aria-pressed="false"] { color: var(--a3-ink-3); }
+button.a3-tr-keyitem[aria-pressed="false"] .a3-tr-keytx { text-decoration: line-through; }
+button.a3-tr-keyitem[aria-pressed="false"] .a3-tr-sw { opacity: .4; }
+/* Carried in the table and the unit total, but never drawn — no toggle to
+   offer, so it is text rather than a button. */
+.a3-tr-keyitem.is-unplotted { color: var(--a3-ink-3); cursor: default; }
 .a3-tr-sw { width: 13px; height: 3px; border-radius: 2px; flex: none; background: var(--s); }
 .a3-tr-sw.a3-tr-total { height: 4px; }
+.a3-tr-sw-none { background: none; border-top: 3px dotted var(--a3-ink-3); border-radius: 0; }
 
 .a3-tr-tbl { margin-top: var(--a3-3); }
 .a3-tr-tbl > summary { font-size: 11.5px; color: var(--a3-ink-3); cursor: pointer; }
@@ -2343,8 +2379,6 @@ body[data-subject="aat3"] .a3-eg-key { text-align: right; font-variant-numeric: 
 /* Wide content scrolls inside its own box rather than pushing the page. */
 .a3-tr-tblwrap { overflow-x: auto; margin-top: var(--a3-2); }
 .a3-tr-n { color: var(--a3-ink-3); }
-.a3-tr-foot { margin: var(--a3-3) 0 0; font-size: 11.5px;
-  color: var(--a3-ink-3); line-height: 1.5; }
 
 /* Dark mode is stepped, not flipped: these are the palette's own dark steps,
    validated against --a3-surface #10152A, where all five clear 3:1 unaided. */

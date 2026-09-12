@@ -514,6 +514,37 @@
   function clearPos() {
     try { localStorage.removeItem(POS_KEY); } catch (e) {}
   }
+  /* ── Which trend lines the reader wants to see ────────────────────────────
+     Six lines on a phone is more than anyone reads at once, so every legend
+     entry is a toggle and the choice is remembered.
+
+     ITS OWN KEY, OUTSIDE THE PROGRESS RECORD, for the same reason the reading
+     position has one: this is a view preference, device-local, and merging one
+     device's "Outcome 4 hidden" with another's answers a question nobody
+     asked. Losing it costs a reader one tap.
+
+     KEYED BY OUTCOME NUMBER, NEVER BY COLOUR SLOT. The five slots are handed
+     out by how much each outcome has been answered in the window, so slot 3 is
+     Outcome 4 today and Outcome 2 next week. Storing the slot would hide
+     whichever line happened to inherit it, which is the kind of bug that looks
+     like the toggle is broken rather than mis-keyed. */
+  var TREND_KEY = STORE_KEY + '_trendoff';
+  function trendOff() {
+    var all;
+    try { all = JSON.parse(localStorage.getItem(TREND_KEY) || '{}'); } catch (e) { all = {}; }
+    var mine = all && all[activeUnit()];
+    return (mine && typeof mine === 'object') ? mine : {};
+  }
+  function setTrendOff(key, off) {
+    var all;
+    try { all = JSON.parse(localStorage.getItem(TREND_KEY) || '{}'); } catch (e) { all = {}; }
+    if (!all || typeof all !== 'object') all = {};
+    var u = activeUnit();
+    if (!all[u] || typeof all[u] !== 'object') all[u] = {};
+    if (off) all[u][key] = 1; else delete all[u][key];
+    try { localStorage.setItem(TREND_KEY, JSON.stringify(all)); } catch (e) {}
+  }
+
   /* What the hero card should open: the lesson the reader was inside, at the
      card they left — provided it belongs to the unit on screen — and only then
      the first lesson not yet passed. */
@@ -3028,38 +3059,86 @@
       '<text class="a3-tr-xlab a3-tr-xlab-s" x="' + PAD_L + '" y="' + (CHART_H - 6) + '">' + shortDay(trend.from) + '</text>' +
       '<text class="a3-tr-xlab a3-tr-xlab-e" x="' + (CHART_W - PAD_R) + '" y="' + (CHART_H - 6) + '">' + shortDay(trend.to) + '</text>';
 
+    /* THE SCALE DOES NOT MOVE WHEN A LINE IS HIDDEN. Hiding is a view
+       preference, and a y-axis that rescaled on every toggle would make two
+       readings of the same day disagree depending on what happened to be
+       switched on. The gridlines and the pass mark stay where they are, and
+       hiding is exactly what it says: this line is not drawn. */
+    var off = trendOff(), shown = 0;
+    function offCls(key) { return off[key] ? ' is-off' : ''; }
+
     trend.series.forEach(function (s) {
       if (s.slot === null || s.points.length < 2) return;
-      var cls = SERIES_CLASS[s.slot];
-      lines.push('<polyline class="a3-tr-line ' + cls + '" points="' + trendPath(g, s.points) + '"/>');
+      var cls = SERIES_CLASS[s.slot], oc = offCls(String(s.n));
+      if (!oc) shown++;
+      lines.push('<polyline class="a3-tr-line ' + cls + oc + '" points="' + trendPath(g, s.points) + '"/>');
       if (s.points.length <= MAX_DOTS) {
         s.points.forEach(function (p) {
-          dots.push('<circle class="a3-tr-dot ' + cls + '" cx="' + g.x(p.ms) + '" cy="' + g.y(p.pct) + '" r="3"/>');
+          dots.push('<circle class="a3-tr-dot ' + cls + oc + '" cx="' + g.x(p.ms) + '" cy="' + g.y(p.pct) + '" r="3"/>');
         });
       }
     });
     /* The unit total is not a sixth outcome, so it does not take a sixth hue.
        It is the aggregate of the other five, drawn heavier, in ink, and last
        so it sits on top of them. */
-    lines.push('<polyline class="a3-tr-line a3-tr-total" points="' + trendPath(g, trend.total) + '"/>');
+    var totOff = offCls('total');
+    if (!totOff) shown++;
+    lines.push('<polyline class="a3-tr-line a3-tr-total' + totOff + '" points="' + trendPath(g, trend.total) + '"/>');
     if (trend.total.length <= MAX_DOTS) {
       trend.total.forEach(function (p) {
-        dots.push('<circle class="a3-tr-dot a3-tr-total" cx="' + g.x(p.ms) + '" cy="' + g.y(p.pct) + '" r="3.4"/>');
+        dots.push('<circle class="a3-tr-dot a3-tr-total' + totOff + '" cx="' + g.x(p.ms) + '" cy="' + g.y(p.pct) + '" r="3.4"/>');
       });
     }
 
+    h += '<div class="a3-tr-plot' + (shown ? '' : ' is-empty') + '">';
     h += '<svg class="a3-tr-svg" viewBox="0 0 ' + CHART_W + ' ' + CHART_H + '" role="img" ' +
       'aria-label="Accuracy per day of practice, ' + esc(shortDay(trend.from)) + ' to ' +
       esc(shortDay(trend.to)) + ', by outcome and for the unit as a whole. The figures are in the table below.">' +
       grid + labels + lines.join('') + dots.join('') + '</svg>';
+    /* EVERY LINE CAN BE HIDDEN, including the last one — a toggle that refuses
+       the sixth press is a toggle that has to explain itself. What an empty
+       chart needs is a way back, and the legend below is still sitting there
+       with every entry switched off, which is both the explanation and the
+       control. */
+    h += '<p class="a3-tr-none">Every line is switched off. Turn one back on below.</p>';
+    h += '</div>';
 
-    /* A legend, because identity must never be colour alone. */
+    /* A legend, because identity must never be colour alone — and every entry
+       in it is the switch for its own line. Six lines at once is more than a
+       phone screen reads, and the reader is the only one who knows which two
+       they are comparing today.
+
+       A BUTTON WITH aria-pressed, not a checkbox: the thing being toggled is
+       whether a line is drawn, not a value being submitted, and `aria-pressed`
+       is what tells a screen reader the state it is in rather than leaving the
+       name to carry it. The swatch keeps its colour when the line is off, so
+       the entry still says which line it turns back on. */
+    function keyBtn(key, cls, label) {
+      var isOff = !!off[key];
+      return '<li><button type="button" class="a3-tr-keyitem" data-a3="trendseries"' +
+        ' data-key="' + esc(key) + '" data-cls="' + esc(cls) + '"' +
+        ' aria-pressed="' + (isOff ? 'false' : 'true') + '">' +
+        '<span class="a3-tr-sw ' + cls + '"></span>' +
+        '<span class="a3-tr-keytx">' + label + '</span></button></li>';
+    }
     h += '<ul class="a3-tr-key">';
-    h += '<li class="a3-tr-keyitem"><span class="a3-tr-sw a3-tr-total"></span>Whole unit</li>';
+    h += keyBtn('total', 'a3-tr-total', 'Whole unit');
     trend.series.forEach(function (s) {
       if (s.slot === null || s.points.length < 2) return;
-      h += '<li class="a3-tr-keyitem"><span class="a3-tr-sw ' + SERIES_CLASS[s.slot] + '"></span>' +
-        'Outcome ' + esc(s.n) + '</li>';
+      h += keyBtn(String(s.n), SERIES_CLASS[s.slot], 'Outcome ' + esc(s.n));
+    });
+    /* THE OUTCOMES THAT GET NO COLOUR ARE NAMED HERE RATHER THAN EXPLAINED
+       UNDERNEATH. There are five hues and FAPS has nine outcomes, so some are
+       carried in the table and in the unit total but never drawn. That used to
+       be a sentence in a footnote below the chart; it is better attached to
+       the legend, where a reader looking for Outcome 7 actually looks, and it
+       only appears on the units where it is true. */
+    trend.series.forEach(function (s) {
+      if (s.slot !== null || s.points.length < 2) return;
+      h += '<li><span class="a3-tr-keyitem is-unplotted" title="Five outcomes are drawn at a time — ' +
+        'the ones you have answered most. This one is in the table and in the whole-unit line.">' +
+        '<span class="a3-tr-sw a3-tr-sw-none"></span>' +
+        '<span class="a3-tr-keytx">Outcome ' + esc(s.n) + ' \u2014 not drawn</span></span></li>';
     });
     h += '</ul>';
 
@@ -3067,34 +3146,27 @@
        and the fastest way for anybody to read an exact figure off a day. */
     h += '<details class="a3-tr-tbl"><summary>Show these figures as a table</summary>' +
       '<div class="a3-tr-tblwrap"><table class="a3-table"><thead><tr><th scope="col">Day</th>' +
-      '<th scope="col">Whole unit</th>';
+      '<th scope="col" class="a3-tr-col' + totOff + '" data-key="total">Whole unit</th>';
     trend.series.forEach(function (s) {
       if (s.slot === null || s.points.length < 2) return;
-      h += '<th scope="col">O' + esc(s.n) + '</th>';
+      h += '<th scope="col" class="a3-tr-col' + offCls(String(s.n)) + '" data-key="' + esc(s.n) + '">O' + esc(s.n) + '</th>';
     });
     h += '</tr></thead><tbody>';
     trend.total.forEach(function (p) {
       h += '<tr><th scope="row">' + shortDay(p.day) + '</th>' +
-        '<td>' + p.pct + '% <span class="a3-tr-n">(' + p.c + '/' + p.a + ')</span></td>';
+        '<td class="a3-tr-col' + totOff + '" data-key="total">' + p.pct +
+        '% <span class="a3-tr-n">(' + p.c + '/' + p.a + ')</span></td>';
       trend.series.forEach(function (s) {
         if (s.slot === null || s.points.length < 2) return;
         var hit = null;
         s.points.forEach(function (q) { if (q.day === p.day) hit = q; });
-        h += '<td>' + (hit ? hit.pct + '% <span class="a3-tr-n">(' + hit.c + '/' + hit.a + ')</span>' : '—') + '</td>';
+        h += '<td class="a3-tr-col' + offCls(String(s.n)) + '" data-key="' + esc(s.n) + '">' +
+          (hit ? hit.pct + '% <span class="a3-tr-n">(' + hit.c + '/' + hit.a + ')</span>' : '—') + '</td>';
       });
       h += '</tr>';
     });
     h += '</tbody></table></div></details>';
 
-    h += '<p class="a3-tr-foot">One point per day you practised. An outcome is only plotted for a ' +
-      'day it got at least ' + MIN_POINT + ' answers, because a handful of questions reads as a ' +
-      'wild swing rather than as a change in how well you know it. Those answers still count in ' +
-      'the whole-unit line and in every figure above.' +
-      (trend.hiddenOutcomes
-        ? ' Five outcomes are plotted at a time, so the ' + trend.hiddenOutcomes + ' you have ' +
-          'answered least in ' + (trend.hiddenOutcomes === 1 ? 'is' : 'are') + ' left off — reusing ' +
-          'a colour would make two lines impossible to tell apart.'
-        : '') + '</p>';
     return h + '</section>';
   }
 
@@ -4946,6 +5018,39 @@
        Calc patches its own two nodes instead — see _refresh() — so this branch
        returns without asking for a repaint, and must stay above the ones that
        do. */
+    /* HIDING A TREND LINE DOES NOT REPAINT THE SCREEN, for the same reason the
+       keypad above does not: rerender() rebuilds the whole practice summary,
+       and a reader who has scrolled down to the chart would be thrown back to
+       the top of it on every tap — on a control whose entire purpose is to be
+       tapped several times in a row while comparing lines. So this patches its
+       own nodes and returns above every branch that repaints.
+
+       The marks and the table column carry the same `is-off` class, because
+       hiding a line and leaving its column in the table says the reader asked
+       to stop looking at something and was half obeyed. */
+    if (act === 'trendseries') {
+      var tsKey = n.getAttribute('data-key') || '';
+      var tsCls = n.getAttribute('data-cls') || '';
+      var sec = n.closest && n.closest('.a3-tr');
+      if (!sec || !tsKey) return;
+      var nowOff = n.getAttribute('aria-pressed') !== 'false';
+      n.setAttribute('aria-pressed', nowOff ? 'false' : 'true');
+      setTrendOff(tsKey, nowOff);
+      sec.querySelectorAll('.a3-tr-line.' + tsCls + ', .a3-tr-dot.' + tsCls).forEach(function (m) {
+        m.classList.toggle('is-off', nowOff);
+      });
+      sec.querySelectorAll('.a3-tr-col[data-key="' + tsKey + '"]').forEach(function (c) {
+        c.classList.toggle('is-off', nowOff);
+      });
+      /* An empty chart needs to say so, or it reads as a chart that broke. */
+      var plot = sec.querySelector('.a3-tr-plot');
+      if (plot) {
+        var live = sec.querySelectorAll('.a3-tr-line:not(.is-off)').length;
+        plot.classList.toggle('is-empty', live === 0);
+      }
+      return;
+    }
+
     /* Turning sound OFF must not make a sound, and turning it on should — which
        is why this sits above the navigation click rather than in its list. */
     if (act === 'soundtoggle') {
