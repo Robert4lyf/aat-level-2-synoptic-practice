@@ -1,0 +1,78 @@
+# Antalya tram board — T1A
+
+A one-page departure board for T1A, Fatih to the airport. Open
+`antalya-tram.html`, pick a direction and a stop, and it counts down the next
+six trams. Tap a departure to see when that tram reaches every stop further
+down the line. Below the board, a map of the line puts every tram where the
+timetable says it should be.
+
+ONE LINE ON PURPOSE. T1B, T2 and T3 are in the same feed and are deliberately
+not carried; rebuild them by widening the route filter in step 1 below.
+
+ONE FILE, ON PURPOSE. Markup, styles, timetable and logic are all in
+`antalya-tram.html` — no build, no imports, no network calls at runtime, no
+service worker. Open it from anywhere: a phone's downloads, a memory stick, any
+static host. It works with no signal, and the timetable is frozen at the moment
+it was captured.
+
+IT IS NOT PART OF THIS SITE. `.assetsignore` keeps it out of the deploy, so it
+never reaches the password gate — which is the point, since a tram board you
+have to log in to is no use standing on a platform. Its inline scripts would
+also be refused by the site's `script-src 'self'` policy, and relaxing that
+policy to host a tram timetable would be the wrong trade.
+
+## What it is not
+
+It is not live tracking. Antalya publishes no public real-time feed for the
+trams — the Kentkart API behind the AntalyaKart app exposes route and stop
+lists but no vehicle positions, and `antray.antalyaulasim.com.tr` is not a
+documented API. So a tram running ten minutes late still shows at its booked
+time here.
+
+## Where the timetable comes from
+
+The GTFS feed published by Otobus Tramvay (`agency_url` is
+antalyaulasim.com.tr), as mirrored by [transitous.org](https://transitous.org),
+whose feed list points at a Dropbox-hosted `antalya.zip`. That is the newest
+public copy there is, and it is not new: `stop_times.txt` is dated September
+2023 and `routes.txt` September 2024. Its `calendar.txt` runs to 2030, so
+nothing anywhere marks it stale — this paragraph is the only thing that does.
+
+To rebuild the timetable, download that zip and flatten it:
+
+1. `trips.txt` — keep `route_id` T1A (or whichever lines you want); note
+   `service_id` and `direction_id`.
+2. `stop_times.txt` — group by `trip_id`, order by `stop_sequence`, and write
+   each trip as `[departure minute, then minutes after departure at each stop]`
+   into the `window.TRAM` object at the top of `antalya-tram.html`.
+3. `stops.txt` — name and coordinates for each stop id.
+
+THE FEED'S CALENDARS DISAGREE WITH THEMSELVES, and taking them literally is a
+bug I shipped once. There are three: `H`, `C` and `P`. `C` departs at exactly
+the same minutes as `H` and `P` at different ones — plainly weekday, Saturday
+and Sunday — but all three are marked `1` for all seven days, so read literally
+they put the weekday and the Sunday timetable on the road simultaneously. The
+first cut of this page did that and offered Sunday trams that do not run: 99
+departures a day against the real 61. Each day now takes the one calendar meant
+for it: 63 weekday departures, 63 Saturday, 61 Sunday.
+
+Stop names keep the feed's trailing `1`/`2`, which marks the two sides of the
+track; the page strips it, because the sign on the street does not have it.
+
+## No live feed exists, and here is where I looked
+
+- **Kentkart** (`service.kentkart.com/rl1/api`, Antalya is region `026`) is the
+  service behind the AntalyaKart app. `route/list` and `trip/search` answer
+  unauthenticated; roughly 400 probed paths and parameter names turned up no
+  vehicle-position endpoint. The app has live buses, so the data exists — it is
+  just not exposed.
+- **transitous.org** carries no GTFS-Realtime for any Turkish feed.
+- **antray.antalyaulasim.com.tr** refuses connections from outside Turkey, so
+  it had to be checked from a Turkish one: it is a journey-time lookup — line,
+  boarding stop, alighting stop, day — over the same scheduled data, with no
+  vehicle positions anywhere on it.
+- **acikveri.antalya.bel.tr** (the city's open data portal) resolves in DNS and
+  serves nothing. It hangs on load from a Turkish connection too, so it is down
+  rather than merely blocked.
+- **Moovit** shows Antalya trams and advertises live arrivals, but has no
+  public API.
