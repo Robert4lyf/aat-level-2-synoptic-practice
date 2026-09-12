@@ -91,6 +91,22 @@ which is `departure_offset` differences. A **timed** row is that line's current
 timetable. A timed tram within three minutes of a live one is taken to be the
 same tram rather than a second one.
 
+A live row needs a tracked vehicle *behind* your stop, which at the end of a
+line is impossible and on a three-tram line is often just untrue. So when
+nothing on your side of the line is tracked, the note above the board gives
+the nearest vehicle that can still reach you — the one coming the other way,
+its run time to the far end plus the booked run out to your stop, if it turns
+straight round. It says so in those words: at a mid-route stop the timetable
+below is usually sooner, and reading that note as "the next tram" would be
+worse than showing nothing.
+
+STOP NAMES END IN DIGITS THAT MATTER. The two tram platforms are `FATİH1` and
+`FATİH2`, and showing both as `FATİH` reads better — but `CEBESOY CD-11`,
+`CEBESOY CD-12` and `100 YIL BLV-1` are bus stops whose names simply end in a
+number. Stripping a trailing 1 or 2 unconditionally turned CD-11 and CD-12 into
+two stops both called `CD-1`. The rule is now: strip it only where a letter
+comes immediately before it.
+
 Vehicles move visibly in well under a minute — one T3 tram moved 310 m in the
 46 seconds between two polls — so the page refreshes every 20 seconds, and on
 returning to the tab.

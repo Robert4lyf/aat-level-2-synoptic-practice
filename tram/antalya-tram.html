@@ -149,8 +149,8 @@
   lines and 213 bus routes, all from the same feed. Kentkart's passenger API
   reports the vehicles' own GPS, and a <em>live</em> row is a tram the feed can actually see, its
   arrival worked out from the stop it last called at — which only works once it is
-  on the road behind you, so at the end of a line the note above the board tells
-  you what is coming in to turn round instead. A <em>timed</em> row is the
+  on the road behind you — so when nothing is on your side of the line, the note
+  above the board says what is coming the other way and how far off it is. A <em>timed</em> row is the
   timetable — the current one, fetched with the positions. With no signal the page
   falls back to a timetable baked in from a 2023 export and says so above — that
   export covers the trams only, so a bus with no signal has nothing to show.</p>
@@ -263,20 +263,32 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
     };
   }
 
+  /* Round to the whole minute BEFORE splitting it up. Rounding the remainder
+     instead turns 11:59.7 into "11:60". */
   function hhmm(min) {
-    var m = ((min % 1440) + 1440) % 1440;
-    var h = Math.floor(m / 60), n = Math.round(m % 60);
+    var m = ((Math.round(min) % 1440) + 1440) % 1440;
+    var h = Math.floor(m / 60), n = m % 60;
     return (h < 10 ? '0' : '') + h + ':' + (n < 10 ? '0' : '') + n;
   }
 
   function countdown(mins) {
     if (mins < 0.5) return 'now';
-    if (mins < 60) return 'in ' + Math.round(mins) + ' min';
-    var h = Math.floor(mins / 60), m = Math.round(mins % 60);
+    var t = Math.round(mins);
+    if (t < 60) return 'in ' + t + ' min';
+    var h = Math.floor(t / 60), m = t % 60;
     return 'in ' + h + ' h ' + (m < 10 ? '0' : '') + m;
   }
 
-  function stopName(n) { return String(n).replace(/\s*[12]$/, ''); }
+  /* The tram platforms are named FATİH1 / FATİH2 — one digit welded onto the
+     end of the name — and showing both as FATİH reads better. But plenty of
+     bus stops END in a number that is part of the name: CEBESOY CD-11,
+     100 YIL BLV-1, 1542 SK-2. Stripping those made CD-11 and CD-12 into two
+     stops both called CD-1. So strip a trailing 1 or 2 only where a letter
+     comes immediately before it, which is the platform case and nothing else. */
+  var PLATFORM;
+  try { PLATFORM = new RegExp('(\\p{L})[12]$', 'u'); }
+  catch (e) { PLATFORM = /([A-Za-zÂÇĞİIÎÖŞÜÛâçğıîöşüû])[12]$/; }
+  function stopName(n) { return String(n).replace(PLATFORM, '$1'); }
   function key() { return state.code + '|' + state.dir; }
 
   /* ---- the live feed --------------------------------------------------- */
@@ -317,6 +329,7 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
      the weekday service, mtwtfSs the Saturday one. */
   function todaysTimes(path, day) {
     var list = path.scheduleList || [], i, d;
+    if (!(day >= 0 && day < 7)) day = 0;
     for (i = 0; i < list.length; i++) {
       d = list[i].description || '';
       if (d.length === 7 && d[day] === d[day].toUpperCase() && d[day] !== d[day].toLowerCase()) {
@@ -336,6 +349,9 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
   /* Both shapes answer the same four questions: which stops, where the track
      runs, when the trams are booked to leave my stop, and where the trams
      are. Everything below this line stops caring which source it got. */
+  function ok(n) { return typeof n === 'number' && isFinite(n); }
+  function onEarth(p) { return ok(p.lat) && ok(p.lng) && p.lat !== 0 && p.lng !== 0; }
+
   function model(now) {
     var live = state.live[key()];
     if (live) {
@@ -356,16 +372,18 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
         stops: stops,
         points: (p.pointList || []).map(function (q) {
           return { lat: parseFloat(q.lat), lng: parseFloat(q.lng) };
-        }),
+        }).filter(onEarth),
         departures: function (i) {
           return times.map(function (t) { return t + stops[i].off; });
         },
+        /* One vehicle with a broken position used to take the whole map with
+           it: NaN in, NaN out of the projector, nothing drawn at all. */
         buses: (p.busList || []).map(function (b) {
           return {
             lat: parseFloat(b.lat), lng: parseFloat(b.lng),
             seq: byId[b.stopId], plate: b.plateNumber
           };
-        }),
+        }).filter(onEarth),
         times: times
       };
     }
@@ -389,6 +407,10 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
       departures: function (i) {
         return trips.map(function (t) { return t[0] + t[i + 1]; });
       },
+      /* Each trip carries its own run times, and they differ — the late-night
+         run is quicker than the morning peak. Without these the offline call
+         list showed every stop at the departure time. */
+      offsets: trips.map(function (t) { return t.slice(1); }),
       buses: []
     };
   }
@@ -412,34 +434,37 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
       stops: stops,
       points: (p.pointList || []).map(function (q) {
         return { lat: parseFloat(q.lat), lng: parseFloat(q.lng) };
-      }),
+      }).filter(onEarth),
       buses: (p.busList || []).map(function (b) {
         return {
           lat: parseFloat(b.lat), lng: parseFloat(b.lng),
           seq: byId[b.stopId], plate: b.plateNumber
         };
-      })
+      }).filter(onEarth)
     };
   }
 
-  /* AT THE END OF A LINE NOTHING CAN BE BEHIND YOU. The tram that will take
-     you out of Fatih is the one still coming in on the other track, so at the
-     first stop the live answer is about arrivals: how far off the inbound
-     trams are, and which will turn round. */
-  function inbound(M, idx, now) {
-    if (idx !== 0) return [];
+  /* NOTHING CAN BE BEHIND YOU AT THE END OF A LINE, and on a line with three
+     trams there is often nothing behind you anywhere. The tram that will take
+     you out of Fatih is the one still coming in on the other track, so when
+     the board has nothing tracked the live answer is about the return leg:
+     how long until an inbound tram reaches the far end, plus the booked run
+     from there out to your stop. It assumes it turns straight round, which is
+     why it is worded as an estimate and not put on the board as a live row. */
+  function inbound(M, idx) {
     var back = otherWay();
     if (!back || !back.stops.length) return [];
-    /* The inbound run ends at the same station you are standing in, on the
-       other platform, so its last offset is the whole journey time. */
+    /* The inbound run ends at the station your direction starts from, so its
+       last offset is that whole journey. */
     var end = back.stops[back.stops.length - 1];
     if (!end) return [];
+    var toMe = M.stops[idx] ? M.stops[idx].off : 0;
     var out = [];
     back.buses.forEach(function (b) {
-      if (b.seq === undefined || b.seq === null) return;
+      if (b.seq === undefined || b.seq === null || !back.stops[b.seq]) return;
       var wait = end.off - back.stops[b.seq].off;
       if (wait < 0) return;
-      out.push({ wait: wait, from: back.stops[b.seq].name });
+      out.push({ wait: wait + toMe, turn: wait, from: back.stops[b.seq].name });
     });
     return out.sort(function (a, b) { return a.wait - b.wait; });
   }
@@ -459,17 +484,24 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
 
   function board(M, idx, now) {
     var rows = liveRows(M, idx, now);
+    var live = rows.length;
+    var from = now.minutes - 1;
     var sched = [];
     [0, 1440, -1440].forEach(function (shift) {
-      M.departures(idx).forEach(function (t) {
+      M.departures(idx).forEach(function (t, j) {
         var at = t - shift;
-        if (at >= now.minutes - 1 && at < now.minutes + 24 * 60) sched.push({ at: at, live: false });
+        /* Exactly one day wide. A wider window listed the same departure
+           twice, once as today's and once as tomorrow's. */
+        if (at >= from && at < from + 1440) sched.push({ at: at, live: false, trip: j });
       });
     });
     sched.sort(function (a, b) { return a.at - b.at; });
-    /* A booked tram within three minutes of a tracked one is that tram. */
+    /* A booked tram within three minutes of a TRACKED one is that tram. Only
+       the live rows may swallow a scheduled one: comparing against the
+       scheduled rows already kept would have thrown away every headway under
+       three minutes, which on the busy bus routes is most of them. */
     sched.forEach(function (s) {
-      for (var i = 0; i < rows.length; i++) if (Math.abs(rows[i].at - s.at) <= 3) return;
+      for (var i = 0; i < live; i++) if (Math.abs(rows[i].at - s.at) <= 3) return;
       rows.push(s);
     });
     return rows.sort(function (a, b) { return a.at - b.at; }).slice(0, 6);
@@ -484,14 +516,25 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
 
   function colour(code) { return COLOUR[code] || BUS_COLOUR; }
 
+  /* The page re-renders every 20 seconds. Rebuilding the pickers each time
+     shut the dropdown on a phone mid-scroll and dropped focus, so each one is
+     rebuilt only when what it contains has actually changed. */
+  var drawn = {};
+  function changed(what, sig) {
+    if (drawn[what] === sig) return false;
+    drawn[what] = sig;
+    return true;
+  }
+
   function pick(code) {
-    state.code = code; state.dir = '0'; state.stop = null;
+    state.code = code; state.dir = '0'; state.stop = null; state.open = null;
     load(); render();
   }
 
   /* The rails get chips because they are the six you actually choose between;
      the other 213 routes are buses, and a chip each would be a wall. */
   function renderLines() {
+    if (!changed('lines', state.code)) return;
     el.lines.innerHTML = '';
     RAIL.forEach(function (r) {
       var b = document.createElement('button');
@@ -507,6 +550,7 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
 
   function renderRoutes() {
     var q = (el.routefilter.value || '').toLocaleLowerCase('tr');
+    if (!changed('routes', q + '|' + state.code)) return;
     var shown = ROUTES.filter(function (r) {
       return !q || (r[0] + ' ' + r[1]).toLocaleLowerCase('tr').indexOf(q) >= 0;
     });
@@ -530,6 +574,11 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
   }
 
   function renderDirs(M) {
+    var sig = ['0', '1'].map(function (d) {
+      var c = state.live[state.code + '|' + d];
+      return c ? c.path.headSign : '';
+    }).join('~') + '|' + state.code + '|' + state.dir + '|' + (M ? M.head : '');
+    if (!changed('dirs', sig)) return;
     el.dirs.innerHTML = '';
     ['0', '1'].forEach(function (d) {
       var b = document.createElement('button');
@@ -539,7 +588,9 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
       var label = cached ? cached.path.headSign
         : (d === state.dir && M ? M.head : (d === '0' ? 'one way' : 'the other way'));
       b.textContent = state.code + ' · ' + label;
-      b.onclick = function () { state.dir = d; state.stop = null; load(); render(); };
+      b.onclick = function () {
+        state.dir = d; state.stop = null; state.open = null; load(); render();
+      };
       el.dirs.appendChild(b);
     });
   }
@@ -547,6 +598,11 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
   function renderStops(M) {
     var ids = M.stops.map(function (s) { return s.id; });
     if (ids.indexOf(state.stop) < 0) state.stop = ids[0];
+    el.fav.textContent = isFav() ? '★' : '☆';
+    if (!changed('stops', ids.join(','))) {
+      if (el.stop.value !== String(state.stop)) el.stop.value = state.stop;
+      return;
+    }
     el.stop.innerHTML = '';
     M.stops.forEach(function (s, i) {
       var o = document.createElement('option');
@@ -555,14 +611,19 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
       if (s.id === state.stop) o.selected = true;
       el.stop.appendChild(o);
     });
-    el.fav.textContent = isFav() ? '★' : '☆';
+  }
+
+  /* Rows leave the board as their trams go, so the open row cannot be "the
+     third one" — twenty seconds later that is a different departure. */
+  function rowId(r) {
+    return (r.live ? 'L' + r.seq + '@' : 'T@') + Math.round(r.at);
   }
 
   function renderBoard(M, now) {
     var idx = M.stops.map(function (s) { return s.id; }).indexOf(state.stop);
     if (idx < 0) idx = 0;
     var rows = board(M, idx, now);
-    renderInbound(M, idx, now, rows);
+    renderInbound(M, idx, rows);
     el.board.innerHTML = '';
     if (!rows.length) {
       var p = document.createElement('li');
@@ -571,7 +632,7 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
       el.board.appendChild(p);
       return;
     }
-    rows.forEach(function (r, i) {
+    rows.forEach(function (r) {
       var wait = r.at - now.minutes;
       var li = document.createElement('li');
       if (wait < 5) li.className = 'soon';
@@ -598,35 +659,55 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
       when.querySelector('span').textContent = hhmm(r.at);
 
       row.appendChild(badge); row.appendChild(to); row.appendChild(when);
-      row.onclick = function () { state.open = state.open === i ? null : i; render(); };
+      row.onclick = function () { state.open = state.open === rowId(r) ? null : rowId(r); render(); };
       li.appendChild(row);
-      if (state.open === i) li.appendChild(calls(M, idx, r));
+      if (state.open === rowId(r)) li.appendChild(calls(M, idx, r));
       el.board.appendChild(li);
     });
   }
 
-  function renderInbound(M, idx, now, rows) {
-    if (M.source !== 'live' || idx !== 0) { el.inbound.hidden = true; return; }
-    var arr = inbound(M, idx, now);
+  function renderInbound(M, idx, rows) {
+    /* Once something on your side of the line is tracked, the board itself is
+       the live answer and the note would only repeat it. */
+    var tracked = rows.some(function (r) { return r.live; });
+    if (M.source !== 'live' || tracked) { el.inbound.hidden = true; return; }
+    var arr = inbound(M, idx);
     el.inbound.hidden = false;
     if (!arr.length) {
-      el.inbound.textContent = 'Nothing tracked coming into this end yet, so the ' +
-        'times below are the timetable. A tram can only show as live once it is ' +
-        'on the road behind you.';
+      el.inbound.textContent = 'Nothing tracked on either side of the line from ' +
+        'here, so the times below are the timetable.';
       return;
     }
     var first = arr[0];
+    var end = M.stops[0] ? M.stops[0].name : 'the far end';
     el.inbound.innerHTML = '';
-    el.inbound.appendChild(document.createTextNode('Coming into this end: '));
-    var b = document.createElement('b');
-    b.textContent = first.wait < 1 ? 'one is here now' :
-      'one is ' + Math.round(first.wait) + ' min away';
-    el.inbound.appendChild(b);
+    if (idx === 0) {
+      el.inbound.appendChild(document.createTextNode('Coming into this end: '));
+      var b = document.createElement('b');
+      b.textContent = first.wait < 1 ? 'one is here now' :
+        'one is about ' + Math.round(first.wait) + ' min away';
+      el.inbound.appendChild(b);
+      el.inbound.appendChild(document.createTextNode(
+        ' (tracked from ' + first.from + ')' +
+        (arr.length > 1 ? ', and ' + (arr.length - 1) + ' more behind it' : '') +
+        '. One of those turns round and becomes your departure, so the times ' +
+        'below are the timetable until a tram is on your side of the line.'));
+      return;
+    }
+    /* Say plainly that this one is NOT the next departure — it is the nearest
+       tram that can still reach you, and the timetable below is very likely
+       quicker. Reading it as "34 minutes until a tram" would be worse than
+       showing nothing. */
     el.inbound.appendChild(document.createTextNode(
-      ' (tracked from ' + first.from + ')' +
-      (arr.length > 1 ? ', and ' + (arr.length - 1) + ' more behind it' : '') +
-      '. One of those turns round and becomes your departure, so the times below ' +
-      'are the timetable until a tram is on your side of the line.'));
+      'Nothing tracked between here and the start of the line. The nearest one ' +
+      'that can still reach you is coming the other way: '));
+    var b2 = document.createElement('b');
+    b2.textContent = 'about ' + Math.round(first.wait) + ' min off';
+    el.inbound.appendChild(b2);
+    el.inbound.appendChild(document.createTextNode(
+      ' — ' + Math.round(first.turn) + ' min to ' + end + ' from ' + first.from +
+      ', then ' + Math.round(first.wait - first.turn) + ' out to you, if it turns ' +
+      'straight round. Anything sooner below is the timetable.'));
   }
 
   /* The rest of the journey from my stop, at this tram's pace. */
@@ -638,7 +719,10 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
       var n = document.createElement('span');
       n.textContent = M.stops[i].name;
       var t = document.createElement('b');
-      t.textContent = hhmm(r.at + (M.stops[i].off - M.stops[idx].off));
+      var offs = M.offsets && r.trip != null ? M.offsets[r.trip] : null;
+      t.textContent = hhmm(r.at + (offs
+        ? offs[i] - offs[idx]
+        : M.stops[i].off - M.stops[idx].off));
       li.appendChild(n); li.appendChild(t);
       ul.appendChild(li);
     }
@@ -707,12 +791,33 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
     return n;
   }
 
+  /* Within a few hundred metres of the drawn line, the drawing is what is
+     wrong (see SNAP_M). Kilometres out and the feed is: letting that into the
+     projector would squash the whole route into one corner of the map, so it
+     is counted and left off. */
+  var FAR_M = 5000;
+
   function renderMap(M, now) {
-    var pts = M.points.length ? M.points : M.stops;
+    var dots = M.stops.filter(onEarth);
+    var pts = M.points.length ? M.points : dots;
     var back = otherWay();
-    var mine = M.buses.map(function (b) { return snap(b, pts); });
-    var theirs = back ? back.buses.map(function (b) { return snap(b, back.points); }) : [];
-    var proj = projector(pts.concat(back ? back.points : []).concat(mine, theirs));
+    var backPts = back ? back.points : [];
+    function place(list, along) {
+      var line = along.length > 1 ? along : pts;
+      return list.map(function (b) { return snap(b, line); });
+    }
+    var mineAll = place(M.buses, pts);
+    var theirsAll = place(back ? back.buses : [], backPts);
+    function near(b) { return b.off <= FAR_M; }
+    var mine = mineAll.filter(near), theirs = theirsAll.filter(near);
+    var lost = (mineAll.length - mine.length) + (theirsAll.length - theirs.length);
+    var all = pts.concat(backPts).concat(mine, theirs);
+    if (!all.length) {
+      el.map.innerHTML = '';
+      el.mapcount.textContent = 'No usable positions for this route in the feed.';
+      return;
+    }
+    var proj = projector(all);
     el.map.setAttribute('viewBox', '0 0 ' + VB_W + ' ' + Math.round(proj.h));
     el.map.innerHTML = '';
     var stroke = colour(state.code);
@@ -726,17 +831,17 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
         class: cls, stroke: stroke
       }));
     }
-    if (back) path(back.points, 'track back');
+    path(backPts, 'track back');
     path(pts, 'track');
 
-    M.stops.forEach(function (s) {
+    dots.forEach(function (s) {
       el.map.appendChild(svg('circle', {
         cx: proj.x(s.lng).toFixed(1), cy: proj.y(s.lat).toFixed(1), r: 3.5, class: 'stopdot'
       }));
     });
 
     var here = M.stops[M.stops.map(function (s) { return s.id; }).indexOf(state.stop)];
-    if (here) el.map.appendChild(svg('circle', {
+    if (here && onEarth(here)) el.map.appendChild(svg('circle', {
       cx: proj.x(here.lng).toFixed(1), cy: proj.y(here.lat).toFixed(1), r: 16, class: 'here'
     }));
 
@@ -759,7 +864,7 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
     });
 
     var labels = svg('g', {});
-    [M.stops[0], M.stops[M.stops.length - 1]].forEach(function (s) {
+    [dots[0], dots[dots.length - 1]].forEach(function (s) {
       if (!s) return;
       var x = proj.x(s.lng), t = svg('text', {
         x: x, y: proj.y(s.lat) - 16, class: 'maplabel',
@@ -778,17 +883,21 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
     var word = COLOUR[state.code] ? 'tram' : 'bus';
     var plural = word === 'bus' ? 'buses' : 'trams';
     var txt;
-    if (!mine.length && !theirs.length) {
+    if (!mineAll.length && !theirsAll.length) {
       txt = 'No ' + plural + ' on this line right now. The ring is your stop.';
     } else {
-      var bits = [mine.length + ' ' + (mine.length === 1 ? word : plural) + ' going your way'];
-      if (back) bits.push(theirs.length + ' coming back');
+      var bits = [mineAll.length + ' ' + (mineAll.length === 1 ? word : plural) + ' going your way'];
+      if (back) bits.push(theirsAll.length + ' coming back');
       txt = bits.join(', ') + '. The ring is your stop.';
-      if (!mine.length) txt += ' Nothing on your side of the line at the moment.';
+      if (!mineAll.length) txt += ' Nothing on your side of the line at the moment.';
     }
     if (stray) {
       txt += ' ' + (stray === 1 ? 'One is' : stray + ' are') +
         ' drawn off the line: that is where the feed puts it.';
+    }
+    if (lost) {
+      txt += ' ' + (lost === 1 ? 'One reports a position' : lost + ' report positions') +
+        ' kilometres from the route, too far to draw.';
     }
     el.mapcount.textContent = txt;
   }
@@ -808,7 +917,7 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
       b.textContent = k.split('|')[0] + ' @ ' + stop;
       var cached = state.live[k];
       if (cached) {
-        cached.path.busStopList.forEach(function (s) {
+        (cached.path.busStopList || []).forEach(function (s) {
           if (s.stopId === stop) b.textContent = stopName(s.stopName) + ' → ' + k.split('|')[0];
         });
       }
@@ -831,10 +940,14 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
   function restore() {
     var saved;
     try { saved = JSON.parse(localStorage.getItem('antalya-tram') || '{}'); } catch (e) { saved = {}; }
-    if (saved.favs) state.favs = saved.favs;
-    if (saved.code) {
+    if (saved.favs instanceof Array) state.favs = saved.favs.filter(function (f) {
+      return typeof f === 'string' && NAME[String(f).split('|')[0]];
+    });
+    /* A code Kentkart has retired would fetch nothing and match nothing in
+       the baked data either — an empty page for a route that is gone. */
+    if (saved.code && NAME[saved.code]) {
       state.code = saved.code;
-      state.dir = saved.dir || '0';
+      state.dir = saved.dir === '1' ? '1' : '0';
       state.stop = saved.stop || null;
     }
   }
@@ -871,7 +984,25 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
     var M = model(now);
     renderDirs(M);
     status(M);
-    if (!M) { el.board.innerHTML = ''; el.map.innerHTML = ''; return; }
+    /* Among 219 routes there is bound to be one the feed answers for and
+       lists no stops against. Everything below indexes into that list. */
+    if (!M || !M.stops.length) {
+      el.board.innerHTML = '';
+      el.map.innerHTML = '';
+      el.inbound.hidden = true;
+      el.stop.innerHTML = '';
+      drawn.stops = null;
+      el.mapcount.textContent = M
+        ? 'The feed answers for ' + state.code + ' but lists no stops for this direction.'
+        : 'Nothing to draw.';
+      if (M) {
+        var li = document.createElement('li');
+        li.className = 'empty';
+        li.textContent = 'No stops listed for this direction — try the other way round.';
+        el.board.appendChild(li);
+      }
+      return;
+    }
     renderStops(M);
     renderFavs();
     renderBoard(M, now);
