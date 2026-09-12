@@ -1,76 +1,78 @@
 # Antalya tram board
 
-A one-page departure board for Antalya's trams — T1A, T1B, T3 and the T2
-nostalgic line. Open `antalya-tram.html`, pick a line, a direction and a stop,
-and it counts down the next six trams. Tap a departure to see when that tram
-reaches every stop further down the line. Below the board, a map of the network
-puts every tram where the timetable says it should be — worked out from the
-schedule, not observed, which the page says twice around the map.
+A one-page board for Antalya's trams — T1A, T1B, T1C, T1D, T3 and the nostalgic
+NT07. Open `antalya-tram.html`, pick a line, a direction and a stop, and it
+counts down what is coming. Below the board, a map of the line shows the trams
+where the feed says they are.
 
-ONE FILE, ON PURPOSE. Markup, styles, timetable and logic are all in
-`antalya-tram.html` — no build, no imports, no network calls at runtime, no
-service worker. Open it from anywhere: a phone's downloads, a memory stick, any
-static host. It works with no signal, and the timetable is frozen at the moment
-it was captured.
+ONE FILE. Markup, styles, logic and a fallback timetable are all in
+`antalya-tram.html` — no build, no imports, no service worker.
 
-IT IS NOT PART OF THIS SITE. `.assetsignore` keeps it out of the deploy, so it
-never reaches the password gate — which is the point, since a tram board you
-have to log in to is no use standing on a platform. Its inline scripts would
-also be refused by the site's `script-src 'self'` policy, and relaxing that
-policy to host a tram timetable would be the wrong trade.
+IT IS NOT PART OF THIS SITE. `.assetsignore` keeps it out of the deploy: it has
+inline scripts, which this site's `script-src 'self'` refuses, it calls a
+third-party host, which `connect-src` refuses, and it would sit behind the
+password gate — no use standing on a platform.
 
-## What it is not
+## There is a live feed, and this uses it
 
-It is not live tracking. Antalya publishes no public real-time feed for the
-trams — the Kentkart API behind the AntalyaKart app exposes route and stop
-lists but no vehicle positions, and `antray.antalyaulasim.com.tr` is not a
-documented API. So a tram running ten minutes late still shows at its booked
-time here.
+Kentkart's own passenger API answers unauthenticated, over CORS
+(`access-control-allow-origin: *`), with the trams' GPS:
 
-## Where the timetable comes from
+```
+GET https://service.kentkart.com/rl1/web/pathInfo
+    ?region=026&lang=tr&direction=0&displayRouteCode=T1A&resultType=111110
+```
 
-The GTFS feed published by Otobus Tramvay (`agency_url` is
-antalyaulasim.com.tr), as mirrored by [transitous.org](https://transitous.org),
-whose feed list points at a Dropbox-hosted `antalya.zip`. That is the newest
-public copy there is, and it is not new: `stop_times.txt` is dated September
-2023 and `routes.txt` September 2024. Its `calendar.txt` runs to 2030, so
-nothing anywhere marks it stale — this paragraph is the only thing that does.
+`region=026` is Antalya — buses as well as trams, so `displayRouteCode=KL08`
+tracks a bus just as well. `resultType` is a bitmask, most significant first:
 
-To rebuild the timetable, download that zip and flatten it:
+| bit | gives | used for |
+|-----|-------|----------|
+| 1 | `pointList` | the real shape of the track, so the map is not straight lines between stops |
+| 2 | `busList` | **the vehicles on the road now** — lat, lng, plate, and the stop each last called at |
+| 3 | `busStopList` | the stops, with `departure_offset` in seconds from the start of the line |
+| 4 | `timeTableList` | a window of departures around now |
+| 5 | `scheduleList` | the current timetable, one entry per service day |
 
-1. `trips.txt` — keep `route_id` in T1A, T1B, T2, T3; note `service_id` and
-   `direction_id`.
-2. `stop_times.txt` — group by `trip_id`, order by `stop_sequence`, and write
-   each trip as `[departure minute, then minutes after departure at each stop]`
-   into the `window.TRAM` object at the top of `antalya-tram.html`.
-3. `stops.txt` — name and coordinates for each stop id.
+A service day is named by a seven-letter string, Monday first, with the days it
+runs capitalised: `MTWTFss` is the weekday service, `mtwtfSs` Saturday,
+`mtwtfsS` Sunday.
 
-THE FEED'S CALENDARS DISAGREE WITH THEMSELVES, and taking them literally is a
-bug I shipped once. There are three: `H`, `C` and `P`. `C` departs at exactly
-the same minutes as `H` and `P` at different ones — plainly weekday, Saturday
-and Sunday — but all three are marked `1` for all seven days, so read literally
-they put the weekday and the Sunday timetable on the road simultaneously. The
-first cut of this page did that and offered Sunday trams that do not run: 99
-departures a day against the real 61. Each day now takes the one calendar meant
-for it.
+THE BOARD MIXES TWO KINDS OF ROW. A **live** row is a tram the feed can see:
+its arrival is the booked run time from the stop it last called at to yours,
+which is `departure_offset` differences. A **timed** row is that line's current
+timetable. A timed tram within three minutes of a live one is taken to be the
+same tram rather than a second one.
 
-Stop names keep the feed's trailing `1`/`2`, which marks the two sides of the
-track; the page strips it, because the sign on the street does not have it.
+Vehicles move visibly in well under a minute — one T3 tram moved 310 m in the
+46 seconds between two polls — so the page refreshes every 20 seconds, and on
+returning to the tab.
 
-## No live feed exists, and here is where I looked
+## The fallback, and why it is still here
 
-- **Kentkart** (`service.kentkart.com/rl1/api`, Antalya is region `026`) is the
-  service behind the AntalyaKart app. `route/list` and `trip/search` answer
-  unauthenticated; roughly 400 probed paths and parameter names turned up no
-  vehicle-position endpoint. The app has live buses, so the data exists — it is
-  just not exposed.
-- **transitous.org** carries no GTFS-Realtime for any Turkish feed.
-- **antray.antalyaulasim.com.tr** refuses connections from outside Turkey, so
-  it had to be checked from a Turkish one: it is a journey-time lookup — line,
-  boarding stop, alighting stop, day — over the same scheduled data, with no
-  vehicle positions anywhere on it.
-- **acikveri.antalya.bel.tr** (the city's open data portal) resolves in DNS and
-  serves nothing. It hangs on load from a Turkish connection too, so it is down
-  rather than merely blocked.
-- **Moovit** shows Antalya trams and advertises live arrivals, but has no
-  public API.
+With no signal the page falls back to `window.TRAM`, a timetable flattened from
+the city's 2023 GTFS export, and the status line says so rather than passing it
+off as live. The fallback carries T1A, T1B, T3 and the nostalgic line (which
+that export calls T2); T1C and T1D postdate it and are live-only.
+
+To rebuild the fallback, download the GTFS zip that
+[transitous.org](https://transitous.org) points at for Antalya and flatten
+`trips.txt`, `stop_times.txt` and `stops.txt` into `window.TRAM`: each trip
+becomes `[departure minute, then minutes after departure at each stop]`.
+
+THAT EXPORT'S CALENDARS DISAGREE WITH THEMSELVES, and taking them literally is
+a bug this page shipped once. `H`, `C` and `P` are plainly weekday, Saturday and
+Sunday, but all three are marked as running on all seven days — so read
+literally they put the weekday and the Sunday timetable on the road at the same
+time, and the first cut offered 99 Sunday departures against the real 61. Each
+day takes the one calendar meant for it.
+
+## What was checked before the live feed was found
+
+Kept because it says where not to bother looking again: `/rl1/api/…` carries
+only `route/*`, `trip/search`, `poi/list` and `taxi/*`, and roughly 550 probed
+paths under it returned nothing for vehicles — the positions live under
+`/rl1/web/`, a namespace with flat command names rather than group/verb.
+transitous.org carries no GTFS-Realtime for any Turkish feed;
+`acikveri.antalya.bel.tr` is down even from Turkey; and
+`antray.antalyaulasim.com.tr` is a journey-time lookup over scheduled data.
