@@ -146,7 +146,7 @@
 <footer>
   <p id="src"></p>
   <p><strong>Live where it can be.</strong> Every Antalya route is here — 6 tram
-  lines and 213 bus routes, all from the same feed. Kentkart's passenger API
+  lines and 163 bus routes, all from the same feed. Kentkart's passenger API
   reports the vehicles' own GPS, and a <em>live</em> row is a tram the feed can actually see, its
   arrival worked out from the stop it last called at — which only works once it is
   on the road behind you — so when nothing is on your side of the line, the note
@@ -160,9 +160,15 @@
 /* Every route Kentkart lists for region 026 — Antalya — as
  * [code, name, 1 if it runs on rails]. From
  * /rl1/api/route/list?region=026, which is a static list; the live feed is
- * asked for one of these codes at a time. 219 of them, so the picker filters.
+ * asked for one of these codes at a time. 169 of them, so the picker filters.
+ *
+ * That list also carries 50 five-digit entries named after streets rather
+ * than routes (10006 "ATATÜRK BLV-1"), and pathInfo answers every one of them
+ * with "Sonuç Bulunamadı" — no stops, no vehicles, no timetable. They are
+ * dropped here: a picker that offers a route and then shows nothing is worse
+ * than a shorter picker.
  */
-window.ROUTES = [["T1A","FATİH-HAVALİMANI",1],["T1B","FATİH-EXPO",1],["T1C","FATİH-AKSU",1],["T1D","FATİH-KIŞLA",1],["T3","VARSAK-MÜZE",1],["NT07","NOSTALJİ TRAMVAY AMBARI-MÜZE",1],["AA01","Alanya Otogar-Antalya Otogar",0],["AK01","Korkuteli Terminal-Antalya Otogarı",0],["EA01","Antalya Terminal-Elmalı Terminal",0],["FT01","Finike Otogar-Turunçova",0],["GAN01","Gazipaşa Merkez-Antalya Terminal",0],["HT01","Kumluca Terminal-Temel Egitim",0],["VF01","VARSAK-FAKÜLTE",0],["GAL02","Gazipaşa Merkez-Alanya",0],["KF02","Kumluca Otogar-Finike Otogar",0],["AC03","AKSU-MINICITY",0],["AK03","Antalya Terminal-Kınık",0],["TO03","Kumluca Terminal-Ortaköy",0],["AF04","AKSU-BANIO KAVŞAĞI",0],["AF04A","AKSU-BANIO KAVŞAĞI",0],["AC05","AKSU-ALAYLI",0],["AC05A","AKSU-ALAYLI",0],["AC05B","AKSU-GULOLUK",0],["T5","10259 - TIP FAKÜLTESİ-10001 - AKDENİZ  BLV-1",0],["TS05","Kumluca Terminal-Salur",0],["TYF05","Devlet Hastanesi-Turunçova çarşı",0],["DA6","ORGANİZE SANAYİ-DÖŞEMEALTI",0],["DA6A","ORGANİZE SANAYİ-DÖŞEMEALTI",0],["FH06","Finike Otogar-Hasyurt",0],["KC06","SARISU-GÜZELOBA PAZAR YERİ",0],["AB07","ORGANİZE SANAYİ-AKDENİZ ÜNİVERSİTESİ",0],["KA07","Kemer Terminal-Antalya Terminal",0],["LC07A","KUNDU-OTOGAR DEPOLAMA",0],["KL08","SARISU-GÜZELOBA DEPOLAMA",0],["KL08G","SARISU-GÜZELOBA",0],["TA08","Tekirova Kavşak-Antalya Otogar",0],["TH08","Kumluca Terminal-Kavakköy",0],["LF09","UNSAL-GÜZELOBA",0],["TC09","Kumluca Terminal-Camkırığı",0],["LF10","UNSAL-GÜZELOBA",0],["UC11","MEYDAN-GÜRSU DEPOLAMA",0],["MC12","MEYDAN-ŞEHİR HASTANESİ",0],["MC12A","MEYDAN DEPOLAMA-ŞEHİR HASTANESİ",0],["TT12","Kumluca Terminal-Turunçova",0],["VL13","VARSAK-GUZELOBA",0],["VL13A","VARSAK-GUZELOBA",0],["CV14","VARSAK-IŞIKLAR CADDESİ",0],["DC15","MEYDAN-DOSEMEALTI",0],["DC15A","MEYDAN-DOSEMEALTI",0],["TC16","UNSAL-ERMENEK",0],["TC16A","UNSAL DEPOLAMA-ERMENEK",0],["CV17","VARSAK ALTIAYAK-DOGUGARAJI",0],["CV17A","VARSAK ALTIAYAK-DOGUGARAJI",0],["VS18","SARISU-VARSAK",0],["D19","ORGANİZE-SEHİR HASTANESİ",0],["D19A","ORGANİZE SANAYİ-SEHİR HASTANESİ",0],["SA19","Serik-Antalya",0],["SD20","SARISU-ORGANIZE SANAYI",0],["SD20A","SARISU DEPOLAMA-DOSEMEALTI",0],["KL21","GURSU-ALTINTAS",0],["BA22","Boğazkent-Antalya",0],["ML22","MEYDAN-HURMA",0],["TY23","TERMİNAL-KEPEZ DEVLET HASTANESİ",0],["GM24","TRT KAMPI SAHIL-MASADAGI",0],["VY24","VARSAK YAYLASI-VARSAK",0],["MD25","MEYDAN DEPOLAMA-DOYRAN",0],["ÜA26","OTOGAR DEPOLAMA-KEPEZ DEVLET HASTANESI",0],["DC27","OTOGAR DEPOLAMA-BADEMAGACI",0],["ÜK28","ÜNSAL-KEPEZ DEVLET HASTANESİ",0],["ÜS29","ÜNSAL DEPOLAMA-SARISU",0],["TR30","OTOGAR DEPOLAMA-RAUF DENKTAŞ CAD.",0],["UC32","SARISU DEPOLAMA-DEMIRCILER CARSISI",0],["KC33","GURSU DEPOLAMA-SEHİR HASTANESİ",0],["KC34","GURSU DEPOLAMA-ALTINTAS",0],["KC34A","GURSU DEPOLAMA-ALTINTAS",0],["35","VARSAK ALTIAYAK DEPOLAMA-MEYDAN DEPOLAMA",0],["KC35A","VARSAK ALTIAYAK-GURSU",0],["T35","10001 - AKDENİZ  BLV-1-10003 - AKDENİZ  BLV-3",0],["TK36","OTOGAR-KARACAOGLAN",0],["BB38","SARISU DEPOLAMA-BALIKÇI BARINAĞI",0],["CV39","VARSAK-ANDIZLI MEZARLIGI",0],["MF40","GURSU DEPOLAMA-ŞEHİR HASTANESİ",0],["HM42","MEYDAN DEPOLAMA-SEHİR HASTANESİ",0],["TCP45","OTOGAR DEPOLAMA-VARSAK ALTIAYAK",0],["46","MEYDAN DEPOLAMA-ALTINOVA",0],["46A","MEYDAN DEPOLAMA-ALTINOVA MAHALLESİ",0],["CV47","MEYDAN DEPOLAMA-TÜRKAY OTEL",0],["MAN47","Manavgat Otogarı-Antalya Otogarı",0],["CV48","VARSAK AKTARMA-BANİO KAVŞAĞI",0],["TCD49","UNSAL-KEPEZ DEVLET HASTANESİ",0],["TCD49A","UNSAL-YENI HAL",0],["TK51","OTOGAR DEPOLAMA-AKDAMLAR",0],["TK51A","OTOGAR DEPOLAMA-DOYRAN",0],["KF52","SARISU DEPOLAMA-FATIH",0],["VC53","VARSAK ALTIAYAK-TÜRKAY KAVŞAĞI",0],["VML54","VARSAK-ALTINTAS",0],["VML54A","VARSAK-ALTINTAS",0],["VML55","VARSAK-KIPA KAVSAGI",0],["VC57","VARSAK ALTIAYAK-MİNİCİTY",0],["MC58","OTOGAR-ŞEHİR HASTANESİ",0],["VC59","VARSAK-GÜRSU DEPOLAMA",0],["GCK60","OTOGAR DEPOLAMA-GÜZELOBA DEPOLAMA",0],["KM61","SARISU DEPOLAMA-ŞEHİR HASTANESİ",0],["SM62","SARISU DEPOLAMA-ŞEHİR HASTANESİ",0],["VF63","VARSAK-EGITIM ARASTIRMA HASTANESI",0],["SA64","SARISU DEPOLAMA-ALTINTAŞ",0],["SA65","SARISU-ALTINTAŞ",0],["VF66","VARSAK ALTIAYAK-ADLIYE",0],["CV67","MEYDAN DEPOLAMA-MİNİCİTY",0],["MC68","OTOGAR DEPOLAMA-FATIH TRAMVAY",0],["TB72","OTOGAR DEPOLAMA-BARAJ MAHALLESI",0],["GCK76A","GUZELOBA DEPOLAMA-HURMA",0],["MD77","OTOGAR DEPOLAMA-DUACI",0],["MD77A","OTOGAR DEPOLAMA-DUACI",0],["MZ78","MEYDAN DEPOLAMA-ZEYTINLIK MAHALLESI",0],["DC79","DOSEMEALTI-SIGORTA",0],["MK80","KURŞUNLU ŞELALESİ-DEMIRCILER",0],["MK80A","GAZİLER-DOĞU GARAJI",0],["MK81","AKSU DEPOLAMA-TOPALLI",0],["MK81A","AKSU-YORUKLER MAHALLESI",0],["FL82","UNSAL DEPOLAMA-GÜZELOBA DEPOLAMA",0],["KPZ83","VARSAK-ANDIZLI MEZARLIGI",0],["DM85","OTOGAR DEPOLAMA-KİLLİK",0],["DM85A","OTOGAR DEPOLAMA-EKSILI",0],["DM86","OTOGAR DEPOLAMA-KARAVELILER",0],["TH88","OTOGAR DEPOLAMA-ŞEHİR HASTANESİ",0],["VH89","VARSAK AKTARMA-SEHİR HASTANESİ",0],["MH90","MEYDAN DEPOLAMA-SEHİR HASTANESİ",0],["THG91","OTOGAR DEPOLAMA-AKSU DEPOLAMA",0],["TL94","TERMINAL-GUZELOBA",0],["AÜ102","ADLİ TIP-MELTEM KAPISI",0],["AÜ103","ADLİ TIP-MELTEM KAPISI",0],["104","GÜRSU MAHALLESİ-KONYAALTI",0],["106","OTOGAR DEPOLAMA-ÇALLI KAVŞAĞI",0],["107","SARISU-KADINLAR PLAJI",0],["112","VARSAK BELEDIYE-KEPEZ DEVLET HASTANESI",0],["113","DEEPO-MALL OF ANTALYA-SEHİR HASTANESİ",0],["114","ŞEHİR HASTANESİ-FATİH",0],["183","OTOGAR DEPOLAMA-YÜZÜNCÜ YIL",0],["188","UNCALI MEZARLIGI-KURSUNLU MEZARLIGI",0],["400","SARISU DEPOLAMA-HAVALIMANI",0],["503","OTOGAR DEPOLAMA-ASAGI KARAMAN",0],["506","MEYDAN DEPOLAMA-YAGCA",0],["506A","MEYDAN-YAĞCA",0],["507","VARSAK-KIRISCILER-KIZILLI",0],["508","VARSAK-CAMLICA-KIZILLI",0],["509","OTOGAR DEPOLAMA-KIRISCILER",0],["511","OTOGAR DEPOLAMA-KUNDU",0],["512","GÜZELOBA DEPOLAMA-GUZELBAG",0],["513","GÜZELOBA DEPOLAMA-ERMENEK",0],["513A","GÜZELOBA DEPOLAMA-ERMENEK MAHALLESI",0],["514","AKSU DEPOLAMA-KARAÖZ",0],["514A","AKSU DEPOLAMA-YEŞİLKARAMAN",0],["515","OTOGAR-SOGUTCUMASI",0],["515A","OTOGAR DEPOLAMA-SOGUTCUMASI",0],["521","OTOGAR DEPOLAMA-FESLİKAN YAYLASI",0],["521A","OTOGAR DEPOLAMA-AKDAMLAR",0],["521B","OTOGAR-HACISEKILILER-KUM MEVKII",0],["521C","SARISU DEPOLAMA-GEYİKBAYIRI",0],["526","AKSU DEPOLAMA-KEPEZ BELEDIYESI",0],["527","AKSU-KUNDU",0],["527A","AKSU-KUNDU",0],["528","AKSU-GUZELOBA",0],["531","MEYDAN DEPOLAMA-MURENLER",0],["531T","MEYDAN DEPOLAMA-MURATPAŞA BELEDİYESİ",0],["600","OTOGAR-HAVAALANI",0],["600G","TERMİNAL-HAVAALANI",0],["800","MEYDAN DEPOLAMA-HAVALİMANI",0],["998","ZERDALİLİK-MÜZE",0],["10001","AKDENİZ  BLV-1",0],["10003","AKDENİZ  BLV-3",0],["10004","AKDENİZ BLV-4",0],["10005","AKDENİZ BLV-5",0],["10006","ATATÜRK BLV-1",0],["10008","ATATÜRK BLV-2",0],["10009","ATATÜRK BLV-3",0],["10010","ATATÜRK BLV-4",0],["10011","ATATÜRK BLV-5",0],["10012","ATATÜRK BLV-6",0],["10013","ATATÜRK BLV-7",0],["10014","ATATÜRK BLV-8",0],["10015","TÜRKAY HOTEL",0],["10016","KONYAALTI BELEDİYESİ-1",0],["10017","ATATÜRK BLV-11",0],["10018","ATATÜRK BLV-12",0],["10020","ATATÜRK BLV-13",0],["10021","ATATÜRK BLV-14",0],["10023","MİGROS",0],["10024","ATATÜRK KÜLTÜR MERKEZİ",0],["10025","SAKIP SABANCI BLV-2",0],["10026","100 YIL BLV-5",0],["10027","GAZİ LİSESİ",0],["10029","100 YIL BLV-8",0],["10030","KOVANLIK MH-8",0],["10031","ANAFARTALAR CD-4",0],["10032","KOVANLIK MH-1",0],["10033","GÜLLÜK",0],["10034","D650 AKDENİZ BLV-17",0],["10035","CUMHURİYET MEYDANI",0],["10036","D650 AKDENİZ BLV-18",0],["10037","MURATPAŞA ÜÇ KAPILAR",0],["10038","VEYSEL KARANİ CD-1",0],["10039","IŞIKLAR CD-1",0],["10040","VEYSEL KARANİ CD-2",0],["10041","IŞIKLAR CD-2",0],["10042","ORHAN GAZİ CD-1",0],["10043","IŞIKLAR CD-4",0],["10044","ORHAN GAZİ CD-4",0],["10045","METİN KASAPOĞLU CD-1",0],["10046","ORHAN GAZİ CD-2",0],["10048","ORHAN GAZİ CD-3",0],["10049","METİN KASAPOĞLU CD-3",0],["10050","AT ALANI CD-1",0],["10051","METİN KASAPOĞLU CD-4",0],["10052","AT ALANI CD-2",0],["10053","İSMET GÖKŞEN CD-1",0],["10054","İSMET GÖKŞEN CD-2",0],["10055","İSMET GÖKŞEN CD-3",0],["10056","İSMET GÖKŞEN CD-4",0]];
+window.ROUTES = [["T1A","FATİH-HAVALİMANI",1],["T1B","FATİH-EXPO",1],["T1C","FATİH-AKSU",1],["T1D","FATİH-KIŞLA",1],["T3","VARSAK-MÜZE",1],["NT07","NOSTALJİ TRAMVAY AMBARI-MÜZE",1],["AA01","Alanya Otogar-Antalya Otogar",0],["AK01","Korkuteli Terminal-Antalya Otogarı",0],["EA01","Antalya Terminal-Elmalı Terminal",0],["FT01","Finike Otogar-Turunçova",0],["GAN01","Gazipaşa Merkez-Antalya Terminal",0],["HT01","Kumluca Terminal-Temel Egitim",0],["VF01","VARSAK-FAKÜLTE",0],["GAL02","Gazipaşa Merkez-Alanya",0],["KF02","Kumluca Otogar-Finike Otogar",0],["AC03","AKSU-MINICITY",0],["AK03","Antalya Terminal-Kınık",0],["TO03","Kumluca Terminal-Ortaköy",0],["AF04","AKSU-BANIO KAVŞAĞI",0],["AF04A","AKSU-BANIO KAVŞAĞI",0],["AC05","AKSU-ALAYLI",0],["AC05A","AKSU-ALAYLI",0],["AC05B","AKSU-GULOLUK",0],["T5","10259 - TIP FAKÜLTESİ-10001 - AKDENİZ  BLV-1",0],["TS05","Kumluca Terminal-Salur",0],["TYF05","Devlet Hastanesi-Turunçova çarşı",0],["DA6","ORGANİZE SANAYİ-DÖŞEMEALTI",0],["DA6A","ORGANİZE SANAYİ-DÖŞEMEALTI",0],["FH06","Finike Otogar-Hasyurt",0],["KC06","SARISU-GÜZELOBA PAZAR YERİ",0],["AB07","ORGANİZE SANAYİ-AKDENİZ ÜNİVERSİTESİ",0],["KA07","Kemer Terminal-Antalya Terminal",0],["LC07A","KUNDU-OTOGAR DEPOLAMA",0],["KL08","SARISU-GÜZELOBA DEPOLAMA",0],["KL08G","SARISU-GÜZELOBA",0],["TA08","Tekirova Kavşak-Antalya Otogar",0],["TH08","Kumluca Terminal-Kavakköy",0],["LF09","UNSAL-GÜZELOBA",0],["TC09","Kumluca Terminal-Camkırığı",0],["LF10","UNSAL-GÜZELOBA",0],["UC11","MEYDAN-GÜRSU DEPOLAMA",0],["MC12","MEYDAN-ŞEHİR HASTANESİ",0],["MC12A","MEYDAN DEPOLAMA-ŞEHİR HASTANESİ",0],["TT12","Kumluca Terminal-Turunçova",0],["VL13","VARSAK-GUZELOBA",0],["VL13A","VARSAK-GUZELOBA",0],["CV14","VARSAK-IŞIKLAR CADDESİ",0],["DC15","MEYDAN-DOSEMEALTI",0],["DC15A","MEYDAN-DOSEMEALTI",0],["TC16","UNSAL-ERMENEK",0],["TC16A","UNSAL DEPOLAMA-ERMENEK",0],["CV17","VARSAK ALTIAYAK-DOGUGARAJI",0],["CV17A","VARSAK ALTIAYAK-DOGUGARAJI",0],["VS18","SARISU-VARSAK",0],["D19","ORGANİZE-SEHİR HASTANESİ",0],["D19A","ORGANİZE SANAYİ-SEHİR HASTANESİ",0],["SA19","Serik-Antalya",0],["SD20","SARISU-ORGANIZE SANAYI",0],["SD20A","SARISU DEPOLAMA-DOSEMEALTI",0],["KL21","GURSU-ALTINTAS",0],["BA22","Boğazkent-Antalya",0],["ML22","MEYDAN-HURMA",0],["TY23","TERMİNAL-KEPEZ DEVLET HASTANESİ",0],["GM24","TRT KAMPI SAHIL-MASADAGI",0],["VY24","VARSAK YAYLASI-VARSAK",0],["MD25","MEYDAN DEPOLAMA-DOYRAN",0],["ÜA26","OTOGAR DEPOLAMA-KEPEZ DEVLET HASTANESI",0],["DC27","OTOGAR DEPOLAMA-BADEMAGACI",0],["ÜK28","ÜNSAL-KEPEZ DEVLET HASTANESİ",0],["ÜS29","ÜNSAL DEPOLAMA-SARISU",0],["TR30","OTOGAR DEPOLAMA-RAUF DENKTAŞ CAD.",0],["UC32","SARISU DEPOLAMA-DEMIRCILER CARSISI",0],["KC33","GURSU DEPOLAMA-SEHİR HASTANESİ",0],["KC34","GURSU DEPOLAMA-ALTINTAS",0],["KC34A","GURSU DEPOLAMA-ALTINTAS",0],["35","VARSAK ALTIAYAK DEPOLAMA-MEYDAN DEPOLAMA",0],["KC35A","VARSAK ALTIAYAK-GURSU",0],["T35","10001 - AKDENİZ  BLV-1-10003 - AKDENİZ  BLV-3",0],["TK36","OTOGAR-KARACAOGLAN",0],["BB38","SARISU DEPOLAMA-BALIKÇI BARINAĞI",0],["CV39","VARSAK-ANDIZLI MEZARLIGI",0],["MF40","GURSU DEPOLAMA-ŞEHİR HASTANESİ",0],["HM42","MEYDAN DEPOLAMA-SEHİR HASTANESİ",0],["TCP45","OTOGAR DEPOLAMA-VARSAK ALTIAYAK",0],["46","MEYDAN DEPOLAMA-ALTINOVA",0],["46A","MEYDAN DEPOLAMA-ALTINOVA MAHALLESİ",0],["CV47","MEYDAN DEPOLAMA-TÜRKAY OTEL",0],["MAN47","Manavgat Otogarı-Antalya Otogarı",0],["CV48","VARSAK AKTARMA-BANİO KAVŞAĞI",0],["TCD49","UNSAL-KEPEZ DEVLET HASTANESİ",0],["TCD49A","UNSAL-YENI HAL",0],["TK51","OTOGAR DEPOLAMA-AKDAMLAR",0],["TK51A","OTOGAR DEPOLAMA-DOYRAN",0],["KF52","SARISU DEPOLAMA-FATIH",0],["VC53","VARSAK ALTIAYAK-TÜRKAY KAVŞAĞI",0],["VML54","VARSAK-ALTINTAS",0],["VML54A","VARSAK-ALTINTAS",0],["VML55","VARSAK-KIPA KAVSAGI",0],["VC57","VARSAK ALTIAYAK-MİNİCİTY",0],["MC58","OTOGAR-ŞEHİR HASTANESİ",0],["VC59","VARSAK-GÜRSU DEPOLAMA",0],["GCK60","OTOGAR DEPOLAMA-GÜZELOBA DEPOLAMA",0],["KM61","SARISU DEPOLAMA-ŞEHİR HASTANESİ",0],["SM62","SARISU DEPOLAMA-ŞEHİR HASTANESİ",0],["VF63","VARSAK-EGITIM ARASTIRMA HASTANESI",0],["SA64","SARISU DEPOLAMA-ALTINTAŞ",0],["SA65","SARISU-ALTINTAŞ",0],["VF66","VARSAK ALTIAYAK-ADLIYE",0],["CV67","MEYDAN DEPOLAMA-MİNİCİTY",0],["MC68","OTOGAR DEPOLAMA-FATIH TRAMVAY",0],["TB72","OTOGAR DEPOLAMA-BARAJ MAHALLESI",0],["GCK76A","GUZELOBA DEPOLAMA-HURMA",0],["MD77","OTOGAR DEPOLAMA-DUACI",0],["MD77A","OTOGAR DEPOLAMA-DUACI",0],["MZ78","MEYDAN DEPOLAMA-ZEYTINLIK MAHALLESI",0],["DC79","DOSEMEALTI-SIGORTA",0],["MK80","KURŞUNLU ŞELALESİ-DEMIRCILER",0],["MK80A","GAZİLER-DOĞU GARAJI",0],["MK81","AKSU DEPOLAMA-TOPALLI",0],["MK81A","AKSU-YORUKLER MAHALLESI",0],["FL82","UNSAL DEPOLAMA-GÜZELOBA DEPOLAMA",0],["KPZ83","VARSAK-ANDIZLI MEZARLIGI",0],["DM85","OTOGAR DEPOLAMA-KİLLİK",0],["DM85A","OTOGAR DEPOLAMA-EKSILI",0],["DM86","OTOGAR DEPOLAMA-KARAVELILER",0],["TH88","OTOGAR DEPOLAMA-ŞEHİR HASTANESİ",0],["VH89","VARSAK AKTARMA-SEHİR HASTANESİ",0],["MH90","MEYDAN DEPOLAMA-SEHİR HASTANESİ",0],["THG91","OTOGAR DEPOLAMA-AKSU DEPOLAMA",0],["TL94","TERMINAL-GUZELOBA",0],["AÜ102","ADLİ TIP-MELTEM KAPISI",0],["AÜ103","ADLİ TIP-MELTEM KAPISI",0],["104","GÜRSU MAHALLESİ-KONYAALTI",0],["106","OTOGAR DEPOLAMA-ÇALLI KAVŞAĞI",0],["107","SARISU-KADINLAR PLAJI",0],["112","VARSAK BELEDIYE-KEPEZ DEVLET HASTANESI",0],["113","DEEPO-MALL OF ANTALYA-SEHİR HASTANESİ",0],["114","ŞEHİR HASTANESİ-FATİH",0],["183","OTOGAR DEPOLAMA-YÜZÜNCÜ YIL",0],["188","UNCALI MEZARLIGI-KURSUNLU MEZARLIGI",0],["400","SARISU DEPOLAMA-HAVALIMANI",0],["503","OTOGAR DEPOLAMA-ASAGI KARAMAN",0],["506","MEYDAN DEPOLAMA-YAGCA",0],["506A","MEYDAN-YAĞCA",0],["507","VARSAK-KIRISCILER-KIZILLI",0],["508","VARSAK-CAMLICA-KIZILLI",0],["509","OTOGAR DEPOLAMA-KIRISCILER",0],["511","OTOGAR DEPOLAMA-KUNDU",0],["512","GÜZELOBA DEPOLAMA-GUZELBAG",0],["513","GÜZELOBA DEPOLAMA-ERMENEK",0],["513A","GÜZELOBA DEPOLAMA-ERMENEK MAHALLESI",0],["514","AKSU DEPOLAMA-KARAÖZ",0],["514A","AKSU DEPOLAMA-YEŞİLKARAMAN",0],["515","OTOGAR-SOGUTCUMASI",0],["515A","OTOGAR DEPOLAMA-SOGUTCUMASI",0],["521","OTOGAR DEPOLAMA-FESLİKAN YAYLASI",0],["521A","OTOGAR DEPOLAMA-AKDAMLAR",0],["521B","OTOGAR-HACISEKILILER-KUM MEVKII",0],["521C","SARISU DEPOLAMA-GEYİKBAYIRI",0],["526","AKSU DEPOLAMA-KEPEZ BELEDIYESI",0],["527","AKSU-KUNDU",0],["527A","AKSU-KUNDU",0],["528","AKSU-GUZELOBA",0],["531","MEYDAN DEPOLAMA-MURENLER",0],["531T","MEYDAN DEPOLAMA-MURATPAŞA BELEDİYESİ",0],["600","OTOGAR-HAVAALANI",0],["600G","TERMİNAL-HAVAALANI",0],["800","MEYDAN DEPOLAMA-HAVALİMANI",0],["998","ZERDALİLİK-MÜZE",0]];
 </script>
 
 <script>
@@ -240,6 +246,7 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
     open: null,
     favs: [],
     live: {},        /* code|dir -> { at, path } */
+    gone: {},        /* code|dir the feed answers for with no path at all */
     offline: false
   };
 
@@ -317,9 +324,20 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
       return r.json();
     }).then(function (d) {
       var p = d.pathList && d.pathList[0];
-      if (!p) throw new Error((d.result && d.result.message) || 'no path');
-      state.live[code + '|' + dir] = { at: Date.now(), path: p };
-      state.offline = false;
+      var k = code + '|' + dir;
+      if (!p) {
+        /* An answer, just not one with a route in it — "Sonuç Bulunamadı".
+           Worth telling apart from a dead network. */
+        state.gone[k] = true;
+        delete state.live[k];
+        throw new Error((d.result && d.result.message) || 'no path');
+      }
+      delete state.gone[k];
+      state.live[k] = { at: Date.now(), path: p };
+      /* Only the direction on screen may clear the offline flag: the quiet
+         prefetch of the other one succeeding while this one fails used to
+         leave the status line saying "loading" for ever. */
+      if (code === state.code && dir === state.dir) state.offline = false;
       return p;
     });
   }
@@ -350,6 +368,11 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
      runs, when the trams are booked to leave my stop, and where the trams
      are. Everything below this line stops caring which source it got. */
   function ok(n) { return typeof n === 'number' && isFinite(n); }
+  function metres(a, b) {
+    var k = 111320 * Math.cos(a.lat * Math.PI / 180);
+    var dx = (a.lng - b.lng) * k, dy = (a.lat - b.lat) * 111320;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
   function onEarth(p) { return ok(p.lat) && ok(p.lng) && p.lat !== 0 && p.lng !== 0; }
 
   function model(now) {
@@ -358,7 +381,7 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
       var p = live.path;
       var stops = (p.busStopList || []).map(function (s) {
         return {
-          id: s.stopId, name: stopName(s.stopName),
+          id: String(s.stopId), name: stopName(s.stopName),
           lat: parseFloat(s.lat), lng: parseFloat(s.lng),
           off: parseInt(s.departure_offset, 10) / 60 || 0
         };
@@ -393,7 +416,7 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
     if (!d) return null;
     var bs = d.stops.map(function (id) {
       return {
-        id: id, name: stopName(BAKED.stops[id][0]),
+        id: String(id), name: stopName(BAKED.stops[id][0]),
         lat: BAKED.stops[id][1], lng: BAKED.stops[id][2], off: 0
       };
     });
@@ -424,7 +447,8 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
     var p = live.path;
     var stops = (p.busStopList || []).map(function (s) {
       return {
-        id: s.stopId, name: stopName(s.stopName),
+        id: String(s.stopId), name: stopName(s.stopName),
+        lat: parseFloat(s.lat), lng: parseFloat(s.lng),
         off: parseInt(s.departure_offset, 10) / 60 || 0
       };
     });
@@ -457,7 +481,13 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
     /* The inbound run ends at the station your direction starts from, so its
        last offset is that whole journey. */
     var end = back.stops[back.stops.length - 1];
-    if (!end) return [];
+    var start = M.stops[0];
+    if (!end || !start) return [];
+    /* Checked across 17 routes: the return leg always ends where the outward
+       one starts. Checked anyway, because "it turns round there" is the whole
+       basis of the estimate, and on some loop of a bus route it may not. */
+    if (end.id !== start.id && !(end.name === start.name ||
+        (onEarth(end) && onEarth(start) && metres(end, start) < 600))) return [];
     var toMe = M.stops[idx] ? M.stops[idx].off : 0;
     var out = [];
     back.buses.forEach(function (b) {
@@ -956,11 +986,23 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
 
   function status(M) {
     if (!M) {
-      el.status.textContent = 'Offline, and the baked timetable covers the trams only.';
+      el.status.className = 'status';
+      el.status.textContent = state.gone[key()]
+        ? 'Kentkart lists ' + state.code + ' but has no route data for it.'
+        : 'Offline, and the baked timetable covers the trams only.';
       return;
     }
     if (M.source === 'live') {
       var age = Math.round((Date.now() - state.live[key()].at) / 1000);
+      /* Six refreshes missed. The positions are still the last real ones, but
+         calling that live would be a lie — so it keeps showing them and drops
+         the dot. */
+      if (age > 120) {
+        el.status.textContent = 'Not updating — these positions are ' +
+          (age < 3600 ? Math.round(age / 60) + ' min' : 'over an hour') + ' old.';
+        el.status.className = 'status';
+        return;
+      }
       var txt = 'Live from Kentkart · updated ' + (age < 10 ? 'just now' : age + 's ago');
       /* T1D runs once a day and T1C eight times. An empty board on those is
          the timetable, not a fault, so the line says which it is. */
@@ -969,9 +1011,11 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
       el.status.textContent = txt;
       el.status.className = 'status live';
     } else {
-      el.status.textContent = state.offline
-        ? 'Offline — showing the 2023 timetable'
-        : 'Loading live data…';
+      el.status.textContent = state.gone[key()]
+        ? 'Kentkart has no live data for this direction — showing the 2023 timetable.'
+        : state.offline
+          ? 'Offline — showing the 2023 timetable'
+          : 'Loading live data…';
       el.status.className = 'status';
     }
   }

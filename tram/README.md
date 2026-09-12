@@ -1,7 +1,7 @@
 # Antalya transit board
 
 A one-page board for every Antalya route: the six rail lines — T1A, T1B, T1C,
-T1D, T3 and the nostalgic NT07 — as chips, and all 213 bus routes behind a
+T1D, T3 and the nostalgic NT07 — as chips, and all 163 bus routes behind a
 filter. Open `antalya-tram.html`, pick a route, a direction and a stop, and it
 counts down what is coming. Below the board, a map of the route shows the
 vehicles where the feed says they are.
@@ -68,6 +68,12 @@ GET https://service.kentkart.com/rl1/web/pathInfo
     ?region=026&lang=tr&direction=0&displayRouteCode=T1A&resultType=111110
 ```
 
+`route/list` RETURNS MORE THAN ROUTES. Fifty of the 219 entries are five-digit
+codes named after streets (`10006 ATATÜRK BLV-1`), and `pathInfo` answers every
+one of them `Sonuç Bulunamadı` — no stops, no vehicles, no timetable. They are
+left out of `window.ROUTES`. A route that answers that way anyway says so on
+the status line, which is not the same message as a dead network.
+
 `region=026` is Antalya, and it makes no distinction between modes:
 `displayRouteCode=KL08` tracks that bus exactly as `T1A` tracks the tram — 9
 vehicles were on KL08 when this was written. The route codes come from
@@ -109,7 +115,9 @@ comes immediately before it.
 
 Vehicles move visibly in well under a minute — one T3 tram moved 310 m in the
 46 seconds between two polls — so the page refreshes every 20 seconds, and on
-returning to the tab.
+returning to the tab. If six of those refreshes pass without an answer the page
+keeps the last positions but drops the word "live": it says how old they are
+instead.
 
 ## The fallback, and why it is still here
 
