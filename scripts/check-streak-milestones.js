@@ -138,19 +138,30 @@ Cel.clear();
 global.matchMedia = () => ({ matches: false });
 delete document.body.classList;
 
-/* ── 1b. The chicken ────────────────────────────────────────────────────────
-   Fifty in a row gets a chicken doing a happy dance. It is a joke, and a joke
-   that has quietly stopped rendering is worse than no joke — nobody reports a
-   missing chicken as a bug, they just stop seeing it. So: it is there at fifty,
-   it is NOT there at a hundred, and it is still a chicken rather than a blank
-   box where one used to be. */
+/* ── 1b. The chickens ───────────────────────────────────────────────────────
+   Fifty in a row gets a chicken doing a happy dance; a hundred gets two of
+   them. It is a joke, and a joke that has quietly stopped rendering is worse
+   than no joke — nobody reports a missing chicken as a bug, they just stop
+   seeing it. So: the COUNT is asserted at both milestones, and each bird is
+   still a chicken rather than a blank box where one used to be.
+
+   THE COUNT, NOT A FLAG. What separates the two celebrations is how many birds
+   there are, so a check that only asked "is there a chicken" would pass a
+   hundred that drew one, which is the solo again and the thing the pair exists
+   to avoid. */
 Cel.clear();
-const withChick = Cel.fire('a3', 50, '50 in a row');
-const chick = withChick.children.find(c => c.className === 'aat-cel-chicken');
-ok(!!chick, 'fifty in a row draws a chicken');
-ok(Cel.CHICKEN_AT === 50, `the chicken is keyed to a milestone (CHICKEN_AT ${Cel.CHICKEN_AT})`);
-ok(Cel.AT.indexOf(Cel.CHICKEN_AT) !== -1,
-  'and to one the run actually celebrates, so it cannot be stranded on a number nothing fires at');
+const birds = m => Cel.fire('a3', m, `${m} in a row`).children
+  .filter(c => c.className === 'aat-cel-chicken');
+
+const one = birds(50);
+ok(one.length === 1, `fifty in a row draws one chicken (got ${one.length})`);
+ok(Cel.CHICKENS && Cel.CHICKENS[50] === 1 && Cel.CHICKENS[100] === 2,
+  `the counts are declared in one place (${JSON.stringify(Cel.CHICKENS)})`);
+Object.keys(Cel.CHICKENS).forEach(m => {
+  ok(Cel.AT.indexOf(Number(m)) !== -1,
+    `and keyed to a milestone the run actually fires at, so no bird is stranded on ${m}`);
+});
+const chick = one[0];
 ok(chick && chick.attrs['aria-hidden'] === 'true',
   'the chicken is hidden from screen readers — the banner already says what was reached');
 /* THE PARTS, NAMED. "An element with the right class" would pass against an
@@ -162,16 +173,23 @@ ok(chick && chick.attrs['aria-hidden'] === 'true',
   ok(chick && String(chick.innerHTML).indexOf(part) !== -1, `the chicken has its ${part.replace('aat-cel-chk-', '')}`);
 });
 
-const noChick = Cel.fire('a3', 100, '100 in a row');
-ok(!noChick.children.some(c => c.className === 'aat-cel-chicken'),
-  'a hundred does not draw one — it has the bigger event already, and a reader who gets there should meet something new');
+const two = birds(100);
+ok(two.length === 2, `a hundred draws two of them (got ${two.length})`);
+/* EACH ONE KNOWS WHICH IT IS. The stylesheet places and phases the pair off
+   this index; without it both birds land on the same spot on the same beat and
+   the duet is one bird drawn twice. */
+ok(two.length === 2 && two[0].attrs['data-chick'] === '0' && two[1].attrs['data-chick'] === '1',
+  'and each carries its index, which is what the stylesheet places and phases it by');
+ok(two.every(c => c.attrs['aria-hidden'] === 'true'),
+  'both are hidden from screen readers — two chickens is not twice the information');
+ok(two.every(c => String(c.innerHTML).indexOf('aat-cel-chk-comb') !== -1),
+  'and both are whole birds, not one bird and one empty box');
 
-/* Motion removed, chicken removed. A bird frozen mid-hop is a worse joke than
+/* Motion removed, chickens removed. A bird frozen mid-hop is a worse joke than
    no bird, and the banner is what carries the meaning. */
 global.matchMedia = () => ({ matches: true });
-const quietChick = Cel.fire('a3', 50, '50 in a row');
-ok(!quietChick.children.some(c => c.className === 'aat-cel-chicken'),
-  'and none at all under prefers-reduced-motion');
+ok(birds(50).length === 0 && birds(100).length === 0,
+  'and none at all, at either milestone, under prefers-reduced-motion');
 Cel.clear();
 global.matchMedia = () => ({ matches: false });
 
@@ -552,6 +570,22 @@ function finish() {
           const wrap = window.AATCelebrate.fire(theme, m, m + ' in a row');
           const piece = wrap.querySelector('.aat-cel-p');
           const banner = wrap.querySelector('.aat-cel-t');
+          /* SEEK PAST THE ENTRANCES BEFORE MEASURING WHERE ANYTHING IS.
+             This is the same trap the two notes below describe, in its third
+             form: read on the first frame, the chicken is still at the 0%
+             keyframe — scale(.26), 118px low — so its painted rect is small
+             and well below the banner, and a bird that spends the whole
+             celebration with its head behind the banner measures as clearing
+             it. 1400ms is past the bird's entrance (640ms, plus 150ms of delay
+             for the second one) and past the banner's (1.1s), so both are at
+             rest and the numbers mean what they say.
+
+             The wrapper's own rect is what gets measured, and only its own
+             animation moves it: a transform on the SVG group inside does not
+             grow an ancestor's border box, so the hop cannot make this flaky.
+             Rest is also the worst case — the hop only ever lifts the bird
+             AWAY from the banner and off the floor. */
+          document.getAnimations().forEach(a => { try { a.currentTime = 1400; } catch (e) {} });
           const cs = piece && getComputedStyle(piece);
           const bs = banner && getComputedStyle(banner);
           /* LAYOUT size, not the painted rect. Level 3's fifty starts at
@@ -566,36 +600,60 @@ function finish() {
             h: r ? Math.round(r.height) : 0,
             bannerBg: bs ? bs.backgroundColor : null,
             pieces: wrap.querySelectorAll('.aat-cel-p').length,
+            /* WHERE THE CELEBRATION ACTUALLY LANDED. See the assertions below:
+               a transform on an ancestor turns `position: fixed` into
+               "fixed to that ancestor", and the whole overlay slid off the
+               bottom of a long page without a single rule looking wrong. */
+            vh: window.innerHeight, vw: window.innerWidth,
+            bannerBox: banner ? (() => {
+              const r = banner.getBoundingClientRect();
+              return { t: Math.round(r.top), b: Math.round(r.bottom),
+                       l: Math.round(r.left), r: Math.round(r.right) };
+            })() : null,
             /* The chicken, if this is the milestone that gets one. Read here
                rather than in its own pass so it is measured through the same
                real fire() on the same real stylesheet as everything else. */
-            chick: (() => {
-              const c = wrap.querySelector('.aat-cel-chicken');
-              if (!c) return null;
-              const part = sel => {
-                const e = wrap.querySelector(sel);
-                if (!e) return null;
-                const s2 = getComputedStyle(e);
-                return { anim: s2.animationName, dur: s2.animationDuration,
-                         box: s2.transformBox, delay: s2.animationDelay };
-              };
-              /* LAYOUT size, for the reason spelled out above the piece
-                 measurement: the chicken enters at scale(.35) and grows, so a
-                 bounding rect read on the first frame is legitimately small.
-                 It reported 88px against a computed 208px and failed a bird
-                 that works. offsetWidth ignores the transform. */
-              return {
-                w: c.offsetWidth, h: c.offsetHeight,
-                svg: !!c.querySelector('svg'),
-                bird: part('.aat-cel-chk'), body: part('.aat-cel-chk-body'),
-                wing: part('.aat-cel-chk-wing'), head: part('.aat-cel-chk-head'),
-                legA: part('.aat-cel-chk-leg-a'), legB: part('.aat-cel-chk-leg-b'),
-                combFill: (() => {
-                  const e = wrap.querySelector('.aat-cel-chk-comb');
-                  return e ? getComputedStyle(e).fill : null;
-                })(),
-              };
-            })(),
+            /* EVERY bird, not the first one. A hundred draws two, and reading
+               only `querySelector` would measure one of them and call the pair
+               proved — which is exactly how a second bird that never moves
+               ships unnoticed. */
+            chicks: Array.prototype.map.call(
+              wrap.querySelectorAll('.aat-cel-chicken'), c => {
+                const part = sel => {
+                  const e = c.querySelector(sel);
+                  if (!e) return null;
+                  const s2 = getComputedStyle(e);
+                  return { anim: s2.animationName, dur: s2.animationDuration,
+                           box: s2.transformBox, delay: s2.animationDelay };
+                };
+                const cs2 = getComputedStyle(c);
+                /* LAYOUT size, for the reason spelled out above the piece
+                   measurement: the chicken enters at scale(.26) and grows, so
+                   a bounding rect read on the first frame is legitimately
+                   small. It reported 88px against a computed 208px and failed
+                   a bird that works. offsetWidth ignores the transform. */
+                return {
+                  w: c.offsetWidth, h: c.offsetHeight,
+                  svg: !!c.querySelector('svg'),
+                  /* Where it actually stands and which way it faces, resolved
+                     by the engine rather than read back off the custom
+                     properties: a --cel-x nothing consumes would still read
+                     back correctly and place nothing. */
+                  x: Math.round(c.getBoundingClientRect().left),
+                  top: Math.round(c.getBoundingClientRect().top),
+                  bottom: Math.round(c.getBoundingClientRect().bottom),
+                  face: cs2.getPropertyValue('--cel-face').trim(),
+                  inDelay: cs2.animationDelay,
+                  bird: part('.aat-cel-chk'), body: part('.aat-cel-chk-body'),
+                  wing: part('.aat-cel-chk-wing'), head: part('.aat-cel-chk-head'),
+                  tail: part('.aat-cel-chk-tail'),
+                  legA: part('.aat-cel-chk-leg-a'), legB: part('.aat-cel-chk-leg-b'),
+                  combFill: (() => {
+                    const e = c.querySelector('.aat-cel-chk-comb');
+                    return e ? getComputedStyle(e).fill : null;
+                  })(),
+                };
+              }),
           };
           window.AATCelebrate.clear();
           return out;
@@ -610,28 +668,41 @@ function finish() {
            cycle apart. Give them all one duration and the bird moves as a
            rigid lump — which is what "add an animated chicken" most easily
            degrades into. */
-        if (m === 50) {
-          const ch = got.chick;
-          ok(!!ch, `${key}: fifty draws a chicken`);
-          if (ch) {
-            ok(ch.svg, `${key}: and the chicken is drawn, not an empty box`);
-            ok(ch.w > 100 && ch.h > 100, `${key}: at a size worth looking at (${ch.w}x${ch.h})`);
-            ['bird', 'body', 'wing', 'head', 'legA', 'legB'].forEach(part => {
+        {
+          const want = m === 100 ? 2 : 1;
+          const chs = got.chicks || [];
+          const secs = v => parseFloat(String(v)) * (/ms$/.test(String(v)) ? 0.001 : 1);
+          ok(chs.length === want,
+            `${key}: draws ${want} chicken(s) (got ${chs.length})`);
+          chs.forEach((ch, ci) => {
+            const who = want > 1 ? `${key} bird ${ci}` : key;
+            ok(ch.svg, `${who}: the chicken is drawn, not an empty box`);
+            /* The pair are smaller than the solo so both fit a phone, so the
+               floor is lower here — but still a size worth looking at rather
+               than a thumbnail. */
+            const floor = want > 1 ? 80 : 100;
+            ok(ch.w > floor && ch.h > floor, `${who}: at a size worth looking at (${ch.w}x${ch.h})`);
+            ['bird', 'body', 'wing', 'head', 'tail', 'legA', 'legB'].forEach(part => {
               ok(ch[part] && ch[part].anim && ch[part].anim !== 'none',
-                `${key}: the chicken's ${part} is animated (got ${ch[part] && ch[part].anim})`);
+                `${who}: the chicken's ${part} is animated (got ${ch[part] && ch[part].anim})`);
               /* An SVG child's transform-origin resolves against the nearest
                  VIEWPORT unless this is set, so `50% 100%` on the wing rotated
                  it about a point off the bird entirely. */
               ok(ch[part] && ch[part].box === 'fill-box',
-                `${key}: and turns about its own box, not the SVG viewport (${part} transform-box ${ch[part] && ch[part].box})`);
+                `${who}: and turns about its own box, not the SVG viewport (${part} transform-box ${ch[part] && ch[part].box})`);
             });
-            const secs = v => parseFloat(String(v)) * (/ms$/.test(String(v)) ? 0.001 : 1);
             const beat = ch.body && secs(ch.body.dur);
             const flap = ch.wing && secs(ch.wing.dur);
+            const wag = ch.tail && secs(ch.tail.dur);
             ok(beat > 0 && flap > 0 && Math.abs(flap * 2 - beat) < 0.02,
-              `${key}: the wings flap at twice the body's beat (${flap}s against ${beat}s)`);
+              `${who}: the wings flap at twice the body's beat (${flap}s against ${beat}s)`);
+            /* THE TAIL IS THE THIRD RATE. Two rates that divide into each other
+               still read as one pulse; the wag has to land somewhere neither of
+               them does, or the bird is a metronome with feathers. */
+            ok(wag > 0 && beat > 0 && Math.abs((beat / wag) - Math.round(beat / wag)) > 0.1,
+              `${who}: the tail keeps its own time rather than the body's (${wag}s against ${beat}s)`);
             ok(ch.legA && ch.legB && secs(ch.legA.delay) !== secs(ch.legB.delay),
-              `${key}: the legs step out of phase, so the bird is always on one foot ` +
+              `${who}: the legs step out of phase, so the bird is always on one foot ` +
               `(${ch.legA && ch.legA.delay} / ${ch.legB && ch.legB.delay})`);
             /* THE COMB HAS TO BE VISIBLE, and it was not: drawn inside the
                skull circle, the head painted over it and the bird came out
@@ -639,17 +710,139 @@ function finish() {
                "none" or the body's cream would be the same defect by a
                different route. */
             ok(ch.combFill && ch.combFill !== 'none' && !/255, *25[0-9]/.test(ch.combFill),
-              `${key}: the comb is painted its own colour (got ${ch.combFill})`);
+              `${who}: the comb is painted its own colour (got ${ch.combFill})`);
+          });
+
+          /* ── THE PAIR IS A DUET, NOT A DUPLICATE ────────────────────────
+             Three things separate two birds from one bird drawn twice, and
+             each fails silently on its own: they stand apart, they face each
+             other, and they are half a beat out of step. A --cel-x that no
+             rule consumes, a mirror that never applied, or a phase left at 0
+             would each leave a hundred looking like fifty with a copy-paste. */
+          if (want === 2 && chs.length === 2) {
+            const [a, b] = chs;
+            ok(Math.abs(a.x - b.x) > 40,
+              `${key}: the two stand apart rather than on top of each other (${a.x} / ${b.x})`);
+            ok(a.face.trim() === '1' && b.face.trim() === '-1',
+              `${key}: and turn inward, so they dance at each other (${a.face} / ${b.face})`);
+            const pa = a.bird && secs(a.bird.delay), pb = b.bird && secs(b.bird.delay);
+            const beat = a.body && secs(a.body.dur);
+            ok(beat > 0 && Math.abs(Math.abs(pb - pa) - beat / 2) < 0.02,
+              `${key}: half a beat apart, so one lands as the other lifts ` +
+              `(${a.bird && a.bird.delay} / ${b.bird && b.bird.delay} on a ${beat}s beat)`);
+            /* The half-cycle between the two legs has to survive the phase
+               being added to both — otherwise the second bird stands on two
+               feet while the first one dances. */
+            ok(Math.abs((secs(b.legB.delay) - secs(b.legA.delay)) -
+                        (secs(a.legB.delay) - secs(a.legA.delay))) < 0.02,
+              `${key}: and the second bird's legs keep the same half-cycle as the first's`);
+            ok(secs(b.inDelay) > secs(a.inDelay),
+              `${key}: the second arrives after the first, so they land as two events ` +
+              `(${a.inDelay} / ${b.inDelay})`);
           }
-        } else {
-          ok(!got.chick, `${key}: a hundred draws no chicken — it has its own, bigger event`);
         }
+        /* ── THE CELEBRATION IS ON THE SCREEN ───────────────────────────
+           A transform on an element makes it the containing block for every
+           `position: fixed` DESCENDANT. The hundred's shake was a transform on
+           <body>, with `both` so it outlived its own 620ms by the whole four
+           seconds of the overlay — so `.aat-cel`'s `inset: 0` resolved against
+           the DOCUMENT, not the viewport. Measured on a 700px window whose page
+           ran to 1012px, the banner landed at y=450 and the birds at 532–700,
+           sliding further off the bottom the longer the page. Every rule read
+           correctly; only the geometry showed it, which is why it is asserted
+           here and not by reading the stylesheet.
+
+           Fifty never showed it, because fifty does not shake — so this has to
+           run at BOTH milestones or the one that breaks is the one not looked
+           at. */
+        ok(got.bannerBox && got.bannerBox.t >= 0 && got.bannerBox.b <= got.vh,
+          `${key}: the banner is on the screen, not anchored to the page ` +
+          `(${got.bannerBox && got.bannerBox.t}..${got.bannerBox && got.bannerBox.b} of ${got.vh})`);
+        (got.chicks || []).forEach((ch, ci) => {
+          const who = (got.chicks.length > 1) ? `${key} bird ${ci}` : key;
+          ok(ch.bottom <= got.vh && ch.top >= 0,
+            `${who}: is on the screen (${ch.top}..${ch.bottom} of ${got.vh})`);
+          /* THE BANNER IS DRAWN OVER THE BIRD — z-index 3 against 2 — so a bird
+             whose head reaches into the banner's box is a bird with no head.
+             Both milestones shipped that way once: the solo cleared the
+             banner's lower edge by four pixels and the pair, drawn smaller,
+             sat straight behind it. */
+          ok(got.bannerBox && ch.top >= got.bannerBox.b,
+            `${who}: stands clear of the banner rather than behind it ` +
+            `(bird top ${ch.top}, banner bottom ${got.bannerBox && got.bannerBox.b})`);
+        });
         ok(got.pieces > 0, `${key}: draws pieces`);
         ok(got.anim && got.anim !== 'none', `${key}: its pieces are actually animated (got ${got.anim})`);
         ok(got.w > 0 && got.h > 0, `${key}: and the pieces have a size (${got.w}x${got.h})`);
         ok(got.bannerBg && got.bannerBg !== 'rgba(0, 0, 0, 0)', `${key}: the banner is styled for this level`);
       }
     }
+
+    /* ── FIXED MEANS FIXED TO THE SCREEN ───────────────────────────────────
+       A transform on an element makes it the containing block for every
+       `position: fixed` DESCENDANT, and the hundred's shake was a transform on
+       <body> — carrying `both`, so it outlived its own 620ms by the whole four
+       seconds of the overlay. `.aat-cel`'s `inset: 0` then resolved against
+       the DOCUMENT: the banner and the birds were pinned to the page and slid
+       off the bottom of the screen, further the longer the page.
+
+       THE SIX-COMBINATION LOOP ABOVE CANNOT SEE THIS, and did not: on a page
+       no taller than the window, "anchored to the document" and "anchored to
+       the viewport" are the same rectangle, so the bug is invisible until the
+       page is long AND scrolled. This makes both true, which is the only
+       condition that tells the two apart. Fifty is measured the same way as a
+       control: it never shakes, so it must pass here whatever the fix did. */
+    {
+      const anchored = await page.evaluate(async () => {
+        const prev = document.documentElement.style.minHeight;
+        document.documentElement.style.minHeight = '260vh';
+        window.scrollTo(0, 700);
+        /* TWO MOMENTS, because the defect has two halves and each hides the
+           other. `at: 300` is DURING the 620ms shake, when the transform is
+           live: that is when a shake on <body> itself pins the overlay to the
+           page. `at: 1400` is after it, when only a lingering `both` fill
+           could still be doing so. Measure one and the other survives. */
+        const read = (ms, at) => {
+          window.AATCelebrate.clear();
+          const wrap = window.AATCelebrate.fire('aat', ms, ms + ' in a row');
+          document.getAnimations().forEach(a => { try { a.currentTime = at; } catch (e) {} });
+          const R = el => { const r = el.getBoundingClientRect(); return { t: Math.round(r.top), b: Math.round(r.bottom) }; };
+          const out = {
+            scrolled: Math.round(window.scrollY),
+            docH: Math.round(document.documentElement.scrollHeight),
+            vh: window.innerHeight,
+            banner: R(wrap.querySelector('.aat-cel-t')),
+            birds: Array.prototype.map.call(wrap.querySelectorAll('.aat-cel-chicken'), R),
+          };
+          window.AATCelebrate.clear();
+          return out;
+        };
+        const got = {
+          '50@shake': read(50, 300), '50@rest': read(50, 1400),
+          '100@shake': read(100, 300), '100@rest': read(100, 1400),
+        };
+        document.documentElement.style.minHeight = prev;
+        window.scrollTo(0, 0);
+        return got;
+      });
+      const ref = anchored['100@rest'];
+      ok(ref.scrolled > 300 && ref.docH > ref.vh + 400,
+        `the anchor test runs on a page genuinely longer than the window and scrolled down ` +
+        `(page ${ref.docH}, window ${ref.vh}, scrolled ${ref.scrolled})`);
+      Object.keys(anchored).forEach(when => {
+        const g = anchored[when];
+        const on = r => r.t >= 0 && r.b <= g.vh;
+        ok(on(g.banner),
+          `${when}: the banner stays on the screen when the page is long and scrolled ` +
+          `(${g.banner.t}..${g.banner.b} of ${g.vh})`);
+        g.birds.forEach((r, i) => {
+          ok(on(r),
+            `${when}: bird ${i} stays on the screen when the page is long and scrolled ` +
+            `(${r.t}..${r.b} of ${g.vh})`);
+        });
+      });
+    }
+
     /* ── The badge's two tiers, painted ─────────────────────────────────────
        §3b proves the renderer puts the classes on. This proves the stylesheets
        do something with them, which no amount of reading markup can.
