@@ -37,9 +37,26 @@ build command empty. A second project on the same repository is fine; it
 deploys on push like the study site does.
 
 Failing that, any static host will do — the page is one file with no build and
-no server side. What will NOT do is opening the file straight off the phone:
-a `file://` page gets an opaque origin, so the browser blocks the call to
-service.kentkart.com and the board falls back to the baked timetable.
+no server side.
+
+OR JUST OPEN THE FILE. A `file://` page may call a cross-origin endpoint when
+that endpoint sends `access-control-allow-origin: *`, and this one does —
+tested in Chromium, which fetches it from `file://` without complaint. I had
+written the opposite here, from a test that failed for a different reason (the
+browser in that sandbox had no network at all).
+
+Whether a given browser allows it is the browser's business, not something
+this page can promise, and Safari has historically been stricter about file
+origins. The page says which mode it is in on the line under its title —
+"Live from Kentkart" or "Offline — showing the 2023 timetable" — so open it
+and read that. If it says Offline, serve the folder over HTTP instead:
+
+```
+python3 -m http.server 8000 --directory tram
+```
+
+and open `http://localhost:8000/antalya-tram.html`, where the call is an
+ordinary cross-origin request and works everywhere.
 
 ## There is a live feed, and this uses it
 
