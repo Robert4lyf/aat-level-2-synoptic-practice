@@ -80,6 +80,13 @@ const summary = UI.AAT3_UI.practiceSummary;
 const OUTCOMES = UI.AAT3_SYLLABUS.units.tpfb.outcomes;
 const FAPS_OUTCOMES = UI.AAT3_SYLLABUS.units.faps.outcomes;
 const BANK = UI.AAT3_PRACTICE.QUESTIONS;
+/* The other three units keep their questions in their own files, and
+   practiceBank() concatenates all four. A check that loads only this one sees
+   an empty bank for FAPS, MATS and BUAW — and a draw that returns nothing
+   passes "never strays outside the set" without proving anything. */
+UI.AAT3_FAPS_PRACTICE = require(path.join(ROOT, 'aat3-faps-data.js')).AAT3_FAPS_PRACTICE;
+UI.AAT3_MATS_PRACTICE = require(path.join(ROOT, 'aat3-mats-data.js')).AAT3_MATS_PRACTICE;
+UI.AAT3_BUAW_PRACTICE = require(path.join(ROOT, 'aat3-buaw-data.js')).AAT3_BUAW_PRACTICE;
 
 let failures = 0, checks = 0;
 function ok(cond, label) {
@@ -511,6 +518,106 @@ const TWO_UNIT_PATH = UI.AAT3_LEARN_PATH.concat(
   ok(startableOutcomes(blank).length === OUTCOMES.length,
     `a reader with no history can still start any of the ${OUTCOMES.length} outcomes ` +
     `(found ${startableOutcomes(blank).length})`);
+}
+
+/* ── Practising a chosen few outcomes ─────────────────────────────────────
+   A reader partway through a unit has read some outcomes and not others. One
+   outcome at a time cannot mix the two or three they HAVE read, and "all
+   outcomes" draws from material they have not met — which in FAPS, with nine
+   outcomes, is most of it. So a run can be drawn from a chosen set.
+
+   THE CLAIM WORTH ASSERTING IS ABOUT THE DRAW, not about the chips: that a run
+   over a set contains those outcomes and NOTHING else, and that it splits them
+   the way the exam weights them rather than by how many questions each happens
+   to have been written. Both fail silently — a stray outcome looks like any
+   other question, and a draw that went by bank size would still look
+   plausible. The chips themselves are markup, asserted below.
+
+   REPEATED, because one draw of ten proves very little: the seat allocation
+   carries a random offset, so a filter that leaked would leak intermittently.
+   Three hundred runs of ten is three thousand questions per set. */
+{
+  const draw = UI.AAT3_UI.drawPractice;
+  ok(typeof draw === 'function', 'the practice draw is reachable for assertion');
+
+  const SETS = [
+    ['faps', [1, 2]], ['faps', [7]], ['faps', [3, 6, 9]],
+    ['tpfb', [2, 3, 4]], ['mats', [1, 5]], ['buaw', [2]],
+  ];
+  SETS.forEach(([unit, set]) => {
+    const counts = {};
+    let drawn = 0, strays = 0;
+    for (let i = 0; i < 300; i++) {
+      draw(unit, 10, set).forEach(q => {
+        drawn++;
+        counts[q.lo] = (counts[q.lo] || 0) + 1;
+        if (set.indexOf(q.lo) === -1) strays++;
+      });
+    }
+    /* A draw that returns nothing would pass "no strays" while proving
+       nothing at all — which is exactly what happened while this file loaded
+       only one of the four unit banks. */
+    ok(drawn > 2000,
+      `${unit} ${JSON.stringify(set)}: only ${drawn} questions drawn over 300 runs — ` +
+      `a draw with an empty bank passes every other assertion here vacuously`);
+    ok(strays === 0,
+      `${unit} ${JSON.stringify(set)}: ${strays} of ${drawn} questions came from an outcome ` +
+      `outside the chosen set (${JSON.stringify(counts)})`);
+    ok(set.every(n => counts[n] > 0),
+      `${unit} ${JSON.stringify(set)}: a chosen outcome never appeared at all (${JSON.stringify(counts)})`);
+  });
+
+  /* WEIGHTED, NOT PROPORTIONAL TO THE BANK. FAPS Outcome 1 is weighted 5 and
+     Outcome 2 is weighted 10, so a run over the two should run about 1:2 — and
+     would not if the draw simply pooled and shuffled, because the two outcomes
+     hold different numbers of questions. */
+  {
+    const os = UI.AAT3_SYLLABUS.units.faps.outcomes;
+    const w = n => os.find(o => o.n === n).weighting;
+    const want = w(2) / (w(1) + w(2));
+    const counts = {};
+    let drawn = 0;
+    for (let i = 0; i < 400; i++) {
+      draw('faps', 10, [1, 2]).forEach(q => { counts[q.lo] = (counts[q.lo] || 0) + 1; drawn++; });
+    }
+    const got = (counts[2] || 0) / drawn;
+    ok(Math.abs(got - want) < 0.06,
+      `a run over FAPS Outcomes 1 and 2 gave Outcome 2 ${(got * 100).toFixed(1)}% of the ` +
+      `questions, but it is weighted ${w(2)} against ${w(1)} — ${(want * 100).toFixed(1)}% — ` +
+      `so the draw is going by bank size rather than by the exam's weighting`);
+  }
+
+  /* An empty set is not a narrower run, it is every outcome: the screen never
+     starts one, but a stale stored set whose outcomes have all been renumbered
+     resolves to nothing, and silently serving zero questions is the worst of
+     the available behaviours. */
+  {
+    const seen = {};
+    for (let i = 0; i < 200; i++) draw('faps', 10, []).forEach(q => { seen[q.lo] = 1; });
+    ok(Object.keys(seen).length > 3,
+      `an empty set drew from only ${Object.keys(seen).length} outcome(s) — it must fall back ` +
+      `to the whole unit rather than to nothing`);
+  }
+
+  /* THE CHIPS, AND THE BUTTON THEY FEED. */
+  {
+    const el = fakeEl();
+    UI.AAT3_UI.mount(el);
+    click(el, 'practice');
+    const html = el.innerHTML;
+    const chips = [...html.matchAll(/data-a3="picklo" data-lo="(\d+)"/g)].map(m => Number(m[1]));
+    ok(chips.length === startableOutcomes(html).length,
+      `${chips.length} outcomes can be ticked but ${startableOutcomes(html).length} can be started — ` +
+      `every outcome with questions behind it should offer both`);
+    ok(/data-a3="startpractice" data-lo="sel"/.test(html),
+      'the chosen set has no button to start it');
+    /* Disabled until something is ticked, rather than absent: a button that
+       appears on the first tap moves everything under it. */
+    ok(/class="a3-sum-pick-go"[^>]*disabled/.test(html),
+      'with nothing ticked the run button is not disabled');
+    ok(chips.every(n => /aria-pressed="(true|false)"/.test(html)),
+      'the chips carry no pressed state, so a screen reader cannot tell which are chosen');
+  }
 }
 
 console.log(failures

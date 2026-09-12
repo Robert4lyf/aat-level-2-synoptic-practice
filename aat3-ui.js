@@ -24,7 +24,7 @@
     screen: 'units',     // 'units' | 'path' | 'lesson' | 'practice' | 'quiz' | 'done'
     unit: null,          // which unit's path, practice and progress are on screen
     mode: 'lesson',      // 'lesson' | 'practice' | 'mock' — which set the question handlers read
-    practiceLo: null,    // an outcome number, or 'mix', 'missed' or 'endless'
+    practiceLo: null,    // an outcome number, an array of them, or 'mix', 'missed' or 'endless'
     /* ── Endless practice ──────────────────────────────────────────────────
        A run with no last question. `practiceQs` is topped up as the reader
        approaches the end of it, so nothing about the question screen has to
@@ -514,6 +514,53 @@
   function clearPos() {
     try { localStorage.removeItem(POS_KEY); } catch (e) {}
   }
+  /* ── Which outcomes the reader wants questions from ───────────────────────
+     A reader partway through a unit has finished some outcomes and not started
+     others, and neither of the two runs on offer fits that: "all outcomes"
+     draws from material they have not read yet, and one outcome at a time
+     cannot mix the two or three they HAVE read. So a set of outcomes is a
+     third thing a run can be drawn from.
+
+     STORED PER UNIT, under its own key outside the progress record, for the
+     reason the reading position and the trend lines have their own: it is a
+     study choice, device-local, and merging one device's set with another's
+     answers a question nobody asked.
+
+     NUMBERS, AND ONLY ONES THE UNIT HAS. A stale outcome number from a unit
+     that has since been rewritten would otherwise sit in the set for ever,
+     silently narrowing every draw; the read filters against the live outcome
+     list rather than trusting what was written. */
+  var LOSEL_KEY = STORE_KEY + '_losel';
+  function loSelRaw() {
+    var all;
+    try { all = JSON.parse(localStorage.getItem(LOSEL_KEY) || '{}'); } catch (e) { all = {}; }
+    var mine = all && all[activeUnit()];
+    return Array.isArray(mine) ? mine : [];
+  }
+  function loSel() {
+    var live = {};
+    outcomes(activeUnit()).forEach(function (o) { live[o.n] = 1; });
+    return loSelRaw().filter(function (n) { return live[n]; })
+      .sort(function (a, b) { return a - b; });
+  }
+  function setLoSel(n, on) {
+    var all;
+    try { all = JSON.parse(localStorage.getItem(LOSEL_KEY) || '{}'); } catch (e) { all = {}; }
+    if (!all || typeof all !== 'object') all = {};
+    var cur = loSelRaw().filter(function (x) { return x !== n; });
+    if (on) cur.push(n);
+    all[activeUnit()] = cur.sort(function (a, b) { return a - b; });
+    try { localStorage.setItem(LOSEL_KEY, JSON.stringify(all)); } catch (e) {}
+  }
+  /* "1", "1 and 2", "1, 2 and 5" — read out rather than punctuated, because
+     this ends up in a button label and on the done screen. */
+  function loList(ns) {
+    var a = (ns || []).slice();
+    if (!a.length) return '';
+    if (a.length === 1) return String(a[0]);
+    return a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1];
+  }
+
   /* ── Which trend lines the reader wants to see ────────────────────────────
      Six lines on a phone is more than anyone reads at once, so every legend
      entry is a toggle and the choice is remembered.
@@ -735,6 +782,9 @@
     /* Without this the label falls through and an endless run is described as
        "Outcome endless" on its own result screen. */
     if (S.practiceLo === 'endless') return 'endless practice';
+    if (Array.isArray(S.practiceLo)) {
+      return (S.practiceLo.length === 1 ? 'Outcome ' : 'Outcomes ') + loList(S.practiceLo);
+    }
     return 'Outcome ' + S.practiceLo;
   }
 
@@ -3273,6 +3323,47 @@
     });
     h += '</div>';
 
+    /* ── PRACTISE A FEW OUTCOMES TOGETHER ──────────────────────────────────
+       The rows above start one outcome, and "mixed practice" draws from all of
+       them. Neither fits a reader partway through a unit: they have read
+       Outcomes 1 and 2 and nothing else, and want questions from exactly
+       those. FAPS has nine outcomes, so "all of them" is mostly material they
+       have not met.
+
+       CHIPS RATHER THAN A SECOND SET OF ROWS. The choice is a handful of
+       numbers, the rows are already the place a reader reads about an outcome,
+       and repeating all nine as checkboxes would double the length of the
+       screen to add one button. The chips sit under the rows, where a reader
+       who has just looked down the list is standing.
+
+       The set is remembered, because it is a fact about how far through the
+       unit the reader is — not a thing to re-tick every visit. */
+    var pickable = s.rows.filter(function (r) { return !!bankCounts[r.n]; });
+    if (pickable.length > 1) {
+      var sel = loSel(), selSet = {};
+      sel.forEach(function (x) { selSet[x] = 1; });
+      h += '<div class="a3-sum-pick">';
+      h += '<div class="a3-sum-pick-k" id="a3-pick-k">Or practise several together</div>';
+      h += '<ul class="a3-sum-chips" aria-labelledby="a3-pick-k">';
+      pickable.forEach(function (r) {
+        h += '<li><button type="button" class="a3-sum-chip" data-a3="picklo" data-lo="' + esc(r.n) + '"' +
+          ' aria-pressed="' + (selSet[r.n] ? 'true' : 'false') + '"' +
+          ' aria-label="Outcome ' + esc(r.n) + ', ' + esc(r.title) + '">' + esc(r.n) + '</button></li>';
+      });
+      h += '</ul>';
+      /* ONE BUTTON, ALWAYS PRESENT, DISABLED UNTIL THERE IS A SET. A button
+         that appears and disappears as chips are tapped moves everything below
+         it on every tap; a disabled one that says what it is waiting for does
+         not, and reads as part of the control rather than as a surprise. */
+      h += '<button class="a3-sum-pick-go" data-a3="startpractice" data-lo="sel"' +
+        (sel.length ? '' : ' disabled') + '>' +
+        '<span class="a3-sum-pick-lbl">' + (sel.length
+          ? 'Practise Outcome' + (sel.length > 1 ? 's ' : ' ') + esc(loList(sel))
+          : 'Choose an outcome above') + '</span>' +
+        '<span aria-hidden="true">\u2192</span></button>';
+      h += '</div>';
+    }
+
     h += '<div class="a3-sum-foot">Practice questions only — the questions inside lessons are ' +
       'recorded on the path, not here.</div>';
     return h + '</section>';
@@ -3997,7 +4088,7 @@
      A shortfall in one outcome is redistributed rather than left as a gap: a
      run that asked for three and found two must still be ten questions long, or
      the score at the end is out of a different number than the reader thinks. */
-  function drawWeighted(unitKey, n, tasksFirst, noWritten, keepRetired) {
+  function drawWeighted(unitKey, n, tasksFirst, noWritten, keepRetired, onlyLos) {
     /* WHY A MOCK STILL DRAWS FROM RETIRED QUESTIONS, and nothing else does.
        Everywhere else, "I know this" means stop asking me. A mock is the one
        place where honouring that would work against the reader: it is a
@@ -4017,6 +4108,15 @@
        to mark it. So the timed paper stays objectively marked, and written work
        lives in the practice runs, where the feedback loop it needs exists. */
     if (noWritten) bank = bank.filter(function (q) { return q.type !== 'written'; });
+    /* NARROWING THE BANK IS THE WHOLE CHANGE. The seat allocation below
+       re-normalises over the outcomes still represented in it, so a run over
+       Outcomes 1 and 2 is weighted between those two in the same proportion
+       the exam weights them against each other — rather than by how many
+       questions each happens to have in the bank, which is an accident of how
+       much has been written. */
+    if (onlyLos && onlyLos.length) {
+      bank = bank.filter(function (q) { return onlyLos.indexOf(q.lo) !== -1; });
+    }
     var os = outcomes(unitKey).filter(function (o) {
       return bank.some(function (q) { return q.lo === o.n; });
     });
@@ -4469,6 +4569,13 @@
        against this rather than against whatever unit happens to be active when
        the question is graded. */
     S.practiceUnit = activeUnit();
+    /* RESOLVED HERE, NOT CARRIED AS A NAME. "sel" is what the button says; the
+       run needs the numbers, and needs them fixed at the moment it starts —
+       otherwise a reader who changes the set afterwards changes what a finished
+       run says it was, and "retry" replays a different set from the one they
+       just sat. */
+    if (lo === 'sel') lo = loSel();
+    if (Array.isArray(lo) && !lo.length) lo = 'mix';
     S.practiceLo = lo;
     /* The mistakes run is drawn in order, oldest miss last, rather than
        shuffled: a reader with thirty outstanding questions wants the ten they
@@ -4493,6 +4600,11 @@
       topUpEndless();
     } else if (lo === 'mix') {
       S.practiceQs = drawWeighted(S.practiceUnit, PRACTICE_LEN);
+    } else if (Array.isArray(lo)) {
+      /* Drawn the way "all outcomes" is drawn, over the chosen few: the seats
+         go by exam weighting rather than by bank size, so a reader who has
+         read Outcomes 1 and 2 gets them in the proportion the paper will. */
+      S.practiceQs = drawWeighted(S.practiceUnit, PRACTICE_LEN, false, false, false, lo);
     } else {
       var pool = livePool(S.practiceUnit).filter(function (q) { return q.lo === lo; });
       S.practiceQs = shuffle(pool).slice(0, PRACTICE_LEN);
@@ -5018,6 +5130,34 @@
        Calc patches its own two nodes instead — see _refresh() — so this branch
        returns without asking for a repaint, and must stay above the ones that
        do. */
+    /* TICKING AN OUTCOME DOES NOT REPAINT THE SCREEN either, and for the same
+       reason as the trend toggles below: rerender() rebuilds the practice
+       summary, and a reader picking three outcomes off a list near the foot of
+       it would be thrown back to the top twice on the way. Only two things
+       change — the chip's own state and the run button — so only those two are
+       patched. */
+    if (act === 'picklo') {
+      var pl = Number(n.getAttribute('data-lo'));
+      var wrap = n.closest && n.closest('.a3-sum-pick');
+      if (!wrap || !isFinite(pl)) return;
+      var turnOn = n.getAttribute('aria-pressed') !== 'true';
+      n.setAttribute('aria-pressed', turnOn ? 'true' : 'false');
+      setLoSel(pl, turnOn);
+      var picked = loSel();
+      var go = wrap.querySelector('.a3-sum-pick-go');
+      var lbl = wrap.querySelector('.a3-sum-pick-lbl');
+      if (go) {
+        if (picked.length) go.removeAttribute('disabled');
+        else go.setAttribute('disabled', '');
+      }
+      if (lbl) {
+        lbl.textContent = picked.length
+          ? 'Practise Outcome' + (picked.length > 1 ? 's ' : ' ') + loList(picked)
+          : 'Choose an outcome above';
+      }
+      return;
+    }
+
     /* HIDING A TREND LINE DOES NOT REPAINT THE SCREEN, for the same reason the
        keypad above does not: rerender() rebuilds the whole practice summary,
        and a reader who has scrolled down to the chart would be thrown back to
@@ -5501,5 +5641,14 @@
        the reader's own date or on UTC's. */
     practiceTrend: practiceTrend,
     dayKey: dayKey,
+    /* Exported for the same reason practiceSummary and practiceTrend are: the
+       claim worth asserting about a run over a chosen set of outcomes — that
+       it contains those outcomes and nothing else, in the proportion the exam
+       weights them — is a property of the draw, and the draw is pure. Reaching
+       it through the screen would test the navigation instead. */
+    drawPractice: function (unitKey, n, onlyLos) {
+      return drawWeighted(unitKey, n, false, false, false, onlyLos);
+    },
+    loSelection: loSel,
   };
 }(typeof self !== 'undefined' ? self : this));
