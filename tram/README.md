@@ -98,13 +98,22 @@ timetable. A timed tram within three minutes of a live one is taken to be the
 same tram rather than a second one.
 
 A live row needs a tracked vehicle *behind* your stop, which at the end of a
-line is impossible and on a three-tram line is often just untrue. So when
+line is impossible and on a three-tram line is often just untrue. The map's
+caption counts the same way — "1 tram coming to you" against "1 already past
+your stop", and the ones past are drawn faded — because "1 tram going your
+way" with nothing live on the board reads like a fault, when the truth is that
+it left before you looked. So when
 nothing on your side of the line is tracked, the note above the board gives
 the nearest vehicle that can still reach you — the one coming the other way,
 its run time to the far end plus the booked run out to your stop, if it turns
 straight round. It says so in those words: at a mid-route stop the timetable
 below is usually sooner, and reading that note as "the next tram" would be
 worse than showing nothing.
+
+THE FILTER IGNORES THE TURKISH LETTERS. Nobody types FEVZİ ÇAKMAK on an
+English keyboard, and Turkish casing does not help — capital I lowercases to
+ı, not i — so both the query and the route names are folded to plain ASCII
+before matching: `calli` finds ÇALLI, `muze` finds MÜZE, `kisla` finds KIŞLA.
 
 STOP NAMES END IN DIGITS THAT MATTER. The two tram platforms are `FATİH1` and
 `FATİH2`, and showing both as `FATİH` reads better — but `CEBESOY CD-11`,
@@ -132,8 +141,10 @@ track visibly cuts the corners the real rails go round.
 Vehicles move visibly in well under a minute — one T3 tram moved 310 m in the
 46 seconds between two polls — so the page refreshes every 20 seconds, and on
 returning to the tab. If six of those refreshes pass without an answer the page
-keeps the last positions but drops the word "live": it says how old they are
-instead.
+keeps the last positions but stops calling anything live: the status line says
+how old they are, the live rows and the note above the board go, and the map's
+caption changes to "where they were N min ago". Stale arithmetic dressed as a
+countdown is the one thing worse than no countdown.
 
 ## The fallback, and why it is still here
 
