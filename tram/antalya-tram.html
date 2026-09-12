@@ -85,6 +85,8 @@
   .calls li { display: flex; justify-content: space-between; padding: 3px 0; }
   .calls b { font-weight: 600; font-variant-numeric: tabular-nums; color: var(--ink); }
   .empty { color: var(--dim); font-size: 14px; padding: 16px 2px; }
+  .inbound { margin: 14px 0 0; font-size: 13px; line-height: 1.5; color: var(--dim); }
+  .inbound b { color: var(--ink); }
   #mapwrap { margin-top: 24px; }
   #mapwrap h2 { font-size: 15px; margin: 0 0 2px; }
   #mapwrap p { margin: 0 0 8px; font-size: 12px; color: var(--dim); }
@@ -132,6 +134,7 @@
   <button id="fav" type="button" title="Save this stop">&#9734;</button>
 </div>
 
+<p class="inbound" id="inbound" hidden></p>
 <ul id="board"></ul>
 
 <section id="mapwrap">
@@ -145,7 +148,9 @@
   <p><strong>Live where it can be.</strong> Every Antalya route is here — 6 tram
   lines and 213 bus routes, all from the same feed. Kentkart's passenger API
   reports the vehicles' own GPS, and a <em>live</em> row is a tram the feed can actually see, its
-  arrival worked out from the stop it last called at. A <em>timed</em> row is the
+  arrival worked out from the stop it last called at — which only works once it is
+  on the road behind you, so at the end of a line the note above the board tells
+  you what is coming in to turn round instead. A <em>timed</em> row is the
   timetable — the current one, fetched with the positions. With no signal the page
   falls back to a timetable baked in from a 2023 export and says so above — that
   export covers the trams only, so a bus with no signal has nothing to show.</p>
@@ -395,14 +400,48 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
     var live = state.live[state.code + '|' + (state.dir === '0' ? '1' : '0')];
     if (!live) return null;
     var p = live.path;
+    var stops = (p.busStopList || []).map(function (s) {
+      return {
+        id: s.stopId, name: stopName(s.stopName),
+        off: parseInt(s.departure_offset, 10) / 60 || 0
+      };
+    });
+    var byId = {};
+    stops.forEach(function (s, i) { byId[s.id] = i; });
     return {
+      stops: stops,
       points: (p.pointList || []).map(function (q) {
         return { lat: parseFloat(q.lat), lng: parseFloat(q.lng) };
       }),
       buses: (p.busList || []).map(function (b) {
-        return { lat: parseFloat(b.lat), lng: parseFloat(b.lng), plate: b.plateNumber };
+        return {
+          lat: parseFloat(b.lat), lng: parseFloat(b.lng),
+          seq: byId[b.stopId], plate: b.plateNumber
+        };
       })
     };
+  }
+
+  /* AT THE END OF A LINE NOTHING CAN BE BEHIND YOU. The tram that will take
+     you out of Fatih is the one still coming in on the other track, so at the
+     first stop the live answer is about arrivals: how far off the inbound
+     trams are, and which will turn round. */
+  function inbound(M, idx, now) {
+    if (idx !== 0) return [];
+    var back = otherWay();
+    if (!back || !back.stops.length) return [];
+    /* The inbound run ends at the same station you are standing in, on the
+       other platform, so its last offset is the whole journey time. */
+    var end = back.stops[back.stops.length - 1];
+    if (!end) return [];
+    var out = [];
+    back.buses.forEach(function (b) {
+      if (b.seq === undefined || b.seq === null) return;
+      var wait = end.off - back.stops[b.seq].off;
+      if (wait < 0) return;
+      out.push({ wait: wait, from: back.stops[b.seq].name });
+    });
+    return out.sort(function (a, b) { return a.wait - b.wait; });
   }
 
   /* A live tram's arrival at my stop: the booked run time from wherever it
@@ -440,7 +479,7 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
 
   var el = {};
   ['clock', 'lines', 'dirs', 'stop', 'fav', 'favs', 'board', 'src', 'status',
-    'map', 'mapcount', 'route', 'routefilter', 'routecount']
+    'map', 'mapcount', 'route', 'routefilter', 'routecount', 'inbound']
     .forEach(function (id) { el[id] = document.getElementById(id); });
 
   function colour(code) { return COLOUR[code] || BUS_COLOUR; }
@@ -523,6 +562,7 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
     var idx = M.stops.map(function (s) { return s.id; }).indexOf(state.stop);
     if (idx < 0) idx = 0;
     var rows = board(M, idx, now);
+    renderInbound(M, idx, now, rows);
     el.board.innerHTML = '';
     if (!rows.length) {
       var p = document.createElement('li');
@@ -563,6 +603,30 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
       if (state.open === i) li.appendChild(calls(M, idx, r));
       el.board.appendChild(li);
     });
+  }
+
+  function renderInbound(M, idx, now, rows) {
+    if (M.source !== 'live' || idx !== 0) { el.inbound.hidden = true; return; }
+    var arr = inbound(M, idx, now);
+    el.inbound.hidden = false;
+    if (!arr.length) {
+      el.inbound.textContent = 'Nothing tracked coming into this end yet, so the ' +
+        'times below are the timetable. A tram can only show as live once it is ' +
+        'on the road behind you.';
+      return;
+    }
+    var first = arr[0];
+    el.inbound.innerHTML = '';
+    el.inbound.appendChild(document.createTextNode('Coming into this end: '));
+    var b = document.createElement('b');
+    b.textContent = first.wait < 1 ? 'one is here now' :
+      'one is ' + Math.round(first.wait) + ' min away';
+    el.inbound.appendChild(b);
+    el.inbound.appendChild(document.createTextNode(
+      ' (tracked from ' + first.from + ')' +
+      (arr.length > 1 ? ', and ' + (arr.length - 1) + ' more behind it' : '') +
+      '. One of those turns round and becomes your departure, so the times below ' +
+      'are the timetable until a tram is on your side of the line.'));
   }
 
   /* The rest of the journey from my stop, at this tram's pace. */
