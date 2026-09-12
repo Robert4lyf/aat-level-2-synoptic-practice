@@ -73,6 +73,8 @@ jobs:
         run: npm run check:aat3-trend
       - name: Check AAT Level 3 practice summary (totals, most-mistakes ranking)
         run: npm run check:aat3-summary
+      - name: Check practising a chosen few outcomes or topics (Levels 1 and 2)
+        run: npm run check:picker
       - name: Check no Level 3 question is answerable from option position
         run: npm run check:aat3-position
       - name: Check Level 3 multi-part tasks behave (grading, per-part feedback, no state leak)

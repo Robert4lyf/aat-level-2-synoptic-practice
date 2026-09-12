@@ -3367,7 +3367,13 @@
 
        The set is remembered, because it is a fact about how far through the
        unit the reader is — not a thing to re-tick every visit. */
-    var pickable = s.rows.filter(function (r) { return !!bankCounts[r.n]; });
+    /* Counted over the LIVE pool, not the whole bank. `bankCounts` includes
+       questions put away with "I know this", and a chip for an outcome with
+       nothing left to ask is one loSel() will drop the moment it is ticked — a
+       chip that goes dark and changes nothing else. */
+    var liveCounts = {};
+    livePool(activeUnit()).forEach(function (q) { liveCounts[q.lo] = (liveCounts[q.lo] || 0) + 1; });
+    var pickable = s.rows.filter(function (r) { return !!liveCounts[r.n]; });
     if (pickable.length > 1) {
       var sel = loSel(), selSet = {};
       sel.forEach(function (x) { selSet[x] = 1; });

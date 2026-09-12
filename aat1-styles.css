@@ -1323,6 +1323,61 @@ body.dark[data-subject="aat1"] .a1-mc5 { --a1-mc: #58C6DE; }
 .a1-pcard-t { font-size: 1rem; font-weight: 700; color: var(--a1-ink); line-height: 1.35; }
 .a1-pcard-m { font-size: .83rem; color: var(--a1-ink-3); }
 
+/* ── Practising several outcomes at once ──────────────────────────────────
+   A row of numbered chips under the outcome cards, and one button. The cards
+   above already say what each outcome is; these are the same five outcomes as
+   bare numbers, for choosing rather than for reading. */
+.a1-pick {
+  margin-top: var(--a1-4); padding-top: var(--a1-3);
+  border-top: 1px solid var(--a1-line);
+}
+.a1-pick-k {
+  font-size: var(--a1-t-meta); color: var(--a1-ink-3); margin-bottom: 9px;
+}
+.a1-chips {
+  display: flex; flex-wrap: wrap; gap: 7px; list-style: none; margin: 0 0 11px; padding: 0;
+}
+/* A round target big enough for a thumb: 38px clears the 36px floor the rest of
+   this screen is built to, and the number stays centred as the chip grows. */
+.a1-chip {
+  min-width: 38px; height: 38px; padding: 0 11px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: inherit; font-size: var(--a1-t-ui); font-weight: 700; line-height: 1;
+  color: var(--a1-ink-2); background: var(--a1-surface);
+  border: 1.5px solid var(--a1-line-2); border-radius: 999px;
+  cursor: pointer; -webkit-tap-highlight-color: transparent;
+  transition: background .12s ease, border-color .12s ease, color .12s ease;
+}
+.a1-chip:hover { border-color: var(--a1-brand); color: var(--a1-brand-ink); }
+.a1-chip:focus-visible { outline: 2px solid var(--a1-brand); outline-offset: 2px; }
+/* CHOSEN IS NOT COLOUR ALONE. The chip fills and its border thickens with it,
+   so the state survives a greyscale screen and a reader who cannot separate the
+   brand hue from the surface. */
+.a1-chip[aria-pressed="true"] {
+  background: var(--a1-brand); border-color: var(--a1-brand);
+  color: var(--a1-on-fill);
+}
+.a1-pick-go {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  width: 100%; min-height: 44px; padding: 11px 15px;
+  font-family: inherit; font-size: var(--a1-t-ui); font-weight: 700; text-align: left;
+  color: var(--a1-brand-ink); background: var(--a1-brand-wash);
+  border: 1px solid transparent; border-radius: var(--a1-r-sm);
+  cursor: pointer; -webkit-tap-highlight-color: transparent;
+}
+/* The label is its own element so the handler can rewrite the text without
+   touching the arrow beside it. It takes the free width, so "Practise Outcomes
+   1, 2 and 5" wraps inside the button rather than pushing the arrow off it. */
+.a1-pick-lbl { flex: 1 1 auto; min-width: 0; }
+.a1-pick-go:hover:not([disabled]) { border-color: var(--a1-brand); }
+.a1-pick-go:focus-visible { outline: 2px solid var(--a1-brand); outline-offset: 2px; }
+/* DISABLED RATHER THAN ABSENT. A button that appears on the first tap and
+   vanishes on the last moves everything under it twice; one that stays put and
+   says what it is waiting for does not. */
+.a1-pick-go[disabled] {
+  color: var(--a1-ink-3); background: var(--a1-surface-2); cursor: default;
+}
+
 /* ── The timed mock ───────────────────────────────────────────────────────── */
 
 /* The panel that opens a paper. Heavier than the outcome cards below it because
