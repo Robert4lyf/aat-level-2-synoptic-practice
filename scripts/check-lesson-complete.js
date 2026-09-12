@@ -83,14 +83,19 @@ function answerAny(D, el, p) {
     pick('egcell').forEach(n => { n.value = '0'; n.fire('input'); });
     D.click(el, 'egsubmit'); return true;
   }
-  if (has('matchl')) {
-    const L = pick('matchl'), R = pick('matchr');
-    L.forEach((n, i) => { n.fire('click'); if (R[i]) R[i].fire('click'); });
-    D.click(el, 'matchsubmit'); return true;
-  }
-  if (has('ordersubmit')) { D.click(el, 'ordersubmit'); return true; }
-  if (has('taskinput') || has('tasksubmit')) {
+  /* A MULTI-PART TASK IS ONE SCREEN AND ONE SUBMIT, so it is answered before
+     the single-type branches below — any of them would recognise a part of it,
+     act on that part alone and report progress, and the walker would come
+     round to the same screen for ever. It carries whatever controls its parts
+     need: figures to type, pills to pick, and a part that is itself an entry
+     grid or a pick list, neither of which has its own submit button here. One
+     part left blank and tasksubmit refuses — which is exactly what happened,
+     about once in a hundred mixed practice runs, when the draw landed on the
+     cumulative-turnover task whose first part is a twelve-month grid. */
+  if (has('tasksubmit')) {
     pick('taskinput').forEach(n => { n.value = '0'; n.fire('input'); });
+    pick('egcell').forEach(n => { n.value = '0'; n.fire('input'); });
+    pick('plpick').forEach(n => { n.value = '0'; n.fire('change'); });
     const byPart = new Map();
     pick('taskpick').forEach(n => {
       const k = n.getAttribute('data-p');
@@ -98,7 +103,19 @@ function answerAny(D, el, p) {
       byPart.get(k).push(n);
     });
     byPart.forEach(l => l[0].fire('click'));
+    const L = pick('matchl'), R = pick('matchr');
+    L.forEach((n, i) => { n.fire('click'); if (R[i]) R[i].fire('click'); });
     D.click(el, 'tasksubmit'); return true;
+  }
+  if (has('matchl')) {
+    const L = pick('matchl'), R = pick('matchr');
+    L.forEach((n, i) => { n.fire('click'); if (R[i]) R[i].fire('click'); });
+    D.click(el, 'matchsubmit'); return true;
+  }
+  if (has('ordersubmit')) { D.click(el, 'ordersubmit'); return true; }
+  if (has('taskinput')) {
+    pick('taskinput').forEach(n => { n.value = '0'; n.fire('input'); });
+    return true;
   }
   return false;
 }
