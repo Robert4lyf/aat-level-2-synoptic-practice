@@ -99,6 +99,7 @@
     touch-action: pan-y;
   }
   #map.zoomed { touch-action: none; cursor: grab; }
+  #map.dragging { cursor: grabbing; }
   /* Zooming shrinks the viewBox, so anything measured in user units would
      fatten as you go in. Each is divided by the magnification; the plain value
      first is what an engine without calc() in SVG falls back to. */
@@ -174,7 +175,7 @@
     <button id="zoomout" type="button" aria-label="Zoom out">&minus;</button>
     <button id="zoom" type="button" aria-label="Fit the whole route on screen">Fit</button>
     <button id="zoomin" type="button" aria-label="Zoom in">+</button>
-    <span>pinch or scroll to zoom &middot; drag to pan</span>
+    <span>pinch or double-tap to zoom &middot; drag to pan</span>
   </div>
 </section>
 
@@ -888,15 +889,20 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
 
   function fitMap() { view.k = 1; view.x = 0; view.y = 0; }
 
+  /* Anything within a couple of per cent of fitted IS fitted. Left at 1.02 it
+     looked identical but took the page's scrolling away, and panning could not
+     move far enough to show that anything had happened. */
+  function settle(k) { return k < 1.02 ? 1 : clamp(k, 1, MAX_K); }
+
   /* Zoom about a point, so whatever is under your finger stays under it. */
   function zoomAbout(k, ax, ay) {
     if (!mapState) return;
     var was = view.k;
-    view.k = clamp(k, 1, MAX_K);
+    view.k = settle(k);
     view.x = ax - (ax - view.x) * (was / view.k);
     view.y = ay - (ay - view.y) * (was / view.k);
     clampView();
-    paintMap();
+    paintSoon();
   }
 
   /* Client pixels to base picture units. */
@@ -935,8 +941,13 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
     }
     /* A different route, or a track that has changed shape, starts fresh. */
     var shape = state.code + '|' + state.dir + '|' + pts.length + '|' + backPts.length;
-    if (!mapState || mapState.shape !== shape) fitMap();
-    var proj = projector(frame);
+    var same = mapState && mapState.shape === shape;
+    if (!same) fitMap();
+    /* Zoomed in, the projection is frozen. A vehicle the feed puts off the
+       line joins the frame, so one appearing or going would otherwise move
+       everything under you mid-inspection — view.x and view.y are in the
+       frame's own units and would then mean somewhere else. */
+    var proj = (same && view.k > 1) ? mapState.proj : projector(frame);
     mapState = {
       shape: shape, h: proj.h, proj: proj, dots: dots, pts: pts, backPts: backPts,
       mine: mine, theirs: theirs,
@@ -978,6 +989,19 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
   /* Draw what view says, at sizes that look the same however far in you are:
      the viewBox shrinks as you zoom, so every radius, stroke and letter is
      divided by the magnification to hold its size on screen. */
+  /* A pointermove can outrun the screen. Gestures ask for a repaint and get
+     at most one a frame; everything they change lives in view, so the last
+     ask of a frame is the only one that matters. */
+  var pending = 0;
+  function paintSoon() {
+    if (pending) return;
+    pending = (typeof requestAnimationFrame === 'function'
+      ? requestAnimationFrame : function (f) { return setTimeout(f, 16); })(function () {
+      pending = 0;
+      paintMap();
+    });
+  }
+
   function paintMap() {
     if (!mapState) return;
     var proj = mapState.proj, z = view.k, stroke = colour(state.code);
@@ -988,7 +1012,7 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
     ].join(' '));
     el.map.style.setProperty('--z', z);
     el.map.classList.toggle('zoomed', z > 1);
-    el.zoom.textContent = z > 1.05 ? '×' + (z < 10 ? z.toFixed(1) : Math.round(z)) : 'Fit';
+    el.zoom.textContent = z > 1 ? '×' + (z < 10 ? z.toFixed(1) : Math.round(z)) : 'Fit';
     el.map.innerHTML = '';
 
     function path(list, cls) {
@@ -1066,13 +1090,17 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
   /* ---- pinch, drag, wheel, double tap ---------------------------------- */
 
   function mapGestures() {
-    var down = {}, n = 0, last = null, pinch = null, tap = 0, press = null;
+    var down = {}, last = null, pinch = null, tap = 0, press = null;
+    var multi = false;      /* two fingers were involved in this press */
+    var touching = false;   /* the last press came from a finger */
+
+    function count() { return Object.keys(down).length; }
 
     /* Zoom in on the ring. A route drawn diagonally leaves most of its box
        empty, and zooming on the middle of the box lands you in the white. */
     function anchorZoom(f) {
       if (!mapState) return;
-      var k = clamp(view.k * f, 1, MAX_K);
+      var k = settle(view.k * f);
       if (mapState.here) {
         /* Put your stop in the middle, rather than wherever on the edge it
            happened to be before the zoom. */
@@ -1080,78 +1108,107 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
         view.x = mapState.proj.x(mapState.here.lng) - VB_W / k / 2;
         view.y = mapState.proj.y(mapState.here.lat) - mapState.h / k / 2;
         clampView();
-        paintMap();
+        paintSoon();
         return;
       }
       zoomAbout(k, view.x + VB_W / view.k / 2, view.y + mapState.h / view.k / 2);
     }
 
+    /* A PLAIN WHEEL IS THE PAGE'S, NOT THE MAP'S. Hijacking it means the map
+       eats every scroll that passes over it, which is the thing everyone hates
+       about embedded maps. A trackpad pinch arrives as a wheel with ctrlKey,
+       and once you are zoomed in the wheel is clearly meant for the map. */
     el.map.addEventListener('wheel', function (e) {
       if (!mapState) return;
+      if (!(e.ctrlKey || e.metaKey || view.k > 1)) return;
       e.preventDefault();
+      /* deltaMode 0 is pixels, 1 lines, 2 pages — Firefox sends lines, where
+         a deltaY of 3 means what 100 means elsewhere. */
+      var d = e.deltaY * (e.deltaMode === 1 ? 33 : (e.deltaMode === 2 ? 400 : 1));
       var at = atClient(e.clientX, e.clientY);
-      /* Trackpads send small deltas continuously, mice send lumps of 100. */
-      zoomAbout(view.k * Math.pow(1.0022, -e.deltaY), at.x, at.y);
+      zoomAbout(view.k * Math.pow(1.0022, -d), at.x, at.y);
     }, { passive: false });
 
     el.map.addEventListener('pointerdown', function (e) {
       if (!mapState) return;
+      touching = e.pointerType === 'touch';
       down[e.pointerId] = { x: e.clientX, y: e.clientY };
-      n++;
+      var n = count();
       if (n === 2) {
-        var k = Object.keys(down), a = down[k[0]], b = down[k[1]];
-        pinch = { d: Math.hypot(a.x - b.x, a.y - b.y), k: view.k,
-          at: atClient((a.x + b.x) / 2, (a.y + b.y) / 2) };
+        multi = true;
+        var k = Object.keys(down), p = down[k[0]], q = down[k[1]];
+        pinch = { d: Math.hypot(p.x - q.x, p.y - q.y), k: view.k,
+          at: atClient((p.x + q.x) / 2, (p.y + q.y) / 2) };
       } else if (n === 1) {
+        multi = false;
         last = { x: e.clientX, y: e.clientY };
         press = { x: e.clientX, y: e.clientY };
-        /* One finger scrolls the page until you have zoomed in; after that it
-           pans, which is the only way to reach the rest of the line. */
-        if (e.pointerType !== 'touch' || view.k > 1) {
-          try { el.map.setPointerCapture(e.pointerId); } catch (err) { /* fine */ }
-        }
+        /* Capture even for the fingers we do not pan with, so the lift is
+           always ours: a finger that leaves the map and lifts elsewhere used
+           to stay on the books and be counted as half of a pinch. */
+        try { el.map.setPointerCapture(e.pointerId); } catch (err) { /* fine */ }
       }
     });
 
     el.map.addEventListener('pointermove', function (e) {
       if (!mapState || !down[e.pointerId]) return;
       down[e.pointerId] = { x: e.clientX, y: e.clientY };
-      if (n >= 2 && pinch) {
-        var k = Object.keys(down), a = down[k[0]], b = down[k[1]];
-        var d = Math.hypot(a.x - b.x, a.y - b.y);
+      if (count() >= 2 && pinch) {
+        var k = Object.keys(down), p = down[k[0]], q = down[k[1]];
+        var d = Math.hypot(p.x - q.x, p.y - q.y);
         if (pinch.d > 4) zoomAbout(pinch.k * (d / pinch.d), pinch.at.x, pinch.at.y);
         e.preventDefault();
         return;
       }
+      /* One finger scrolls the page until you have zoomed in; after that it
+         pans, which is the only way to reach the rest of the line. */
       if (!last || (e.pointerType === 'touch' && view.k <= 1)) return;
       var r = el.map.getBoundingClientRect();
+      if (!r.width || !r.height) return;
       view.x -= (e.clientX - last.x) / r.width * (VB_W / view.k);
       view.y -= (e.clientY - last.y) / r.height * (mapState.h / view.k);
       last = { x: e.clientX, y: e.clientY };
+      el.map.classList.add('dragging');
       e.preventDefault();
-      paintMap();
+      clampView();
+      paintSoon();
     });
 
-    function up(e) {
-      if (down[e.pointerId]) { delete down[e.pointerId]; n = Math.max(0, n - 1); }
+    function lift(e) {
+      var had = !!down[e.pointerId];
+      delete down[e.pointerId];
+      var n = count();
       if (n < 2) pinch = null;
-      if (!n) last = null;
+      if (!n) { last = null; el.map.classList.remove('dragging'); }
+      return had && !n;
     }
-    el.map.addEventListener('pointerup', function (e) {
+
+    /* Listened for on the window, not the map: a lift that lands anywhere
+       else must still clear the pointer, or the next single finger counts as
+       the second half of a pinch that never ended. */
+    function ended(e) {
+      var wasLast = lift(e);
+      var wasMulti = multi;
+      if (!wasLast) return;
       var moved = press && Math.hypot(e.clientX - press.x, e.clientY - press.y) > 8;
-      up(e);
-      if (!n) press = null;
-      if (e.pointerType !== 'touch' || moved) return;
+      press = null;
+      multi = false;
+      if (e.type !== 'pointerup' || e.pointerType !== 'touch' || moved || wasMulti) return;
+      /* Double TAP. Two fingers at once is a pinch, however still it was. */
       var t = Date.now();
       if (t - tap < 350) {
         var at = atClient(e.clientX, e.clientY);
         zoomAbout(view.k >= 8 ? 1 : view.k * 2.5, at.x, at.y);
         tap = 0;
       } else tap = t;
-    });
-    el.map.addEventListener('pointercancel', up);
+    }
+    window.addEventListener('pointerup', ended);
+    window.addEventListener('pointercancel', ended);
+
+    /* iOS raises dblclick after a double tap as well, and handling both
+       zoomed twice for one gesture. */
     el.map.addEventListener('dblclick', function (e) {
-      if (!mapState) return;
+      if (!mapState || touching) return;
       var at = atClient(e.clientX, e.clientY);
       zoomAbout(view.k >= 8 ? 1 : view.k * 2.5, at.x, at.y);
     });

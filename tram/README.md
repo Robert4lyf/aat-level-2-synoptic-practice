@@ -113,14 +113,19 @@ number. Stripping a trailing 1 or 2 unconditionally turned CD-11 and CD-12 into
 two stops both called `CD-1`. The rule is now: strip it only where a letter
 comes immediately before it.
 
-THE MAP ZOOMS to about forty times the fitted view — pinch, scroll, double-tap,
-or the buttons under it, which centre on your stop rather than on the middle of
-the bounding box (a diagonal route leaves most of that box empty). One finger
-still scrolls the page until you have zoomed in; after that it pans. Every
+THE MAP ZOOMS to about forty times the fitted view — pinch, double-tap, or the
+buttons under it, which centre on your stop rather than on the middle of the
+bounding box (a diagonal route leaves most of that box empty). One finger still
+scrolls the page until you have zoomed in; after that it pans. A plain wheel
+belongs to the page, not the map, which is the thing everyone hates about
+embedded maps; a trackpad pinch (a wheel with ctrlKey) and a wheel over a map
+already zoomed in are the map's. Every
 radius, stroke and letter is divided by the magnification, so nothing fattens
 as you go in, and past about three times the stop names on screen appear.
 The frame is fitted to the track, not to the vehicles, so the picture does not
-shift under you every twenty seconds as they move. Bear in mind what zoom
+shift under you every twenty seconds as they move — and while you are zoomed in
+the projection is frozen outright, since a vehicle reported off the line joins
+the frame and one arriving would otherwise move everything under you. Bear in mind what zoom
 cannot fix: `pointList` leaves gaps of up to 2.6 km, so far enough in the drawn
 track visibly cuts the corners the real rails go round.
 
