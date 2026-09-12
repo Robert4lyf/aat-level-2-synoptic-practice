@@ -277,6 +277,59 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
 .a3-band-bad  { background: var(--a3-bad); }
 .a3-band-none { background: transparent; }
 .a3-sum-row-m { font-size: 12.5px; color: var(--a3-ink-3); text-align: right; }
+/* ── Practise several outcomes together ──────────────────────────────────────
+   The rows above start one outcome and "mixed practice" draws from all of
+   them; this is the middle case, for a reader partway through a unit. Chips
+   rather than a second column of checkboxes, because the choice is a handful
+   of numbers and the rows are already where an outcome is read about. */
+.a3-sum-pick {
+  margin-top: 14px; padding-top: 13px; border-top: 1px solid var(--a3-line);
+}
+.a3-sum-pick-k { font-size: 12.5px; color: var(--a3-ink-3); margin-bottom: 9px; }
+.a3-sum-chips {
+  display: flex; flex-wrap: wrap; gap: 7px; list-style: none; margin: 0 0 11px; padding: 0;
+}
+/* A round target big enough for a thumb: 38px clears the 36px floor the rest
+   of this screen is built to, and the number stays centred as it grows. */
+.a3-sum-chip {
+  min-width: 38px; height: 38px; padding: 0 11px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: inherit; font-size: 14px; font-weight: 700; line-height: 1;
+  color: var(--a3-ink-2); background: var(--a3-surface);
+  border: 1.5px solid var(--a3-line-2); border-radius: 999px;
+  cursor: pointer; -webkit-tap-highlight-color: transparent;
+  transition: background .12s ease, border-color .12s ease, color .12s ease;
+}
+.a3-sum-chip:hover { border-color: var(--a3-brand); color: var(--a3-brand-ink); }
+.a3-sum-chip:focus-visible { outline: 2px solid var(--a3-brand); outline-offset: 2px; }
+/* CHOSEN IS NOT COLOUR ALONE. The chip fills, and the border thickens with it,
+   so the state survives a greyscale screen and a reader who cannot separate
+   the brand hue from the surface. */
+.a3-sum-chip[aria-pressed="true"] {
+  background: var(--a3-brand); border-color: var(--a3-brand);
+  color: var(--a3-on-fill);
+}
+.a3-sum-pick-go {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  width: 100%; min-height: 44px; padding: 11px 15px;
+  font-family: inherit; font-size: 14px; font-weight: 700; text-align: left;
+  color: var(--a3-brand-ink); background: var(--a3-brand-wash);
+  border: 1px solid transparent; border-radius: var(--a3-r-sm);
+  cursor: pointer; -webkit-tap-highlight-color: transparent;
+}
+/* The label is its own element so the handler can rewrite the text without
+   touching the arrow beside it. It takes the free width, so "Practise Outcomes
+   1, 2 and 5" wraps inside the button rather than pushing the arrow off it. */
+.a3-sum-pick-lbl { flex: 1 1 auto; min-width: 0; }
+.a3-sum-pick-go:hover:not([disabled]) { border-color: var(--a3-brand); }
+.a3-sum-pick-go:focus-visible { outline: 2px solid var(--a3-brand); outline-offset: 2px; }
+/* DISABLED RATHER THAN ABSENT. A button that appears on the first tap and
+   vanishes on the last moves everything under it twice; one that stays put and
+   says what it is waiting for does not. */
+.a3-sum-pick-go[disabled] {
+  color: var(--a3-ink-3); background: var(--a3-surface-2); cursor: default;
+}
+
 .a3-sum-foot {
   margin-top: 16px; padding-top: 13px; border-top: 1px solid var(--a3-line);
   font-size: 12.5px; line-height: 1.55; color: var(--a3-ink-3);
