@@ -465,6 +465,72 @@
   function clearPos() {
     try { localStorage.removeItem(POS_KEY); } catch (e) {}
   }
+
+  /* ── Which outcomes the reader wants questions from ───────────────────────
+     A reader partway through the unit has finished some outcomes and not
+     started others, and neither of the two runs on offer fits that: "all five
+     outcomes" draws from material they have not read yet, and one outcome at a
+     time cannot mix the two or three they HAVE read. So a chosen set is a third
+     thing a run can be drawn from.
+
+     ITS OWN KEY, OUTSIDE THE PROGRESS RECORD, for the reason the reading
+     position has one: this is a study choice, device-local, and merging one
+     device's set with another's answers a question nobody asked. Losing it
+     costs a reader one tap.
+
+     Level 1 is one unit, so this is a flat list of outcome numbers rather than
+     Level 3's map of one list per unit. */
+  var LOSEL_KEY = STORE_KEY + '_losel';
+  function loSelRaw() {
+    var mine;
+    try { mine = JSON.parse(localStorage.getItem(LOSEL_KEY) || '[]'); } catch (e) { mine = []; }
+    if (!Array.isArray(mine)) return [];
+    /* COERCED AT THE BOUNDARY, not trusted. This is JSON out of a store the
+       reader can edit, and JSON has no idea that an outcome number is a number:
+       "1" survives a hand edit, or a merge with a store written by anything
+       else, looking exactly like 1. A string would pass the liveness filter
+       below, because an object key lookup coerces — and then match nothing in
+       the draw, because that comparison does not. The run would come back empty
+       with no error anywhere, which is the worst shape a bug can take. */
+    return mine.map(Number).filter(function (n) { return isFinite(n); });
+  }
+  /* LIVE MEANS "HAS QUESTIONS LEFT IN IT", not merely "is in the syllabus". An
+     outcome whose questions have all been put away with "I know this" loses its
+     chip, but it would stay in the stored set — which is what the run button
+     says and what the draw is handed. The reader would be offered a run over
+     outcomes with no chip ticked for them, and pressing it would start a run of
+     nothing. Filtering here keeps the chips, the label and the draw looking at
+     the same set. */
+  function loSel() {
+    var live = {};
+    livePool().forEach(function (q) { live[q.lo] = 1; });
+    return loSelRaw().filter(function (n) { return live[n]; })
+      .sort(function (a, b) { return a - b; });
+  }
+  function setLoSel(n, on) {
+    var cur = loSelRaw().filter(function (x) { return x !== n; });
+    if (on) cur.push(n);
+    cur.sort(function (a, b) { return a - b; });
+    try { localStorage.setItem(LOSEL_KEY, JSON.stringify(cur)); } catch (e) {}
+  }
+  /* "1", "1 and 2", "1, 2 and 5" — read out rather than punctuated, because it
+     ends up in a button label and on the done screen. */
+  function loList(ns) {
+    var a = (ns || []).slice();
+    if (!a.length) return '';
+    if (a.length === 1) return String(a[0]);
+    return a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1];
+  }
+  /* WHAT THE RUN BUTTON SAYS, in one place. The practice screen writes this
+     label when it renders and the chip handler rewrites it on every tap without
+     a rerender, so two copies of the same sentence would otherwise sit a
+     thousand lines apart — and the only symptom of their drifting would be a
+     label that changes wording the first time it is touched, which nobody would
+     report as a bug. */
+  function pickGoLabel(sel) {
+    if (!sel.length) return 'Choose an outcome above';
+    return 'Practise Outcome' + (sel.length > 1 ? 's ' : ' ') + loList(sel);
+  }
   /* What the hero card should open: the step the reader was inside, at the
      page they left, and only then the first step not yet passed. */
   function continueTarget() {
@@ -1789,6 +1855,9 @@
     /* Without this an endless run is described as "Outcome endless" on its own
        result screen. */
     if (S.practiceLo === 'endless') return 'keep going';
+    if (Array.isArray(S.practiceLo)) {
+      return (S.practiceLo.length === 1 ? 'Outcome ' : 'Outcomes ') + loList(S.practiceLo);
+    }
     return 'Outcome ' + S.practiceLo;
   }
 
@@ -2246,6 +2315,48 @@
         '</button>';
     });
     h += '</div>';
+
+    /* ── Several outcomes at once ──────────────────────────────────────────
+       Two runs are on offer above: all five outcomes, or one of them. Neither
+       fits a reader partway through the unit — they have read Outcomes 1 and 2
+       and want questions on those.
+
+       CHIPS, NOT A SECOND SET OF CARDS. The cards above already say what each
+       outcome is and how the reader is doing on it; repeating all five as
+       checkboxes would double the length of the screen to add one button. Bare
+       numbers sit under the cards, where a reader who has just read down them
+       is standing.
+
+       Only shown where there is a choice to make: with one outcome left holding
+       questions, "several together" is not a thing that can be done. */
+    /* Counted over the LIVE pool, not the whole bank. `counts` above includes
+       questions put away with "I know this", and a chip for an outcome with
+       nothing left to ask is one loSel() will drop the moment it is ticked — a
+       chip that goes dark and changes nothing else. */
+    var liveCounts = {};
+    livePool().forEach(function (q) { liveCounts[q.lo] = (liveCounts[q.lo] || 0) + 1; });
+    var pickable = los.filter(function (o) { return !!liveCounts[o.n]; });
+    if (pickable.length > 1) {
+      var sel = loSel(), selSet = {};
+      sel.forEach(function (x) { selSet[x] = 1; });
+      h += '<div class="a1-pick">';
+      h += '<div class="a1-pick-k" id="a1-pick-k">Or practise several together</div>';
+      h += '<ul class="a1-chips" aria-labelledby="a1-pick-k">';
+      pickable.forEach(function (o) {
+        h += '<li><button type="button" class="a1-chip" data-a1="picklo" data-lo="' + esc(o.n) + '"' +
+          ' aria-pressed="' + (selSet[o.n] ? 'true' : 'false') + '"' +
+          ' aria-label="Outcome ' + esc(o.n) + ', ' + esc(o.title) + '">' + esc(o.n) + '</button></li>';
+      });
+      h += '</ul>';
+      /* ONE BUTTON, ALWAYS THERE, DISABLED UNTIL THERE IS A SET. A button that
+         appears on the first tap moves everything below it; a disabled one that
+         says what it is waiting for reads as part of the control. */
+      h += '<button class="a1-pick-go" data-a1="startpractice" data-lo="sel"' +
+        (sel.length ? '' : ' disabled') + '>' +
+        '<span class="a1-pick-lbl">' + esc(pickGoLabel(sel)) + '</span>' +
+        '<span aria-hidden="true">\u2192</span></button>';
+      h += '</div>';
+    }
     h += '<footer class="a1-foot">Independent study tool. Not affiliated with, endorsed by, or officially associated with AAT.</footer>';
     return h + '</div></div>';
   }
@@ -2473,7 +2584,7 @@
      A shortfall in one outcome is redistributed rather than left as a gap: a
      run that asked for ten and found nine must still be ten questions long, or
      the score at the end is out of a different number than the reader thinks. */
-  function drawWeighted(n, noWritten, keepRetired) {
+  function drawWeighted(n, noWritten, keepRetired, onlyLos) {
     /* WHY A MOCK STILL DRAWS FROM RETIRED QUESTIONS, and nothing else does.
        Everywhere else, "I know this" means stop asking me. A mock is the one
        place where honouring that would work against the reader: it is a
@@ -2491,6 +2602,20 @@
        one would either show the model under exam conditions or bank a task
        that scored nothing because there was no way to mark it. */
     if (noWritten) bank = bank.filter(function (q) { return q.type !== 'written'; });
+    /* NARROWING THE BANK IS THE WHOLE CHANGE. The seat allocation below
+       re-normalises over the outcomes still represented in it, so a run over
+       Outcomes 1 and 2 is weighted between those two in the same proportion the
+       assessment weights them against each other — rather than by how many
+       questions each happens to have in the bank, which is an accident of how
+       much has been written.
+
+       Numbers, whatever the caller handed over: a set of strings filtering a
+       bank of numbers matches nothing at all. */
+    if (onlyLos && onlyLos.length) {
+      var want = {};
+      onlyLos.forEach(function (x) { want[Number(x)] = 1; });
+      bank = bank.filter(function (q) { return want[q.lo] === 1; });
+    }
     var u = unit();
     var os = ((u && u.outcomes) || []).filter(function (o) {
       return bank.some(function (q) { return q.lo === o.n; });
@@ -2817,7 +2942,28 @@
     finish();
   }
 
+  /* THE ONE PLACE A CHOSEN SET BECOMES QUESTIONS. Drawn the way "all five
+     outcomes" is drawn, over the chosen few: the seats go by assessment
+     weighting rather than by bank size, so a reader who has read Outcomes 1 and
+     2 gets them in the proportion the paper will.
+
+     Named rather than written inline because scripts/check-outcome-picker.js
+     asserts the weighting against this function — and a check that asserts a
+     draw the screen does not use is a check about nothing. The export below is
+     this same function, not a second one spelling out the same arguments. */
+  function drawChosen(n, onlyLos) { return drawWeighted(n, false, false, onlyLos); }
+
   function startPractice(lo) {
+    /* RESOLVED HERE, NOT CARRIED AS A NAME. "sel" is what the button says; the
+       run needs the numbers, and needs them fixed at the moment it starts —
+       otherwise a reader who changes the set afterwards changes what a finished
+       run says it was, and "again" replays a different set from the one they
+       just sat. An empty set is not a narrower run, it is every outcome: the
+       screen never starts one, but a stored set whose outcomes have all been
+       put away resolves to nothing, and silently serving no questions is the
+       worst of the available behaviours. */
+    if (lo === 'sel') lo = loSel();
+    if (Array.isArray(lo) && !lo.length) lo = 'mix';
     S.practiceLo = lo;
     /* The mistakes run is drawn in order, oldest miss last, rather than
        shuffled: a reader with thirty outstanding questions wants the ten they
@@ -2832,6 +2978,8 @@
       S.practiceQs = dueQuestions().slice(0, PRACTICE_LEN);
     } else if (lo === 'mix') {
       S.practiceQs = drawWeighted(PRACTICE_LEN);
+    } else if (Array.isArray(lo)) {
+      S.practiceQs = drawChosen(PRACTICE_LEN, lo);
     } else {
       var pool = livePool().filter(function (q) { return q.lo === lo; });
       S.practiceQs = shuffle(pool).slice(0, PRACTICE_LEN);
@@ -3763,6 +3911,33 @@
       return;
     }
     if (act === 'topath') { S.mode = 'lesson'; S.screen = 'path'; return rerender(); }
+    /* TICKING A CHIP DOES NOT REPAINT THE SCREEN. rerender() rebuilds the whole
+       practice screen, which on a phone is several screens long — the row of
+       chips would move out from under the finger that is still tapping along
+       it. Only two things change, the chip's own state and the run button, so
+       only those two are patched.
+
+       Guarded on `closest` rather than assuming it: the fake DOM the Node
+       checks drive this player through has no such method, and the chips are
+       asserted there from the markup instead. */
+    if (act === 'picklo') {
+      var pl = Number(n.getAttribute('data-lo'));
+      var wrap = n.closest && n.closest('.a1-pick');
+      if (!wrap || !isFinite(pl)) return;
+      var turnOn = n.getAttribute('aria-pressed') !== 'true';
+      n.setAttribute('aria-pressed', turnOn ? 'true' : 'false');
+      setLoSel(pl, turnOn);
+      var picked = loSel();
+      var go = wrap.querySelector('.a1-pick-go');
+      var lbl = wrap.querySelector('.a1-pick-lbl');
+      if (go) {
+        if (picked.length) go.removeAttribute('disabled');
+        else go.setAttribute('disabled', '');
+      }
+      if (lbl) lbl.textContent = pickGoLabel(picked);
+      return;
+    }
+
     if (act === 'startpractice') {
       var lo = n.getAttribute('data-lo');
       /* Only an OUTCOME becomes a number; every named mode passes through. The
@@ -4046,6 +4221,18 @@
 
   root.AAT1_UI = {
     mount: mount,
+    /* Exposed for scripts/check-outcome-picker.js, for the reason Level 3
+       exposes the same two: the claim worth asserting about a run over a chosen
+       set of outcomes — that it contains those outcomes and nothing else, in
+       the proportion the assessment weights them — is a property of the draw,
+       and the draw is pure. Reaching it through the screen would test the
+       navigation instead. */
+    drawPractice: drawChosen,
+    loSelection: loSel,
+    /* What the run ON SCREEN is made of, so the check can assert that the
+       button the reader presses narrows the draw — not merely that a function
+       next to it would have. */
+    runOutcomes: function () { return (S.practiceQs || []).map(function (q) { return q.lo; }); },
     /* Exposed so the build check can assert what a card SAYS against the
        card's own data. None of it is observable from the screen — a listener
        cannot tell a table deliberately skipped from a table that failed to

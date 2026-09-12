@@ -124,6 +124,40 @@ console.log('\x1b[1mProgress backup\x1b[0m\n');
   PB.writeAll({ prep_v2_sync: { key: 'MYOWNKEY0123456789abcdefghijklmn', version: 9 } }, target2);
   PB.applyImport({ format: PB.FORMAT, version: 1, keys: { prep_v2_sync: { key: 'THEIRS', version: 1 }, aatPrep_v2: phone } }, 'replace', target2);
   eq(JSON.parse(target2.getItem('prep_v2_sync')).key, 'MYOWNKEY0123456789abcdefghijklmn', 'importing a doctored file cannot overwrite this device\'s sync key');
+
+  /* A STUDY CHOICE IS NOT PROGRESS. Which outcomes you have ticked to practise,
+     which topics, which trend lines you have hidden — each lives in its own key
+     outside the progress record, and each file says in the comment above that
+     key that it is device-local. It was not: the keys still matched `prep_v2_*`
+     and travelled anyway, so the claim was true of the intent and false of the
+     code. That is the exact shape this asserts, because the symptom on the
+     other device — a trend line hidden nobody hid, a practice set narrowed
+     nobody narrowed — looks like the feature misbehaving rather than like a
+     backup carrying something it should not. */
+  const choices = fakeStore();
+  PB.writeAll({
+    aatPrep_v2: phone,
+    aatPrep_v2_topicsel: ['itbk', 'pobc'],
+    prep_v2_aat1_losel: [1, 2],
+    prep_v2_aat3_losel: { faps: [1, 2] },
+    prep_v2_aat3_trendoff: { faps: { 4: 1 } },
+  }, choices);
+  const doc3 = PB.buildExport({ store: choices, now: T0 });
+  ['aatPrep_v2_topicsel', 'prep_v2_aat1_losel', 'prep_v2_aat3_losel', 'prep_v2_aat3_trendoff'].forEach(k => {
+    ok(!(k in doc3.keys), `${k} is a study choice and must never be written into an exported file`);
+  });
+  /* And it cannot arrive, either — the filter has to hold on import as well, or
+     a file made before this rule still carries one device's choices into
+     another. */
+  const target3 = fakeStore();
+  PB.writeAll({ prep_v2_aat1_losel: [5] }, target3);
+  PB.applyImport({ format: PB.FORMAT, version: 1, keys: {
+    aatPrep_v2: phone, prep_v2_aat1_losel: [1, 2], prep_v2_aat3_trendoff: { faps: { 4: 1 } },
+  } }, 'replace', target3);
+  eq(JSON.parse(target3.getItem('prep_v2_aat1_losel')), [5],
+    'importing a file that carries a chosen outcome set leaves this device\'s own set alone');
+  ok(target3.getItem('prep_v2_aat3_trendoff') === null,
+    'importing a file that carries hidden trend lines does not hide them on this device');
 }
 
 /* ── Nothing is lost ────────────────────────────────────────────────────── */

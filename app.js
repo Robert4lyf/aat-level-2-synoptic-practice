@@ -2347,11 +2347,139 @@
     document.body.appendChild(node);
   }
 
+  /* The chips themselves, and the one button they feed.
+
+     CHIPS, NOT A SECOND SET OF CARDS. The grid above already says what each
+     topic is and how much of it the reader has seen; repeating all of them as
+     checkboxes would double the length of the screen to add one button. The
+     chips sit under the grid, where a reader who has just looked down it is
+     standing.
+
+     Only rendered where there is a choice to make: with one topic still holding
+     questions, "several together" is not a thing that can be done. */
+  function topicPicker() {
+    const pickable = pickableTopics();
+    if (pickable.length < 2) return '';
+    const sel = topicSel();
+    const chips = pickable.map(t => {
+      const on = sel.indexOf(t.id) !== -1;
+      return `<li><button type="button" class="topic-chip" data-pick-topic="${escapeHtml(t.id)}"
+        aria-pressed="${on ? 'true' : 'false'}"
+        aria-label="Practise ${escapeHtml(t.name)}"><span class="topic-chip-i" aria-hidden="true">${t.icon}</span>${escapeHtml(t.short || t.name)}</button></li>`;
+    }).join('');
+    /* ONE BUTTON, ALWAYS THERE, DISABLED UNTIL THERE IS A SET. A button that
+       appears on the first tap moves everything below it; a disabled one that
+       says what it is waiting for reads as part of the control rather than as a
+       surprise. */
+    return `<div class="topic-pick">
+      <div class="topic-pick-k" id="topicPickKey">Or practise several topics together</div>
+      <ul class="topic-chips" aria-labelledby="topicPickKey">${chips}</ul>
+      <button class="topic-pick-go" type="button" data-topic="sel"${sel.length ? '' : ' disabled'}>
+        <span class="topic-pick-lbl">${escapeHtml(topicGoLabel(sel))}</span>
+        <span aria-hidden="true">→</span>
+      </button>
+    </div>`;
+  }
+
+  /* ── Which topics the reader wants questions from ─────────────────────────
+     Two runs are on offer: every topic, or one of them. Neither fits a reader
+     partway through the course — they have worked through Bookkeeping and
+     Controls and want questions on those two, not on Costing they have not
+     opened and not one unit at a time.
+
+     ITS OWN KEY, OUTSIDE THE PROGRESS RECORD, and per subject because the
+     storage key already is: this is a study choice, device-local, and merging
+     one device's set with another's answers a question nobody asked. Losing it
+     costs a reader one tap.
+
+     ONE DEFINITION OF "PICKABLE", used by the chips, by the stored set and by
+     the draw. They have to agree: a chip the set cannot hold is a chip that
+     goes dark and changes nothing, and a set holding a topic with no chip is a
+     run the reader was offered and cannot have. */
+  function topicAvailableCount(id) {
+    return (window.ALL_QUESTIONS || []).filter(q => q.topic === id
+      && !Storage.isConfident(q.id)
+      && frLevelUnlocked(frQuestionLevel(q.id))
+      && (!q.lesson || isLessonDone(q.lesson))).length;
+  }
+  function pickableTopics() {
+    return (window.TOPICS || []).filter(t =>
+      t.section !== 'clinic' && isUnitUnlocked(t.id) && topicAvailableCount(t.id) > 0);
+  }
+  function topicSelKey() { return getStorageKey() + '_topicsel'; }
+  function topicSelRaw() {
+    let a;
+    try { a = JSON.parse(localStorage.getItem(topicSelKey()) || '[]'); } catch (e) { a = []; }
+    /* Strings, and only strings. This is JSON out of a store the reader can
+       edit, and a number or an object in the list would sail through the filter
+       below and then match no question's topic, leaving a run of nothing with
+       no error anywhere. */
+    return Array.isArray(a) ? a.filter(x => typeof x === 'string') : [];
+  }
+  function topicSel() {
+    const live = new Set(pickableTopics().map(t => t.id));
+    const order = (window.TOPICS || []).map(t => t.id);
+    return topicSelRaw().filter(id => live.has(id))
+      .sort((x, y) => order.indexOf(x) - order.indexOf(y));
+  }
+  function setTopicSel(id, on) {
+    const cur = topicSelRaw().filter(x => x !== id);
+    if (on) cur.push(id);
+    try { localStorage.setItem(topicSelKey(), JSON.stringify(cur)); } catch (e) {}
+  }
+  /* "Bookkeeping", "Bookkeeping and Controls", "Bookkeeping, Controls and
+     Costing" — read out rather than punctuated, because it ends up in a button
+     label a reader says to themselves. */
+  function topicNames(ids) {
+    const a = ids.map(id => {
+      const t = (window.TOPICS || []).find(x => x.id === id);
+      return t ? (t.short || t.name) : id;
+    });
+    if (!a.length) return '';
+    if (a.length === 1) return a[0];
+    return a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1];
+  }
+  /* WHAT THE RUN BUTTON SAYS, in one place. The practice screen writes this
+     label when it renders and the chip handler rewrites it on every tap without
+     a rerender, so two copies of the same sentence would otherwise sit two
+     thousand lines apart — and the only symptom of their drifting would be a
+     label that changes wording the first time it is touched, which nobody would
+     report as a bug. */
+  function topicGoLabel(sel) {
+    if (!sel.length) return 'Choose a topic above';
+    return 'Practise ' + topicNames(sel);
+  }
+
   /* ── ACTIONS ── */
   function startPractice(topicId) {
     playClick();
     let pool;
     if (topicId === 'all') pool = window.ALL_QUESTIONS;
+    /* A CHOSEN FEW TOPICS. Resolved here rather than carried as a name, so the
+       run is fixed at the moment it starts: a reader who changes the set
+       afterwards must not change what the finished run says it was, and "try
+       again" must replay the same set they just sat. An empty set is not a
+       narrower run, it is every topic — the screen never starts one, but a
+       stored set whose topics have all been finished or locked resolves to
+       nothing, and silently serving no questions is the worst of the available
+       behaviours. Everything below — the unlock filter, the confident filter,
+       the empty-pool message — then applies to this pool exactly as it does to
+       every other. */
+    else if (topicId === 'sel' || (topicId && topicId.indexOf('sel:') === 0)) {
+      /* "sel" is what the button sends; "sel:itbk,pobc" is what the run becomes.
+         Resolving once and writing the answer back into topicId is what fixes
+         the set at the moment the run starts: State.selectedTopic carries the
+         resolved form, so "try again" replays the same topics even if the
+         reader has since re-ticked the chips, and a session restored after a
+         reload is the run that was actually being sat. */
+      const chosen = topicId === 'sel'
+        ? topicSel()
+        : topicId.slice(4).split(',').filter(Boolean);
+      pool = chosen.length
+        ? window.ALL_QUESTIONS.filter(q => chosen.indexOf(q.topic) !== -1)
+        : window.ALL_QUESTIONS;
+      topicId = chosen.length ? 'sel:' + chosen.join(',') : 'all';
+    }
     else if (topicId === 'flagged') pool = window.ALL_QUESTIONS.filter(q => Storage.isFlagged(q.id));
     else if (topicId === 'review-wrong') {
       const wrongIds = Object.entries(Storage.data.stats.questions)
@@ -2786,6 +2914,22 @@
      Read-only by construction: the blueprint is frozen, so a check cannot
      scribble on the app it is inspecting and report a green that belongs to a
      paper nobody will sit. */
+  /* ── Exposed for the build check, and for nothing else ─────────────────────
+     scripts/check-outcome-picker.js asks whether a run over a chosen few topics
+     actually contains those topics and nothing else. That claim is about the
+     questions in the run, and nothing in the rendered quiz names the topic a
+     question came from — so a check confined to the screen could only assert
+     that a run started, which is the part that was never in doubt.
+
+     Two reads and no writes, for the reason __AAT2_EXAM below is also
+     read-only: a check that can scribble on the app it is inspecting reports a
+     green that belongs to a run nobody will sit. */
+  window.__AAT2_PRACTICE = Object.freeze({
+    runTopics: () => (State.questions || []).map(q => q.topic),
+    topicSelection: () => topicSel(),
+    pickableTopics: () => pickableTopics().map(t => t.id),
+  });
+
   window.__AAT2_EXAM = Object.freeze({
     SYNOPTIC_BLUEPRINT: Object.freeze(SYNOPTIC_BLUEPRINT.map(t => Object.freeze(
       Object.assign({}, t, { areas: Object.freeze(t.areas.map(a => Object.freeze(Object.assign({}, a)))) })))),
@@ -4647,7 +4791,7 @@
           const badge = m == null ? '' : `<span class="mastery-badge ${scoreClass(m)}" title="Topic mastery">${m}%</span>`;
           const seenN = seenByTopic[t.id] || 0;
           const seenPct = totalN ? Math.round(seenN / totalN * 100) : 0;
-          const availableN = (window.ALL_QUESTIONS || []).filter(q => q.topic === t.id && !Storage.isConfident(q.id) && frLevelUnlocked(frQuestionLevel(q.id)) && (!q.lesson || isLessonDone(q.lesson))).length;
+          const availableN = topicAvailableCount(t.id);
           if (isFrench && availableN === 0 && totalN > 0) {
             return `<div class="topic-card topic-card-locked fade-in" aria-label="${escapeHtml(t.name)} locked">
               <div class="icon" aria-hidden="true">${t.icon}</div>
@@ -4669,6 +4813,7 @@
           </button>`;
         }).join('')}
       </div>
+      ${topicPicker()}
       ${focusCard}
       <h2 class="section-title" style="margin-top:24px">More Practice Modes</h2>
       <div class="mode-card-grid">${modeGrid}</div>`;
@@ -9182,6 +9327,23 @@
     document.querySelectorAll('[data-switch-subject]').forEach(el => el.addEventListener('click', () => switchSubject(el.dataset.switchSubject)));
     bind('subjectPickerBack', 'click', () => { State.screen = 'home'; render(); });
     document.querySelectorAll('[data-topic]').forEach(el => el.addEventListener('click', () => startPractice(el.dataset.topic)));
+    /* TICKING A CHIP DOES NOT REPAINT THE SCREEN. render() rebuilds the whole
+       practice tab, which on a phone is several screens long — the row of chips
+       would move out from under the finger still tapping along it, and the
+       topic grid above would animate its fade-in again. Only two things change,
+       the chip's own state and the run button, so only those two are touched. */
+    document.querySelectorAll('[data-pick-topic]').forEach(el => el.addEventListener('click', () => {
+      const id = el.dataset.pickTopic;
+      const on = el.getAttribute('aria-pressed') !== 'true';
+      el.setAttribute('aria-pressed', on ? 'true' : 'false');
+      setTopicSel(id, on);
+      playClick();
+      const sel = topicSel();
+      const go = document.querySelector('.topic-pick-go');
+      const lbl = document.querySelector('.topic-pick-lbl');
+      if (go) { if (sel.length) go.removeAttribute('disabled'); else go.setAttribute('disabled', ''); }
+      if (lbl) lbl.textContent = topicGoLabel(sel);
+    }));
     bind('mockBtn', 'click', startMock);
     bind('endlessBtn', 'click', startEndless);
     bind('protoBtn', 'click', startProto);

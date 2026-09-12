@@ -56,9 +56,20 @@
     /* `*_pos` is a reading position — which page of which lesson this DEVICE
        is on. Two devices legitimately sit on different pages, and the generic
        MAX-merge would splice one device's lesson with the other's page index.
-       It must neither be exported nor imported. */
+       It must neither be exported nor imported.
+
+       `*_losel`, `*_topicsel` and `*_trendoff` are the same kind of thing: a
+       study choice made on a screen, not a record of work done. Which outcomes
+       you are practising this week, which topics you have ticked, which trend
+       lines you have hidden — none of it is progress, and all three files SAY
+       they are device-local in the comment above the key. They were not, which
+       is the shape of mistake worth naming: a key written outside the progress
+       record still matched `prep_v2_*` and travelled anyway, so the claim was
+       true of the intent and false of the code. Losing any of them costs a
+       reader one tap; merging them hides a trend line on a device nobody hid it
+       on. */
     return k === 'multisubject_active' || k === 'prep_v2_settings' || k === 'prep_v2_sync' ||
-           /_pos$/.test(k);
+           /_(pos|losel|topicsel|trendoff)$/.test(k);
   }
 
   function isObj(v) { return v !== null && typeof v === 'object' && !Array.isArray(v); }
