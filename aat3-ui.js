@@ -535,11 +535,30 @@
     var all;
     try { all = JSON.parse(localStorage.getItem(LOSEL_KEY) || '{}'); } catch (e) { all = {}; }
     var mine = all && all[activeUnit()];
-    return Array.isArray(mine) ? mine : [];
+    if (!Array.isArray(mine)) return [];
+    /* WHY THIS COERCES RATHER THAN TRUSTING WHAT IT READS. Everything in here
+       arrives as JSON out of a store the reader can edit, and JSON has no idea
+       that an outcome number is a number: "1" survives a round trip through a
+       hand-edited store, or a merge with one written by anything else, looking
+       exactly like 1. A string would pass the liveness filter below, because an
+       object key lookup coerces — and then fail the strict comparison in the
+       draw, because that one does not. The run would come back empty with no
+       error anywhere, which is the worst shape a bug can take. So the numbers
+       become numbers here, at the boundary, and nothing downstream has to
+       wonder. */
+    return mine.map(Number).filter(function (n) { return isFinite(n); });
   }
+  /* LIVE MEANS "HAS QUESTIONS LEFT IN IT", not merely "is in the syllabus".
+     The chips are only drawn for outcomes with something still to ask, so an
+     outcome whose questions have all been put away with "I know this"
+     disappears from the row — but it would stay in the stored set, which is
+     read straight into the run button's label and into the draw. The reader
+     would see a button offering outcomes with no chip ticked for them, and
+     pressing it would start a run of nothing at all. Filtering here keeps the
+     chips, the label and the draw looking at the same set. */
   function loSel() {
     var live = {};
-    outcomes(activeUnit()).forEach(function (o) { live[o.n] = 1; });
+    livePool(activeUnit()).forEach(function (q) { live[q.lo] = 1; });
     return loSelRaw().filter(function (n) { return live[n]; })
       .sort(function (a, b) { return a - b; });
   }
@@ -554,6 +573,16 @@
   }
   /* "1", "1 and 2", "1, 2 and 5" — read out rather than punctuated, because
      this ends up in a button label and on the done screen. */
+  /* WHAT THE RUN BUTTON SAYS, in one place. The summary writes this label when
+     it renders and the chip handler rewrites it on every tap without a
+     rerender, so two copies of the same sentence would sit in two files-worth
+     of code apart — and the only symptom of their drifting would be a label
+     that changes wording the first time it is touched, which nobody would
+     report as a bug. */
+  function pickGoLabel(sel) {
+    if (!sel.length) return 'Choose an outcome above';
+    return 'Practise Outcome' + (sel.length > 1 ? 's ' : ' ') + loList(sel);
+  }
   function loList(ns) {
     var a = (ns || []).slice();
     if (!a.length) return '';
@@ -3357,9 +3386,7 @@
          not, and reads as part of the control rather than as a surprise. */
       h += '<button class="a3-sum-pick-go" data-a3="startpractice" data-lo="sel"' +
         (sel.length ? '' : ' disabled') + '>' +
-        '<span class="a3-sum-pick-lbl">' + (sel.length
-          ? 'Practise Outcome' + (sel.length > 1 ? 's ' : ' ') + esc(loList(sel))
-          : 'Choose an outcome above') + '</span>' +
+        '<span class="a3-sum-pick-lbl">' + esc(pickGoLabel(sel)) + '</span>' +
         '<span aria-hidden="true">\u2192</span></button>';
       h += '</div>';
     }
@@ -4115,7 +4142,12 @@
        questions each happens to have in the bank, which is an accident of how
        much has been written. */
     if (onlyLos && onlyLos.length) {
-      bank = bank.filter(function (q) { return onlyLos.indexOf(q.lo) !== -1; });
+      /* Numbers, whatever the caller handed over: this is a public entry point
+         as well as an internal one, and a set of strings filtering a bank of
+         numbers matches nothing at all. */
+      var want = {};
+      onlyLos.forEach(function (x) { want[Number(x)] = 1; });
+      bank = bank.filter(function (q) { return want[q.lo] === 1; });
     }
     var os = outcomes(unitKey).filter(function (o) {
       return bank.some(function (q) { return q.lo === o.n; });
@@ -5151,9 +5183,7 @@
         else go.setAttribute('disabled', '');
       }
       if (lbl) {
-        lbl.textContent = picked.length
-          ? 'Practise Outcome' + (picked.length > 1 ? 's ' : ' ') + loList(picked)
-          : 'Choose an outcome above';
+        lbl.textContent = pickGoLabel(picked);
       }
       return;
     }

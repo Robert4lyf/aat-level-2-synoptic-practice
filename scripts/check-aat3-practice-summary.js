@@ -567,6 +567,28 @@ const TWO_UNIT_PATH = UI.AAT3_LEARN_PATH.concat(
       `${unit} ${JSON.stringify(set)}: a chosen outcome never appeared at all (${JSON.stringify(counts)})`);
   });
 
+  /* NUMBERS THAT ARRIVED AS STRINGS. The chosen set is JSON in a store the
+     reader can edit, and JSON does not know an outcome number from the text of
+     one: "1" survives a hand edit, or a merge with a store written by anything
+     else, looking exactly like 1. It would pass a liveness check (object keys
+     coerce) and then match nothing in the draw (strict comparison does not),
+     and the run would come back EMPTY with no error anywhere — a whole screen
+     that silently does nothing. Asserted at the draw and at the stored set,
+     because either one alone leaves the other free to regress. */
+  {
+    const bySet = set => {
+      const seen = {};
+      for (let i = 0; i < 100; i++) draw('faps', 10, set).forEach(q => { seen[q.lo] = 1; });
+      return Object.keys(seen).map(Number).sort((a, b) => a - b).join(',');
+    };
+    const asNum = bySet([1, 2]);
+    ok(bySet(['1', '2']) === asNum,
+      `a set of strings drew outcomes [${bySet(['1', '2'])}] where the same set as numbers ` +
+      `drew [${asNum}] — the draw must coerce, or a store holding "1" serves nothing at all`);
+    ok(draw('faps', 10, ['1', '2']).length === 10,
+      'a set written as strings drew no questions at all');
+  }
+
   /* WEIGHTED, NOT PROPORTIONAL TO THE BANK. FAPS Outcome 1 is weighted 5 and
      Outcome 2 is weighted 10, so a run over the two should run about 1:2 — and
      would not if the draw simply pooled and shuffled, because the two outcomes
@@ -617,6 +639,77 @@ const TWO_UNIT_PATH = UI.AAT3_LEARN_PATH.concat(
       'with nothing ticked the run button is not disabled');
     ok(chips.every(n => /aria-pressed="(true|false)"/.test(html)),
       'the chips carry no pressed state, so a screen reader cannot tell which are chosen');
+  }
+}
+
+/* THE STORED SET, read back through the code the screen uses. Last in the file
+   because it leaves the player pointed at another unit, and because it swaps
+   the store out from under a module that was loaded against a different one.
+   The set is written as strings on purpose: that is what a hand-edited or
+   externally merged store looks like, and an uncoerced read matches nothing in
+   the draw while failing nowhere. */
+{
+  /* The set is stored under EVERY unit key rather than one, because the stored
+     set is read for whichever unit is showing, and which unit that is depends
+     on how much content this process happened to load. Outcomes 1 and 2 exist
+     in all four units, so the assertion holds whichever one answers. */
+  const forEveryUnit = v => {
+    const all = {};
+    Object.keys(UI.AAT3_SYLLABUS.units).forEach(k => { all[k] = v; });
+    return JSON.stringify(all);
+  };
+  global.localStorage = fakeStore({
+    [STORE_KEY]: JSON.stringify({ lessons: {}, xp: 0 }),
+    [STORE_KEY + '_losel']: forEveryUnit(['1', '2']),
+  });
+  const stored = UI.AAT3_UI.loSelection();
+  ok(stored.length === 2 && stored.every(n => typeof n === 'number'),
+    `a set stored as ["1","2"] read back as ${JSON.stringify(stored)} — it must be ` +
+    `coerced to numbers on the way out, because the draw compares strictly`);
+  ok(stored.join(',') === '1,2',
+    `a stored set of outcomes 1 and 2 read back as ${JSON.stringify(stored)}`);
+  /* An outcome no unit has is still dropped — coercing must not have quietly
+     replaced the liveness filter that was the point of reading it this way. */
+  global.localStorage = fakeStore({
+    [STORE_KEY]: JSON.stringify({ lessons: {}, xp: 0 }),
+    [STORE_KEY + '_losel']: forEveryUnit([2, 99]),
+  });
+  ok(UI.AAT3_UI.loSelection().join(',') === '2',
+    `a stored set holding an outcome the unit does not have read back as ` +
+    `${JSON.stringify(UI.AAT3_UI.loSelection())}`);
+
+  /* AND AN OUTCOME WITH NOTHING LEFT TO ASK. "I know this" retires a question,
+     and an outcome whose questions have all been retired loses its chip — but
+     it would stay in the stored set, and the stored set is what the run button
+     says and what the draw is given. The reader would be offered a run over
+     outcomes with no chip ticked for them, and pressing it would start a quiz
+     of nothing. Every question in every unit is retired here, so the set must
+     come back empty whichever unit is showing — and startPractice reads an
+     empty set as "all outcomes", which is a run. */
+  {
+    const retireAll = {};
+    const banks = [UI.AAT3_PRACTICE, UI.AAT3_FAPS_PRACTICE, UI.AAT3_MATS_PRACTICE, UI.AAT3_BUAW_PRACTICE];
+    banks.forEach(b => (b.QUESTIONS || []).forEach(q => {
+      const u = retireAll[q.unitKey] || (retireAll[q.unitKey] = { qs: {} });
+      u.qs[q.id] = { k: 1 };
+    }));
+    global.localStorage = fakeStore({
+      [STORE_KEY]: JSON.stringify({ lessons: {}, xp: 0, practice: { units: retireAll } }),
+      [STORE_KEY + '_losel']: forEveryUnit([1, 2]),
+    });
+    /* A FRESH MODULE, because the progress record is read once at load. The
+       stored SET is read every time it is asked for, so the assertions above
+       could swap the store under the running module; what is being retired
+       here cannot. */
+    delete require.cache[require.resolve(path.join(ROOT, 'aat3-ui.js'))];
+    const R = require(path.join(ROOT, 'aat3-ui.js'));
+    ['AAT3_SYLLABUS', 'AAT3_PRACTICE', 'AAT3_LEARN_PATH', 'AAT3_FAPS_PRACTICE',
+      'AAT3_MATS_PRACTICE', 'AAT3_BUAW_PRACTICE'].forEach(k => { R[k] = UI[k]; });
+    const left = R.AAT3_UI.loSelection();
+    ok(left.length === 0,
+      `with every question retired the stored set still read back as ${JSON.stringify(left)} — ` +
+      `an outcome with nothing left to ask must drop out of the set, or the button ` +
+      `offers a run of no questions`);
   }
 }
 
