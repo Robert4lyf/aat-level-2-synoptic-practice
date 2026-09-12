@@ -30,6 +30,17 @@ That publishes `https://antalya-transit.<your-subdomain>.workers.dev/`, which
 assets-only Worker with nothing running in front of it. Delete it in the
 Cloudflare dashboard when the trip is over.
 
+FROM A PHONE, with no terminal, the same thing through the dashboard:
+Workers & Pages → Create → Import a repository → this repo → set the deploy
+command to `npx wrangler deploy --config tram/wrangler.jsonc` and leave the
+build command empty. A second project on the same repository is fine; it
+deploys on push like the study site does.
+
+Failing that, any static host will do — the page is one file with no build and
+no server side. What will NOT do is opening the file straight off the phone:
+a `file://` page gets an opaque origin, so the browser blocks the call to
+service.kentkart.com and the board falls back to the baked timetable.
+
 ## There is a live feed, and this uses it
 
 Kentkart's own passenger API answers unauthenticated, over CORS
