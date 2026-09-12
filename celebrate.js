@@ -61,10 +61,17 @@
      looks like and how it moves. Every part carries a class so the dance can
      reach it.
 
-     FIFTY ONLY. A hundred has the bigger event already and a chicken at both
-     would make them the same celebration twice; it is also the reason a reader
-     who reaches a hundred sees something they have not seen before. */
-  var CHICKEN_AT = 50;
+     HOW MANY, NOT WHETHER. This was a single bird at fifty and none at a
+     hundred, on the reasoning that a hundred had the bigger event already and
+     a chicken at both would be the same celebration twice. The second half of
+     that still holds and is what this map answers: a hundred gets TWO, facing
+     each other, a beat apart — a duet rather than the same solo again, so a
+     reader who gets there still meets something they have not seen. A count
+     rather than a flag, because "how many" is the thing that differs and a
+     boolean cannot say it. The index and the total go on each bird, so the
+     stylesheet can place and phase them without this file knowing which way
+     round a level draws its stage. */
+  var CHICKENS = { 50: 1, 100: 2 };
   var CHICKEN_SVG =
     '<svg viewBox="0 0 120 120" width="100%" height="100%" aria-hidden="true" focusable="false">' +
       '<g class="aat-cel-chk">' +
@@ -177,10 +184,18 @@
          than behind it. `aria-hidden` on the <svg> itself: the banner already
          announces the milestone, and "chicken" is not information a reader
          using a screen reader needs read out over it. */
-      if (milestone === CHICKEN_AT) {
+      var birds = CHICKENS[milestone] || 0, bi;
+      for (bi = 0; bi < birds; bi++) {
         var chick = document.createElement('span');
         chick.className = 'aat-cel-chicken';
         chick.setAttribute('aria-hidden', 'true');
+        /* THE INDEX IS AN ATTRIBUTE, NOT A CLASS. The class is what every
+           other rule and every check matches on, and appending `-0` to it for
+           the only bird fifty draws would break all of them to describe
+           nothing. */
+        chick.setAttribute('data-chick', String(bi));
+        chick.style.setProperty('--i', String(bi));
+        chick.style.setProperty('--n', String(birds));
         chick.innerHTML = CHICKEN_SVG;
         frag.appendChild(chick);
       }
@@ -208,7 +223,7 @@
     LIFE: LIFE,
     PIECES: PIECES,
     WAVES: WAVES,
-    CHICKEN_AT: CHICKEN_AT,
+    CHICKENS: CHICKENS,
     QUAKE: QUAKE,
     /* The milestones themselves, so the three levels cannot disagree about
        which streaks are worth marking. */

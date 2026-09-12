@@ -6554,8 +6554,28 @@ body.dark .diag-result { background:rgba(255,255,255,.03); }
 }
 /* THE SCREEN SHAKES AT A HUNDRED, and only there. celebrate.js puts the class
    on <body> because the overlay is what the reader looks through — shaking
-   that moves nothing they can see. */
-body.aat-cel-quake { animation: aat-cel-quake 620ms cubic-bezier(.36,.07,.19,.97) both; }
+   that moves nothing they can see.
+
+   BUT THE SHAKE IS ON BODY'S CHILDREN, NOT ON BODY. A transform on an element
+   makes it the containing block for every `position: fixed` DESCENDANT, and
+   the overlay is one: with the transform on <body>, `.aat-cel`'s `inset: 0`
+   resolved against the whole document instead of the viewport, and `top: 50%`
+   on the chicken resolved against the document's height. Measured on a 700px
+   window whose page ran to 1012px, the hundred's banner landed at y=450 and
+   its birds at y=532–700 — the celebration was anchored to the page and slid
+   off the bottom of the screen, further the longer the page. Fifty never
+   showed it because fifty does not shake.
+
+   Excluding `.aat-cel` from the selector is what fixes it: the page shakes,
+   the overlay does not, and the overlay's `fixed` now means the screen again.
+
+   AND NO FILL MODE. The keyframes begin and end at the identity transform, so
+   `both` bought nothing and cost a containing block that outlived the shake by
+   the whole life of the overlay — 620ms of shake, four seconds of consequence.
+   Without it the transform is gone the moment the animation is. */
+body.aat-cel-quake > *:not(.aat-cel) {
+  animation: aat-cel-quake 620ms cubic-bezier(.36,.07,.19,.97);
+}
 @keyframes aat-cel-quake {
   0%, 100% { transform: translate3d(0,0,0); }
   10%  { transform: translate3d(-9px, 4px, 0) rotate(-.5deg); }
@@ -6570,97 +6590,189 @@ body.aat-cel-quake { animation: aat-cel-quake 620ms cubic-bezier(.36,.07,.19,.97
 @media (prefers-reduced-motion: reduce) {
   .aat-cel-t { animation: aat-cel-fade 2.6s linear both; }
   @keyframes aat-cel-fade { 0%,85% { opacity: 1; } 100% { opacity: 0; } }
-  body.aat-cel-quake { animation: none; }
+  body.aat-cel-quake > * { animation: none; }
 }
 
-/* ── The fifty-in-a-row chicken ──────────────────────────────────────────────
+/* ── The happy-dance chicken ─────────────────────────────────────────────────
    Shared, not per level: a chicken is a chicken, and the six celebrations are
    already told apart by everything around it. It sits below the banner, in
    front of the confetti and behind the words.
 
-   FIVE PARTS AT FOUR RATES, which is what makes it read as a dance rather than
-   as a picture being wobbled. The hop, the body's squash and the head's bob all
-   run on the same 620ms beat but peak at different points in it; the wings flap
-   at exactly twice that rate; the two legs share one 620ms step cycle half a
-   cycle apart, so the bird is always on one foot. Give them all the same
-   timing and the whole thing moves as one rigid lump.
+   SIX PARTS AT THREE RATES, which is what makes it read as a dance rather than
+   as a picture being wobbled. One 540ms beat carries the hop, the body's
+   squash, the head's bob and the legs' step, each peaking at a different point
+   in it; the wings flap at exactly twice that rate; the tail wags at 405ms,
+   which divides into neither — so it is always arriving somewhere the rest of
+   the bird is not, and the whole thing never settles into a single pulse.
+   Give every part one duration and the bird moves as a rigid lump, which is
+   what "add an animated chicken" most easily degrades into.
+
+   THE HOP TRAVELS. It used to go straight up and straight down on the spot,
+   which is a bounce; the beat now carries it left on the first hop and right
+   on the second, so the bird works its way across its own little stage and
+   back. That is the difference between a thing jumping and a thing dancing.
 
    `transform-box: fill-box` ON EVERY ANIMATED GROUP. An SVG child's default
    transform-origin resolves against the nearest viewport, not its own bounding
    box, so `transform-origin: 50% 100%` on the wing rotated it about a point
    somewhere off the bird entirely. fill-box is what makes the percentages mean
-   what they look like they mean. */
+   what they look like they mean.
+
+   FOUR CUSTOM PROPERTIES CARRY THE STAGING, so one set of keyframes serves one
+   bird or two without a second copy of the dance:
+
+     --cel-x      where this bird stands, as an offset from centre
+     --cel-y      how far below centre it stands
+     --cel-face   1 or -1; -1 mirrors it, so a pair can face each other
+     --phase      how far into the beat this bird starts
+     --in-delay   how long it waits before making its entrance
+
+   Their defaults are the solo bird exactly as it was: centred, facing right,
+   on the beat, entering at once. --cel-y earns its place because the banner
+   sits at z-index 3 and a bird at 2 passes BEHIND it: the solo clears the
+   banner's lower edge by a few pixels at its size, and the pair, drawn smaller,
+   did not — both came out decapitated. */
 .aat-cel-chicken {
   position: absolute; z-index: 2; pointer-events: none;
   left: 50%; top: 50%;
   width: clamp(132px, 36vw, 208px); height: clamp(132px, 36vw, 208px);
-  /* The entrance ends on the resting offset, and `both` holds it there — so
-     the wrapper's transform is owned by one animation rather than fought over
-     by a static rule and a keyframe. */
-  animation: aat-cel-chicken-in 560ms cubic-bezier(.2,1.55,.35,1) both;
-  filter: drop-shadow(0 10px 20px rgba(0,0,0,.32));
+  --cel-x: 0px;
+  --cel-y: 62px;
+  --cel-face: 1;
+  --phase: 0ms;
+  --in-delay: 0ms;
+  /* TWO ANIMATIONS, NOT ONE, and they never touch the same property: the
+     entrance owns transform and opacity, the shadow owns filter. Folding the
+     shadow into the entrance keyframes would freeze it the moment the entrance
+     ended, which is when the dance actually starts. */
+  animation:
+    aat-cel-chicken-in 640ms cubic-bezier(.18,1.7,.3,1) var(--in-delay) both,
+    aat-cel-chicken-shadow 540ms ease-in-out var(--in-delay) infinite;
 }
+/* THE LANDING IS A BOUNCE, not an arrival. It overshoots the resting spot,
+   drops past it, and settles — three beats where there was one, which is what
+   makes the bird look like it threw itself on stage. */
 @keyframes aat-cel-chicken-in {
-  0%   { opacity: 0; transform: translate(-50%, 96px) scale(.35) rotate(-14deg); }
-  65%  { opacity: 1; transform: translate(-50%, 10px) scale(1.1) rotate(4deg); }
-  100% { opacity: 1; transform: translate(-50%, 26px) scale(1) rotate(0); }
+  0%   { opacity: 0; transform: translate(calc(-50% + var(--cel-x)), 118px) scale(.26) scaleX(var(--cel-face)) rotate(-24deg); }
+  52%  { opacity: 1; transform: translate(calc(-50% + var(--cel-x)), -18px) scale(1.24) scaleX(var(--cel-face)) rotate(8deg); }
+  72%  { opacity: 1; transform: translate(calc(-50% + var(--cel-x)), calc(var(--cel-y) + 10px)) scale(.9) scaleX(var(--cel-face)) rotate(-5deg); }
+  88%  { opacity: 1; transform: translate(calc(-50% + var(--cel-x)), calc(var(--cel-y) - 10px)) scale(1.06) scaleX(var(--cel-face)) rotate(2deg); }
+  100% { opacity: 1; transform: translate(calc(-50% + var(--cel-x)), var(--cel-y)) scale(1) scaleX(var(--cel-face)) rotate(0); }
+}
+/* The shadow tightens as the bird rises and spreads as it lands, which is the
+   cheapest way to say the hop has height rather than being a slide. */
+@keyframes aat-cel-chicken-shadow {
+  0%, 100% { filter: drop-shadow(0 8px 14px rgba(0,0,0,.38)); }
+  20%      { filter: drop-shadow(0 26px 26px rgba(0,0,0,.2)); }
+  42%      { filter: drop-shadow(0 8px 14px rgba(0,0,0,.38)); }
+  64%      { filter: drop-shadow(0 20px 22px rgba(0,0,0,.24)); }
 }
 
 .aat-cel-chk,
 .aat-cel-chk-body,
 .aat-cel-chk-wing,
 .aat-cel-chk-head,
+.aat-cel-chk-tail,
 .aat-cel-chk-leg { transform-box: fill-box; }
 
-/* The whole bird: up, down, and a shimmy from side to side. */
+/* The whole bird: two hops a beat, travelling left then right, with a tilt
+   into each one. */
 .aat-cel-chk {
   transform-origin: 50% 100%;
-  animation: aat-cel-chk-hop 620ms cubic-bezier(.3,.65,.4,1) infinite;
+  animation: aat-cel-chk-hop 540ms cubic-bezier(.28,.68,.36,1) infinite;
+  animation-delay: var(--phase);
 }
 @keyframes aat-cel-chk-hop {
-  0%, 100% { transform: translateY(0) rotate(-3.5deg); }
-  25%      { transform: translateY(-15px) rotate(2.5deg); }
-  50%      { transform: translateY(0) rotate(3.5deg); }
-  75%      { transform: translateY(-9px) rotate(-2deg); }
+  0%, 100% { transform: translate(0, 0) rotate(-5deg) scale(1); }
+  20%      { transform: translate(-7px, -31px) rotate(7deg) scale(1.04); }
+  42%      { transform: translate(-10px, 1px) rotate(-3deg) scale(1); }
+  64%      { transform: translate(8px, -20px) rotate(-8deg) scale(1.03); }
+  86%      { transform: translate(10px, 0) rotate(5deg) scale(1); }
 }
 /* Landing squashes it, the rise stretches it — the thing that stops a hop
    looking like a sprite being moved up and down. */
 .aat-cel-chk-body {
   transform-origin: 50% 100%;
-  animation: aat-cel-chk-squash 620ms ease-in-out infinite;
+  animation: aat-cel-chk-squash 540ms ease-in-out infinite;
+  animation-delay: var(--phase);
 }
 @keyframes aat-cel-chk-squash {
-  0%, 100% { transform: scale(1.07, .93); }
-  30%      { transform: scale(.94, 1.08); }
-  62%      { transform: scale(1.04, .96); }
+  0%, 100% { transform: scale(1.12, .88); }
+  22%      { transform: scale(.9, 1.13); }
+  44%      { transform: scale(1.09, .92); }
+  66%      { transform: scale(.94, 1.08); }
 }
-/* Twice the beat: two flaps per hop. */
+/* Twice the beat: two flaps per hop, and a wide enough arc to read at the size
+   a phone draws this. */
 .aat-cel-chk-wing {
   transform-origin: 28% 26%;
-  animation: aat-cel-chk-flap 310ms ease-in-out infinite;
+  animation: aat-cel-chk-flap 270ms ease-in-out infinite;
+  animation-delay: var(--phase);
 }
 @keyframes aat-cel-chk-flap {
-  0%, 100% { transform: rotate(-7deg) translateY(0); }
-  50%      { transform: rotate(29deg) translateY(-4px); }
+  0%, 100% { transform: rotate(-16deg) translateY(2px) scaleY(1); }
+  50%      { transform: rotate(46deg) translateY(-7px) scaleY(.86); }
 }
 .aat-cel-chk-head {
   transform-origin: 18% 82%;
-  animation: aat-cel-chk-bob 620ms ease-in-out infinite;
+  animation: aat-cel-chk-bob 540ms ease-in-out infinite;
+  animation-delay: var(--phase);
 }
 @keyframes aat-cel-chk-bob {
-  0%, 100% { transform: rotate(-6deg) translateX(0); }
-  35%      { transform: rotate(7deg) translateX(4px); }
-  70%      { transform: rotate(-2deg) translateX(-2px); }
+  0%, 100% { transform: rotate(-9deg) translate(0, 0); }
+  30%      { transform: rotate(11deg) translate(6px, -3px); }
+  62%      { transform: rotate(-4deg) translate(-3px, 1px); }
+  82%      { transform: rotate(8deg) translate(4px, -2px); }
 }
-/* One step cycle, the two legs half a cycle apart. */
+/* THE TAIL KEEPS ITS OWN TIME. 405ms is a beat and a half, so it is never back
+   where the hop is: the bird stops looking like one shape on one clock. */
+.aat-cel-chk-tail {
+  transform-origin: 100% 70%;
+  animation: aat-cel-chk-wag 405ms ease-in-out infinite;
+  animation-delay: var(--phase);
+}
+@keyframes aat-cel-chk-wag {
+  0%, 100% { transform: rotate(-11deg) scale(.97); }
+  50%      { transform: rotate(13deg) scale(1.05); }
+}
+/* One step cycle, the two legs half a cycle apart, so the bird is always on
+   one foot. Bird two adds its phase to both and the half-cycle survives. */
 .aat-cel-chk-leg {
   transform-origin: 50% 0;
-  animation: aat-cel-chk-step 620ms ease-in-out infinite;
+  animation: aat-cel-chk-step 540ms ease-in-out infinite;
+  animation-delay: var(--phase);
 }
-.aat-cel-chk-leg-b { animation-delay: 310ms; }
+.aat-cel-chk-leg-b { animation-delay: calc(var(--phase) + 270ms); }
 @keyframes aat-cel-chk-step {
-  0%, 100% { transform: rotate(0) translateY(0); }
-  50%      { transform: rotate(-18deg) translateY(-6px); }
+  0%, 100% { transform: rotate(6deg) translateY(0); }
+  50%      { transform: rotate(-27deg) translateY(-9px); }
+}
+
+/* ── A HUNDRED GETS TWO OF THEM ──────────────────────────────────────────────
+   Not the same bird again, larger: two of them, smaller each so a phone still
+   fits both, standing either side of centre and turned inward so they are
+   dancing AT each other rather than side by side facing the wall.
+
+   HALF A BEAT APART is the whole trick. In step they read as one bird
+   accidentally drawn twice; a beat apart, one is landing as the other lifts
+   and the pair reads as a call and an answer. The second one also waits
+   150ms before making its entrance, so they arrive as two events. */
+.aat-cel-100 .aat-cel-chicken {
+  width: clamp(112px, 29vw, 168px); height: clamp(112px, 29vw, 168px);
+  --cel-spread: clamp(64px, 17vw, 106px);
+  /* Lower than the solo, because they are smaller: the same top edge puts a
+     smaller bird's head that much higher in its box and straight behind the
+     banner. */
+  --cel-y: 58px;
+}
+.aat-cel-100 .aat-cel-chicken[data-chick="0"] {
+  --cel-x: calc(var(--cel-spread) * -1);
+}
+.aat-cel-100 .aat-cel-chicken[data-chick="1"] {
+  --cel-x: var(--cel-spread);
+  --cel-face: -1;
+  --phase: 270ms;
+  --in-delay: 150ms;
 }
 
 /* Chicken-coloured, not level-coloured: the palettes around it are already
@@ -6685,8 +6797,12 @@ body.aat-cel-quake { animation: aat-cel-quake 620ms cubic-bezier(.36,.07,.19,.97
   .aat-cel-chk-body,
   .aat-cel-chk-wing,
   .aat-cel-chk-head,
+  .aat-cel-chk-tail,
   .aat-cel-chk-leg { animation: none; }
-  .aat-cel-chicken { transform: translate(-50%, 26px); opacity: 1; }
+  .aat-cel-chicken {
+    transform: translate(calc(-50% + var(--cel-x)), var(--cel-y)) scaleX(var(--cel-face));
+    opacity: 1;
+  }
 }
 
 /* ── Level 2: violet, the colour its endless mode already uses ───────────────
