@@ -706,13 +706,13 @@
       type: 'mcq',
       q: 'What is the VAT account, in the sense HMRC requires a registered business to keep one?',
       opts: [
-        'The summary linking the business’s records to each figure on the return',
+        'The summary linking the business’s records to the VAT figures on the return',
         'The bank account from which VAT payments to HMRC are made',
         'The nominal ledger account recording sales made to VAT-registered customers',
         'The online account on which a business views its filing history',
       ],
       ans: 0,
-      exp: 'The VAT account is the bridge between the underlying records and the nine boxes: it summarises output tax and input tax for the period and shows how the return was arrived at. Without it, a return is a set of figures nobody can trace. It is a record, not a bank account, not a sales ledger and not the Government Gateway.',
+      exp: 'The VAT account is the bridge between the underlying records and the VAT the return declares: it summarises output tax and input tax for the period and shows how Boxes 1 to 5 were arrived at. The net values in Boxes 6 and 7 come from the sales and purchases records instead. Without the VAT account, a return is a set of figures nobody can trace. It is a record, not a bank account, not a sales ledger and not the Government Gateway.',
     },
     {
       id: 'P-1-69', unitKey: 'tpfb', lo: 1, criteria: ['TPFB-1.1.4', 'TPFB-1.3.4'],
@@ -3213,12 +3213,12 @@
       type: 'truefalse',
       q: 'Identify whether each statement about checking a return before submission is true or false.',
       statements: [
-        { text: 'The VAT account must always support every figure on the return.', answer: true },
+        { text: 'The VAT account must always support every figure on the return.', answer: false },
         { text: 'A return may be submitted before authorisation where the deadline is close.', answer: false },
         { text: 'Comparing the return with the previous period can reveal an error the arithmetic cannot.', answer: true },
         { text: 'Software validation removes the need for a human review.', answer: false },
       ],
-      exp: 'The VAT account is the audit trail and must support the return in every case — that absolute holds. Authorisation is not something a deadline overrides; missing it is a matter for the reviewer to escalate, not to work around. Period-on-period comparison catches the class of error that is arithmetically perfect and factually wrong, which is exactly what software cannot see.',
+      exp: 'The VAT account records VAT, so it supports Boxes 1 to 5 and the error corrections that run through them. It does not support Boxes 6 and 7: those are the net value of sales and purchases, and they come from the sales and purchases records. “Every figure” is the word that makes the statement false. Authorisation is not something a deadline overrides; missing it is a matter for the reviewer to escalate, not to work around. Period-on-period comparison catches the class of error that is arithmetically perfect and factually wrong, which is exactly what software cannot see.',
     },
     {
       id: 'P-3-68', unitKey: 'tpfb', lo: 3, criteria: ['TPFB-3.2.3', 'TPFB-3.2.5'],
