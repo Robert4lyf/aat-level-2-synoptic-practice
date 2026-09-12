@@ -93,17 +93,46 @@
   #map {
     display: block; width: 100%; height: auto; background: var(--card);
     border: 1px solid var(--line); border-radius: 12px;
+    --z: 1;
+    /* One finger still scrolls the page past the map; once you have zoomed in
+       it pans instead. Either way the browser never takes the pinch. */
+    touch-action: pan-y;
   }
-  .track { fill: none; stroke-width: 5; stroke-linejoin: round; stroke-linecap: round; opacity: 0.7; }
-  .track.back { stroke-width: 9; opacity: 0.18; }
-  .tram.back { stroke-width: 2.5; fill-opacity: 0.4; }
+  #map.zoomed { touch-action: none; cursor: grab; }
+  /* Zooming shrinks the viewBox, so anything measured in user units would
+     fatten as you go in. Each is divided by the magnification; the plain value
+     first is what an engine without calc() in SVG falls back to. */
+  .track {
+    fill: none; stroke-linejoin: round; stroke-linecap: round; opacity: 0.7;
+    stroke-width: 5; stroke-width: calc(5px / var(--z, 1));
+  }
+  .track.back { stroke-width: 9; stroke-width: calc(9px / var(--z, 1)); opacity: 0.18; }
+  .tram.back { stroke-width: 2.5; stroke-width: calc(2.5px / var(--z, 1)); fill-opacity: 0.4; }
   .stopdot { fill: var(--dim); opacity: 0.45; }
-  .here { fill: none; stroke: var(--ink); stroke-width: 4; }
-  .tram { stroke: var(--card); stroke-width: 3; }
-  .maplabel {
-    fill: var(--dim); font-size: 28px; font-weight: 600;
-    paint-order: stroke; stroke: var(--card); stroke-width: 7px; stroke-linejoin: round;
+  .here {
+    fill: none; stroke: var(--ink);
+    stroke-width: 4; stroke-width: calc(4px / var(--z, 1));
   }
+  .tram { stroke: var(--card); stroke-width: 3; stroke-width: calc(3px / var(--z, 1)); }
+  /* Hollow where the feed put it somewhere the line is not. */
+  .tram.stray { stroke-width: 4; stroke-width: calc(4px / var(--z, 1)); }
+  .maplabel {
+    fill: var(--dim); font-weight: 600;
+    font-size: 28px; font-size: calc(28px / var(--z, 1));
+    paint-order: stroke; stroke: var(--card); stroke-linejoin: round;
+    stroke-width: 7px; stroke-width: calc(7px / var(--z, 1));
+  }
+  .maplabel.small { fill: var(--ink); opacity: 0.75; }
+  .mapctl {
+    display: flex; align-items: center; gap: 6px; margin-top: 8px;
+    font-size: 12px; color: var(--dim); flex-wrap: wrap;
+  }
+  .mapctl button {
+    min-width: 40px; border: 1px solid var(--line); background: var(--card);
+    border-radius: 8px; padding: 5px 9px; font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .mapctl span { margin-left: auto; text-align: right; }
   footer { margin-top: 22px; font-size: 12px; line-height: 1.6; color: var(--dim); }
   .favs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 4px; }
   .favs button { font-size: 13px; border: 1px solid var(--line); background: var(--card); border-radius: 999px; padding: 5px 11px; }
@@ -141,6 +170,12 @@
   <h2>Where they are now</h2>
   <p id="mapcount">Loading&hellip;</p>
   <svg id="map" role="img" aria-label="Map of the selected route with the vehicles currently on it"></svg>
+  <div class="mapctl" id="mapctl" hidden>
+    <button id="zoomout" type="button" aria-label="Zoom out">&minus;</button>
+    <button id="zoom" type="button" aria-label="Fit the whole route on screen">Fit</button>
+    <button id="zoomin" type="button" aria-label="Zoom in">+</button>
+    <span>pinch or scroll to zoom &middot; drag to pan</span>
+  </div>
 </section>
 
 <footer>
@@ -541,7 +576,8 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
 
   var el = {};
   ['clock', 'lines', 'dirs', 'stop', 'fav', 'favs', 'board', 'src', 'status',
-    'map', 'mapcount', 'route', 'routefilter', 'routecount', 'inbound']
+    'map', 'mapcount', 'route', 'routefilter', 'routecount', 'inbound',
+    'mapctl', 'zoom', 'zoomin', 'zoomout']
     .forEach(function (id) { el[id] = document.getElementById(id); });
 
   function colour(code) { return COLOUR[code] || BUS_COLOUR; }
@@ -558,6 +594,7 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
 
   function pick(code) {
     state.code = code; state.dir = '0'; state.stop = null; state.open = null;
+    fitMap();
     load(); render();
   }
 
@@ -619,7 +656,7 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
         : (d === state.dir && M ? M.head : (d === '0' ? 'one way' : 'the other way'));
       b.textContent = state.code + ' · ' + label;
       b.onclick = function () {
-        state.dir = d; state.stop = null; state.open = null; load(); render();
+        state.dir = d; state.stop = null; state.open = null; fitMap(); load(); render();
       };
       el.dirs.appendChild(b);
     });
@@ -827,7 +864,52 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
      is counted and left off. */
   var FAR_M = 5000;
 
-  function renderMap(M, now) {
+  /* THE MAP HOLDS ITS FRAME. The projector is fitted to the track and to any
+     vehicle the feed puts off it — never to the snapped vehicles, which sit on
+     the track anyway. Fitting it to everything meant the whole picture shifted
+     a little every twenty seconds as the trams moved, which is unreadable once
+     you have zoomed in on one of them.
+
+     view.k is the magnification and view.x/view.y the top-left corner of what
+     you are looking at, in the base picture's own units. Gestures change those
+     three numbers and repaint; nothing is re-fetched and nothing re-modelled. */
+  var view = { k: 1, x: 0, y: 0 };
+  var mapState = null;
+  var MAX_K = 40;
+
+  function clamp(v, lo, hi) { return v < lo ? lo : (v > hi ? hi : v); }
+
+  function clampView() {
+    if (!mapState) return;
+    var w = VB_W / view.k, h = mapState.h / view.k;
+    view.x = clamp(view.x, 0, VB_W - w);
+    view.y = clamp(view.y, 0, mapState.h - h);
+  }
+
+  function fitMap() { view.k = 1; view.x = 0; view.y = 0; }
+
+  /* Zoom about a point, so whatever is under your finger stays under it. */
+  function zoomAbout(k, ax, ay) {
+    if (!mapState) return;
+    var was = view.k;
+    view.k = clamp(k, 1, MAX_K);
+    view.x = ax - (ax - view.x) * (was / view.k);
+    view.y = ay - (ay - view.y) * (was / view.k);
+    clampView();
+    paintMap();
+  }
+
+  /* Client pixels to base picture units. */
+  function atClient(cx, cy) {
+    var r = el.map.getBoundingClientRect();
+    if (!r.width || !r.height || !mapState) return { x: 0, y: 0 };
+    return {
+      x: view.x + (cx - r.left) / r.width * (VB_W / view.k),
+      y: view.y + (cy - r.top) / r.height * (mapState.h / view.k)
+    };
+  }
+
+  function renderMap(M) {
     var dots = M.stops.filter(onEarth);
     var pts = M.points.length ? M.points : dots;
     var back = otherWay();
@@ -841,69 +923,30 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
     function near(b) { return b.off <= FAR_M; }
     var mine = mineAll.filter(near), theirs = theirsAll.filter(near);
     var lost = (mineAll.length - mine.length) + (theirsAll.length - theirs.length);
-    var all = pts.concat(backPts).concat(mine, theirs);
-    if (!all.length) {
+    function offLine(b) { return b.off > SNAP_M; }
+    var strays = mine.filter(offLine).concat(theirs.filter(offLine));
+    var frame = pts.concat(backPts).concat(strays);
+    if (!frame.length) {
+      mapState = null;
       el.map.innerHTML = '';
+      el.mapctl.hidden = true;
       el.mapcount.textContent = 'No usable positions for this route in the feed.';
       return;
     }
-    var proj = projector(all);
-    el.map.setAttribute('viewBox', '0 0 ' + VB_W + ' ' + Math.round(proj.h));
-    el.map.innerHTML = '';
-    var stroke = colour(state.code);
-
-    function path(list, cls) {
-      if (list.length < 2) return;
-      el.map.appendChild(svg('path', {
-        d: list.map(function (q, i) {
-          return (i ? 'L' : 'M') + proj.x(q.lng).toFixed(1) + ' ' + proj.y(q.lat).toFixed(1);
-        }).join(' '),
-        class: cls, stroke: stroke
-      }));
-    }
-    path(backPts, 'track back');
-    path(pts, 'track');
-
-    dots.forEach(function (s) {
-      el.map.appendChild(svg('circle', {
-        cx: proj.x(s.lng).toFixed(1), cy: proj.y(s.lat).toFixed(1), r: 3.5, class: 'stopdot'
-      }));
-    });
-
-    var here = M.stops[M.stops.map(function (s) { return s.id; }).indexOf(state.stop)];
-    if (here && onEarth(here)) el.map.appendChild(svg('circle', {
-      cx: proj.x(here.lng).toFixed(1), cy: proj.y(here.lat).toFixed(1), r: 16, class: 'here'
-    }));
-
-    /* The way you are going is filled; the way back is an outline, so the map
-       shows every vehicle on the line without pretending they all serve you. */
-    var stray = 0;
-    theirs.forEach(function (b) {
-      if (b.off > SNAP_M) stray++;
-      el.map.appendChild(svg('circle', {
-        cx: proj.x(b.lng).toFixed(1), cy: proj.y(b.lat).toFixed(1),
-        r: 9, class: 'tram back', stroke: stroke, fill: stroke
-      }));
-    });
-    mine.forEach(function (b) {
-      if (b.off > SNAP_M) stray++;
-      el.map.appendChild(svg('circle', {
-        cx: proj.x(b.lng).toFixed(1), cy: proj.y(b.lat).toFixed(1),
-        r: 11, class: 'tram', fill: stroke
-      }));
-    });
-
-    var labels = svg('g', {});
-    [dots[0], dots[dots.length - 1]].forEach(function (s) {
-      if (!s) return;
-      var x = proj.x(s.lng), t = svg('text', {
-        x: x, y: proj.y(s.lat) - 16, class: 'maplabel',
-        'text-anchor': x > VB_W * 0.75 ? 'end' : (x < VB_W * 0.25 ? 'start' : 'middle')
-      });
-      t.textContent = s.name;
-      labels.appendChild(t);
-    });
-    el.map.appendChild(labels);
+    /* A different route, or a track that has changed shape, starts fresh. */
+    var shape = state.code + '|' + state.dir + '|' + pts.length + '|' + backPts.length;
+    if (!mapState || mapState.shape !== shape) fitMap();
+    var proj = projector(frame);
+    mapState = {
+      shape: shape, h: proj.h, proj: proj, dots: dots, pts: pts, backPts: backPts,
+      mine: mine, theirs: theirs,
+      here: (function () {
+        var h = M.stops[M.stops.map(function (s) { return s.id; }).indexOf(state.stop)];
+        return h && onEarth(h) ? h : null;
+      })()
+    };
+    el.mapctl.hidden = false;
+    paintMap();
 
     if (M.source !== 'live') {
       el.mapcount.textContent =
@@ -921,8 +964,8 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
       txt = bits.join(', ') + '. The ring is your stop.';
       if (!mineAll.length) txt += ' Nothing on your side of the line at the moment.';
     }
-    if (stray) {
-      txt += ' ' + (stray === 1 ? 'One is' : stray + ' are') +
+    if (strays.length) {
+      txt += ' ' + (strays.length === 1 ? 'One is' : strays.length + ' are') +
         ' drawn off the line: that is where the feed puts it.';
     }
     if (lost) {
@@ -930,6 +973,192 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
         ' kilometres from the route, too far to draw.';
     }
     el.mapcount.textContent = txt;
+  }
+
+  /* Draw what view says, at sizes that look the same however far in you are:
+     the viewBox shrinks as you zoom, so every radius, stroke and letter is
+     divided by the magnification to hold its size on screen. */
+  function paintMap() {
+    if (!mapState) return;
+    var proj = mapState.proj, z = view.k, stroke = colour(state.code);
+    clampView();
+    el.map.setAttribute('viewBox', [
+      view.x.toFixed(1), view.y.toFixed(1),
+      (VB_W / z).toFixed(1), (mapState.h / z).toFixed(1)
+    ].join(' '));
+    el.map.style.setProperty('--z', z);
+    el.map.classList.toggle('zoomed', z > 1);
+    el.zoom.textContent = z > 1.05 ? '×' + (z < 10 ? z.toFixed(1) : Math.round(z)) : 'Fit';
+    el.map.innerHTML = '';
+
+    function path(list, cls) {
+      if (list.length < 2) return;
+      el.map.appendChild(svg('path', {
+        d: list.map(function (q, i) {
+          return (i ? 'L' : 'M') + proj.x(q.lng).toFixed(1) + ' ' + proj.y(q.lat).toFixed(1);
+        }).join(' '),
+        class: cls, stroke: stroke
+      }));
+    }
+    path(mapState.backPts, 'track back');
+    path(mapState.pts, 'track');
+
+    mapState.dots.forEach(function (s) {
+      el.map.appendChild(svg('circle', {
+        cx: proj.x(s.lng).toFixed(1), cy: proj.y(s.lat).toFixed(1),
+        r: (3.5 / z).toFixed(2), class: 'stopdot'
+      }));
+    });
+    /* Zoomed in there is room for the names of the stops on screen. Drawing
+       all 85 of a long bus route would be unreadable and slow to pinch. */
+    if (z >= 3) {
+      var seen = mapState.dots.filter(function (s) {
+        var x = proj.x(s.lng), y = proj.y(s.lat);
+        return x >= view.x && x <= view.x + VB_W / z &&
+          y >= view.y && y <= view.y + mapState.h / z;
+      });
+      (seen.length <= 30 ? seen : []).forEach(function (s) {
+        var t = svg('text', {
+          x: proj.x(s.lng).toFixed(1),
+          /* Clear of the ring, which is 16 units across at any zoom. */
+          y: (proj.y(s.lat) - 21 / z).toFixed(1),
+          class: 'maplabel small', 'text-anchor': 'middle',
+          style: 'font-size:' + (17 / z).toFixed(2) + 'px;stroke-width:' + (4 / z).toFixed(2) + 'px'
+        });
+        t.textContent = s.name;
+        el.map.appendChild(t);
+      });
+    }
+
+    if (mapState.here) el.map.appendChild(svg('circle', {
+      cx: proj.x(mapState.here.lng).toFixed(1), cy: proj.y(mapState.here.lat).toFixed(1),
+      r: (16 / z).toFixed(2), class: 'here'
+    }));
+
+    /* The way you are going is filled; the way back is an outline, so the map
+       shows every vehicle on the line without pretending they all serve you. */
+    function vehicle(b, r, cls) {
+      var off = b.off > SNAP_M;
+      el.map.appendChild(svg('circle', {
+        cx: proj.x(b.lng).toFixed(1), cy: proj.y(b.lat).toFixed(1),
+        r: (r / z).toFixed(2), class: cls + (off ? ' stray' : ''),
+        stroke: stroke, fill: off ? 'none' : stroke
+      }));
+    }
+    mapState.theirs.forEach(function (b) { vehicle(b, 9, 'tram back'); });
+    mapState.mine.forEach(function (b) { vehicle(b, 11, 'tram'); });
+
+    if (z < 3) {
+      var labels = svg('g', {});
+      [mapState.dots[0], mapState.dots[mapState.dots.length - 1]].forEach(function (s) {
+        if (!s) return;
+        var x = proj.x(s.lng), t = svg('text', {
+          x: x, y: proj.y(s.lat) - 16 / z, class: 'maplabel',
+          'text-anchor': x > VB_W * 0.75 ? 'end' : (x < VB_W * 0.25 ? 'start' : 'middle')
+        });
+        t.textContent = s.name;
+        labels.appendChild(t);
+      });
+      el.map.appendChild(labels);
+    }
+  }
+
+  /* ---- pinch, drag, wheel, double tap ---------------------------------- */
+
+  function mapGestures() {
+    var down = {}, n = 0, last = null, pinch = null, tap = 0, press = null;
+
+    /* Zoom in on the ring. A route drawn diagonally leaves most of its box
+       empty, and zooming on the middle of the box lands you in the white. */
+    function anchorZoom(f) {
+      if (!mapState) return;
+      var k = clamp(view.k * f, 1, MAX_K);
+      if (mapState.here) {
+        /* Put your stop in the middle, rather than wherever on the edge it
+           happened to be before the zoom. */
+        view.k = k;
+        view.x = mapState.proj.x(mapState.here.lng) - VB_W / k / 2;
+        view.y = mapState.proj.y(mapState.here.lat) - mapState.h / k / 2;
+        clampView();
+        paintMap();
+        return;
+      }
+      zoomAbout(k, view.x + VB_W / view.k / 2, view.y + mapState.h / view.k / 2);
+    }
+
+    el.map.addEventListener('wheel', function (e) {
+      if (!mapState) return;
+      e.preventDefault();
+      var at = atClient(e.clientX, e.clientY);
+      /* Trackpads send small deltas continuously, mice send lumps of 100. */
+      zoomAbout(view.k * Math.pow(1.0022, -e.deltaY), at.x, at.y);
+    }, { passive: false });
+
+    el.map.addEventListener('pointerdown', function (e) {
+      if (!mapState) return;
+      down[e.pointerId] = { x: e.clientX, y: e.clientY };
+      n++;
+      if (n === 2) {
+        var k = Object.keys(down), a = down[k[0]], b = down[k[1]];
+        pinch = { d: Math.hypot(a.x - b.x, a.y - b.y), k: view.k,
+          at: atClient((a.x + b.x) / 2, (a.y + b.y) / 2) };
+      } else if (n === 1) {
+        last = { x: e.clientX, y: e.clientY };
+        press = { x: e.clientX, y: e.clientY };
+        /* One finger scrolls the page until you have zoomed in; after that it
+           pans, which is the only way to reach the rest of the line. */
+        if (e.pointerType !== 'touch' || view.k > 1) {
+          try { el.map.setPointerCapture(e.pointerId); } catch (err) { /* fine */ }
+        }
+      }
+    });
+
+    el.map.addEventListener('pointermove', function (e) {
+      if (!mapState || !down[e.pointerId]) return;
+      down[e.pointerId] = { x: e.clientX, y: e.clientY };
+      if (n >= 2 && pinch) {
+        var k = Object.keys(down), a = down[k[0]], b = down[k[1]];
+        var d = Math.hypot(a.x - b.x, a.y - b.y);
+        if (pinch.d > 4) zoomAbout(pinch.k * (d / pinch.d), pinch.at.x, pinch.at.y);
+        e.preventDefault();
+        return;
+      }
+      if (!last || (e.pointerType === 'touch' && view.k <= 1)) return;
+      var r = el.map.getBoundingClientRect();
+      view.x -= (e.clientX - last.x) / r.width * (VB_W / view.k);
+      view.y -= (e.clientY - last.y) / r.height * (mapState.h / view.k);
+      last = { x: e.clientX, y: e.clientY };
+      e.preventDefault();
+      paintMap();
+    });
+
+    function up(e) {
+      if (down[e.pointerId]) { delete down[e.pointerId]; n = Math.max(0, n - 1); }
+      if (n < 2) pinch = null;
+      if (!n) last = null;
+    }
+    el.map.addEventListener('pointerup', function (e) {
+      var moved = press && Math.hypot(e.clientX - press.x, e.clientY - press.y) > 8;
+      up(e);
+      if (!n) press = null;
+      if (e.pointerType !== 'touch' || moved) return;
+      var t = Date.now();
+      if (t - tap < 350) {
+        var at = atClient(e.clientX, e.clientY);
+        zoomAbout(view.k >= 8 ? 1 : view.k * 2.5, at.x, at.y);
+        tap = 0;
+      } else tap = t;
+    });
+    el.map.addEventListener('pointercancel', up);
+    el.map.addEventListener('dblclick', function (e) {
+      if (!mapState) return;
+      var at = atClient(e.clientX, e.clientY);
+      zoomAbout(view.k >= 8 ? 1 : view.k * 2.5, at.x, at.y);
+    });
+
+    el.zoomin.onclick = function () { anchorZoom(1.8); };
+    el.zoomout.onclick = function () { anchorZoom(1 / 1.8); };
+    el.zoom.onclick = function () { fitMap(); paintMap(); };
   }
 
   /* ---- saved stops ----------------------------------------------------- */
@@ -1033,6 +1262,8 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
     if (!M || !M.stops.length) {
       el.board.innerHTML = '';
       el.map.innerHTML = '';
+      el.mapctl.hidden = true;
+      mapState = null;
       el.inbound.hidden = true;
       el.stop.innerHTML = '';
       drawn.stops = null;
@@ -1050,7 +1281,7 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
     renderStops(M);
     renderFavs();
     renderBoard(M, now);
-    renderMap(M, now);
+    renderMap(M);
     store();
   }
 
@@ -1080,6 +1311,7 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
   el.src.textContent = 'Live: service.kentkart.com/rl1/web/pathInfo, region 026. ' +
     'Offline fallback: ' + BAKED.meta.feed + '.';
 
+  mapGestures();
   restore();
   render();
   load();
