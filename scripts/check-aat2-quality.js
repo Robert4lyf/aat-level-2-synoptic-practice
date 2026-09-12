@@ -564,10 +564,91 @@ L2_UNITS.forEach(u => {
    is worse than an absent one — so the list grows as questions are written or
    audited rather than being backfilled by regex. */
 const QUESTION_FLOORS = {
-  'ITBK-1.3': 5, 'ITBK-4.1': 7, 'ITBK-4.3': 5, 'ITBK-4.4': 4,
-  'POBC-4.1': 7, 'POBC-4.2': 7,
-  'POC-1.3': 5, 'POC-1.4': 6, 'POC-2.2': 9, 'POC-3.2': 6, 'POC-4.1': 8, 'POC-4.2': 7,
-  'BESY-1.1': 5, 'BESY-1.2': 4, 'BESY-1.4': 4, 'BESY-3.4': 4, 'BESY-5.3': 6, 'BESY-6.1': 6,
+  /* ITBK was audited in full: every question in the unit's bank was read against
+     the scope of content in docs/reference/aat-l2-spec-v5.4-extracted.txt and
+     tagged where it genuinely tests that criterion. Coverage went from 4 of 16
+     criteria to 16 of 16, and these floors are set at what each now holds.
+
+     A `criteria` tag names a CRITERION, not a bank. Thirty ITBK questions were
+     first left untagged because they sit in the ITBK bank and outside ITBK's
+     scope; twenty-seven of them have since been tagged to the criterion they
+     really test, which is usually in another unit — irrecoverable debts and
+     the journal to POBC-3.1, the control accounts and the VAT control account
+     to POBC-1.1 and 1.2, inventory and cost of goods sold to POC-2.1 and 2.5,
+     net pay to POC-2.2. What stays untagged is the material that is in no
+     Level 2 criterion at all: reducing-balance depreciation, straight-line
+     depreciation and prepayments, all of which are Level 3. Tagging a question
+     to the nearest criterion in ITS OWN bank, to make the numbers look better,
+     is exactly the wrong tag this file warns about below; tagging it to the
+     criterion it genuinely tests is the right one. */
+  'ITBK-1.1': 7, 'ITBK-1.2': 13, 'ITBK-1.3': 6, 'ITBK-1.4': 16,
+  'ITBK-2.1': 15, 'ITBK-2.2': 3, 'ITBK-2.3': 4,
+  'ITBK-3.1': 12, 'ITBK-3.2': 9, 'ITBK-3.3': 3,
+  'ITBK-4.1': 14, 'ITBK-4.2': 3, 'ITBK-4.3': 5, 'ITBK-4.4': 4,
+  'ITBK-5.1': 10, 'ITBK-5.2': 6,
+  /* POBC audited the same way. 2 of 10 criteria carried a tag, now 10 of 10.
+     The audit's own finding was POBC-2.1: payment methods is taught in full by
+     L-pobc-15 and was tested by nothing whatever, the one criterion in the unit
+     with no question behind it at all. Six were written against the spec's own
+     three-way split (2.1.2) rather than against the names of the methods,
+     because classifying the effect on the bank balance is what the assessment
+     asks for.
+
+     Fifteen POBC questions stay untagged, and unlike ITBK's they could not be
+     rehoused: internal controls, segregation of duties, audit trails,
+     inventory controls, internal audit and labour turnover appear nowhere in
+     the Level 2 scope of content — not in this unit, and not in the other
+     three. They were checked term by term against the extracted spec rather
+     than assumed. Two that DO appear were moved: a source document to
+     ITBK-1.1, the cash book to ITBK-4.1, and restricting access to a system
+     to BESY-7.2. */
+  'POBC-1.1': 36, 'POBC-1.2': 12,
+  'POBC-2.1': 6, 'POBC-2.2': 9, 'POBC-2.3': 22,
+  'POBC-3.1': 24, 'POBC-3.2': 33, 'POBC-3.3': 15,
+  'POBC-4.1': 8, 'POBC-4.2': 7,
+  /* POC audited the same way: 5 of 15 criteria carried a tag, now 15 of 15.
+     Two were taught and tested by nothing. 1.6 is carried by L-poc-1 and
+     L-poc-18, five cards on the manufacturing account alone. 3.1 was the odd
+     one and the more telling: 3.2 — reporting on significant variances — had
+     seven questions behind it while 3.1, CALCULATING the variance in the first
+     place, had none, so a reader could be asked to judge a number they had
+     never been asked to work out. Five questions each now cover them. */
+  'POC-1.1': 36, 'POC-1.2': 20, 'POC-1.3': 5, 'POC-1.4': 6, 'POC-1.5': 4, 'POC-1.6': 5,
+  'POC-2.1': 7, 'POC-2.2': 12, 'POC-2.3': 18, 'POC-2.4': 8, 'POC-2.5': 11,
+  'POC-3.1': 5, 'POC-3.2': 7, 'POC-4.1': 8, 'POC-4.2': 7,
+  /* BESY audited the same way, and it was the largest job: 6 of 22 criteria
+     carried a tag, now 22 of 22, with 111 of the bank's questions read against
+     the scope of content and tagged.
+
+     Six criteria were taught and tested by nothing. 1.3 was the starkest —
+     key features of contracts is the heart of the contract law outcome, and
+     while classifications of law, sources of law and remedies all had questions
+     behind them, offer, acceptance, consideration and discharge had none.
+     3.3 held one question against five fundamental principles. 4.2, 4.3, 5.1,
+     6.3 and 7.1 were untested outright, so a reader could meet the statutory
+     books, company formation, the functions of a business, planning a workload
+     and the characteristics of useful information in the lessons and never be
+     asked about any of them. Twenty-three questions now cover the six.
+
+     The audit's own lesson was that an id prefix is not a unit. Fifty-one more
+     BESY questions were carrying no tag because their ids begin dd-, sc-, gf-,
+     tf-, ms-, tfq- or wr- rather than besy-, and a first pass that matched on
+     the prefix walked straight past them — including all sixteen written
+     tasks, which are what 6.2 exists to assess. They are tagged by what they
+     test, which is why 6.2 holds 21.
+
+     Five BESY questions stay untagged: two on mission statements, two on
+     franchises and one on market segmentation. Nothing in this unit's scope of
+     content mentions any of the three. They are not wrong, but they are not
+     this syllabus, and tagging them to the nearest criterion would say the
+     criterion is tested when it is not. */
+  'BESY-1.1': 7, 'BESY-1.2': 5, 'BESY-1.3': 6, 'BESY-1.4': 5,
+  'BESY-2.1': 25, 'BESY-2.2': 27, 'BESY-2.3': 9,
+  'BESY-3.1': 12, 'BESY-3.2': 7, 'BESY-3.3': 11, 'BESY-3.4': 8,
+  'BESY-4.1': 25, 'BESY-4.2': 10, 'BESY-4.3': 4,
+  'BESY-5.1': 4, 'BESY-5.2': 8, 'BESY-5.3': 9,
+  'BESY-6.1': 8, 'BESY-6.2': 21, 'BESY-6.3': 4,
+  'BESY-7.1': 11, 'BESY-7.2': 14,
 };
 const bankByCriterion = new Map();
 BANK.forEach(q => {

@@ -1299,18 +1299,42 @@ function finish() {
        cannot answer a type does not announce it, it reports the thing being
        measured as absent, which is why the answering lives in lib/aat2-page.js
        and not in a guessed list of submit ids here. */
+    /* EVERY KIND OF BOX "Use this value" can fill, named once. The walk below
+       uses it to decide whether a screen has anywhere to put a figure, and the
+       "Use this value" test after it uses it to find the box to fill — two
+       readings of the same question that must agree, and did not while each
+       carried its own copy.
+
+       The list is shown beside numeric, table-fill, scenario and entry-grid
+       questions, and each carries a different box. The first version looked
+       only for #numericAnswer, landed on a table-fill, and reported null; that
+       was not the check being wrong, because "Use this value" really did
+       nothing on two of the three types it was offered on. The entry grid's
+       amount cells went missing the same way, and with them the one question
+       type whose whole answer IS a column of figures: the walk reported
+       itbk-502 as a keypad with nothing to type into while the reader was
+       looking at three boxes. Written against the class the grid renderer
+       actually emits, so a renamed class fails here rather than passing by
+       matching nothing. */
+    const L2_BOXES = '#numericAnswer, [data-tf-blank], [data-sc-part], .l2-eg-in';
     let sidebar = 0, walked = 0, orphans = 0, seen = 0;
     for (; walked < 40; walked++) {
-      const state = await p2.evaluate(() => ({
+      const state = await p2.evaluate(sel => ({
         calc: document.querySelectorAll('.calc-sidebar').length,
-        boxes: document.querySelectorAll('#numericAnswer, [data-tf-blank], [data-sc-part]').length,
-      }));
-      /* A KEYPAD WITH NOTHING TO TYPE INTO is the defect this walk found: a
+        /* The promise, not the pad. See below. */
+        use: document.querySelectorAll('#calcUse').length,
+        boxes: document.querySelectorAll(sel).length,
+      }), L2_BOXES);
+      /* A PROMISE WITH NOTHING BEHIND IT is the defect this walk found: a
          scenario question whose parts are all multiple choice rendered a full
          calculator and a "Use this value" button on a screen with no answer
-         box at all. Counted across every screen of the walk rather than only
-         the one it stops on, so a single unlucky landing cannot hide it. */
-      if (state.calc) { seen++; if (!state.boxes) orphans++; }
+         box at all. The pad alone is not the defect — a question marked `calc`
+         is a sum with no box by design, and renders the pad as a scratch pad
+         saying so, which the static sweep below insists on. It is the BUTTON
+         that must have somewhere to put its figure, so that is what is counted
+         here. Counted across every screen of the walk rather than only the one
+         it stops on, so a single unlucky landing cannot hide it. */
+      if (state.calc) { seen++; if (state.use && !state.boxes) orphans++; }
       if (state.calc && state.boxes) { sidebar = state.calc; break; }
       await L2.answerCurrent(p2);
       const next = p2.locator('#nextBtn:not([disabled])');
@@ -1331,13 +1355,7 @@ function finish() {
       await p2.locator('.calc-sidebar [data-calc="num"][data-val="2"]').click({ timeout: 2000 });
       const d = await p2.locator('#calcDisplay').textContent();
       ok(d === '42', `Level 2's keys reach its display (got ${d})`);
-      /* Whichever answer box this screen has. The calculator is shown beside
-         numeric, table-fill and scenario questions, and each carries a
-         different box — the first version of this looked only for
-         #numericAnswer, landed on a table-fill, and reported null. That was
-         not the check being wrong: "Use this value" really did nothing on two
-         of the three types it is offered on. */
-      const BOXES = '#numericAnswer, [data-tf-blank], [data-sc-part]';
+      const BOXES = L2_BOXES;
       const before = await p2.locator(BOXES).count();
       ok(before > 0, `the screen showing the calculator has an answer box (found ${before})`);
       await p2.locator(BOXES).first().focus().catch(() => {});
@@ -1458,7 +1476,7 @@ function finish() {
        sheet was covering, so leaving it up makes the reader dismiss it to check
        that the thing they asked for happened. Level 3 was asserted on this;
        Level 2 was not, and a mutation removing it survived. */
-    const afterUse = await p2.evaluate(async () => {
+    const afterUse = await p2.evaluate(async BOXES => {
       document.getElementById('calcFab').click();
       await new Promise(r => requestAnimationFrame(r));
       const key = v => document.querySelector(`.calc-sidebar [data-calc="num"][data-val="${v}"]`);
@@ -1472,7 +1490,6 @@ function finish() {
       key('7').click();
       const use = document.getElementById('calcUse');
       if (!use) return { err: 'no use button' };
-      const BOXES = '#numericAnswer, [data-tf-blank], [data-sc-part]';
       const box = document.querySelector(BOXES);
       if (box) box.focus();
       use.click();
@@ -1482,7 +1499,7 @@ function finish() {
         closed: !side || getComputedStyle(side).display === 'none',
         value: document.querySelector(BOXES) ? document.querySelector(BOXES).value : null,
       };
-    });
+    }, L2_BOXES);
     ok(!afterUse.err, `the narrow sheet can be used${afterUse.err ? ': ' + afterUse.err : ''}`);
     ok(afterUse.value === '7', `and the figure reaches the answer box (got ${afterUse.value})`);
     ok(afterUse.closed === true, 'and "Use this value" puts the sheet away');

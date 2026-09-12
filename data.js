@@ -49,14 +49,14 @@ window.TOPICS = [
 window.ALL_QUESTIONS = [
 
   /* -- INTRODUCTION TO BOOKKEEPING (ITBK) -- */
-  { id: 'itbk-001', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-001', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-5.1'],
     q: 'A business issues a credit note to a customer. The double entry is:',
     opts: ['Dr Sales Returns, Cr Trade Receivables', 'Dr Trade Receivables, Cr Sales Returns', 'Dr Bank, Cr Sales Returns', 'Dr Sales, Cr Bank'],
     ans: 0,
     exp: 'Dr Sales Returns (reducing revenue), Cr Trade Receivables (reducing the amount owed by the customer).' },
 
 
-  { id: 'itbk-003', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-003', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-5.1'],
     q: 'A business purchases goods on credit. The correct entry is:',
     opts: [
       'Dr Purchases, Cr Trade payables',
@@ -67,7 +67,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Buying on credit means goods arrive now and payment follows later. Purchases (an expense) is debited and Trade payables (a liability) is credited. Bank is untouched until the supplier is actually paid, which is a separate entry: Dr Trade payables, Cr Bank.' },
 
-  { id: 'itbk-004', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-004', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-3.2'],
     q: 'A business receives a credit note from a supplier. In which book of prime entry is it recorded?',
     opts: [
       'The purchases returns day book',
@@ -78,7 +78,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A credit note received from a supplier is recorded in the purchases returns day book. It reduces the amount owed to that supplier.' },
 
-  { id: 'itbk-005', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-005', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-2.1'],
     q: 'A cash discount allowed to a customer is recorded as:',
     opts: [
       'Dr Discounts allowed, Cr Trade receivables',
@@ -89,7 +89,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A settlement discount given to a customer is an expense of the seller, so Discounts allowed is debited, and the amount the customer owes falls, so Trade receivables is credited. Discounts received is the mirror item for discounts obtained from suppliers.' },
 
-  { id: 'itbk-006', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-006', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-5.2'],
     q: 'A credit balance on a customer\'s account indicates:',
     opts: [
       'The customer has overpaid or been issued a credit note',
@@ -100,7 +100,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Customers normally have debit balances. A credit balance means the customer has overpaid or has been issued a credit note — the business owes them. Owing beyond a limit, a doubled invoice and interest charged would all push the balance further to the debit side, not into credit.' },
 
-  { id: 'itbk-007', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-007', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.4'],
     q: 'A debit balance on the rent account represents:',
     opts: [
       'Rent that has been paid — an expense of the business',
@@ -111,7 +111,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Expenses increase on the debit side, so a debit balance on Rent is rent paid. Rent received would be income with a credit balance, and an amount owed to the business would be a receivable.' },
 
-  { id: 'itbk-008', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-008', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-5.2'],
     q: 'A debit entry in the sales ledger control account (SLCA) most commonly represents:',
     opts: [
       'Credit sales made to customers during the period',
@@ -122,19 +122,19 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The SLCA is an asset, so entries increasing what customers owe are debits — principally credit sales, plus dishonoured cheques. Receipts, returns, discounts allowed and irrecoverable debts all reduce the balance and sit on the credit side.' },
 
-  { id: 'itbk-009', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-009', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.4'],
     q: 'A debit entry to the bank account represents:',
     opts: ['Money leaving the business', 'An increase in money at the bank', 'A liability increasing', 'A decrease in the bank balance'],
     ans: 1,
     exp: 'Bank is an asset account. A debit increases an asset, so a debit to bank means money has been received.' },
 
-  { id: 'itbk-010', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-010', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-2.1'],
     q: 'A discount allowed is recorded as:',
     opts: ['Revenue increase', 'Expense increase', 'Liability increase', 'Asset increase'],
     ans: 1,
     exp: 'A discount allowed is given to a customer for prompt settlement, so the business receives less than the invoiced amount. That shortfall is a cost of getting paid early — an expense, debited to Discounts allowed. Discounts received, from suppliers, is the mirror item and is income.' },
 
-  { id: 'itbk-011', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-011', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-3.1'],
     q: 'A goods received note (GRN) is used to:',
     opts: [
       'Confirm that ordered goods have been received and checked on delivery',
@@ -145,7 +145,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A GRN is an internal document confirming the quantity and condition of goods received. It is matched against the purchase order and supplier invoice before payment.' },
 
-  { id: 'itbk-012', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-012', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-3.2'],
     q: 'A purchase return occurs when:',
     opts: [
       'Goods bought from a supplier are returned to that supplier',
@@ -156,7 +156,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A purchase return is when the business sends goods back to a supplier. The supplier then issues a credit note.' },
 
-  { id: 'itbk-013', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-013', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.1'],
     q: 'A remittance advice is sent by:',
     opts: [
       'The buyer, to notify the seller of a payment made',
@@ -167,13 +167,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The buyer sends a remittance advice to the supplier to advise which invoices are being paid, helping the supplier allocate the payment correctly.' },
 
-  { id: 'itbk-014', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-014', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.2'],
     q: 'A sales invoice is posted twice to the sales ledger control account. The effect is:',
     opts: ['Overstated receivables', 'Understated receivables', 'No effect', 'Overstated liabilities'],
     ans: 0,
     exp: 'The SLCA is debited by credit sales, so posting the same invoice twice debits it twice. Trade receivables is overstated, and the control account will no longer agree with the total of the individual customer accounts — which is exactly how the reconciliation catches it.' },
 
-  { id: 'itbk-015', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-015', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.2'],
     q: 'A supplier invoice is received but not recorded at year end. What is the effect?',
     opts: [
       'Both expenses and liabilities are understated at the year end',
@@ -184,7 +184,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Failing to record a supplier invoice at year end omits the expense (understating purchases/expenses) and the related liability (understating trade payables).' },
 
-  { id: 'itbk-016', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-016', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-3.2'],
     q: 'A supplier issues a credit note after an invoice has been recorded. What is the correct adjustment?',
     opts: [
       'Decrease purchases and decrease trade payables',
@@ -195,7 +195,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A credit note from a supplier reduces what the business owes, so trade payables falls (debit) and the original purchase is reduced (credit). It is the mirror image of the invoice entry. Do not net it off against a later invoice — record it in its own right through the purchases returns day book.' },
 
-  { id: 'itbk-017', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-017', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-2.1'],
     q: 'A trade discount is:',
     opts: [
       'A price reduction given to trade customers at the time of sale',
@@ -207,13 +207,13 @@ window.ALL_QUESTIONS = [
     exp: 'A trade discount is deducted at the point of sale. Only the net (post-discount) amount is recorded in the books.' },
 
 
-  { id: 'itbk-019', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-019', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.4'],
     q: 'The accounting equation is:',
     opts: ['Assets = Capital − Liabilities', 'Assets = Capital + Liabilities', 'Liabilities = Capital + Assets', 'Capital = Assets + Liabilities'],
     ans: 1,
     exp: 'Assets = Capital + Liabilities. Everything the business holds was funded either by the owner or by someone else — there is no third source. It rearranges to Capital = Assets − Liabilities, which is how you find the owner\'s stake when only two figures are given.' },
 
-  { id: 'itbk-020', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-020', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.3'],
     q: 'The purpose of coding in accounting systems is to:',
     opts: [
       'Allocate transactions to the correct ledger account for later analysis',
@@ -224,7 +224,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Coding assigns a unique identifier to each transaction so it is posted to the correct account, cost centre or department — enabling accurate analysis and reporting.' },
 
-  { id: 'itbk-021', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-021', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.2'],
     q: 'The trial balance is prepared to:',
     opts: [
       'Check that total debits equal total credits across the ledgers',
@@ -235,19 +235,19 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The trial balance is an arithmetic check. If debits equal credits the ledger is likely correct, although certain errors (e.g. omission, principle) will not be detected.' },
 
-  { id: 'itbk-022', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-022', topic: 'itbk', difficulty: 'easy', criteria: ['POBC-1.1'],
     q: 'VAT input tax exceeds output tax. What is the outcome?',
     opts: ['VAT payable over to HMRC in full', 'VAT receivable from HMRC', 'No VAT adjustment', 'Increase in sales'],
     ans: 1,
     exp: 'Where input tax exceeds output tax, the business has reclaimable VAT — HMRC owes a refund to the business.' },
 
-  { id: 'itbk-023', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-023', topic: 'itbk', difficulty: 'easy', criteria: ['POBC-1.1'],
     q: 'VAT output tax exceeds input tax. The business will:',
     opts: ['Receive refund from HMRC', 'Owe HMRC VAT', 'Pay no VAT', 'Increase assets'],
     ans: 1,
     exp: 'Output tax is charged on sales and credited to the VAT account; input tax is suffered on purchases and debited to it. A credit balance means output exceeds input, so the difference is payable to HMRC. The reverse — input exceeding output — produces a repayment claim.' },
 
-  { id: 'itbk-024', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-024', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.4'],
     q: 'What does a debit balance on a bank account represent?',
     opts: [
       'Cash held at the bank, which is an asset of the business',
@@ -258,7 +258,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Bank is an asset, and assets increase on the debit side, so a debit balance means money is held. An overdraft is the opposite: a credit balance on the bank account, representing a liability owed to the bank.' },
 
-  { id: 'itbk-025', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-025', topic: 'itbk', difficulty: 'easy', criteria: ['POBC-3.1'],
     q: 'What is a bad debt?',
     opts: [
       'A receivable that is considered irrecoverable and written off',
@@ -269,13 +269,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A bad debt is a trade receivable considered irrecoverable. It is written off as an expense and removed from receivables.' },
 
-  { id: 'itbk-026', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-026', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.1'],
     q: 'What is a remittance advice used for?',
     opts: ['Request payment', 'Confirm payment sent', 'Issue invoice', 'Record inventory'],
     ans: 1,
     exp: 'A remittance advice is sent by the buyer to the supplier confirming the payment made and the invoices it relates to.' },
 
-  { id: 'itbk-027', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-027', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.4'],
     q: 'What is a bank overdraft?',
     opts: [
       'A negative bank balance where the business owes money to the bank',
@@ -286,7 +286,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A bank overdraft is a negative bank balance — money owed to the bank. It is classified as a current liability.' },
 
-  { id: 'itbk-028', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-028', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.4'],
     q: 'What does the double-entry principle state?',
     opts: [
       'Every transaction has an equal debit entry and credit entry',
@@ -297,7 +297,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Every transaction is recorded with equal debit and credit amounts, keeping the accounting equation in balance.' },
 
-  { id: 'itbk-029', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-029', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.2'],
     q: 'What is a ledger?',
     opts: [
       'A collection of the accounts in which transactions are recorded',
@@ -308,7 +308,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A ledger is where the accounts themselves live, as opposed to a book of prime entry, which merely lists documents before posting. The general ledger holds the accounts that make up the trial balance; the sales and purchases ledgers hold individual customer and supplier accounts outside the double entry.' },
 
-  { id: 'itbk-030', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-030', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-4.2'],
     q: 'What is petty cash typically used for?',
     opts: [
       'Small day-to-day expenses that are impractical to pay by bank transfer',
@@ -319,7 +319,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Petty cash covers minor items such as postage, taxi fares and refreshments, usually run on the imprest system so the float is restored to a set amount. Large payments and payroll go through the bank for control and audit-trail reasons.' },
 
-  { id: 'itbk-031', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-031', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-3.2'],
     q: 'What is a purchases return?',
     opts: [
       'Goods returned by the business to the supplier who sold them',
@@ -330,7 +330,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A purchases return is when the business returns previously purchased goods to a supplier. The supplier issues a credit note.' },
 
-  { id: 'itbk-032', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-032', topic: 'itbk', difficulty: 'easy', criteria: ['POBC-3.1'],
     q: 'What is recorded in the journal?',
     opts: [
       'Non-routine adjustments not covered by other books of prime entry',
@@ -341,7 +341,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Routine transactions reach the ledgers through the day books and cash book. The journal handles everything else — error corrections, year-end adjustments, opening balances, payroll and asset disposals — and every entry carries a narrative so the reason is auditable later.' },
 
-  { id: 'itbk-033', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-033', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-2.2'],
     q: 'What is a sales return?',
     opts: [
       'Goods returned to the business by one of its credit customers',
@@ -352,7 +352,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A sales return is when a customer returns goods previously sold to them. The business issues a credit note.' },
 
-  { id: 'itbk-034', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-034', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.4'],
     q: 'What is the accounting treatment of drawings?',
     opts: [
       'A reduction in the owner\'s capital in the business',
@@ -363,13 +363,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Drawings represent cash or goods withdrawn by the owner for personal use. They reduce the owner\'s capital, not profit.' },
 
-  { id: 'itbk-035', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-035', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.4'],
     q: 'What is the effect of a debit entry to capital?',
     opts: ['Increases capital', 'Decreases capital', 'Increases profit', 'No effect'],
     ans: 1,
     exp: 'Capital is what the business owes its owner, so it behaves like a liability and increases on the credit side. A debit therefore reduces it. The two common causes are drawings taken by the owner and a loss for the period.' },
 
-  { id: 'itbk-036', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-036', topic: 'itbk', difficulty: 'easy', criteria: ['POBC-3.1'],
     q: 'What is the effect of writing off a bad debt?',
     opts: [
       'Trade receivables and reported profit both decrease',
@@ -380,13 +380,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Writing off a bad debt reduces trade receivables (an asset) and recognises a bad-debt expense, which reduces profit.' },
 
-  { id: 'itbk-037', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-037', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.4'],
     q: 'What is the normal balance of trade receivables?',
     opts: ['Credit', 'Debit', 'Zero', 'Negative'],
     ans: 1,
     exp: 'Trade receivables is an asset — money owed to the business — and assets increase on the debit side, so the normal balance is a debit. A credit balance is possible but unusual: it means a customer has overpaid or holds an unused credit note.' },
 
-  { id: 'itbk-038', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-038', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.1'],
     q: 'What is the purpose of a remittance advice when a payment is made?',
     opts: [
       'It tells the supplier which invoices the payment covers',
@@ -397,7 +397,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The remittance advice travels from buyer to supplier and says which invoices a payment covers. Without it, a supplier receiving a single lump sum cannot allocate it and may chase invoices that have in fact been paid. The invoice, by contrast, travels the other way and requests payment.' },
 
-  { id: 'itbk-039', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-039', topic: 'itbk', difficulty: 'easy', criteria: ['POBC-1.1'],
     q: 'What is the purpose of control accounts?',
     opts: [
       'To provide a summary check on the subsidiary ledgers',
@@ -408,7 +408,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The control account holds the total of many individual accounts, built from day book totals. The individual accounts are built from single transactions. Because the two are constructed by genuinely different routes, agreement between them is real evidence that the postings are right.' },
 
-  { id: 'itbk-040', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-040', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.2'],
     q: 'What is the purpose of the sales day book?',
     opts: [
       'List all credit sales invoices before they are posted to the ledger',
@@ -419,7 +419,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The sales day book is a book of prime entry — it lists credit sales invoices before they are posted to the sales ledger and the SLCA.' },
 
-  { id: 'itbk-041', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-041', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-2.1'],
     q: 'What is a trade discount?',
     opts: [
       'A reduction from the list price given at the point of sale',
@@ -430,7 +430,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A trade discount is a price reduction given at the point of sale to trade customers. It is deducted before the invoice is raised and is not recorded separately in the ledger.' },
 
-  { id: 'itbk-042', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-042', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.4'],
     q: 'What is a trade receivable?',
     opts: [
       'An amount owed to the business by a credit customer',
@@ -441,13 +441,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A trade receivable arises when goods or services are supplied on credit: the revenue is recognised at once, and the amount owed is carried as a current asset until the customer pays. Money owed by the business to a supplier is the mirror item, a trade payable.' },
 
-  { id: 'itbk-043', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-043', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-3.3'],
     q: 'When a business pays a supplier, the correct double entry is:',
     opts: ['Dr Bank, Cr Trade Payables', 'Dr Trade Payables, Cr Bank', 'Dr Trade Payables, Cr Sales', 'Dr Purchases, Cr Bank'],
     ans: 1,
     exp: 'Paying a supplier settles an existing obligation. The liability falls, so Trade payables is debited, and money leaves the account, so Bank is credited. Purchases is not touched — the expense was recognised when the goods were bought, not when they were paid for.' },
 
-  { id: 'itbk-044', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-044', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-5.1'],
     q: 'Which account is affected when inventory is purchased on credit?',
     opts: [
       'Trade payables, because the amount is owed to the supplier',
@@ -458,13 +458,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Buying on credit creates an obligation, so Trade payables is credited. The debit goes to Purchases (or Inventory, depending on the system). Bank stays out of it entirely until settlement, which is a separate transaction.' },
 
-  { id: 'itbk-045', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-045', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-5.1'],
     q: 'Which account is credited when goods are sold on credit?',
     opts: ['Bank', 'Sales', 'Trade Receivables', 'Purchases'],
     ans: 1,
     exp: 'A credit sale recognises revenue when the goods are supplied, not when the money arrives, so Sales is credited and Trade receivables debited. When the customer later pays, the entry moves value between two assets — Dr Bank, Cr Trade receivables — and Sales is not touched again.' },
 
-  { id: 'itbk-046', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-046', topic: 'itbk', difficulty: 'easy', criteria: ['POBC-3.1'],
     q: 'Which accounting treatment is required for irrecoverable debts recovered after being written off?',
     opts: [
       'Credit the irrecoverable debts expense account',
@@ -475,7 +475,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Recovering a debt already written off reverses part of the earlier expense, so the credit goes to irrecoverable debts (with the debit to bank). Crediting sales would double-count revenue, since the sale was recognised when the invoice was raised.' },
 
-  { id: 'itbk-047', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-047', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-2.1'],
     q: 'Which document accompanies goods delivered to a customer?',
     opts: [
       'A delivery note, signed by the customer on receipt',
@@ -486,13 +486,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The delivery note travels with the goods and evidences what physically arrived. The invoice follows and requests payment; a credit note reverses part of it; a statement summarises the account at the month end.' },
 
-  { id: 'itbk-048', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-048', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-3.1'],
     q: 'Which document confirms goods have been ordered from a supplier?',
     opts: ['Invoice', 'Purchase order', 'Credit note', 'Remittance advice'],
     ans: 1,
     exp: 'A purchase order is issued by the buyer to the supplier to request goods or services. It specifies what is being ordered and on what terms.' },
 
-  { id: 'itbk-049', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-049', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-3.1'],
     q: 'Which document confirms that ordered goods have been delivered and checked against the order?',
     opts: [
       'A goods received note raised when the delivery is checked',
@@ -503,7 +503,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A goods received note (GRN) is an internal document confirming that ordered goods have been received and checked. It is matched against the purchase order and supplier invoice before payment.' },
 
-  { id: 'itbk-050', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-050', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.1'],
     q: 'Which document is sent by a seller to request payment?',
     opts: [
       'A sales invoice',
@@ -514,25 +514,25 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A sales invoice requests payment from the buyer, showing the amount owed, the payment terms and the due date. A remittance advice travels the other way, with the payment; a credit note reduces what is owed; a delivery note accompanies the goods and asks for nothing.' },
 
-  { id: 'itbk-051', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-051', topic: 'itbk', difficulty: 'easy', criteria: ['POBC-3.2'],
     q: 'Which document is used internally to correct errors in the ledger?',
     opts: ['Invoice', 'Credit note', 'Journal', 'Remittance advice'],
     ans: 2,
     exp: 'The journal is used for non-routine entries — including corrections, year-end adjustments and opening balances.' },
 
-  { id: 'itbk-052', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-052', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-3.1'],
     q: 'Which document is used to initiate a purchase?',
     opts: ['Sales invoice', 'Purchase order', 'Credit note', 'Statement'],
     ans: 1,
     exp: 'The purchase order is the buyer\'s formal request to the supplier, fixing quantity and price. It is the first document in the order-to-payment trail and the first leg of the three-way match against the goods received note and the invoice.' },
 
-  { id: 'itbk-053', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-053', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-3.1'],
     q: 'Which document provides evidence of goods ordered but not yet received?',
     opts: ['Invoice', 'Purchase order', 'Goods received note', 'Remittance advice'],
     ans: 1,
     exp: 'A purchase order evidences that goods have been ordered, but does not by itself confirm that they have arrived.' },
 
-  { id: 'itbk-054', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-054', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-5.1'],
     q: 'Which double entry correctly records a cash sale?',
     opts: [
       'Dr Bank, Cr Sales',
@@ -543,7 +543,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A cash sale brings money in immediately, so bank increases (debit) and revenue is recognised (credit). No receivable arises because nothing is owed. The second entry would be a credit sale; the third is the later receipt from one.' },
 
-  { id: 'itbk-055', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-055', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-5.2'],
     q: 'Which is posted to the credit side of the sales ledger control account (SLCA)?',
     opts: [
       'Cash received from credit customers during the period',
@@ -554,14 +554,14 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The SLCA is debited with sales and credited when customers pay (reducing the balance owed). Credit sales invoices and dishonoured cheques are debits; discounts received relates to the PLCA.' },
 
-  { id: 'itbk-056', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-056', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-5.1'],
     q: 'Which is posted to the debit side of the telephone expense account?',
     opts: ['Payment received from a customer', 'A telephone bill paid', 'A refund from the telephone provider', 'A reduction in the telephone bill'],
     ans: 1,
     exp: 'Paying a telephone bill increases an expense (debit) and reduces the bank balance (credit): Dr Telephone Expense, Cr Bank.' },
 
 
-  { id: 'itbk-058', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-058', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.2'],
     q: 'Which ledger records customer accounts?',
     opts: [
       'The sales ledger, holding one account per credit customer',
@@ -572,20 +572,20 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The sales ledger is the memorandum record of individual customer accounts. The general ledger holds only the single sales ledger control account that summarises them, which is what appears in the trial balance.' },
 
-  { id: 'itbk-059', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-059', topic: 'itbk', difficulty: 'easy', criteria: ['POBC-1.1'],
     q: 'Which of the following appears on the credit side of the VAT control account?',
     opts: ['VAT on purchases (input tax)', 'VAT on sales (output tax)', 'VAT refund received from HMRC', 'VAT paid to HMRC'],
     ans: 1,
     exp: 'Output tax (VAT charged on sales) is a liability and is credited to the VAT control account. Input tax is debited. A credit balance represents the net amount owed to HMRC.' },
 
-  { id: 'itbk-060', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-060', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.2'],
     q: 'Which of the following is a book of prime entry?',
     opts: ['Trial balance', 'General ledger', 'Purchases day book', 'Statement of financial position'],
     ans: 2,
     exp: 'Books of prime entry (day books, cash book, journal) are where transactions are first recorded before being posted to the ledger.' },
 
 
-  { id: 'itbk-062', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-062', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-5.2'],
     q: 'Which of the following would reduce the balance on the purchases ledger control account?',
     opts: [
       'Both returns made to suppliers and payments made to suppliers',
@@ -596,7 +596,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The PLCA credit balance is reduced by both payments to suppliers (Dr PLCA, Cr Bank) and returns to suppliers (Dr PLCA, Cr Purchases Returns). Each reduces the liability.' },
 
-  { id: 'itbk-063', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-063', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-1.4'],
     q: 'Which statement correctly describes the dual effect of transactions?',
     opts: [
       'Every transaction has equal and opposite effects on two accounts',
@@ -607,13 +607,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The dual effect (duality) concept states that every transaction has at least two effects — equal debits and credits — and forms the foundation of double-entry bookkeeping.' },
 
-  { id: 'itbk-064', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-064', topic: 'itbk', difficulty: 'easy', criteria: ['POBC-1.1'],
     q: 'Which statement is correct about VAT input tax?',
     opts: ['Charged on sales', 'Charged on purchases', 'Paid to employees', 'Recorded as revenue'],
     ans: 1,
     exp: 'Input tax is VAT the business is charged on what it buys, and a VAT-registered business can generally reclaim it from HMRC. Output tax is what it charges on sales. An unregistered business cannot reclaim input tax, so for it the VAT is simply part of the cost.' },
 
-  { id: 'itbk-065', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-065', topic: 'itbk', difficulty: 'easy', criteria: ['BESY-2.2'],
     q: 'Which statement is correct about VAT registered businesses?',
     opts: [
       'They collect VAT on behalf of HMRC and pay it over',
@@ -624,13 +624,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'VAT-registered businesses charge VAT on taxable sales and collect it on behalf of HMRC. They reclaim VAT on eligible purchases and pay the net difference to HMRC.' },
 
-  { id: 'itbk-066', topic: 'itbk', difficulty: 'easy',
+  { id: 'itbk-066', topic: 'itbk', difficulty: 'easy', criteria: ['ITBK-4.1'],
     q: 'Which transaction is entered as a receipt in the cash book?',
     opts: ['A payment to a trade payable', 'A customer paying their invoice by BACS', 'Purchasing goods on credit', 'Issuing a credit note to a customer'],
     ans: 1,
     exp: 'Receipts represent money coming in. A customer paying by BACS increases the bank balance and is recorded on the receipts (debit) side of the cash book.' },
 
-  { id: 'itbk-067', topic: 'itbk', difficulty: 'medium',
+  { id: 'itbk-067', topic: 'itbk', difficulty: 'medium', criteria: ['POC-2.1'],
     q: 'A business maintains inventory records using FIFO. Closing inventory contains the most recent purchases because:',
     opts: [
       'The newest purchases are assumed to remain unsold at the year end',
@@ -641,13 +641,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'FIFO assumes the oldest units leave first, so whatever remains must be the most recent purchases. In a rising market that means closing inventory is valued at higher prices, cost of sales is lower and reported profit is higher than under AVCO.' },
 
-  { id: 'itbk-068', topic: 'itbk', difficulty: 'medium',
+  { id: 'itbk-068', topic: 'itbk', difficulty: 'medium', criteria: ['ITBK-2.3'],
     q: 'A business receives a cheque from a customer that is subsequently dishonoured by the bank. Which entry reverses the original receipt?',
     opts: ['Dr Bank, Cr Trade Receivables', 'Dr Trade Receivables, Cr Bank', 'Dr Trade Receivables, Cr Sales', 'Dr Bank, Cr Sales'],
     ans: 1,
     exp: 'A dishonoured cheque reverses the original receipt: Dr Trade Receivables (re-instating the debt), Cr Bank (removing the amount from the bank).' },
 
-  { id: 'itbk-069', topic: 'itbk', difficulty: 'medium',
+  { id: 'itbk-069', topic: 'itbk', difficulty: 'medium', criteria: ['ITBK-2.3'],
     q: 'A cheque from a customer is later returned by the bank unpaid. The double entry to record this is:',
     opts: [
       'Dr Trade receivables, Cr Bank',
@@ -661,7 +661,7 @@ window.ALL_QUESTIONS = [
 
 
 
-  { id: 'itbk-073', topic: 'itbk', difficulty: 'medium',
+  { id: 'itbk-073', topic: 'itbk', difficulty: 'medium', criteria: ['POBC-1.2'],
     q: 'A sales ledger control account and sales ledger differ due to:',
     opts: [
       'Timing differences and errors made when posting entries',
@@ -672,7 +672,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Differences between the SLCA and the sum of individual sales ledger balances are caused by posting errors, omissions or timing differences.' },
 
-  { id: 'itbk-074', topic: 'itbk', difficulty: 'medium',
+  { id: 'itbk-074', topic: 'itbk', difficulty: 'medium', criteria: ['ITBK-3.1'],
     q: 'A supplier invoice is recorded as £540 in the purchases day book when the correct amount is £450. What type of error is this?',
     opts: ['Complete omission', 'Error of original entry', 'A compensating error', 'Error of principle'],
     ans: 1,
@@ -682,7 +682,7 @@ window.ALL_QUESTIONS = [
 
 
 
-  { id: 'itbk-079', topic: 'itbk', difficulty: 'medium',
+  { id: 'itbk-079', topic: 'itbk', difficulty: 'medium', criteria: ['ITBK-4.2'],
     q: 'The imprest system of petty cash means:',
     opts: [
       'Petty cash is restored to a fixed float at regular intervals',
@@ -694,7 +694,7 @@ window.ALL_QUESTIONS = [
     exp: 'Under the imprest system the float is restored to a fixed amount each period — reimbursed by the total of vouchers paid out since the last top-up.' },
 
 
-  { id: 'itbk-081', topic: 'itbk', difficulty: 'medium',
+  { id: 'itbk-081', topic: 'itbk', difficulty: 'medium', criteria: ['ITBK-4.1'],
     q: 'What is a contra entry in a cash book?',
     opts: [
       'A transfer of money between the cash account and the bank',
@@ -707,7 +707,7 @@ window.ALL_QUESTIONS = [
 
 
 
-  { id: 'itbk-084', topic: 'itbk', difficulty: 'medium',
+  { id: 'itbk-084', topic: 'itbk', difficulty: 'medium', criteria: ['POBC-1.1'],
     q: 'What is the effect of a contra entry between SLCA and PLCA?',
     opts: [
       'It reduces both trade receivables and trade payables',
@@ -727,7 +727,7 @@ window.ALL_QUESTIONS = [
 
 
 
-  { id: 'itbk-094', topic: 'itbk', difficulty: 'medium',
+  { id: 'itbk-094', topic: 'itbk', difficulty: 'medium', criteria: ['ITBK-4.1'],
     q: 'Which of the following is an example of a contra entry within a three-column cash book?',
     opts: [
       'Cash is withdrawn from the bank and placed in the petty cash tin',
@@ -738,13 +738,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A cash book contra arises when cash moves between the bank and cash columns — e.g. withdrawing cash from the bank: Cr Bank column, Dr Cash column.' },
 
-  { id: 'itbk-095', topic: 'itbk', difficulty: 'medium',
+  { id: 'itbk-095', topic: 'itbk', difficulty: 'medium', criteria: ['POBC-1.2'],
     q: 'Which of the following is NOT a valid reason for a difference between the sales ledger control account and the list of sales ledger balances?',
     opts: ['A contra entry that was posted to the control account but not to the individual customer account', 'A cash receipt that was entered in the cash book but never posted to the individual customer account', 'An error in the bank reconciliation, which affects neither the control account nor the customer accounts', 'A sales invoice entered in the day book but not posted to the individual customer account'],
     ans: 2,
     exp: 'A bank reconciliation reconciles the cash book to the bank statement — it has no impact on the sales ledger or its control account.' },
 
-  { id: 'itbk-096', topic: 'itbk', difficulty: 'medium',
+  { id: 'itbk-096', topic: 'itbk', difficulty: 'medium', criteria: ['POBC-1.2'],
     q: 'Which statement best describes a control account reconciliation?',
     opts: [
       'Matching the control account total with the individual ledger balances',
@@ -757,37 +757,37 @@ window.ALL_QUESTIONS = [
 
 
 
-  { id: 'itbk-099', calc: true, topic: 'itbk', difficulty: 'hard',
+  { id: 'itbk-099', calc: true, topic: 'itbk', difficulty: 'hard', criteria: ['POC-2.5'],
     q: 'A business has opening inventory of £8,000, purchases of £42,000 and closing inventory of £6,000. Cost of goods sold is:',
     opts: ['£44,000', '£56,000', '£36,000', '£50,000'],
     ans: 0,
     exp: 'Cost of goods sold = opening inventory + purchases − closing inventory = £8,000 + £42,000 − £6,000 = £44,000.' },
 
-  { id: 'itbk-100', calc: true, topic: 'itbk', difficulty: 'hard',
+  { id: 'itbk-100', calc: true, topic: 'itbk', difficulty: 'hard', criteria: ['ITBK-3.1'],
     q: 'A business purchases goods for £1,000 less 10% trade discount. What is recorded in the purchase ledger?',
     opts: ['£1,000', '£900', '£100', '£1,100'],
     ans: 1,
     exp: 'Trade discounts are deducted before invoicing and never appear in the ledger: only the net £900 (after £100 discount) is recorded.' },
 
-  { id: 'itbk-101', topic: 'itbk', difficulty: 'hard',
+  { id: 'itbk-101', topic: 'itbk', difficulty: 'hard', criteria: ['ITBK-3.1'],
     q: 'A business receives an invoice for £2,400 including VAT at 20% but records it as £2,400 net. What type of error is this?',
     opts: ['Error of principle', 'Error of commission', 'Compensating error', 'Error of original entry'],
     ans: 0,
     exp: 'VAT (£400) should sit in the VAT control account, but the full gross £2,400 has been posted to purchases — putting an item in the wrong type of account, an error of principle.' },
 
-  { id: 'itbk-102', topic: 'itbk', difficulty: 'hard',
+  { id: 'itbk-102', topic: 'itbk', difficulty: 'hard', criteria: ['ITBK-3.1'],
     q: 'A business receives goods with a value of £800 but only £720 is invoiced due to trade discount. What is recorded?',
     opts: ['£800 purchase', '£720 purchase', '£80 discount income', '£800 liability'],
     ans: 1,
     exp: 'Trade discount is deducted before the invoice is raised, so it never enters the accounting records. Only the net figure actually charged is recorded. Settlement discount behaves differently: it is offered for prompt payment and is recorded when taken.' },
 
-  { id: 'itbk-103', calc: true, topic: 'itbk', difficulty: 'hard',
+  { id: 'itbk-103', calc: true, topic: 'itbk', difficulty: 'hard', criteria: ['ITBK-2.1'],
     q: 'A business sells goods on credit for £600 plus VAT at 20%. Which amount is recorded against the invoice in the sales day book?',
     opts: ['£600', '£720', '£120', '£480'],
     ans: 1,
     exp: 'The sales day book records the gross (VAT-inclusive) invoice amount: £600 + £120 VAT = £720. The net and VAT elements are then analysed within the day book.' },
 
-  { id: 'itbk-104', topic: 'itbk', difficulty: 'hard',
+  { id: 'itbk-104', topic: 'itbk', difficulty: 'hard', criteria: ['POBC-3.1'],
     q: 'A business writes off £300 bad debt previously recorded. Which entry is correct?',
     opts: [
       'Dr Irrecoverable debts, Cr Trade receivables',
@@ -798,7 +798,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Writing off a bad debt reduces trade receivables and recognises a bad-debts expense: Dr Bad Debts, Cr Trade Receivables.' },
 
-  { id: 'itbk-105', topic: 'itbk', difficulty: 'hard',
+  { id: 'itbk-105', topic: 'itbk', difficulty: 'hard', criteria: ['POBC-3.1'],
     q: 'A business writes off a bad debt of £240 (including VAT of £40). Which entry is correct?',
     opts: [
       'Dr Irrecoverable debts £200, Dr VAT £40, Cr Trade receivables £240',
@@ -809,7 +809,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Where the strict VAT bad-debt-relief conditions are met, the VAT element can be reclaimed: Dr Bad Debts £200 (net), Dr VAT £40 (reclaimed), Cr Trade Receivables £240 (gross).' },
 
-  { id: 'itbk-106', topic: 'itbk', difficulty: 'hard',
+  { id: 'itbk-106', topic: 'itbk', difficulty: 'hard', criteria: ['ITBK-2.3'],
     q: 'A customer pays £490 in full settlement of a £500 debt. The £10 difference is:',
     opts: [
       'A settlement discount, posted to discounts allowed',
@@ -820,13 +820,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A settlement (cash) discount IS recorded in the ledger: Dr Discounts Allowed £10, Cr Trade Receivables £10. Trade discounts are never posted to the ledger.' },
 
-  { id: 'itbk-107', topic: 'itbk', difficulty: 'hard',
+  { id: 'itbk-107', topic: 'itbk', difficulty: 'hard', criteria: ['ITBK-1.4'],
     q: 'A sole trader\'s drawings of £500 in cash should be recorded as:',
     opts: ['Dr Drawings, Cr Sales', 'Dr Drawings, Cr Bank', 'Dr Capital, Cr Bank', 'Dr Expenses, Cr Bank'],
     ans: 1,
     exp: 'Drawings represent money taken out of the business by the owner. Dr Drawings £500 (reduces capital ultimately), Cr Bank £500. Drawings are not an expense.' },
 
-  { id: 'itbk-108', topic: 'itbk', difficulty: 'hard',
+  { id: 'itbk-108', topic: 'itbk', difficulty: 'hard', criteria: ['ITBK-3.1'],
     q: 'A supplier invoice for £1,000 net plus 20% VAT (£1,200 gross) is recorded by debiting purchases with the full £1,200. What is the effect?',
     opts: [
       'Purchases are overstated by £200 and the input VAT is not recorded',
@@ -837,7 +837,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Purchases should have been £1,000 net with £200 debited separately to VAT control. Posting the gross £1,200 to purchases overstates expenses by £200 and means no input VAT is reclaimable from HMRC.' },
 
-  { id: 'itbk-109', topic: 'itbk', difficulty: 'hard',
+  { id: 'itbk-109', topic: 'itbk', difficulty: 'hard', criteria: ['ITBK-3.3'],
     q: 'A trade payable balance of £3,600 is settled by issuing a cheque for £3,528 in full and final settlement. The £72 difference is:',
     opts: [
       'A settlement discount received, credited to discounts received',
@@ -848,20 +848,20 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Paying less than the full balance in settlement of a debt creates a discount received: Dr Trade Payables £3,600, Cr Bank £3,528, Cr Discounts Received £72.' },
 
-  { id: 'itbk-110', topic: 'itbk', difficulty: 'hard',
+  { id: 'itbk-110', topic: 'itbk', difficulty: 'hard', criteria: ['ITBK-1.2'],
     q: 'A trial balance shows the debit total exceeding the credit total by £180. Which of the following could be the cause?',
     opts: ['A purchase of £90 posted as a debit to purchases AND a debit to bank', 'A sales invoice of £180 posted only to the credit of trade receivables', 'A payment of £90 to a supplier posted as a debit to trade payables and a credit to bank', 'A £180 receipt from a customer posted only as a credit to bank'],
     ans: 0,
     exp: 'Two debits of £90 (Purchases and Bank) total £180 with no corresponding credit, so debits exceed credits by exactly £180. Option B would give a credit excess; Option C is correctly balanced; Option D would also create a credit excess.' },
 
-  { id: 'itbk-111', calc: true, topic: 'itbk', difficulty: 'hard',
+  { id: 'itbk-111', calc: true, topic: 'itbk', difficulty: 'hard', criteria: ['ITBK-2.1'],
     q: 'An invoice is issued for £1,200 plus VAT at 20%. The total payable is:',
     opts: ['£1,200', '£1,440', '£1,020', '£960'],
     ans: 1,
     exp: 'VAT is charged on the net amount: £1,200 × 20% = £240, giving £1,440 gross. To work backwards from a gross figure, divide by 1.2 for the net, or by 6 for the VAT itself — a shortcut worth memorising.' },
 
 
-  { id: 'itbk-113', calc: true, topic: 'itbk', difficulty: 'hard',
+  { id: 'itbk-113', calc: true, topic: 'itbk', difficulty: 'hard', criteria: ['ITBK-1.4'],
     q: 'Net assets at year end are £45,000. The owner introduced additional capital of £10,000 during the year, opening capital was £30,000 and there were no drawings. What is the profit for the year?',
     opts: ['£5,000', '£15,000', '£25,000', '£55,000'],
     ans: 0,
@@ -869,7 +869,7 @@ window.ALL_QUESTIONS = [
 
 
 
-  { id: 'itbk-116', topic: 'itbk', difficulty: 'hard',
+  { id: 'itbk-116', topic: 'itbk', difficulty: 'hard', criteria: ['ITBK-5.1'],
     q: 'Which of the following is the correct double entry for a credit sale of £500?',
     opts: ['Dr Sales £500, Cr Trade Receivables £500', 'Dr Trade Receivables £500, Cr Sales £500', 'Dr Bank £500, Cr Sales £500', 'Dr Sales £500, Cr Bank £500'],
     ans: 1,
@@ -877,31 +877,31 @@ window.ALL_QUESTIONS = [
 
 
   /* -- PRINCIPLES OF BOOKKEEPING CONTROLS (POBC) -- */
-  { id: 'pobc-001', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-001', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-1.2'],
     q: 'A control account reconciles with:',
     opts: ['Bank statement', 'Individual ledger balances', 'Profit and loss account', 'Cash flow statement'],
     ans: 1,
     exp: 'A control account holds the total of a subsidiary ledger, so the two are reconciled by matching the control account balance to the total of the individual balances.' },
 
-  { id: 'pobc-002', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-002', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.2'],
     q: 'A correction of an error requires:',
     opts: ['Ignoring the error', 'Journal entry', 'Bank payment', 'VAT adjustment only'],
     ans: 1,
     exp: 'Errors identified during a reconciliation are corrected by raising a journal entry with a clear narrative.' },
 
-  { id: 'pobc-003', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-003', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-1.1'],
     q: 'A credit balance on the VAT control account means:',
     opts: ['HMRC owes the business money', 'The business owes HMRC money', 'Input tax exceeds output tax', 'The business has overclaimed VAT'],
     ans: 1,
     exp: 'A credit balance means output tax (on sales) exceeds input tax (on purchases) — the business owes the difference to HMRC.' },
 
-  { id: 'pobc-004', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-004', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-2.2'],
     q: 'A direct debit on the bank statement that is not in the cash book requires:',
     opts: ['Adjustment to the bank statement', 'Entry as a payment in the cash book', 'Entry as a receipt in the cash book', 'No adjustment'],
     ans: 1,
     exp: 'Unrecorded direct debits must be entered as payments (credits) in the cash book to bring it up to date.' },
 
-  { id: 'pobc-005', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-005', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.1'],
     q: 'A journal entry is used to:',
     opts: [
       'Make adjustments that are not covered by any other book of prime entry',
@@ -912,7 +912,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The journal handles the non-routine entries that no other book of prime entry covers — corrections, opening balances, irrecoverable debts and the payroll. That is the test: if a transaction fits one of the other books, it belongs there instead.' },
 
-  { id: 'pobc-006', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-006', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-2.2'],
     q: 'A normal reason for the cash book and bank statement to differ is:',
     opts: [
       'Timing differences such as cheques written but not yet presented',
@@ -923,7 +923,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Timing differences — for example unpresented cheques and outstanding lodgements — are the normal reason for differences between the cash book and the bank statement.' },
 
-  { id: 'pobc-007', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-007', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-1.1'],
     q: 'A sales ledger control account is reduced by:',
     opts: [
       'Cash received from credit customers settling their accounts',
@@ -934,7 +934,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Receipts reduce what customers owe, so they are credited to the SLCA. So do sales returns, discounts allowed, irrecoverable debts and contras. Credit sales and dishonoured cheques increase the balance and sit on the debit side.' },
 
-  { id: 'pobc-008', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-008', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.3'],
     q: 'A suspense account balance remains after correction. What does this indicate?',
     opts: [
       'Further errors remain that have not yet been found and corrected',
@@ -945,7 +945,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The suspense account only clears when every error causing the difference has been found and journalled. A balance still sitting there means at least one error remains unidentified, and it must not simply be written off — the accounts would then be knowingly wrong.' },
 
-  { id: 'pobc-009', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-009', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.3'],
     q: 'A suspense account is cleared by:',
     opts: [
       'Identifying and correcting the bookkeeping errors that caused it',
@@ -956,7 +956,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A suspense account is cleared by identifying the underlying errors and correcting them by journal entry.' },
 
-  { id: 'pobc-010', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-010', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.3'],
     q: 'A suspense account is cleared when:',
     opts: [
       'The errors causing the difference are identified and corrected',
@@ -967,7 +967,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A suspense account is a temporary holding place for a trial balance difference. It clears only when the underlying errors are found and put right by journal. A balance still sitting there at the year end means errors remain unresolved.' },
 
-  { id: 'pobc-011', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-011', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.2'],
     q: 'A transposition error will:',
     opts: [
       'Usually cause the trial balance to disagree by a multiple of nine',
@@ -978,7 +978,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Transposing digits — £45 recorded as £54 — leaves a difference divisible by nine, which is why a difference that divides by nine points to a transposition. It only agrees if the same error is made on both sides.' },
 
-  { id: 'pobc-012', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-012', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-2.3'],
     q: 'An unpresented cheque is:',
     opts: [
       'A cheque written and recorded that has not yet cleared the bank',
@@ -989,7 +989,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The business has written the cheque and recorded it, but the payee has not yet banked it, so the bank statement is still higher. This is a timing difference: it needs no adjustment and will resolve itself when the cheque clears. Contrast bank charges, which are genuine omissions from the cash book.' },
 
-  { id: 'pobc-013', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-013', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-2.2'],
     q: 'Bank charges shown on the bank statement but not in the cash book should be:',
     opts: [
       'Entered in the cash book as a payment out of the account',
@@ -1000,7 +1000,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Bank charges reduce the bank balance — enter them as a payment (credit) in the cash book to bring it up to date.' },
 
-  { id: 'pobc-014', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-014', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.3'],
     q: 'Clearing a suspense account requires:',
     opts: [
       'Identifying the errors that caused it and posting corrections',
@@ -1011,7 +1011,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Clearing suspense means locating each error and posting a journal that moves the amount to where it belongs. There is no shortcut: transferring the balance to the income statement would conceal the errors rather than correct them.' },
 
-  { id: 'pobc-015', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-015', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.1'],
     q: 'Every journal entry must include:',
     opts: [
       'A narrative explaining the reason for the entry',
@@ -1022,7 +1022,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The narrative is what makes a journal auditable: without it, nobody reviewing the books later can judge whether the entry was legitimate. Director approval is a control some businesses add, but it is not part of the entry itself.' },
 
-  { id: 'pobc-016', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-016', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.1'],
     q: 'Net pay equals:',
     opts: [
       'Gross pay less all deductions made from the employee\'s wages',
@@ -1033,7 +1033,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Net pay is what actually reaches the employee: gross pay less PAYE, employee National Insurance, pension contributions and any other deductions. Employer\'s NIC is not deducted from the employee — it is an additional cost to the employer on top of gross pay.' },
 
-  { id: 'pobc-017', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-017', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-2.3'],
     q: 'Outstanding lodgements are:',
     opts: [
       'Deposits recorded in the cash book but not yet on the bank statement',
@@ -1044,7 +1044,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Outstanding lodgements are deposits the business has made and recorded in the cash book, but which have not yet appeared on the bank statement.' },
 
-  { id: 'pobc-018', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-018', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.1'],
     q: 'The payroll journal records:',
     opts: [
       'Gross wages, National Insurance, deductions and net pay',
@@ -1055,7 +1055,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The payroll journal records gross pay, PAYE, employee and employer NICs, pension deductions and net pay.' },
 
-  { id: 'pobc-019', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-019', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-1.1'],
     q: 'The purchases ledger control account normally has:',
     opts: [
       'A credit balance representing the amounts owed to suppliers',
@@ -1066,7 +1066,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The PLCA records what the business owes suppliers, making it a liability, and liabilities carry credit balances. A debit balance is possible but unusual: it means a supplier has been overpaid or a credit note exceeds the amount owed.' },
 
-  { id: 'pobc-020', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-020', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-1.2'],
     q: 'The sales ledger control account balance should agree with:',
     opts: [
       'The total of the individual customer balances in the sales ledger',
@@ -1077,7 +1077,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The SLCA is a summary account — its balance must equal the total of all individual customer balances in the sales ledger.' },
 
-  { id: 'pobc-021', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-021', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.1'],
     q: 'Total employment cost to the employer is:',
     opts: [
       'Gross pay plus employer\'s National Insurance and pension contributions',
@@ -1088,19 +1088,19 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Total employment cost is what the employer actually parts with: gross pay plus employer\'s National Insurance plus employer\'s pension contributions. The employee\'s own deductions are inside gross pay, not additional to it — a distinction routinely tested.' },
 
-  { id: 'pobc-022', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-022', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.2'],
     q: 'What causes a transposition error?',
     opts: ['Missing entry', 'Digits reversed', 'Wrong account type', 'Wrong VAT rate'],
     ans: 1,
     exp: 'A transposition error occurs when digits are reversed when recording a figure — for example writing £54 instead of £45.' },
 
-  { id: 'pobc-023', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-023', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-1.1'],
     q: 'What does a control account help detect?',
     opts: ['Marketing errors', 'Ledger discrepancies', 'Sales strategy issues', 'HR problems'],
     ans: 1,
     exp: 'Control accounts summarise the total of subsidiary ledgers, so any discrepancy between the control account and the underlying ledger points to a posting error or omission.' },
 
-  { id: 'pobc-024', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-024', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-1.1'],
     q: 'What does a credit balance on VAT control mean?',
     opts: [
       'Output tax exceeds input tax, so the business owes HMRC',
@@ -1111,13 +1111,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The VAT control account collects output tax on sales as credits and input tax on purchases as debits. A credit balance therefore means output exceeds input and the difference is payable. A debit balance is the refund position.' },
 
-  { id: 'pobc-025', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-025', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.2'],
     q: 'What is a journal correction used for?',
     opts: ['Sales recording', 'Error correction', 'Bank deposits', 'Inventory valuation'],
     ans: 1,
     exp: 'The journal handles what the day books cannot: correcting errors, posting year-end adjustments, recording opening balances, payroll and asset disposals. Every entry carries a narrative, without which nobody reviewing the books later can judge whether it was legitimate.' },
 
-  { id: 'pobc-026', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-026', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.3'],
     q: 'What is a suspense account used for?',
     opts: [
       'To hold a difference on the trial balance until it is resolved',
@@ -1128,7 +1128,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A suspense account holds the difference temporarily when the trial balance does not balance, pending investigation.' },
 
-  { id: 'pobc-027', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-027', topic: 'pobc', difficulty: 'easy', criteria: ['ITBK-4.1'],
     q: 'What is a cash book?',
     opts: [
       'A record of the money received into and paid out of bank and cash',
@@ -1139,7 +1139,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The cash book is a book of prime entry that records all bank and cash transactions, acting as both a day book and part of the ledger.' },
 
-  { id: 'pobc-028', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-028', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-1.1'],
     q: 'What is the main purpose of a control account?',
     opts: [
       'To summarise a subsidiary ledger in a single ledger balance',
@@ -1150,7 +1150,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A control account holds the total of a subsidiary ledger, allowing the ledger to be verified by comparing the two.' },
 
-  { id: 'pobc-029', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-029', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.1'],
     q: 'What is employer\'s National Insurance contribution (NIC)?',
     opts: [
       'A payroll cost borne by the employer in addition to gross wages',
@@ -1161,7 +1161,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Employer\'s NIC is an additional employment cost paid by the employer to HMRC based on each employee\'s earnings above the secondary threshold.' },
 
-  { id: 'pobc-030', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-030', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-1.1'],
     q: 'What is input VAT?',
     opts: [
       'VAT the business has incurred on its purchases',
@@ -1183,7 +1183,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Labour turnover measures the rate at which employees leave and need replacing. High turnover increases recruitment and training costs.' },
 
-  { id: 'pobc-032', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-032', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.1'],
     q: 'What is PAYE?',
     opts: [
       'Income tax deducted from employees\' wages by the employer',
@@ -1194,7 +1194,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'PAYE (Pay As You Earn) is income tax deducted at source from employees’ wages by the employer and paid to HMRC.' },
 
-  { id: 'pobc-033', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-033', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.1'],
     q: 'What is the purpose of the payroll journal?',
     opts: [
       'Record gross wages, deductions and the net pay due to employees',
@@ -1205,7 +1205,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The payroll journal records gross wages, employee and employer NICs, PAYE, pension contributions and net pay for the period.' },
 
-  { id: 'pobc-034', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-034', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.3'],
     q: 'How is a suspense account cleared?',
     opts: [
       'By posting correcting journal entries once the errors are found',
@@ -1238,7 +1238,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Internal controls are designed to safeguard assets, ensure the accuracy and completeness of records, and prevent and detect errors and fraud.' },
 
-  { id: 'pobc-037', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-037', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.3'],
     q: 'What is the purpose of a suspense account?',
     opts: [
       'To hold a difference on the trial balance until it is investigated',
@@ -1271,13 +1271,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Sequential numbering of invoices, credit notes and cheques means missing or duplicated documents are quickly spotted, improving completeness controls.' },
 
-  { id: 'pobc-040', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-040', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.1'],
     q: 'Which account is credited for wages paid?',
     opts: ['Wages expense', 'Bank', 'Capital', 'Revenue'],
     ans: 1,
     exp: 'Paying wages reduces the bank balance, so Bank is credited. The debit side splits between the wages expense and the liabilities created for PAYE and National Insurance owed to HMRC, which are paid over separately.' },
 
-  { id: 'pobc-041', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-041', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-1.1'],
     q: 'Which control account is used for VAT reporting?',
     opts: [
       'The VAT control account',
@@ -1288,7 +1288,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The VAT control account collects output tax on sales and input tax on purchases; its balance is what is owed to, or reclaimable from, HMRC at the quarter end. The other accounts track customers, suppliers and money movements.' },
 
-  { id: 'pobc-042', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-042', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-1.1'],
     q: 'Which control account reconciles suppliers?',
     opts: [
       'The total of the individual balances in the subsidiary ledger',
@@ -1299,13 +1299,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The purchases ledger control account (PLCA) summarises supplier balances and is used to verify the purchases ledger.' },
 
-  { id: 'pobc-043', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-043', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.1'],
     q: 'Which document supports payroll entries?',
     opts: ['Invoice', 'Payslip', 'Statement', 'Credit note'],
     ans: 1,
     exp: 'Payslips are the source documents that evidence the gross pay, deductions and net pay recorded in the payroll journal.' },
 
-  { id: 'pobc-044', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-044', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.2'],
     q: 'Which error would still allow the trial balance to agree?',
     opts: [
       'A transaction omitted from the records entirely',
@@ -1316,13 +1316,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'An omission leaves both debits and credits reduced by the same amount, so the columns still agree. The other three all leave the two sides unequal and will show up as a difference on the trial balance.' },
 
-  { id: 'pobc-045', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-045', topic: 'pobc', difficulty: 'easy', criteria: ['ITBK-1.1'],
     q: 'Which is a source document?',
     opts: ['Ledger', 'Invoice', 'Trial balance', 'Profit statement'],
     ans: 1,
     exp: 'Source documents (such as invoices, credit notes and bank statements) provide the original evidence for transactions.' },
 
-  { id: 'pobc-046', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-046', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.3'],
     q: 'Which item appears in a suspense account temporarily?',
     opts: [
       'An unidentified difference on the trial balance',
@@ -1333,7 +1333,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The suspense account is a temporary holding place for a difference whose cause is not yet known. It is cleared by journal once the errors are traced, and any balance remaining at the year end signals unresolved errors.' },
 
-  { id: 'pobc-047', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-047', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-2.3'],
     q: 'Which of the following causes the cash book balance to be HIGHER than the bank statement balance?',
     opts: [
       'Outstanding lodgements not yet credited by the bank',
@@ -1344,13 +1344,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A lodgement recorded by the business but not yet by the bank makes the cash book higher. Unpresented cheques leave the cash book lower, and unrecorded charges or direct debits mean the cash book is overstated and needs adjusting.' },
 
-  { id: 'pobc-048', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-048', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-1.1'],
     q: 'Which reduces trade receivables control account?',
     opts: ['Credit sales', 'Cash received', 'Purchases', 'Capital'],
     ans: 1,
     exp: 'Cash received from customers reduces the amount owed and is therefore credited to the trade receivables (SLCA) account.' },
 
-  { id: 'pobc-049', topic: 'pobc', difficulty: 'easy',
+  { id: 'pobc-049', topic: 'pobc', difficulty: 'easy', criteria: ['POBC-3.2'],
     q: 'Which type of error IS detected by a trial balance?',
     opts: [
       'Different debit and credit amounts entered for one transaction',
@@ -1361,7 +1361,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A trial balance only detects arithmetic imbalances. Posting different debit and credit amounts will leave the totals unequal.' },
 
-  { id: 'pobc-050', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-050', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-2.3'],
     q: 'A bank reconciliation identifies:',
     opts: [
       'Differences between the cash book balance and the bank statement',
@@ -1372,7 +1372,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A bank reconciliation identifies and explains the differences between the cash book balance and the bank statement balance — typically timing differences or unrecorded items.' },
 
-  { id: 'pobc-051', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-051', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-2.3'],
     q: 'A bank reconciliation is used to:',
     opts: [
       'Reconcile the cash book balance with the balance on the bank statement',
@@ -1383,7 +1383,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A bank reconciliation identifies and explains timing differences between the cash book balance and the bank statement balance.' },
 
-  { id: 'pobc-052', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-052', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-2.3'],
     q: 'A bank reconciliation shows adjusted cash book higher than bank statement. This suggests:',
     opts: [
       'Outstanding lodgements the bank has not yet credited',
@@ -1394,13 +1394,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A lodgement recorded in the cash book but not yet credited by the bank makes the cash book the higher of the two. Unpresented cheques work the other way, and bank charges or direct debits mean the cash book is too high only because entries are missing — those require adjustment rather than being timing differences.' },
 
-  { id: 'pobc-053', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-053', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-3.2'],
     q: 'A compensating error occurs when:',
     opts: ['Two errors cancel each other out', 'The bank makes a posting error', 'The trial balance is incorrect', 'An auditor finds an error'],
     ans: 0,
     exp: 'A compensating error occurs when two unrelated errors of equal value on opposite sides offset each other, leaving the trial balance balanced.' },
 
-  { id: 'pobc-054', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-054', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-1.1'],
     q: 'A contra entry between control accounts occurs when:',
     opts: [
       'A customer is also a supplier and the amounts owed are offset against each other',
@@ -1411,25 +1411,25 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A contra nets off amounts owed to and by the same business that is both a customer and a supplier — Dr PLCA, Cr SLCA.' },
 
-  { id: 'pobc-055', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-055', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-1.1'],
     q: 'A contra entry between control accounts results in:',
     opts: ['No net effect overall', 'Increase in liabilities', 'Increase in assets', 'Increase in revenue'],
     ans: 0,
     exp: 'A contra entry offsets amounts owed by a customer who is also a supplier — reducing both the SLCA and the PLCA by the same amount with no overall change.' },
 
-  { id: 'pobc-056', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-056', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-3.2'],
     q: 'A corrected error that balances the trial balance may still be:',
     opts: ['Error of omission', 'Error of transposition', 'Compensating error', 'Bank error'],
     ans: 2,
     exp: 'Compensating errors are two errors of equal value on opposite sides that offset each other, so the trial balance still balances.' },
 
-  { id: 'pobc-057', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-057', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-3.2'],
     q: 'A correcting journal entry is used to:',
     opts: ['Record cash sales', 'Correct accounting errors', 'Prepare budgets', 'Calculate depreciation'],
     ans: 1,
     exp: 'A correcting journal entry is the standard mechanism for posting adjustments to fix errors identified after initial recording.' },
 
-  { id: 'pobc-058', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-058', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-1.2'],
     q: 'A difference in a control account and subsidiary ledger is most likely caused by:',
     opts: [
       'Timing differences or errors made when postings were recorded',
@@ -1440,13 +1440,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Differences between a control account and its subsidiary ledger are typically caused by posting errors, omissions or timing differences.' },
 
-  { id: 'pobc-059', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-059', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-3.2'],
     q: 'A payment is posted to the wrong supplier account. This is an example of:',
     opts: ['Error of omission', 'Error of commission', 'Error of principle', 'Compensating error'],
     ans: 1,
     exp: 'Posting to the correct type of account but the wrong specific account (e.g. wrong supplier) is an error of commission.' },
 
-  { id: 'pobc-060', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-060', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-3.3'],
     q: 'A suspense account is opened when:',
     opts: [
       'The trial balance does not balance and the cause is unknown',
@@ -1457,7 +1457,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A suspense account temporarily holds the difference when a trial balance does not balance, while errors are traced and corrected.' },
 
-  { id: 'pobc-061', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-061', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-3.2'],
     q: 'Which type of error will NOT be revealed by a trial balance?',
     opts: ['Transposition error (digits reversed)', 'A complete omission of a transaction', 'A single-sided entry', 'Unequal debit and credit amounts'],
     ans: 1,
@@ -1474,7 +1474,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'An audit trail links every accounting entry back to its source document, providing the evidence needed for review, audit and investigation.' },
 
-  { id: 'pobc-063', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-063', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-3.2'],
     q: 'An error of commission occurs when:',
     opts: [
       'A transaction is posted to the wrong account of the correct type',
@@ -1485,7 +1485,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Error of commission: correct account type but wrong specific account — for example posted to the wrong supplier account.' },
 
-  { id: 'pobc-064', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-064', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-3.2'],
     q: 'An error of original entry occurs when:',
     opts: [
       'The wrong figure is used for both the debit and the credit',
@@ -1496,7 +1496,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'In an error of original entry the wrong figure is entered for both sides — the trial balance still balances, but the amount is wrong.' },
 
-  { id: 'pobc-065', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-065', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-3.2'],
     q: 'An error of principle occurs when:',
     opts: [
       'A payment for motor expenses is posted to the motor vehicles account',
@@ -1507,7 +1507,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'An error of principle posts a transaction to the wrong type of account altogether — an expense treated as an asset. Posting to the wrong supplier is an error of commission, because the type of account was right; transposed digits are an error of original entry.' },
 
-  { id: 'pobc-066', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-066', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-3.2'],
     q: 'A reversal of entries (debits and credits swapped) is recorded for a transaction. What is the effect on the trial balance?',
     opts: [
       'The trial balance still balances, but the accounts hold the wrong figures',
@@ -1518,7 +1518,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A reversal of entries swaps the debit and credit sides. Total debits still equal total credits, so the trial balance balances — but the wrong accounts have been debited and credited, leaving each at twice the error.' },
 
-  { id: 'pobc-067', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-067', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-2.2'],
     q: 'In a bank reconciliation, an unrecorded bank charge should be:',
     opts: ['Added to cash book receipts', 'Deducted in the cash book', 'Ignored until next period', 'Added to bank statement balance'],
     ans: 1,
@@ -1530,7 +1530,7 @@ window.ALL_QUESTIONS = [
     ans: 1,
     exp: 'Splitting duties between different staff (e.g. authorising, recording and paying) reduces the opportunity for fraud or undetected error.' },
 
-  { id: 'pobc-069', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-069', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-1.1'],
     q: 'The purpose of a control account is to:',
     opts: [
       'Provide a summary total that can be reconciled to the ledger',
@@ -1541,7 +1541,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Control accounts summarise the totals of the subsidiary ledgers, providing a single figure that can be reconciled to confirm the underlying ledger is accurate.' },
 
-  { id: 'pobc-070', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-070', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-2.3'],
     q: 'What does a bank reconciliation identify?',
     opts: [
       'Differences between the cash book balance and the bank statement',
@@ -1552,7 +1552,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A bank reconciliation identifies differences between the cash book and the bank statement — primarily timing differences and unrecorded items.' },
 
-  { id: 'pobc-071', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-071', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-1.1'],
     q: 'What does a debit balance on PLCA mean?',
     opts: [
       'An overpayment or prepayment made to a supplier',
@@ -1563,7 +1563,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The PLCA normally has a credit balance (a liability). A debit balance indicates an overpayment to suppliers — the supplier now owes the business.' },
 
-  { id: 'pobc-072', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-072', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-1.2'],
     q: 'What does reconciliation ensure?',
     opts: [
       'That the business\'s records agree with an independent external record',
@@ -1586,7 +1586,7 @@ window.ALL_QUESTIONS = [
     ans: 1,
     exp: 'Segregation of duties spreads responsibility across different people, reducing the risk that one individual can both commit and conceal fraud.' },
 
-  { id: 'pobc-075', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-075', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-3.2'],
     q: 'What is an error of commission?',
     opts: [
       'A transaction posted to the wrong account within the correct category',
@@ -1597,7 +1597,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'An error of commission occurs when a transaction is posted to the correct type of account but to the wrong specific account.' },
 
-  { id: 'pobc-076', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-076', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-2.3'],
     q: 'What is the aim of a bank reconciliation?',
     opts: [
       'Match the cash book against the bank statement and explain any differences',
@@ -1608,7 +1608,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A bank reconciliation aims to ensure the cash book balance agrees with the bank statement balance after explaining timing differences and adjusting for unrecorded items.' },
 
-  { id: 'pobc-077', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-077', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-2.3'],
     q: 'What is the impact of a timing difference in bank reconciliation?',
     opts: [
       'It is a temporary difference that resolves in a later period',
@@ -1658,19 +1658,19 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Splitting cash-handling duties (receipts, banking, recording, reconciliation) means no single person controls all aspects of the cash cycle, reducing the opportunity for theft.' },
 
-  { id: 'pobc-082', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-082', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-3.2'],
     q: 'Which type of error affects only one side of the trial balance?',
     opts: ['Compensating error', 'A single-sided posting', 'Complete omission of a transaction', 'Error of principle'],
     ans: 1,
     exp: 'A single-sided posting records the debit but not the credit (or vice versa), causing the trial balance totals to disagree.' },
 
-  { id: 'pobc-083', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-083', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-3.2'],
     q: 'Which type of error would cause the trial balance to disagree?',
     opts: ['Compensating error', 'A single-sided posting', 'Complete omission of a transaction', 'Correct posting of a transaction'],
     ans: 1,
     exp: 'A single-sided posting leaves only one half of the double entry recorded, so total debits do not equal total credits.' },
 
-  { id: 'pobc-084', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-084', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-3.2'],
     q: 'Which of the following errors will NOT cause the trial balance to disagree?',
     opts: [
       'A posting made to the wrong account on the correct side',
@@ -1681,19 +1681,19 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Posting to the wrong account on the correct side does not unbalance the trial balance — total debits still equal total credits, even though the analysis is wrong.' },
 
-  { id: 'pobc-085', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-085', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-3.2'],
     q: 'Which error would require a journal correction rather than ledger reposting?',
     opts: ['Transposition error', 'Error of principle', 'Bank omission', 'Casting error'],
     ans: 1,
     exp: 'An error of principle (posting to the wrong type of account) cannot be fixed by a simple reposting on the same side; it must be reclassified by journal.' },
 
-  { id: 'pobc-086', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-086', topic: 'pobc', difficulty: 'medium', criteria: ['BESY-7.2'],
     q: 'Which internal control prevents unauthorised access to accounting systems?',
     opts: ['Password controls', 'Depreciation policy', 'Cost centres', 'Bank reconciliation'],
     ans: 0,
     exp: 'Passwords and user access rights limit who can enter the system and what they can do once inside. Individual logins matter as much as the password itself: a shared login destroys the audit trail, because no entry can be attributed to a person.' },
 
-  { id: 'pobc-087', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-087', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-2.3'],
     q: 'Which is a timing difference?',
     opts: [
       'A cheque written and recorded but not yet presented',
@@ -1704,7 +1704,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'An unpresented cheque is a payment recorded in the cash book that has not yet cleared the bank — a typical bank-reconciliation timing difference.' },
 
-  { id: 'pobc-088', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-088', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-2.3'],
     q: 'Which item appears on bank reconciliation?',
     opts: [
       'Cheques written and recorded but not yet presented to the bank',
@@ -1715,7 +1715,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Unpresented cheques are timing differences that appear on the bank reconciliation until they clear through the bank.' },
 
-  { id: 'pobc-089', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-089', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-2.3'],
     q: 'Which of the following would NOT appear in a bank reconciliation statement?',
     opts: [
       'Bank charges that have already been entered in the cash book',
@@ -1732,19 +1732,19 @@ window.ALL_QUESTIONS = [
     ans: 1,
     exp: 'A stock reconciliation compares the physical count against the inventory records and investigates any difference — theft, damage, mis-posting or goods received but not recorded. Like every reconciliation, it works by comparing two records built independently.' },
 
-  { id: 'pobc-091', topic: 'pobc', difficulty: 'medium',
+  { id: 'pobc-091', topic: 'pobc', difficulty: 'medium', criteria: ['POBC-3.2'],
     q: 'Which type of error is NOT revealed by a trial balance?',
     opts: ['A transposition causing imbalance', 'A single-sided entry', 'An error of omission', 'An arithmetic error in casting a ledger'],
     ans: 2,
     exp: 'An error of omission affects neither side, so the trial balance still balances and the error remains undetected by it.' },
 
-  { id: 'pobc-092', topic: 'pobc', difficulty: 'hard',
+  { id: 'pobc-092', topic: 'pobc', difficulty: 'hard', criteria: ['POBC-2.2'],
     q: 'A cash book is overcast by £200. The effect is:',
     opts: ['Profit overstated', 'Bank balance overstated', 'Liabilities understated', 'Inventory overstated'],
     ans: 1,
     exp: 'Overcasting a cash book column overstates the cash book balance by the same amount, so the bank balance is overstated until the error is corrected.' },
 
-  { id: 'pobc-093', topic: 'pobc', difficulty: 'hard',
+  { id: 'pobc-093', topic: 'pobc', difficulty: 'hard', criteria: ['POBC-1.2'],
     q: 'A control account shows £2,000 credit but the ledger shows £1,800. What is most likely?',
     opts: [
       'A posting error or an omission from one of the records',
@@ -1755,25 +1755,25 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A discrepancy between a control account and the underlying ledger is normally caused by a posting error, omission or transposition rather than any external factor.' },
 
-  { id: 'pobc-094', topic: 'pobc', difficulty: 'hard',
+  { id: 'pobc-094', topic: 'pobc', difficulty: 'hard', criteria: ['POBC-3.2'],
     q: 'A payment of £600 is recorded as £60 in the cash book. What type of error is this?',
     opts: ['Transposition error', 'Error of original entry', 'Error of commission', 'Complete omission'],
     ans: 1,
     exp: 'An error of original entry occurs when an incorrect figure is entered at the point of recording (here, £60 instead of £600). Both sides of the double entry use the wrong figure so the trial balance still balances.' },
 
-  { id: 'pobc-095', topic: 'pobc', difficulty: 'hard',
+  { id: 'pobc-095', topic: 'pobc', difficulty: 'hard', criteria: ['POBC-1.2'],
     q: 'A supplier is overpaid by £100. How should this be recorded?',
     opts: ['Dr expense, Cr bank', 'Dr trade receivables, Cr bank', 'Dr trade payables, Cr bank', 'Dr bank, Cr sales'],
     ans: 2,
     exp: 'An overpayment to a supplier reduces both the trade payables balance and the bank balance: Dr Trade Payables £100, Cr Bank £100.' },
 
-  { id: 'pobc-096', topic: 'pobc', difficulty: 'hard',
+  { id: 'pobc-096', topic: 'pobc', difficulty: 'hard', criteria: ['POBC-3.3'],
     q: 'A suspense account shows a debit balance of £150. What does this indicate?',
     opts: ['Credits exceed debits by £150', 'Debits exceed credits by £150', 'No errors exist', 'Cash is missing'],
     ans: 0,
     exp: 'A debit balance on the suspense account means the original trial balance had credits exceeding debits — the suspense Dr is needed to make the two sides equal.' },
 
-  { id: 'pobc-097', topic: 'pobc', difficulty: 'hard',
+  { id: 'pobc-097', topic: 'pobc', difficulty: 'hard', criteria: ['POBC-1.1'],
     q: 'In the VAT control account, the amount due to HMRC is:',
     opts: ['Output tax minus input tax', 'Input tax minus output tax', 'Total sales divided by 6', 'Total purchases multiplied by 20%'],
     ans: 0,
@@ -1781,13 +1781,13 @@ window.ALL_QUESTIONS = [
 
 
   /* -- PRINCIPLES OF COSTING (POC) -- */
-  { id: 'poc-001', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-001', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.2'],
     q: 'A basic wage plus a bonus per unit produced is an example of:',
     opts: ['A fixed cost', 'A variable cost', 'A semi-variable cost', 'An indirect cost'],
     ans: 2,
     exp: 'Basic wage (fixed) + per-unit bonus (variable) = a semi-variable cost with both fixed and variable elements.' },
 
-  { id: 'poc-002', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-002', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.5'],
     q: 'A cost centre is:',
     opts: [
       'A department or location to which costs are charged and controlled',
@@ -1809,14 +1809,14 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A cost driver is any factor whose change causes a cost to change — for example machine hours driving maintenance cost or sales volume driving delivery cost.' },
 
-  { id: 'poc-004', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-004', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'A cost increases in steps at certain activity levels. This is called:',
     opts: ['Variable cost', 'Step cost', 'Fixed cost', 'Direct cost'],
     ans: 1,
     exp: 'A step cost holds steady across a range of activity, then jumps when a capacity limit is crossed — a second supervisor, another delivery van, an extra shift. Within each range it behaves like a fixed cost; across ranges it plainly does not.' },
 
 
-  { id: 'poc-006', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-006', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'A cost unit is:',
     opts: [
       'A unit of product or service for which costs are measured',
@@ -1829,7 +1829,7 @@ window.ALL_QUESTIONS = [
 
 
 
-  { id: 'poc-009', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-009', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.5'],
     q: 'A profit centre is:',
     opts: [
       'A part of the business responsible for both revenue and costs',
@@ -1840,7 +1840,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A profit centre is responsible for both generating revenue and controlling costs, so its profitability can be measured directly.' },
 
-  { id: 'poc-010', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-010', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'A semi-variable cost is split into:',
     opts: [
       'A fixed element and a variable element',
@@ -1851,7 +1851,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Splitting a semi-variable cost separates the standing charge, which is incurred whatever the usage, from the charge that varies with it. Direct against indirect is a different classification altogether, answering a different question about the same cost.' },
 
-  { id: 'poc-011', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-011', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'A semi-variable cost:',
     opts: [
       'Contains both a fixed element and a variable element',
@@ -1862,7 +1862,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A semi-variable cost has a standing charge that is incurred regardless of use, plus a usage charge that varies with it — an electricity bill is the standard example. Both elements sit inside one cost, which is why it has to be separated before the cost can be forecast at a new level of output.' },
 
-  { id: 'poc-012', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-012', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'A step cost changes when:',
     opts: [
       'Activity reaches a threshold requiring extra capacity',
@@ -1873,7 +1873,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Step costs stay flat within a capacity band and jump when that band is exceeded. Recognising the threshold matters: a decision that looks marginally profitable can become a loss once it pushes activity past the step.' },
 
-  { id: 'poc-013', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-013', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.2'],
     q: 'Absorption costing involves:',
     opts: [
       'Allocating and apportioning overheads to cost centres, then absorbing them into products',
@@ -1884,7 +1884,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Absorption costing: (1) allocate/apportion overheads to cost centres, (2) calculate an OAR for each, (3) absorb overheads into product cost.' },
 
-  { id: 'poc-014', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-014', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'If activity doubles and total cost increases less than proportionally, cost is:',
     opts: [
       'Semi-variable, containing both a fixed and a variable element',
@@ -1895,7 +1895,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Total cost rises less than proportionally with output, indicating a semi-variable cost (a mix of fixed and variable elements).' },
 
-  { id: 'poc-015', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-015', topic: 'poc', difficulty: 'easy', criteria: ['POC-2.4'],
     q: 'If production increases but fixed costs remain constant, fixed cost per unit will:',
     opts: [
       'Decrease, as the same total is spread over more units',
@@ -1908,7 +1908,7 @@ window.ALL_QUESTIONS = [
 
 
 
-  { id: 'poc-018', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-018', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'Labour costs that can be directly traced to a specific product are:',
     opts: [
       'The wages of employees working directly on the product',
@@ -1931,7 +1931,7 @@ window.ALL_QUESTIONS = [
     exp: 'Labour turnover measures how frequently employees leave and need replacing. High turnover increases recruitment and training costs.' },
 
 
-  { id: 'poc-021', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-021', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'Overheads are:',
     opts: [
       'Indirect costs that cannot be attributed to a specific cost unit',
@@ -1942,7 +1942,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Overheads are indirect costs — for example factory rent, supervisor wages and utilities — that cannot be traced to specific units.' },
 
-  { id: 'poc-022', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-022', topic: 'poc', difficulty: 'easy', criteria: ['POC-2.5'],
     q: 'Prime cost is:',
     opts: [
       'Direct materials plus direct labour plus direct expenses',
@@ -1953,7 +1953,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Prime cost = direct materials + direct labour + direct expenses — the total direct cost before any overheads.' },
 
-  { id: 'poc-023', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-023', topic: 'poc', difficulty: 'easy', criteria: ['POC-2.3'],
     q: 'Under-absorbed overhead results in:',
     opts: [
       'Lower reported profit, as the shortfall is charged to the income statement',
@@ -1964,7 +1964,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Under-absorption means less overhead was charged to products than was actually incurred, so product costs were understated. The shortfall is debited to the income statement, reducing profit. Over-absorption has the opposite effect.' },
 
-  { id: 'poc-024', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-024', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'Variable cost per unit:',
     opts: [
       'Remains constant however many units are produced',
@@ -1975,7 +1975,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Variable cost per unit is constant — £5 of materials per unit whether you make 10 or 10,000 — while the total rises with output. Fixed cost behaves the opposite way: constant in total, falling per unit.' },
 
-  { id: 'poc-025', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-025', topic: 'poc', difficulty: 'easy', criteria: ['POC-2.4'],
     q: 'What happens to unit fixed cost as output increases?',
     opts: [
       'It decreases, as the fixed total is spread more thinly',
@@ -1986,7 +1986,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Unit fixed cost = total fixed cost ÷ units. The numerator is unchanged, so raising the denominator lowers the result. Total fixed cost is what stays constant.' },
 
-  { id: 'poc-026', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-026', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.5'],
     q: 'What is a cost centre?',
     opts: [
       'An area of the business to which costs are charged and accumulated',
@@ -1997,7 +1997,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A cost centre is a location, department or activity to which costs are accumulated for management control.' },
 
-  { id: 'poc-027', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-027', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.5'],
     q: 'What is a profit centre?',
     opts: [
       'A part of the business responsible for both revenue and costs',
@@ -2009,13 +2009,13 @@ window.ALL_QUESTIONS = [
     exp: 'A profit centre is responsible for both revenue and costs, so its profitability can be measured directly.' },
 
 
-  { id: 'poc-029', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-029', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.2'],
     q: 'On what basis can overheads be absorbed?',
     opts: ['Units or hours', 'Tax rate', 'Sales value', 'Profit margin'],
     ans: 0,
     exp: 'Overheads are typically absorbed using an activity measure — most commonly labour hours, machine hours or units produced.' },
 
-  { id: 'poc-030', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-030', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.2'],
     q: 'What is absorption costing?',
     opts: [
       'Including a share of overheads in the cost of each product',
@@ -2026,7 +2026,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Absorption costing values products at the full cost of production — direct materials, direct labour, direct expenses and a share of production overheads.' },
 
-  { id: 'poc-031', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-031', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'What is cost behaviour analysis used for?',
     opts: [
       'Planning future activity and supporting management decisions',
@@ -2037,7 +2037,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Knowing how a cost behaves is what makes planning possible: you cannot flex a budget, forecast a total cost at a different level of output, or work out a cost per unit without separating what varies with activity from what does not.' },
 
-  { id: 'poc-032', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-032', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'What is cost behaviour?',
     opts: [
       'How total costs change as the level of activity changes',
@@ -2048,7 +2048,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Cost behaviour describes how a cost changes (or does not change) with the level of activity — fixed, variable or semi-variable.' },
 
-  { id: 'poc-033', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-033', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'What is a cost unit?',
     opts: [
       'The unit of product or service for which cost is measured',
@@ -2059,7 +2059,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A cost unit is a quantitative unit of a product or service for which costs are ascertained — for example one tonne of steel.' },
 
-  { id: 'poc-034', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-034', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'What is a direct cost?',
     opts: [
       'A cost that can be traced directly to a specific cost unit',
@@ -2070,13 +2070,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A direct cost is a cost that can be traced directly to a specific cost unit — for example raw materials in a finished product.' },
 
-  { id: 'poc-035', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-035', topic: 'poc', difficulty: 'easy', criteria: ['POC-2.4'],
     q: 'As output increases, what happens to fixed cost per unit?',
     opts: ['It increases', 'It decreases', 'It stays constant', 'It becomes variable'],
     ans: 1,
     exp: 'Total fixed cost is unchanged but is spread over more units, so fixed cost per unit falls as output rises.' },
 
-  { id: 'poc-036', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-036', topic: 'poc', difficulty: 'easy', criteria: ['POC-2.5'],
     q: 'What is included in prime cost?',
     opts: [
       'Direct materials and direct labour used in production',
@@ -2087,14 +2087,14 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Prime cost is the sum of direct materials, direct labour and direct expenses — everything traceable to the cost unit. Overheads are excluded by definition; adding absorbed production overhead to prime cost gives total production cost.' },
 
-  { id: 'poc-037', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-037', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'How is labour cost classified by traceability?',
     opts: ['Only as fixed', 'As direct or indirect', 'Only as sales-related', 'As capital'],
     ans: 1,
     exp: 'Labour cost is direct when traceable to a specific cost unit (e.g. assembly workers) and indirect when it cannot be (e.g. supervisors, cleaners).' },
 
 
-  { id: 'poc-039', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-039', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.2'],
     q: 'What is overhead absorption?',
     opts: [
       'Charging a share of production overheads to each unit of output',
@@ -2105,13 +2105,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Overhead absorption charges indirect costs to cost units using a predetermined absorption rate (OAR).' },
 
-  { id: 'poc-040', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-040', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'What is an overhead?',
     opts: ['Direct material', 'Indirect cost', 'Sales', 'Cash'],
     ans: 1,
     exp: 'An overhead is an indirect cost of production that cannot be traced directly to a specific cost unit — for example factory rent or utilities.' },
 
-  { id: 'poc-041', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-041', topic: 'poc', difficulty: 'easy', criteria: ['POC-2.5'],
     q: 'What is prime cost?',
     opts: [
       'Direct materials plus direct labour plus direct expenses',
@@ -2122,56 +2122,56 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Prime cost is the sum of the three direct elements and deliberately excludes overheads. Adding absorbed production overhead to prime cost gives total production cost.' },
 
-  { id: 'poc-042', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-042', topic: 'poc', difficulty: 'easy', criteria: ['POC-2.3'],
     q: 'What is the effect of under-absorbing overheads?',
     opts: ['Profit increases', 'Profit decreases', 'No impact', 'Sales increase'],
     ans: 1,
     exp: 'Under-absorbing overheads charges the shortfall to the income statement as an additional expense, reducing reported profit.' },
 
-  { id: 'poc-043', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-043', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'Which classification of costs is based on how costs behave with changes in output?',
     opts: ['By nature', 'By function', 'By behaviour', 'By responsibility'],
     ans: 2,
     exp: 'Cost behaviour classification (fixed, variable, semi-variable) examines how total costs change as activity changes.' },
 
-  { id: 'poc-044', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-044', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'Which cost increases directly with production volume?',
     opts: ['Fixed cost', 'Variable cost', 'Stepped cost', 'Indirect cost'],
     ans: 1,
     exp: 'A variable cost rises in total in direct proportion to output — for example raw materials, where double the output uses double the materials.' },
 
 
-  { id: 'poc-046', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-046', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'Which cost is indirect?',
     opts: ['Materials', 'Factory rent', 'Direct labour', 'Sales commission'],
     ans: 1,
     exp: 'Factory rent benefits all output and cannot be traced to any one unit, making it an indirect cost. It is charged to production by apportionment and absorption rather than attaching directly, which is what separates it from direct materials or direct labour.' },
 
-  { id: 'poc-047', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-047', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'Which cost is not affected by output changes?',
     opts: ['Variable cost', 'Fixed cost', 'Direct cost', 'Semi-variable cost'],
     ans: 1,
     exp: 'A fixed cost stays the same in total whatever the level of output, within the relevant range. Note the qualifier: fixed cost per unit falls as output rises, because the same total is spread more thinly. Confusing total with per-unit behaviour is the standard trap.' },
 
-  { id: 'poc-048', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-048', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'Which cost remains unchanged within a relevant range of activity?',
     opts: ['Variable cost', 'Fixed cost', 'Direct cost', 'Semi-variable cost'],
     ans: 1,
     exp: 'A fixed cost is unchanged in total within the relevant range of activity. Outside that range it may step up or down, which is exactly what a stepped cost does — a fixed cost measured over a wider span of output.' },
 
-  { id: 'poc-049', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-049', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'Which increases variable cost total?',
     opts: ['More output', 'Higher interest rates', 'Lower wages', 'Fixed rent'],
     ans: 0,
     exp: 'Total variable cost increases as more units are produced. Variable cost per unit, however, stays constant.' },
 
-  { id: 'poc-050', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-050', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'Which is a fixed cost?',
     opts: ['Materials', 'Rent', 'Packaging', 'Sales commission'],
     ans: 1,
     exp: 'Rent is contracted for a period and does not move with output, making it fixed in total. Its per-unit effect is the opposite: the more units produced, the smaller the share of rent each one carries.' },
 
-  { id: 'poc-051', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-051', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'Which is direct labour?',
     opts: [
       'A machine operator producing units on the factory production line',
@@ -2182,7 +2182,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A machine operator works on the product itself, so their wages can be traced to units of output and are direct labour. Supervisors, cleaners and maintenance staff support production without being traceable to any one unit, making them indirect.' },
 
-  { id: 'poc-052', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-052', topic: 'poc', difficulty: 'easy', criteria: ['POC-2.5'],
     q: 'Which is included in prime cost?',
     opts: [
       'Direct labour worked on the product being manufactured',
@@ -2193,13 +2193,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Direct labour is one of the three elements of prime cost, alongside direct materials and direct expenses. Rent, insurance and supervision are indirect and reach the product only through overhead absorption.' },
 
-  { id: 'poc-053', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-053', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'Which is indirect labour?',
     opts: ['Assembly worker', 'Cleaner', 'Machine operator', 'Assembler'],
     ans: 1,
     exp: 'A cleaner supports production but cannot be traced to any particular unit, so the cost is indirect labour and forms part of production overhead. The test is always traceability to the cost unit, not how important the role is.' },
 
-  { id: 'poc-054', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-054', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'Which is semi-variable?',
     opts: [
       'An electricity bill with a standing charge plus a usage element',
@@ -2210,7 +2210,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'An electricity bill typically has a fixed standing charge plus a usage charge — a semi-variable cost.' },
 
-  { id: 'poc-055', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-055', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'Which of the following is a direct cost?',
     opts: [
       'Raw materials consumed directly in making the product',
@@ -2221,19 +2221,19 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Direct costs are directly traceable to a specific product — for example raw materials used in making it.' },
 
-  { id: 'poc-056', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-056', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'Which of the following is a production overhead?',
     opts: ['Sales commission', 'Delivery costs to customers', 'Factory rent', 'Directors\' fees'],
     ans: 2,
     exp: 'Production overheads are indirect costs related to manufacturing. Factory rent relates directly to the production facility.' },
 
-  { id: 'poc-057', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-057', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'Which of the following is an indirect cost?',
     opts: ['Wood used to make furniture', 'Assembly line workers\' wages', 'The factory manager\'s salary', 'Product-specific packaging'],
     ans: 2,
     exp: 'Indirect costs cannot be traced to a specific unit. The factory manager oversees the whole facility, not a single product.' },
 
-  { id: 'poc-058', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-058', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.2'],
     q: 'Which statement about absorption costing is correct?',
     opts: [
       'It allocates and absorbs overheads into the cost of products',
@@ -2244,7 +2244,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Absorption costing allocates and apportions overheads to cost centres and then absorbs them into product cost using an absorption rate (the OAR).' },
 
-  { id: 'poc-059', topic: 'poc', difficulty: 'easy',
+  { id: 'poc-059', topic: 'poc', difficulty: 'easy', criteria: ['POC-1.1'],
     q: 'Which statement about variable costs is correct?',
     opts: ['They are constant in total', 'They are constant per unit', 'They never change', 'They are fixed per unit'],
     ans: 1,
@@ -2252,7 +2252,7 @@ window.ALL_QUESTIONS = [
 
 
 
-  { id: 'poc-062', topic: 'poc', difficulty: 'medium',
+  { id: 'poc-062', topic: 'poc', difficulty: 'medium', criteria: ['POC-2.3'],
     q: 'Absorbed overhead is compared to actual overhead to determine:',
     opts: [
       'Whether overheads have been under-absorbed or over-absorbed',
@@ -2263,7 +2263,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'If absorbed overheads exceed actual overheads, there is over-absorption; if actual overheads exceed absorbed, there is under-absorption.' },
 
-  { id: 'poc-063', topic: 'poc', difficulty: 'medium',
+  { id: 'poc-063', topic: 'poc', difficulty: 'medium', criteria: ['POC-1.2'],
     q: 'AVCO values inventory at:',
     opts: [
       'A weighted average of all the purchase prices paid',
@@ -2277,7 +2277,7 @@ window.ALL_QUESTIONS = [
 
 
 
-  { id: 'poc-067', topic: 'poc', difficulty: 'medium',
+  { id: 'poc-067', topic: 'poc', difficulty: 'medium', criteria: ['POC-1.2'],
     q: 'FIFO compared to AVCO typically results in:',
     opts: [
       'Higher closing inventory when purchase prices are rising',
@@ -2288,13 +2288,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Under FIFO, closing inventory consists of the most recent purchases. In a period of rising prices these are the highest-priced, so closing inventory is valued higher than under AVCO.' },
 
-  { id: 'poc-068', topic: 'poc', difficulty: 'medium',
+  { id: 'poc-068', topic: 'poc', difficulty: 'medium', criteria: ['POC-1.2'],
     q: 'FIFO inventory valuation assumes:',
     opts: ['Newest items sold first', 'Oldest items sold first', 'Average cost applied', 'Random selection'],
     ans: 1,
     exp: 'FIFO (First In, First Out) assumes the earliest items purchased are issued or sold first, leaving the most recent purchases in closing inventory.' },
 
-  { id: 'poc-069', topic: 'poc', difficulty: 'medium',
+  { id: 'poc-069', topic: 'poc', difficulty: 'medium', criteria: ['POC-1.1'],
     q: 'Fixed costs are best described as:',
     opts: [
       'Costs that remain constant in total regardless of output',
@@ -2308,19 +2308,19 @@ window.ALL_QUESTIONS = [
 
 
 
-  { id: 'poc-073', topic: 'poc', difficulty: 'medium',
+  { id: 'poc-073', topic: 'poc', difficulty: 'medium', criteria: ['POC-2.3'],
     q: 'Over-absorption of overheads occurs when:',
     opts: ['Actual overheads exceed absorbed overheads', 'Absorbed overheads exceed actual overheads', 'Output is below budget', 'Fixed costs rise unexpectedly'],
     ans: 1,
     exp: 'Over-absorption: overheads absorbed (using the OAR) exceed the actual overheads incurred. The over-absorption is credited to the income statement.' },
 
-  { id: 'poc-074', topic: 'poc', difficulty: 'medium',
+  { id: 'poc-074', topic: 'poc', difficulty: 'medium', criteria: ['POC-1.2'],
     q: 'The FIFO method of inventory valuation assumes that:',
     opts: ['The newest items are used first', 'The oldest items are used first', 'An average cost is used', 'Market price is used'],
     ans: 1,
     exp: 'FIFO (First In, First Out) assumes the earliest inventory purchased is used or sold first. Closing inventory is therefore valued at the most recent prices.' },
 
-  { id: 'poc-075', topic: 'poc', difficulty: 'medium',
+  { id: 'poc-075', topic: 'poc', difficulty: 'medium', criteria: ['POC-2.3'],
     q: 'Under-absorption of overheads means:',
     opts: [
       'Insufficient overhead has been charged, so profit is overstated',
@@ -2331,7 +2331,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Under-absorption: actual overheads exceed absorbed overheads. The shortfall is debited to the income statement (i.e. profit is reduced).' },
 
-  { id: 'poc-076', topic: 'poc', difficulty: 'medium',
+  { id: 'poc-076', topic: 'poc', difficulty: 'medium', criteria: ['POC-2.3'],
     q: 'What happens in over-absorption?',
     opts: [
       'Absorbed overhead exceeds the overhead actually incurred',
@@ -2342,14 +2342,14 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Over-absorption occurs when absorbed overheads (based on the OAR) exceed actual overheads incurred. The surplus is credited to the income statement.' },
 
-  { id: 'poc-077', topic: 'poc', difficulty: 'medium',
+  { id: 'poc-077', topic: 'poc', difficulty: 'medium', criteria: ['POC-1.2'],
     q: 'When is the AVCO average inventory cost recalculated?',
     opts: ['After each sale only', 'After each purchase', 'Only at year end', 'When cash is paid'],
     ans: 1,
     exp: 'AVCO recalculates a weighted average cost after each new purchase. Subsequent issues are valued at this updated average.' },
 
 
-  { id: 'poc-079', topic: 'poc', difficulty: 'medium',
+  { id: 'poc-079', topic: 'poc', difficulty: 'medium', criteria: ['POC-1.2'],
     q: 'What is the FIFO inventory assumption?',
     opts: ['Newest items are sold first', 'Oldest items are sold first', 'Cost is averaged', 'Items are selected randomly'],
     ans: 1,
@@ -2359,7 +2359,7 @@ window.ALL_QUESTIONS = [
 
 
 
-  { id: 'poc-084', topic: 'poc', difficulty: 'medium',
+  { id: 'poc-084', topic: 'poc', difficulty: 'medium', criteria: ['POC-1.1'],
     q: 'Which is a variable cost?',
     opts: [
       'The raw materials consumed in making the product',
@@ -2370,19 +2370,19 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Raw materials are consumed in proportion to output, so the total rises with production while the cost per unit stays constant. Rent, insurance and depreciation are fixed in total and fall per unit as output rises.' },
 
-  { id: 'poc-085', topic: 'poc', difficulty: 'medium',
+  { id: 'poc-085', topic: 'poc', difficulty: 'medium', criteria: ['POC-1.2'],
     q: 'Which is NOT part of absorption costing?',
     opts: ['Overhead allocation', 'OAR calculation', 'Direct materials only', 'Overhead absorption'],
     ans: 2,
     exp: 'Absorption costing includes a fair share of production overhead in each unit alongside the direct costs. Charging direct materials alone would understate the cost of production and lead to prices set below true cost.' },
 
-  { id: 'poc-086', topic: 'poc', difficulty: 'medium',
+  { id: 'poc-086', topic: 'poc', difficulty: 'medium', criteria: ['POC-1.2'],
     q: 'Which method averages inventory cost?',
     opts: ['FIFO', 'AVCO', 'LIFO', 'Specific'],
     ans: 1,
     exp: 'AVCO (Average Cost) values inventory using a weighted average of all purchase prices, recalculated after each new purchase.' },
 
-  { id: 'poc-087', topic: 'poc', difficulty: 'medium',
+  { id: 'poc-087', topic: 'poc', difficulty: 'medium', criteria: ['POC-1.2'],
     q: 'Which method spreads overheads using activity levels?',
     opts: [
       'Absorption costing, which charges overheads to products via an absorption rate',
@@ -2393,7 +2393,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Overheads are spread across products using a chosen activity base — typically labour hours, machine hours or units produced. Allocation comes earlier in the same process and charges a whole overhead to one centre rather than spreading it.' },
 
-  { id: 'poc-088', topic: 'poc', difficulty: 'medium',
+  { id: 'poc-088', topic: 'poc', difficulty: 'medium', criteria: ['POC-1.2'],
     q: 'Which method values closing inventory at most recent purchases?',
     opts: [
       'FIFO, which issues the oldest units first so the newest remain',
@@ -2404,14 +2404,14 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'FIFO assumes the earliest purchases are issued first, so whatever remains in closing inventory is the most recent — and in a rising market, the most expensive. AVCO gives a figure between the two; LIFO is prohibited by IAS 2; absorption costing is a method of charging overheads, not of valuing stock movements.' },
 
-  { id: 'poc-089', topic: 'poc', difficulty: 'medium',
+  { id: 'poc-089', topic: 'poc', difficulty: 'medium', criteria: ['POC-1.2'],
     q: 'Which of the following are recognised methods of inventory valuation?',
     opts: ['FIFO, LIFO and AVCO', 'PAYE, NIC and VAT', 'Fixed, variable and semi-variable', 'Direct, indirect and overhead'],
     ans: 0,
     exp: 'FIFO, LIFO and AVCO are the three classic inventory valuation methods, and the Level 2 syllabus requires all three. LIFO is examined for internal management accounting use only, because it is not permitted for financial reporting under IFRS or UK GAAP.' },
 
 
-  { id: 'poc-091', topic: 'poc', difficulty: 'hard',
+  { id: 'poc-091', topic: 'poc', difficulty: 'hard', criteria: ['POC-1.1'],
     q: 'A cost increases from £5,000 to £7,000 when output rises from 1,000 to 2,000 units. What type of cost is this?',
     opts: [
       'A semi-variable cost, with a fixed and a variable element',
@@ -2424,13 +2424,13 @@ window.ALL_QUESTIONS = [
 
 
 
-  { id: 'poc-094', calc: true, topic: 'poc', difficulty: 'hard',
+  { id: 'poc-094', calc: true, topic: 'poc', difficulty: 'hard', criteria: ['POC-2.4'],
     q: 'Fixed costs are £10,000; variable cost is £5 per unit; 2,000 units are produced. Total cost is:',
     opts: ['£10,000', '£20,000', '£10,005', '£15,000'],
     ans: 1,
     exp: 'Total cost = fixed + (variable per unit × units) = £10,000 + (£5 × 2,000) = £20,000. Note the per-unit figure: £20,000 ÷ 2,000 = £10, of which £5 is variable and £5 is the fixed cost spread across output.' },
 
-  { id: 'poc-095', topic: 'poc', difficulty: 'hard',
+  { id: 'poc-095', topic: 'poc', difficulty: 'hard', criteria: ['POC-2.3'],
     q: 'Fixed overheads absorbed are £12,000 and actual overheads are £11,200. What is the result?',
     opts: ['Under-absorption of £800', 'Over-absorption of £800', 'No difference', 'Profit reduction of £12,000'],
     ans: 1,
@@ -2439,25 +2439,25 @@ window.ALL_QUESTIONS = [
 
 
 
-  { id: 'poc-099', topic: 'poc', difficulty: 'hard',
+  { id: 'poc-099', topic: 'poc', difficulty: 'hard', criteria: ['POC-2.3'],
     q: 'The overhead absorption rate (OAR) is calculated as:',
     opts: ['Actual overheads ÷ actual activity', 'Budgeted overheads ÷ budgeted activity', 'Actual overheads ÷ budgeted activity', 'Budgeted overheads ÷ actual activity'],
     ans: 1,
     exp: 'OAR = budgeted overheads ÷ budgeted activity level. It is calculated in advance to absorb overheads into product costs.' },
 
-  { id: 'poc-100', topic: 'poc', difficulty: 'hard',
+  { id: 'poc-100', topic: 'poc', difficulty: 'hard', criteria: ['POC-2.4'],
     q: 'Total cost function is C = 8,000 + 3x. What is fixed cost?',
     opts: ['3x', '8,000', '11,000', 'Variable cost'],
     ans: 1,
     exp: 'In the total-cost function C = a + bx, "a" is the fixed cost (£8,000) and "b" is the variable cost per unit (£3).' },
 
-  { id: 'poc-101', calc: true, topic: 'poc', difficulty: 'hard',
+  { id: 'poc-101', calc: true, topic: 'poc', difficulty: 'hard', criteria: ['POC-2.4'],
     q: 'Total cost is £50,000 and units are 5,000. Average cost per unit is:',
     opts: ['£5', '£10', '£15', '£20'],
     ans: 1,
     exp: 'Average cost per unit = total cost ÷ units = £50,000 ÷ 5,000 = £10. Be careful using this figure for decisions: it blends fixed and variable cost, so it changes with volume and is not the cost of making one more unit.' },
 
-  { id: 'poc-102', topic: 'poc', difficulty: 'hard',
+  { id: 'poc-102', topic: 'poc', difficulty: 'hard', criteria: ['POC-2.3'],
     q: 'When machine hours are the OAR basis, the rate is:',
     opts: ['Budgeted overheads ÷ budgeted labour hours', 'Budgeted overheads ÷ budgeted machine hours', 'Actual overheads ÷ actual machine hours', 'Total costs ÷ units produced'],
     ans: 1,
@@ -2465,7 +2465,7 @@ window.ALL_QUESTIONS = [
 
 
   /* -- THE BUSINESS ENVIRONMENT (BESY) -- */
-  { id: 'besy-001', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-001', topic: 'besy', difficulty: 'easy', criteria: ['BESY-1.3'],
     q: '"Consideration" in contract law is:',
     opts: [
       'Something of value given by each party to the agreement',
@@ -2476,7 +2476,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Consideration is something of value exchanged by each party — a payment, service or promise to act or refrain from acting.' },
 
-  { id: 'besy-002', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-002', topic: 'besy', difficulty: 'easy', criteria: ['BESY-4.1'],
     q: '"Limited liability" for shareholders means:',
     opts: [
       'Their loss is limited to the amount they paid or agreed to pay for shares',
@@ -2487,13 +2487,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Limited liability protects shareholders\' personal assets — their loss is capped at the amount paid (or agreed to be paid) for their shares.' },
 
-  { id: 'besy-003', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-003', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.1'],
     q: 'A business operating in perfect competition is characterised by:',
     opts: ['Many buyers and sellers', 'Single seller', 'High barriers to entry', 'Price control by firms'],
     ans: 0,
     exp: 'Perfect competition is a theoretical market structure with many buyers and sellers, homogeneous products and free entry — firms are price takers.' },
 
-  { id: 'besy-004', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-004', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.1'],
     q: 'A characteristic of monopolistic competition is:',
     opts: [
       'Many sellers offering differentiated but similar products',
@@ -2504,7 +2504,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Monopolistic competition has many firms selling differentiated (but similar) products — for example restaurants or hairdressers.' },
 
-  { id: 'besy-005', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-005', topic: 'besy', difficulty: 'easy', criteria: ['BESY-3.1'],
     q: 'A conflict between stakeholders occurs when:',
     opts: [
       'Different stakeholder groups pursue objectives that clash',
@@ -2515,25 +2515,25 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Stakeholder conflict arises when different stakeholders pursue competing objectives — for example shareholders seeking dividends vs employees seeking pay rises.' },
 
-  { id: 'besy-006', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-006', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.1'],
     q: 'Which of the following would cause demand for a normal good to fall?',
     opts: ['A rise in consumer income', 'A decrease in the price of substitutes', 'A decrease in the price of complements', 'A larger market population'],
     ans: 1,
     exp: 'When a close substitute becomes cheaper, consumers switch away from this good toward the cheaper alternative — reducing demand for this good. The other options would each tend to raise demand.' },
 
-  { id: 'besy-007', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-007', topic: 'besy', difficulty: 'easy', criteria: ['BESY-4.1'],
     q: 'A defining feature of a sole trader is:',
     opts: ['Limited liability', 'Shares traded on a stock exchange', 'Unlimited personal liability for business debts', 'Separate legal personality registered at Companies House'],
     ans: 2,
     exp: 'A sole trader has unlimited liability — personal assets can be used to meet business debts. There is no legal separation between the owner and the business.' },
 
-  { id: 'besy-008', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-008', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.3'],
     q: 'A fall in exchange rate typically makes exports:',
     opts: ['More expensive abroad', 'Cheaper abroad', 'Unchanged', 'Illegal'],
     ans: 1,
     exp: 'A weaker domestic currency makes exports cheaper to foreign buyers, improving export competitiveness.' },
 
-  { id: 'besy-009', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-009', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.2'],
     q: 'A fiscal policy tool is:',
     opts: [
       'Taxation and public spending decided by the government',
@@ -2555,7 +2555,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A franchisee operates under the franchisor\'s brand and business model, typically paying initial fees and ongoing royalties.' },
 
-  { id: 'besy-011', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-011', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.3'],
     q: 'A key economic factor for businesses trading internationally is:',
     opts: [
       'Fluctuations in the exchange rate between currencies',
@@ -2566,7 +2566,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Exchange rate movements affect import costs and export competitiveness — a critical factor for any business trading across borders.' },
 
-  { id: 'besy-012', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-012', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.2'],
     q: 'A key reason governments regulate businesses is to:',
     opts: [
       'To protect consumers and maintain competition in markets',
@@ -2577,7 +2577,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Regulation is used to protect consumers, ensure fair competition and prevent the abuse of market power.' },
 
-  { id: 'besy-013', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-013', topic: 'besy', difficulty: 'easy', criteria: ['BESY-4.1'],
     q: 'A limited company\'s separate legal personality means it:',
     opts: [
       'It can own property and sue or be sued in its own name',
@@ -2599,13 +2599,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A mission statement summarises the organisation\'s purpose, core values and strategic aims, providing direction for decision-making.' },
 
-  { id: 'besy-015', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-015', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.1'],
     q: 'A monopoly firm typically:',
     opts: ['Is price taker', 'Sets its own prices', 'Has no control over output', 'Has infinite competitors'],
     ans: 1,
     exp: 'A monopolist is the sole or dominant supplier in its market, with the power to set prices (subject to consumer demand and any regulation).' },
 
-  { id: 'besy-016', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-016', topic: 'besy', difficulty: 'easy', criteria: ['BESY-4.1'],
     q: 'A not-for-profit organisation:',
     opts: [
       'Exists primarily to fulfil a social, charitable or community purpose',
@@ -2616,7 +2616,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Not-for-profit organisations (charities, social enterprises) exist to serve a social or community purpose rather than to generate profit for owners.' },
 
-  { id: 'besy-017', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-017', topic: 'besy', difficulty: 'easy', criteria: ['BESY-4.1'],
     q: 'A PLC differs from a Ltd company because it:',
     opts: [
       'It can offer its shares to the public, including on a stock exchange',
@@ -2627,7 +2627,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A PLC can sell shares to the general public to raise larger amounts of capital and may be listed on a stock exchange. A Ltd company cannot do this.' },
 
-  { id: 'besy-018', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-018', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.1'],
     q: 'A price war usually leads to:',
     opts: [
       'Lower prices across the market and reduced profit margins',
@@ -2638,7 +2638,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Competing on price alone drives prices down for all participants and compresses margins. It may force weaker firms out over time, but it does not create a monopoly immediately, and it plainly changes the competitive position.' },
 
-  { id: 'besy-019', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-019', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.1'],
     q: 'A primary economic objective of firms is often to:',
     opts: [
       'Maximise profit for the owners of the business',
@@ -2649,7 +2649,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Profit maximisation is the standard assumption for a commercial firm, though real businesses also pursue growth, market share, survival and social objectives. Not-for-profit organisations pursue a purpose rather than a return to owners.' },
 
-  { id: 'besy-020', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-020', topic: 'besy', difficulty: 'easy', criteria: ['BESY-4.1'],
     q: 'A primary objective of a not-for-profit organisation is:',
     opts: [
       'Providing a social, charitable or community benefit',
@@ -2660,7 +2660,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Not-for-profit organisations exist to deliver a social, charitable or community benefit rather than to maximise returns to owners.' },
 
-  { id: 'besy-021', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-021', topic: 'besy', difficulty: 'easy', criteria: ['BESY-4.1'],
     q: 'A public limited company raises capital by:',
     opts: [
       'Offering its shares for sale to the general public',
@@ -2671,7 +2671,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The defining feature of a plc is that it may offer shares to the public, often through a stock-exchange listing. A private limited company cannot. Reducing equity and raising wages both take money out rather than raise it.' },
 
-  { id: 'besy-022', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-022', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.2'],
     q: 'A recession is typically characterised by:',
     opts: [
       'Negative economic growth over two consecutive quarters',
@@ -2682,7 +2682,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The conventional definition is two consecutive quarters of falling GDP. One weak quarter is not a recession, and the label matters commercially because it shapes credit conditions, consumer confidence and government policy.' },
 
-  { id: 'besy-023', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-023', topic: 'besy', difficulty: 'easy', criteria: ['BESY-4.1'],
     q: 'A sole trader expanding may incorporate to:',
     opts: [
       'Gain limited liability, capping the owner\'s loss at what they invested',
@@ -2693,7 +2693,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Incorporating creates a company with separate legal personality, so the shareholder\'s loss is limited to what they paid or agreed to pay for their shares. VAT registration depends on turnover and is unaffected. The trade-off is the opposite of the last option: a company must file accounts publicly.' },
 
-  { id: 'besy-024', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-024', topic: 'besy', difficulty: 'easy', criteria: ['BESY-3.1'],
     q: 'A stakeholder with high power and high interest should be:',
     opts: [
       'Managed closely, with active engagement in decisions',
@@ -2704,7 +2704,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Mendelow\'s power–interest matrix places high-power, high-interest stakeholders in the manage-closely quadrant. High power with low interest means keep satisfied; low power with high interest means keep informed; low on both means monitor.' },
 
-  { id: 'besy-025', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-025', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.1'],
     q: 'A substitute good is one that:',
     opts: [
       'Can be used in place of another to satisfy the same need',
@@ -2715,7 +2715,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Substitutes satisfy the same want — tea and coffee, or rail and coach travel. Price is irrelevant to the definition. Goods consumed together are complements, and cross elasticity of demand between substitutes is positive.' },
 
-  { id: 'besy-026', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-026', topic: 'besy', difficulty: 'easy', criteria: ['BESY-3.3'],
     q: 'An ethical issue for an accountant would be:',
     opts: [
       'Being asked to falsify entries in the financial records',
@@ -2726,7 +2726,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Accountants must act with integrity. The AAT Code of Professional Ethics requires honesty, objectivity and professional behaviour at all times.' },
 
-  { id: 'besy-027', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-027', topic: 'besy', difficulty: 'easy', criteria: ['BESY-3.1'],
     q: 'An example of internal stakeholder is:',
     opts: [
       'An employee working within the organisation',
@@ -2737,7 +2737,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Internal stakeholders are inside the organisation — employees, managers and directors. Customers, suppliers, lenders and government are all external, however closely they deal with the business.' },
 
-  { id: 'besy-028', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-028', topic: 'besy', difficulty: 'easy', criteria: ['BESY-1.3'],
     q: 'An implied term in a contract is one which:',
     opts: [
       'It is not expressly stated but is read into the contract by law or custom',
@@ -2748,7 +2748,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Implied terms are read into a contract without being stated, by statute, by custom in a trade, or by a court making the contract workable. They bind just as express terms do, and some cannot be excluded however the contract is worded.' },
 
-  { id: 'besy-029', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-029', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.2'],
     q: 'An increase in interest rates usually leads to:',
     opts: [
       'Lower borrowing and reduced consumer spending',
@@ -2759,7 +2759,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Raising rates makes borrowing dearer and saving more attractive, dampening demand. Because higher rates are the standard response to inflation, expecting them to raise it immediately reverses the causation.' },
 
-  { id: 'besy-030', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-030', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.1'],
     q: 'An oligopoly is characterised by:',
     opts: [
       'A small number of large firms dominating the market',
@@ -2770,7 +2770,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'An oligopoly is dominated by a few large firms — UK supermarkets and mobile networks are typical. One seller is a monopoly; many small sellers is perfect or monopolistic competition. Oligopolists compete intensely, often on factors other than price.' },
 
-  { id: 'besy-031', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-031', topic: 'besy', difficulty: 'easy', criteria: ['BESY-1.4'],
     q: 'Breach of contract means:',
     opts: [
       'The innocent party may claim damages or, in some cases, terminate',
@@ -2781,7 +2781,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A breach entitles the innocent party to damages (compensation) and, where the breach is sufficiently serious, to treat the contract as terminated.' },
 
-  { id: 'besy-032', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-032', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.1'],
     q: 'Cross price elasticity of demand measures:',
     opts: [
       'How demand for one good responds to a change in the price of another',
@@ -2792,7 +2792,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Cross price elasticity of demand (XED) measures how the demand for one good responds to a change in the price of another (substitute or complement).' },
 
-  { id: 'besy-033', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-033', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.2'],
     q: 'GDP measures:',
     opts: [
       'The total value of goods and services produced in an economy',
@@ -2803,7 +2803,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Gross Domestic Product (GDP) measures the total value of goods and services produced in an economy over a period.' },
 
-  { id: 'besy-034', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-034', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.1'],
     q: 'If demand is price inelastic, a price increase will:',
     opts: [
       'Increase total revenue, as demand falls proportionately less',
@@ -2814,7 +2814,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Inelastic demand means quantity falls by proportionately less than price rises, so price × quantity increases. This is why necessities can be priced up. With elastic demand the reverse holds and revenue falls.' },
 
-  { id: 'besy-035', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-035', topic: 'besy', difficulty: 'easy', criteria: ['BESY-4.1'],
     q: 'In a general partnership, partners\' liability is:',
     opts: [
       'Unlimited — each partner is personally liable for the firm\'s debts',
@@ -2825,7 +2825,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'An ordinary partnership has no separate legal personality, so partners are jointly liable without limit and a creditor may pursue any one of them for the whole debt. Limiting liability requires incorporation as a company or an LLP.' },
 
-  { id: 'besy-036', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-036', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.1'],
     q: 'Income elasticity of demand measures:',
     opts: [
       'How demand responds to a change in consumer income',
@@ -2836,7 +2836,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Income elasticity measures responsiveness to income. Responsiveness to the good\'s own price is price elasticity; responsiveness to another good\'s price is cross elasticity. Normal goods have positive income elasticity; inferior goods negative.' },
 
-  { id: 'besy-037', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-037', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.2'],
     q: 'Inflation is:',
     opts: [
       'A general and sustained rise in the level of prices',
@@ -2847,7 +2847,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Inflation is a sustained rise in the general price level, not a one-off increase in a single product. Its practical effect is that money buys less over time, which is why holding cash through an inflationary period carries a real cost.' },
 
-  { id: 'besy-038', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-038', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.2'],
     q: 'Inflation reduces:',
     opts: [
       'The purchasing power of money held by the business',
@@ -2869,7 +2869,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Market segmentation divides a market into distinct groups (by demographics, behaviour, geography, etc.) so marketing can be targeted effectively.' },
 
-  { id: 'besy-040', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-040', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.1'],
     q: 'Price elasticity of demand measures:',
     opts: [
       'How responsive demand is to a change in the selling price',
@@ -2880,7 +2880,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Price elasticity of demand (PED) measures the percentage change in quantity demanded relative to the percentage change in price.' },
 
-  { id: 'besy-041', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-041', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.2'],
     q: 'Rising interest rates tend to:',
     opts: [
       'Reduce consumer spending as borrowing becomes more expensive',
@@ -2891,7 +2891,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Higher interest rates reduce consumers\' disposable income (via higher mortgage payments) and increase borrowing costs for businesses, both of which tend to reduce spending.' },
 
-  { id: 'besy-042', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-042', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.2'],
     q: 'Rising interest rates typically cause:',
     opts: [
       'Lower borrowing and a reduction in overall demand',
@@ -2902,7 +2902,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Higher rates raise the cost of credit and the return on saving, so borrowing-financed spending falls and demand weakens. Exchange rate effects on exports are indirect and not guaranteed.' },
 
-  { id: 'besy-043', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-043', topic: 'besy', difficulty: 'easy', criteria: ['BESY-3.2'],
     q: 'The accounting function\'s role regarding sustainability includes:',
     opts: [
       'Recording environmental costs and helping measure the carbon footprint',
@@ -2915,7 +2915,7 @@ window.ALL_QUESTIONS = [
 
 
 
-  { id: 'besy-046', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-046', topic: 'besy', difficulty: 'easy', criteria: ['BESY-1.3'],
     q: 'The essential elements of a legally binding contract include:',
     opts: [
       'Offer, acceptance, consideration and intention to be bound',
@@ -2926,7 +2926,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A contract requires an offer, an acceptance, consideration (something of value exchanged) and an intention to create legal relations.' },
 
-  { id: 'besy-047', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-047', topic: 'besy', difficulty: 'easy', criteria: ['BESY-5.2'],
     q: 'The finance function primarily:',
     opts: [
       'Records and reports financial information to support decision-making',
@@ -2937,7 +2937,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The finance function maintains records, prepares financial reports, manages cash flow, supports budgeting and provides information for decisions.' },
 
-  { id: 'besy-048', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-048', topic: 'besy', difficulty: 'easy', criteria: ['BESY-7.2'],
     q: 'The UK GDPR / Data Protection Act 2018:',
     opts: [
       'Regulates how organisations collect, hold and use personal data',
@@ -2948,7 +2948,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The UK GDPR / DPA 2018 gives individuals rights over their personal data and requires organisations to handle it lawfully, fairly and securely.' },
 
-  { id: 'besy-049', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-049', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.2'],
     q: 'What happens when interest rates rise?',
     opts: [
       'Borrowing becomes more expensive for households and businesses',
@@ -2959,7 +2959,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'When interest rates rise, the cost of borrowing for households (e.g. mortgages) and businesses (e.g. loans) increases.' },
 
-  { id: 'besy-050', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-050', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.1'],
     q: 'What is a barrier to entry?',
     opts: [
       'An obstacle that makes it difficult for new competitors to enter a market',
@@ -2970,13 +2970,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Barriers to entry — for example high capital costs, regulation, patents or strong incumbent brands — prevent or slow new firms from entering a market.' },
 
-  { id: 'besy-051', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-051', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.3'],
     q: 'What is a consequence of a weak currency?',
     opts: ['Cheaper imports', 'More expensive imports', 'Lower inflation always', 'No trade impact'],
     ans: 1,
     exp: 'A weaker domestic currency means more domestic currency is needed to buy the same foreign goods, making imports more expensive.' },
 
-  { id: 'besy-052', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-052', topic: 'besy', difficulty: 'easy', criteria: ['BESY-1.3'],
     q: 'Which of the following is required for a contract to be legally binding?',
     opts: ['A profit element', 'Consideration', 'A tax certificate', 'An auditor’s signature'],
     ans: 1,
@@ -3004,13 +3004,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A mission statement sets out the organisation\'s purpose, values and aims, providing strategic direction.' },
 
-  { id: 'besy-055', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-055', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.1'],
     q: 'What is a monopoly?',
     opts: ['Many sellers', 'One dominant seller', 'No sellers', 'Government-only market'],
     ans: 1,
     exp: 'A monopoly is a market with a single dominant supplier, giving that firm significant power to set prices and restrict output.' },
 
-  { id: 'besy-056', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-056', topic: 'besy', difficulty: 'easy', criteria: ['BESY-4.1'],
     q: 'What is a key advantage of a public limited company (PLC)?',
     opts: [
       'It can raise large amounts of capital by offering shares to the public',
@@ -3021,13 +3021,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A PLC can offer shares to the public, including via a stock exchange, allowing it to raise substantial capital from a wide investor base.' },
 
-  { id: 'besy-057', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-057', topic: 'besy', difficulty: 'easy', criteria: ['BESY-4.1'],
     q: 'What is a disadvantage of operating as a sole trader?',
     opts: ['Liability for business debts is limited', 'Unlimited personal liability for business debts', 'Control over the business is shared out', 'A higher amount of start-up capital is required'],
     ans: 1,
     exp: 'A sole trader has unlimited personal liability — personal assets can be used to settle business debts.' },
 
-  { id: 'besy-058', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-058', topic: 'besy', difficulty: 'easy', criteria: ['BESY-3.1'],
     q: 'What is a stakeholder conflict?',
     opts: [
       'Different stakeholder groups pursuing objectives that clash',
@@ -3039,7 +3039,7 @@ window.ALL_QUESTIONS = [
     exp: 'Stakeholder conflict occurs when different groups have competing objectives — for example shareholders favouring profit and employees favouring higher wages.' },
 
 
-  { id: 'besy-060', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-060', topic: 'besy', difficulty: 'easy', criteria: ['BESY-3.4'],
     q: 'What is ethical behaviour?',
     opts: [
       'Acting honestly and with integrity, in the spirit as well as the letter of the law',
@@ -3050,7 +3050,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Ethics goes beyond legal compliance: something can be lawful and still be wrong. Deferring to seniority is the opposite of objectivity, which requires that professional judgement is not overridden by others.' },
 
-  { id: 'besy-061', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-061', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.3'],
     q: 'What is exchange rate risk?',
     opts: [
       'The risk that movements in currency values affect the business',
@@ -3061,13 +3061,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Exchange rate risk is the risk that movements in currency rates will adversely affect the value of foreign-currency receipts, payments or investments.' },
 
-  { id: 'besy-062', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-062', topic: 'besy', difficulty: 'easy', criteria: ['BESY-3.1'],
     q: 'Which of the following is an external stakeholder?',
     opts: ['A line manager', 'A supplier', 'An employee', 'A director'],
     ans: 1,
     exp: 'Suppliers are outside the organisation and therefore external stakeholders. Managers, employees and directors are internal.' },
 
-  { id: 'besy-063', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-063', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.2'],
     q: 'What is fiscal policy?',
     opts: [
       'Government decisions on taxation and public spending levels',
@@ -3078,7 +3078,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Fiscal policy is the use of government taxation and spending to influence the level of activity in the economy.' },
 
-  { id: 'besy-064', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-064', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.2'],
     q: 'What is GDP?',
     opts: [
       'The total value of goods and services produced in an economy',
@@ -3089,13 +3089,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Gross Domestic Product (GDP) is the total value of goods and services produced in an economy in a given period.' },
 
-  { id: 'besy-065', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-065', topic: 'besy', difficulty: 'easy', criteria: ['BESY-7.2'],
     q: 'What is the UK GDPR / Data Protection Act 2018 primarily about?',
     opts: ['Taxation of digital services', 'Protection of personal data', 'Setting wage rates', 'Preparing statutory accounts'],
     ans: 1,
     exp: 'The UK GDPR and Data Protection Act 2018 govern how organisations collect, store, use and share personal data, and give individuals rights over it. Breaches must be assessed and, where serious, reported — concealing one makes the position considerably worse.' },
 
-  { id: 'besy-066', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-066', topic: 'besy', difficulty: 'easy', criteria: ['BESY-7.2'],
     q: 'What is the main purpose of the UK GDPR?',
     opts: [
       'To protect personal data and give individuals rights over how it is used',
@@ -3106,7 +3106,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'The UK GDPR protects personal data and gives individuals rights to access, correct and restrict the use of their data.' },
 
-  { id: 'besy-067', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-067', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.2'],
     q: 'What is inflation?',
     opts: [
       'A general and sustained rise in the level of prices',
@@ -3117,7 +3117,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Inflation is a general and sustained rise in the price level of goods and services across the economy.' },
 
-  { id: 'besy-068', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-068', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.2'],
     q: 'What is a typical effect of a rise in interest rates on consumer spending?',
     opts: [
       'Spending falls, because borrowing becomes more expensive',
@@ -3128,13 +3128,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Higher interest rates raise borrowing costs and mortgage payments, reducing disposable income and so reducing consumer spending.' },
 
-  { id: 'besy-069', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-069', topic: 'besy', difficulty: 'easy', criteria: ['BESY-4.1'],
     q: 'What is limited liability?',
     opts: ['Unlimited personal debt', 'Loss limited to investment', 'No responsibility', 'Government guarantee'],
     ans: 1,
     exp: 'Limited liability means shareholders\' loss is limited to the amount they have invested (or agreed to pay) for their shares — personal assets are protected.' },
 
-  { id: 'besy-070', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-070', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.2'],
     q: 'Which of the following is a macroeconomic factor?',
     opts: [
       'An economy-wide influence such as inflation, GDP growth or interest rates',
@@ -3145,7 +3145,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Macroeconomic factors operate at the level of the whole economy — for example inflation, GDP growth, unemployment and interest rates.' },
 
-  { id: 'besy-071', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-071', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.1'],
     q: 'What is price elasticity of demand used to measure?',
     opts: [
       'How responsive demand is to a change in the selling price',
@@ -3156,7 +3156,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Price elasticity measures how much demand moves in response to a price change. Above 1 demand is elastic and a price rise cuts total revenue; below 1 it is inelastic and a price rise raises revenue. Necessities tend to be inelastic, luxuries elastic.' },
 
-  { id: 'besy-072', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-072', topic: 'besy', difficulty: 'easy', criteria: ['BESY-4.1'],
     q: 'What does "separate legal personality" mean for a limited company?',
     opts: [
       'It is treated in law as an entity separate from its own shareholders',
@@ -3167,7 +3167,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A limited company has a legal existence separate from its shareholders. It can own assets, enter contracts and sue or be sued in its own name.' },
 
-  { id: 'besy-073', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-073', topic: 'besy', difficulty: 'easy', criteria: ['BESY-3.1'],
     q: 'Who is a stakeholder?',
     opts: [
       'Any individual or group with an interest in, or affected by, the business',
@@ -3178,7 +3178,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A stakeholder is any individual or group with an interest in the organisation — including shareholders, employees, customers, suppliers, lenders and the wider community.' },
 
-  { id: 'besy-074', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-074', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.1'],
     q: 'Which factors primarily affect supply?',
     opts: [
       'Production costs and the productivity of the resources used',
@@ -3189,7 +3189,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Supply depends primarily on production costs, the productivity of inputs and the prices of related inputs. Consumer demand and tastes shape the demand curve, not the supply curve — and price alone is not the whole story on either side.' },
 
-  { id: 'besy-075', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-075', topic: 'besy', difficulty: 'easy', criteria: ['BESY-3.2'],
     q: 'What is sustainability reporting?',
     opts: [
       'Reporting the organisation\'s environmental and social impact',
@@ -3200,7 +3200,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Sustainability reporting communicates an organisation’s environmental, social and governance (ESG) performance and impact.' },
 
-  { id: 'besy-076', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-076', topic: 'besy', difficulty: 'easy', criteria: ['BESY-3.1'],
     q: 'What is the purpose of stakeholder analysis?',
     opts: [
       'To identify each stakeholder\'s interests and their influence',
@@ -3211,13 +3211,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Stakeholder analysis identifies stakeholders, their interests and their influence, so the organisation can prioritise communication and management accordingly.' },
 
-  { id: 'besy-077', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-077', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.2'],
     q: 'What is the typical effect of higher unemployment on consumer demand?',
     opts: ['Higher overall demand', 'Lower overall demand', 'Higher inflation always', 'No effect'],
     ans: 1,
     exp: 'Unemployment reduces household income and dents confidence even among those still in work, so spending falls across the economy. Businesses selling discretionary goods feel it first; those selling essentials are more insulated.' },
 
-  { id: 'besy-078', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-078', topic: 'besy', difficulty: 'easy', criteria: ['BESY-4.1'],
     q: 'What is unlimited liability?',
     opts: [
       'The owner is personally responsible for the debts of the business',
@@ -3228,7 +3228,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Unlimited liability means the owner is personally responsible for all the debts of the business. Personal assets can be used to settle business debts.' },
 
-  { id: 'besy-079', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-079', topic: 'besy', difficulty: 'easy', criteria: ['BESY-4.1'],
     q: 'Which business structure offers all members limited liability?',
     opts: [
       'A private limited company registered at Companies House',
@@ -3239,19 +3239,19 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A private limited company provides limited liability — shareholders can lose only the amount they have invested in or agreed to pay for their shares.' },
 
-  { id: 'besy-080', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-080', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.2'],
     q: 'Which factor is external to a business?',
     opts: ['Management style', 'Employee skills', 'Government policy', 'Production method'],
     ans: 2,
     exp: 'Government policy (tax, regulation, spending) is an external (PESTLE) factor that the business does not control but must respond to.' },
 
-  { id: 'besy-081', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-081', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.1'],
     q: 'Which factor reduces demand?',
     opts: ['Income increase', 'Price decrease', 'Substitute price increase', 'Complement price increase'],
     ans: 3,
     exp: 'A rise in the price of a complementary good (e.g. petrol for cars) makes the joint purchase more expensive, reducing demand for the related good.' },
 
-  { id: 'besy-082', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-082', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.1'],
     q: 'Which is a microeconomic factor?',
     opts: [
       'The prices charged by a business\'s direct competitors',
@@ -3262,7 +3262,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Microeconomic factors operate at the level of individual firms and markets — for example competitor pricing, consumer preferences and input costs.' },
 
-  { id: 'besy-083', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-083', topic: 'besy', difficulty: 'easy', criteria: ['BESY-4.1'],
     q: 'Which of the following is a feature of a PLC?',
     opts: [
       'It can offer its shares for sale to the general public',
@@ -3273,13 +3273,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A PLC can offer shares to the public, including listing on a stock exchange. A private limited company cannot.' },
 
-  { id: 'besy-084', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-084', topic: 'besy', difficulty: 'easy', criteria: ['BESY-2.2'],
     q: 'Which of the following is a macroeconomic factor affecting business?',
     opts: ['A competitor launching a new product', 'The unemployment rate', 'A key employee resigning', 'Moving to new premises'],
     ans: 1,
     exp: 'Macroeconomic factors (unemployment, inflation, interest rates, GDP) are economy-wide influences largely outside the control of any individual business.' },
 
-  { id: 'besy-085', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-085', topic: 'besy', difficulty: 'easy', criteria: ['BESY-3.1'],
     q: 'Which of these stakeholders is external to the business?',
     opts: [
       'A supplier providing goods to the business',
@@ -3290,20 +3290,20 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'External stakeholders sit outside the organisation — suppliers, customers, lenders, government, the local community. Employees, managers and directors are all internal, whatever their level.' },
 
-  { id: 'besy-086', topic: 'besy', difficulty: 'easy',
+  { id: 'besy-086', topic: 'besy', difficulty: 'easy', criteria: ['BESY-3.1'],
     q: 'Which stakeholder is primarily concerned with profit distribution?',
     opts: ['Government', 'Shareholders', 'Customers', 'Suppliers'],
     ans: 1,
     exp: 'Shareholders provide the capital and bear the residual risk, so their return comes from dividends and growth in the value of their shares. Employees are concerned with pay and security, lenders with being repaid, and customers with price and quality.' },
 
 
-  { id: 'besy-088', topic: 'besy', difficulty: 'medium',
+  { id: 'besy-088', topic: 'besy', difficulty: 'medium', criteria: ['BESY-2.3'],
     q: 'A depreciation of the domestic currency will:',
     opts: ['Make exports cheaper', 'Make imports cheaper', 'Have no effect on trade', 'Reduce inflation immediately'],
     ans: 0,
     exp: 'A weaker domestic currency makes exports cheaper to foreign buyers and imports more expensive — generally improving the trade balance.' },
 
-  { id: 'besy-089', topic: 'besy', difficulty: 'medium',
+  { id: 'besy-089', topic: 'besy', difficulty: 'medium', criteria: ['BESY-3.2'],
     q: 'A negative externality leads to:',
     opts: [
       'A cost falling on third parties outside the transaction',
@@ -3314,13 +3314,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'A negative externality is a cost imposed on third parties not involved in a transaction — for example pollution.' },
 
-  { id: 'besy-090', topic: 'besy', difficulty: 'medium',
+  { id: 'besy-090', topic: 'besy', difficulty: 'medium', criteria: ['BESY-3.2'],
     q: 'A positive externality results in:',
     opts: ['Private cost only', 'Benefit to third parties', 'Higher taxes only', 'Reduced supply, and nothing else'],
     ans: 1,
     exp: 'A positive externality is a benefit that spills over to third parties not directly involved in a transaction — for example education improving wider society.' },
 
-  { id: 'besy-091', topic: 'besy', difficulty: 'medium',
+  { id: 'besy-091', topic: 'besy', difficulty: 'medium', criteria: ['BESY-3.2'],
     q: 'An external cost (negative externality) is:',
     opts: [
       'A cost imposed on third parties who are not part of the transaction',
@@ -3331,7 +3331,7 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'An external cost (negative externality) is a cost imposed on third parties who are not part of the transaction.' },
 
-  { id: 'besy-092', topic: 'besy', difficulty: 'medium',
+  { id: 'besy-092', topic: 'besy', difficulty: 'medium', criteria: ['BESY-3.1'],
     q: 'What is an example of CSR?',
     opts: [
       'Publishing a report on the organisation\'s environmental impact',
@@ -3342,13 +3342,13 @@ window.ALL_QUESTIONS = [
     ans: 0,
     exp: 'Corporate Social Responsibility (CSR) includes voluntary actions such as environmental reporting, ethical sourcing and community engagement.' },
 
-  { id: 'besy-093', topic: 'besy', difficulty: 'medium',
+  { id: 'besy-093', topic: 'besy', difficulty: 'medium', criteria: ['BESY-2.2'],
     q: 'Which policy tool directly affects money supply?',
     opts: ['Fiscal policy', 'Monetary policy', 'CSR policy', 'Marketing policy'],
     ans: 1,
     exp: 'Monetary policy uses the Bank of England\'s interest rate and asset purchases to influence the money supply and overall economic activity.' },
 
-  { id: 'besy-094', topic: 'besy', difficulty: 'medium',
+  { id: 'besy-094', topic: 'besy', difficulty: 'medium', criteria: ['BESY-2.2'],
     q: 'Which situation is most likely during economic recession?',
     opts: ['Rising demand', 'Falling demand', 'Stable exports', 'Currency appreciation'],
     ans: 1,
@@ -3371,7 +3371,7 @@ window.ALL_QUESTIONS = [
 window.ALL_QUESTIONS.push(
 
   /* -- INTRODUCTION TO BOOKKEEPING (ITBK) -- */
-  { id: 'itbk-num-001', topic: 'itbk', difficulty: 'easy', type: 'numeric', unit: '£',
+  { id: 'itbk-num-001', topic: 'itbk', difficulty: 'easy', type: 'numeric', unit: '£', criteria: ['ITBK-2.1'],
     generate: function () {
       const net = window._QH.rs(150, 4000, 50);
       const ans = window._QH.round2(net * 0.20);
@@ -3387,7 +3387,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'itbk-num-002', topic: 'itbk', difficulty: 'easy', type: 'numeric', unit: '£',
+  { id: 'itbk-num-002', topic: 'itbk', difficulty: 'easy', type: 'numeric', unit: '£', criteria: ['ITBK-2.1'],
     generate: function () {
       const net = window._QH.rs(100, 3000, 50);
       const vat = window._QH.round2(net * 0.20);
@@ -3404,7 +3404,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'itbk-num-003', topic: 'itbk', difficulty: 'medium', type: 'numeric', unit: '£',
+  { id: 'itbk-num-003', topic: 'itbk', difficulty: 'medium', type: 'numeric', unit: '£', criteria: ['POC-2.5'],
     generate: function () {
       const opening = window._QH.rs(3000, 12000, 500);
       const purchases = window._QH.rs(25000, 80000, 1000);
@@ -3422,7 +3422,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'itbk-num-004', topic: 'itbk', difficulty: 'medium', type: 'numeric', unit: '£',
+  { id: 'itbk-num-004', topic: 'itbk', difficulty: 'medium', type: 'numeric', unit: '£', criteria: ['POC-2.2'],
     generate: function () {
       const gross = window._QH.rs(1800, 4500, 100);
       const paye = Math.round(gross * window._QH.pick([0.15, 0.17, 0.18, 0.20, 0.22]) / 10) * 10;
@@ -3512,7 +3512,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'itbk-num-008', topic: 'itbk', difficulty: 'easy', type: 'numeric', unit: '£',
+  { id: 'itbk-num-008', topic: 'itbk', difficulty: 'easy', type: 'numeric', unit: '£', criteria: ['ITBK-2.1'],
     generate: function () {
       const units = window._QH.rs(25, 200, 5);
       const price = window._QH.r(8, 60);
@@ -3530,7 +3530,7 @@ window.ALL_QUESTIONS.push(
 
 
   /* -- PRINCIPLES OF BOOKKEEPING CONTROLS (POBC) -- */
-  { id: 'pobc-num-001', topic: 'pobc', difficulty: 'easy', type: 'numeric', unit: '£',
+  { id: 'pobc-num-001', topic: 'pobc', difficulty: 'easy', type: 'numeric', unit: '£', criteria: ['POBC-1.1'],
     generate: function () {
       const output = window._QH.rs(5000, 25000, 100);
       const input = window._QH.rs(1000, output - 500, 100);
@@ -3547,7 +3547,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'pobc-num-002', topic: 'pobc', difficulty: 'easy', type: 'numeric', unit: '£',
+  { id: 'pobc-num-002', topic: 'pobc', difficulty: 'easy', type: 'numeric', unit: '£', criteria: ['POBC-3.3'],
     generate: function () {
       const credits = window._QH.rs(80000, 200000, 100);
       const diff = window._QH.rs(100, 1500, 50);
@@ -3564,7 +3564,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'pobc-num-003', topic: 'pobc', difficulty: 'medium', type: 'numeric', unit: '£',
+  { id: 'pobc-num-003', topic: 'pobc', difficulty: 'medium', type: 'numeric', unit: '£', criteria: ['POBC-1.1'],
     generate: function () {
       const opening = window._QH.rs(10000, 25000, 500);
       const purchases = window._QH.rs(30000, 70000, 500);
@@ -3584,7 +3584,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'pobc-num-004', topic: 'pobc', difficulty: 'medium', type: 'numeric', unit: '£',
+  { id: 'pobc-num-004', topic: 'pobc', difficulty: 'medium', type: 'numeric', unit: '£', criteria: ['POBC-2.3'],
     generate: function () {
       const cb = window._QH.rs(3000, 9000, 100);
       const unpresented = window._QH.rs(500, 2000, 50);
@@ -3602,7 +3602,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'pobc-num-005', topic: 'pobc', difficulty: 'hard', type: 'numeric', unit: '£', tolerance: 0.10,
+  { id: 'pobc-num-005', topic: 'pobc', difficulty: 'hard', type: 'numeric', unit: '£', tolerance: 0.10, criteria: ['POBC-3.1'],
     generate: function () {
       const salary = window._QH.rs(20000, 60000, 1000);
       const threshold = 5000;
@@ -3621,7 +3621,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'pobc-num-006', topic: 'pobc', difficulty: 'medium', type: 'numeric', unit: '£',
+  { id: 'pobc-num-006', topic: 'pobc', difficulty: 'medium', type: 'numeric', unit: '£', criteria: ['POBC-3.1'],
     generate: function () {
       const net = window._QH.rs(1500, 3500, 50);
       const paye = window._QH.rs(150, 550, 10);
@@ -3641,7 +3641,7 @@ window.ALL_QUESTIONS.push(
 
 
   /* -- PRINCIPLES OF COSTING (POC) -- */
-  { id: 'poc-num-001', topic: 'poc', difficulty: 'easy', type: 'numeric', unit: '£',
+  { id: 'poc-num-001', topic: 'poc', difficulty: 'easy', type: 'numeric', unit: '£', criteria: ['POC-2.4'],
     generate: function () {
       const fc = window._QH.rs(4000, 25000, 500);
       const vc = window._QH.r(2, 12);
@@ -3659,7 +3659,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'poc-num-002', topic: 'poc', difficulty: 'easy', type: 'numeric', unit: '£', tolerance: 0.01,
+  { id: 'poc-num-002', topic: 'poc', difficulty: 'easy', type: 'numeric', unit: '£', tolerance: 0.01, criteria: ['POC-2.4'],
     generate: function () {
       const perUnit = window._QH.pick([4, 5, 6, 7, 8, 10, 12, 15]);
       const units = window._QH.pick([500, 1000, 2000, 3000, 4000, 5000, 6000, 8000, 10000]);
@@ -3675,7 +3675,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'poc-num-003', topic: 'poc', difficulty: 'easy', type: 'numeric', unit: '£',
+  { id: 'poc-num-003', topic: 'poc', difficulty: 'easy', type: 'numeric', unit: '£', criteria: ['POC-2.5'],
     generate: function () {
       const dm = window._QH.rs(2000, 9000, 250);
       const dl = window._QH.rs(2000, 9000, 250);
@@ -3693,7 +3693,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'poc-num-004', topic: 'poc', difficulty: 'medium', type: 'numeric', unit: '£',
+  { id: 'poc-num-004', topic: 'poc', difficulty: 'medium', type: 'numeric', unit: '£', criteria: ['POC-2.3'],
     generate: function () {
       const rate = window._QH.pick([3, 4, 5, 6, 7, 8, 10, 12, 15]);
       const hours = window._QH.rs(8000, 30000, 1000);
@@ -3710,7 +3710,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'poc-num-005', topic: 'poc', difficulty: 'medium', type: 'numeric', unit: '£',
+  { id: 'poc-num-005', topic: 'poc', difficulty: 'medium', type: 'numeric', unit: '£', criteria: ['POC-2.3'],
     generate: function () {
       const oar = window._QH.r(3, 12);
       const hours = window._QH.rs(8000, 30000, 500);
@@ -3726,7 +3726,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'poc-num-006', topic: 'poc', difficulty: 'medium', type: 'numeric', unit: '£',
+  { id: 'poc-num-006', topic: 'poc', difficulty: 'medium', type: 'numeric', unit: '£', criteria: ['POC-2.3'],
     generate: function () {
       const absorbed = window._QH.rs(80000, 200000, 1000);
       const diff = window._QH.rs(2000, 12000, 500);
@@ -3743,7 +3743,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'poc-num-007', topic: 'poc', difficulty: 'medium', type: 'numeric', unit: '£',
+  { id: 'poc-num-007', topic: 'poc', difficulty: 'medium', type: 'numeric', unit: '£', criteria: ['POC-2.2'],
     generate: function () {
       const rate = window._QH.pick([10, 12, 14, 16]);
       const basicH = window._QH.r(35, 40);
@@ -3761,7 +3761,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'poc-num-008', topic: 'poc', difficulty: 'hard', type: 'numeric', unit: '£',
+  { id: 'poc-num-008', topic: 'poc', difficulty: 'hard', type: 'numeric', unit: '£', criteria: ['POC-2.3'],
     generate: function () {
       const oar = window._QH.pick([4, 5, 6, 8, 10]);
       const actH = window._QH.rs(8000, 15000, 500);
@@ -3780,7 +3780,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'poc-num-009', topic: 'poc', difficulty: 'hard', type: 'numeric',
+  { id: 'poc-num-009', topic: 'poc', difficulty: 'hard', type: 'numeric', criteria: ['POC-2.2'],
     generate: function () {
       const r1 = window._QH.pick([2, 3, 4]);
       const r2 = r1 + 1;
@@ -3800,7 +3800,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'poc-num-010', topic: 'poc', difficulty: 'hard', type: 'numeric', unit: '£',
+  { id: 'poc-num-010', topic: 'poc', difficulty: 'hard', type: 'numeric', unit: '£', criteria: ['POC-2.1'],
     generate: function () {
       const openingUnits = window._QH.rs(80, 200, 20);
       const p1 = window._QH.r(3, 6);
@@ -3826,7 +3826,7 @@ window.ALL_QUESTIONS.push(
 
 
   /* -- THE BUSINESS ENVIRONMENT (BESY) -- */
-  { id: 'besy-num-001', topic: 'besy', difficulty: 'easy', type: 'numeric', unit: '%', tolerance: 0.05,
+  { id: 'besy-num-001', topic: 'besy', difficulty: 'easy', type: 'numeric', unit: '%', tolerance: 0.05, criteria: ['BESY-2.2'],
     generate: function () {
       const base = window._QH.pick([100, 102, 104, 105, 108, 110, 112, 115, 118, 120]);
       const rise = window._QH.r(2, 12);
@@ -3844,7 +3844,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'besy-num-002', topic: 'besy', difficulty: 'easy', type: 'numeric', unit: '$', tolerance: 0.05,
+  { id: 'besy-num-002', topic: 'besy', difficulty: 'easy', type: 'numeric', unit: '$', tolerance: 0.05, criteria: ['BESY-2.3'],
     generate: function () {
       const rate = window._QH.pick([1.10, 1.15, 1.20, 1.22, 1.25, 1.28, 1.30, 1.35, 1.40]);
       const gbp = window._QH.rs(50, 1000, 50);
@@ -3861,7 +3861,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'besy-num-003', topic: 'besy', difficulty: 'medium', type: 'numeric', tolerance: 0.05,
+  { id: 'besy-num-003', topic: 'besy', difficulty: 'medium', type: 'numeric', tolerance: 0.05, criteria: ['BESY-2.1'],
     generate: function () {
       const incomePct = window._QH.pick([4, 5, 8, 10, 12]);
       const factor = window._QH.pick([1.5, 2, 2.5, 3]);
@@ -3879,7 +3879,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'besy-num-004', topic: 'besy', difficulty: 'medium', type: 'numeric', tolerance: 0.05,
+  { id: 'besy-num-004', topic: 'besy', difficulty: 'medium', type: 'numeric', tolerance: 0.05, criteria: ['BESY-2.1'],
     generate: function () {
       const pricePct = window._QH.pick([4, 5, 8, 10]);
       const factor = window._QH.pick([0.6, 0.8, 1.2, 1.5, 1.6, 2]);
@@ -3897,7 +3897,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'besy-num-005', topic: 'besy', difficulty: 'hard', type: 'numeric', unit: '£',
+  { id: 'besy-num-005', topic: 'besy', difficulty: 'hard', type: 'numeric', unit: '£', criteria: ['BESY-2.1'],
     generate: function () {
       const oldUnits = window._QH.rs(500, 2000, 100);
       const oldPrice = window._QH.r(15, 30);
@@ -3920,7 +3920,7 @@ window.ALL_QUESTIONS.push(
       };
     } },
 
-  { id: 'besy-num-006', topic: 'besy', difficulty: 'easy', type: 'numeric', unit: '£', tolerance: 0.05,
+  { id: 'besy-num-006', topic: 'besy', difficulty: 'easy', type: 'numeric', unit: '£', tolerance: 0.05, criteria: ['BESY-2.2'],
     generate: function () {
       // UK National Minimum/Living Wage rates from April 2026
       const rate = window._QH.pick([8.00, 10.85, 12.71]);
@@ -4137,7 +4137,7 @@ window.GLOSSARY = [
 window.ALL_QUESTIONS.push(
 
   /* === DRAG-DROP / MATCHING === */
-  { id: 'dd-001', topic: 'itbk', difficulty: 'easy', type: 'dragdrop',
+  { id: 'dd-001', topic: 'itbk', difficulty: 'easy', type: 'dragdrop', criteria: ['ITBK-1.1'],
     q: 'Match each source document to its primary purpose.',
     pairs: [
       { left: 'Purchase order', right: 'Sent by buyer to request goods from a supplier' },
@@ -4147,7 +4147,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'These four documents track the order-to-pay cycle: PO → GRN → invoice → remittance advice on payment.' },
 
-  { id: 'dd-003', topic: 'pobc', difficulty: 'medium', type: 'dragdrop',
+  { id: 'dd-003', topic: 'pobc', difficulty: 'medium', type: 'dragdrop', criteria: ['POBC-3.2'],
     q: 'Match each type of error to its description.',
     pairs: [
       { left: 'Error of omission', right: 'Transaction completely missed' },
@@ -4157,7 +4157,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'All four leave the trial balance in balance, so none can be found by checking that the totals agree. Each needs a different check: reconciliation, a review of the source document, or a second person reading the posting.' },
 
-  { id: 'dd-004', topic: 'pobc', difficulty: 'medium', type: 'dragdrop',
+  { id: 'dd-004', topic: 'pobc', difficulty: 'medium', type: 'dragdrop', criteria: ['POBC-2.3'],
     q: 'Match each bank-reconciliation item to its meaning.',
     pairs: [
       { left: 'Unpresented cheque', right: 'Issued by the business but not yet cleared by the bank' },
@@ -4167,7 +4167,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Timing differences (cheques, lodgements) are reflected on the reconciliation; missing entries (DDs, charges) are added to the cash book first.' },
 
-  { id: 'dd-005', topic: 'poc', difficulty: 'easy', type: 'dragdrop',
+  { id: 'dd-005', topic: 'poc', difficulty: 'easy', type: 'dragdrop', criteria: ['POC-1.1'],
     q: 'Match each cost to its behaviour classification.',
     pairs: [
       { left: 'Factory rent', right: 'Fixed cost' },
@@ -4177,7 +4177,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Cost behaviour: fixed (constant in total), variable (proportional to output), semi-variable (mixed), step (jumps at thresholds).' },
 
-  { id: 'dd-006', topic: 'poc', difficulty: 'medium', type: 'dragdrop',
+  { id: 'dd-006', topic: 'poc', difficulty: 'medium', type: 'dragdrop', criteria: ['POC-1.2'],
     q: 'Match each costing term to its formula.',
     pairs: [
       { left: 'Prime cost', right: 'Direct materials + direct labour + direct expenses' },
@@ -4187,7 +4187,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Four formulas that between them carry most of the calculation marks in Principles of Costing. Note that cost per unit divides the total by the units — adding the per-unit rates together instead misses the fixed cost per unit entirely.' },
 
-  { id: 'dd-007', topic: 'besy', difficulty: 'easy', type: 'dragdrop',
+  { id: 'dd-007', topic: 'besy', difficulty: 'easy', type: 'dragdrop', criteria: ['BESY-4.1'],
     q: 'Match each business structure to its liability characteristic.',
     pairs: [
       { left: 'Sole trader', right: 'Unlimited personal liability' },
@@ -4199,7 +4199,7 @@ window.ALL_QUESTIONS.push(
 
 
   /* === TABLE-COMPLETION === */
-  { id: 'tf-001', topic: 'pobc', difficulty: 'medium', type: 'tablefill',
+  { id: 'tf-001', topic: 'pobc', difficulty: 'medium', type: 'tablefill', criteria: ['POBC-1.1'],
     q: 'Complete the sales ledger control account (SLCA) by calculating the missing balance.',
     table: {
       title: 'Sales ledger control account',
@@ -4213,7 +4213,7 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'Total Dr = 12,000 + 58,000 = 70,000. The credit side must total the same, so the closing balance is 70,000 − 45,000 − 2,000 = 23,000.' },
 
-  { id: 'tf-002', topic: 'pobc', difficulty: 'medium', type: 'tablefill',
+  { id: 'tf-002', topic: 'pobc', difficulty: 'medium', type: 'tablefill', criteria: ['POBC-1.1'],
     q: 'Complete the purchases ledger control account (PLCA) by calculating the missing balance.',
     table: {
       title: 'Purchases ledger control account',
@@ -4227,7 +4227,7 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'Total Cr = 15,000 + 44,000 = 59,000. The debit side must total the same, so the closing balance is 59,000 − 38,000 − 1,500 = 19,500.' },
 
-  { id: 'tf-003', topic: 'itbk', difficulty: 'medium', type: 'tablefill',
+  { id: 'tf-003', topic: 'itbk', difficulty: 'medium', type: 'tablefill', criteria: ['ITBK-2.1'],
     q: 'Complete the VAT calculation for these three invoices (VAT at 20%).',
     table: {
       title: 'Invoice analysis',
@@ -4245,7 +4245,7 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'VAT = Net × 20%; Gross = Net + VAT. So 400×20% = 80, gross 480; 750×20% = 150, gross 900; 1,250×20% = 250, gross 1,500.' },
 
-  { id: 'tf-004', topic: 'poc', difficulty: 'medium', type: 'tablefill',
+  { id: 'tf-004', topic: 'poc', difficulty: 'medium', type: 'tablefill', criteria: ['POC-2.5'],
     q: 'Complete the cost of sales calculation.',
     table: {
       title: 'Cost of sales',
@@ -4260,7 +4260,7 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'Cost of goods sold is opening inventory plus purchases less closing inventory: 8,000 + 42,000 − 6,000 = 44,000. Only stock that has actually left the business is a cost of this period; what remains on the shelf is an asset.' },
 
-  { id: 'tf-005', topic: 'pobc', difficulty: 'hard', type: 'tablefill',
+  { id: 'tf-005', topic: 'pobc', difficulty: 'hard', type: 'tablefill', criteria: ['POBC-3.1'],
     q: 'Complete the payroll summary for one employee.',
     table: {
       title: 'Payroll',
@@ -4282,7 +4282,7 @@ window.ALL_QUESTIONS.push(
 
 
   /* === SCENARIO-BASED MULTI-PART QUESTIONS === */
-  { id: 'sc-001', topic: 'itbk', difficulty: 'medium', type: 'scenario',
+  { id: 'sc-001', topic: 'itbk', difficulty: 'medium', type: 'scenario', criteria: ['ITBK-2.1'],
     setup: 'Bright Sparks Ltd is a small lighting wholesaler registered for VAT. On 1 May it sells goods on credit to Helios Decor for £800 plus VAT at 20%. Helios pays on 28 May. Bright Sparks pays its supplier, Aurora Cables, £1,200 owing from an earlier invoice on 30 May.',
     parts: [
       { type: 'mcq', q: 'What is the correct double entry for the sale to Helios Decor on 1 May (gross)?',
@@ -4299,7 +4299,7 @@ window.ALL_QUESTIONS.push(
     exp: 'A full sales/receipt/payment cycle with VAT — covers credit sales, output tax, receipt and supplier payment.' },
 
 
-  { id: 'sc-003', topic: 'pobc', difficulty: 'medium', type: 'scenario',
+  { id: 'sc-003', topic: 'pobc', difficulty: 'medium', type: 'scenario', criteria: ['POBC-2.3'],
     setup: 'Pinewood Ltd prepares its bank reconciliation at 31 March. The cash book shows a debit balance of £4,200. The bank statement at the same date shows £3,500. On investigation: unpresented cheques total £900; outstanding lodgements total £1,200; bank charges of £40 appear on the statement but are not in the cash book; a direct debit of £160 also appears on the statement but is missing from the cash book.',
     parts: [
       { type: 'mcq', q: 'How should the bank charges of £40 be treated?',
@@ -4315,7 +4315,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'A full bank-reconciliation workflow — update the cash book, then reconcile to the statement via timing differences.' },
 
-  { id: 'sc-004', topic: 'besy', difficulty: 'medium', type: 'scenario',
+  { id: 'sc-004', topic: 'besy', difficulty: 'medium', type: 'scenario', criteria: ['BESY-4.1', 'BESY-2.3'],
     setup: 'Helen runs a small bakery as a sole trader. The business is growing and she is considering incorporating as a private limited company (Ltd). She also exports to Ireland and is concerned about exchange-rate movements between £ and €.',
     parts: [
       { type: 'mcq', q: 'A defining feature of Helen’s current sole-trader status is:',
@@ -4337,7 +4337,7 @@ window.ALL_QUESTIONS.push(
 
 /* ── GAP-FILL / PICKLIST QUESTIONS ── */
 window.ALL_QUESTIONS.push(
-  { id: 'gf-001', topic: 'itbk', difficulty: 'easy', type: 'gapfill',
+  { id: 'gf-001', topic: 'itbk', difficulty: 'easy', type: 'gapfill', criteria: ['ITBK-5.1'],
     q: 'Complete the double entry by selecting the correct account for each gap.',
     template: 'When goods are sold on credit, the double entry is Dr {0} and Cr {1}.',
     gaps: [
@@ -4346,7 +4346,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'A credit sale increases the amount owed by customers (Dr Trade receivables) and recognises revenue (Cr Sales).' },
 
-  { id: 'gf-002', topic: 'itbk', difficulty: 'easy', type: 'gapfill',
+  { id: 'gf-002', topic: 'itbk', difficulty: 'easy', type: 'gapfill', criteria: ['ITBK-3.3'],
     q: 'Complete the double entry for paying a supplier.',
     template: 'A business pays a supplier by bank transfer. The double entry is Dr {0} and Cr {1}.',
     gaps: [
@@ -4355,7 +4355,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Paying a supplier reduces the liability owed (Dr Trade payables) and the bank balance (Cr Bank).' },
 
-  { id: 'gf-003', topic: 'itbk', difficulty: 'easy', type: 'gapfill',
+  { id: 'gf-003', topic: 'itbk', difficulty: 'easy', type: 'gapfill', criteria: ['ITBK-1.4'],
     q: 'Complete the accounting equation.',
     template: 'The accounting equation states that assets equal {0} plus {1}.',
     gaps: [
@@ -4364,7 +4364,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Assets = Capital + Liabilities. Read it as what the business has on one side and where it came from on the other — the owner, or outsiders it owes. Rearranged, Capital = Assets − Liabilities gives the owner’s stake.' },
 
-  { id: 'gf-004', topic: 'itbk', difficulty: 'medium', type: 'gapfill',
+  { id: 'gf-004', topic: 'itbk', difficulty: 'medium', type: 'gapfill', criteria: ['ITBK-4.1'],
     q: 'Complete the statements about the analysed cash book.',
     template: 'The cash and bank columns hold the full amount that moved, and the analysis columns {0} that amount. VAT is analysed on {1}.',
     gaps: [
@@ -4373,7 +4373,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Analysis columns split an amount rather than adding to it, so each row must add across to the figure in its cash or bank column. VAT is analysed on a cash sale, because the sale was never invoiced; a receipt settling an invoice carries no VAT here, because the output tax went into the sales day book when the invoice was raised.' },
 
-  { id: 'gf-005', topic: 'pobc', difficulty: 'medium', type: 'gapfill',
+  { id: 'gf-005', topic: 'pobc', difficulty: 'medium', type: 'gapfill', criteria: ['POBC-1.1'],
     q: 'Complete the statement about the VAT control account.',
     template: 'A credit balance on the VAT control account means {0} tax exceeds {1} tax, so the business owes HMRC.',
     gaps: [
@@ -4382,7 +4382,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Output tax (on sales) exceeding input tax (on purchases) gives a credit balance — the net amount owed to HMRC.' },
 
-  { id: 'gf-006', topic: 'pobc', difficulty: 'easy', type: 'gapfill',
+  { id: 'gf-006', topic: 'pobc', difficulty: 'easy', type: 'gapfill', criteria: ['POBC-2.3'],
     q: 'Select the correct bank-reconciliation term.',
     template: 'A cheque written by the business and recorded in the cash book, but not yet cleared by the bank, is called {0}.',
     gaps: [
@@ -4390,7 +4390,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'An unpresented cheque has been entered in the cash book but has not yet been processed by the bank — a timing difference.' },
 
-  { id: 'gf-007', topic: 'pobc', difficulty: 'medium', type: 'gapfill',
+  { id: 'gf-007', topic: 'pobc', difficulty: 'medium', type: 'gapfill', criteria: ['POBC-3.2'],
     q: 'Identify the type of error.',
     template: 'Posting a payment to the wrong supplier account, but still within trade payables, is an error of {0}. This type of error {1} the trial balance.',
     gaps: [
@@ -4399,7 +4399,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'An error of commission is posting to the wrong account of the correct type. Both debit and credit are still recorded, so the trial balance still balances.' },
 
-  { id: 'gf-008', topic: 'poc', difficulty: 'medium', type: 'gapfill',
+  { id: 'gf-008', topic: 'poc', difficulty: 'medium', type: 'gapfill', criteria: ['POC-1.2'],
     q: 'Complete the costing formulas.',
     template: 'An overhead absorption rate is budgeted overhead divided by {0}. The full production cost of one unit is prime cost plus {1}.',
     gaps: [
@@ -4408,7 +4408,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'The rate is set from budgeted figures before the period starts, which is what lets a cost be quoted while the work is still being planned. Prime cost is the direct costs; adding the absorbed production overhead gives the full production cost, and non-production overheads stay out of it.' },
 
-  { id: 'gf-009', topic: 'poc', difficulty: 'easy', type: 'gapfill',
+  { id: 'gf-009', topic: 'poc', difficulty: 'easy', type: 'gapfill', criteria: ['POC-1.1'],
     q: 'Complete the statement about fixed cost behaviour.',
     template: 'As output increases, total fixed cost stays {0}, while fixed cost per unit {1}.',
     gaps: [
@@ -4417,7 +4417,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Total fixed cost is unchanged within the relevant range; spread over more units, fixed cost per unit falls.' },
 
-  { id: 'gf-010', topic: 'poc', difficulty: 'medium', type: 'gapfill',
+  { id: 'gf-010', topic: 'poc', difficulty: 'medium', type: 'gapfill', criteria: ['POC-3.2'],
     q: 'Complete the statements about reporting variances.',
     template: 'A variance is expressed as a percentage by dividing it by {0}. Under exception reporting, only variances above a threshold set by {1} are reported.',
     gaps: [
@@ -4426,7 +4426,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'The denominator is always the budget, because the budget is the standard being measured against. And the threshold comes from the organisation’s policy rather than from judgement on the day, which is what makes an exception report consistent from month to month.' },
 
-  { id: 'gf-011', topic: 'besy', difficulty: 'easy', type: 'gapfill',
+  { id: 'gf-011', topic: 'besy', difficulty: 'easy', type: 'gapfill', criteria: ['BESY-4.1'],
     q: 'Complete the statement about business structures and liability.',
     template: 'A {0} has unlimited personal liability, whereas the shareholders of a {1} have limited liability.',
     gaps: [
@@ -4435,7 +4435,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'A sole trader bears unlimited liability; incorporation gives a company\'s shareholders limited liability — losses capped at the amount invested.' },
 
-  { id: 'gf-012', topic: 'besy', difficulty: 'medium', type: 'gapfill',
+  { id: 'gf-012', topic: 'besy', difficulty: 'medium', type: 'gapfill', criteria: ['BESY-2.1'],
     q: 'Complete the statement about price elasticity of demand.',
     template: 'If demand for a good is price {0}, a rise in price will {1} total revenue.',
     gaps: [
@@ -4448,7 +4448,7 @@ window.ALL_QUESTIONS.push(
 
 /* ── EXPANDED CONTENT: additional drag-drop questions ── */
 window.ALL_QUESTIONS.push(
-  { id: 'dd-009', topic: 'itbk', difficulty: 'easy', type: 'dragdrop',
+  { id: 'dd-009', topic: 'itbk', difficulty: 'easy', type: 'dragdrop', criteria: ['ITBK-5.1'],
     q: 'Match each transaction to its correct double entry.',
     pairs: [
       { left: 'Cash sale of goods', right: 'Dr Bank, Cr Sales' },
@@ -4458,7 +4458,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Every transaction changes two accounts by the same amount, one debit and one credit. Work out which account gains value and which gives it up, and the entry follows — the debit is never chosen first and the credit fitted around it.' },
 
-  { id: 'dd-010', topic: 'itbk', difficulty: 'medium', type: 'dragdrop',
+  { id: 'dd-010', topic: 'itbk', difficulty: 'medium', type: 'dragdrop', criteria: ['ITBK-1.2'],
     q: 'Match each book of prime entry to what it records.',
     pairs: [
       { left: 'Sales day book', right: 'Credit sales invoices' },
@@ -4469,7 +4469,7 @@ window.ALL_QUESTIONS.push(
     exp: 'Books of prime entry are where transactions are first recorded before posting to the ledger.' },
 
 
-  { id: 'dd-012', topic: 'itbk', difficulty: 'easy', type: 'dragdrop',
+  { id: 'dd-012', topic: 'itbk', difficulty: 'easy', type: 'dragdrop', criteria: ['ITBK-1.4'],
     q: 'Match each item to the category it belongs to when a bookkeeping system is set up.',
     pairs: [
       { left: 'Motor vehicle', right: 'Asset' },
@@ -4479,7 +4479,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Five categories cover every account: assets, liabilities, equity, income and expenses. Getting the category right is what decides which side of the ledger a balance sits on, and therefore which column of the trial balance it goes into.' },
 
-  { id: 'dd-013', topic: 'pobc', difficulty: 'medium', type: 'dragdrop',
+  { id: 'dd-013', topic: 'pobc', difficulty: 'medium', type: 'dragdrop', criteria: ['POBC-1.1'],
     q: 'Match each control account entry to the side it appears on in the sales ledger control account.',
     pairs: [
       { left: 'Credit sales', right: 'Debit side of SLCA' },
@@ -4489,7 +4489,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'The SLCA is debited with amounts that increase what customers owe, and credited with amounts that reduce it.' },
 
-  { id: 'dd-014', topic: 'pobc', difficulty: 'medium', type: 'dragdrop',
+  { id: 'dd-014', topic: 'pobc', difficulty: 'medium', type: 'dragdrop', criteria: ['POBC-3.1'],
     q: 'Match each payroll item to its description.',
     pairs: [
       { left: 'Gross pay', right: 'Total earnings before any deductions' },
@@ -4509,7 +4509,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Each control answers one risk. Segregation of duties stops one person both making and concealing an error; authorisation limits stop unapproved spending; reconciliations catch omissions and duplicates; and physical controls protect assets from theft.' },
 
-  { id: 'dd-016', topic: 'poc', difficulty: 'medium', type: 'dragdrop',
+  { id: 'dd-016', topic: 'poc', difficulty: 'medium', type: 'dragdrop', criteria: ['POC-1.1'],
     q: 'Match each cost to whether it is direct or indirect for a furniture manufacturer.',
     pairs: [
       { left: 'Wood used in a table', right: 'Direct cost' },
@@ -4519,7 +4519,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'A direct cost can be traced to one unit of output — the timber in a particular table. An indirect cost cannot, even when it is plainly caused by production: factory rent and the supervisor’s salary are incurred whatever number of tables is made.' },
 
-  { id: 'dd-017', topic: 'poc', difficulty: 'medium', type: 'dragdrop',
+  { id: 'dd-017', topic: 'poc', difficulty: 'medium', type: 'dragdrop', criteria: ['POC-1.2'],
     q: 'Match each inventory valuation method to its assumption.',
     pairs: [
       { left: 'FIFO', right: 'Oldest items are issued first' },
@@ -4529,7 +4529,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'FIFO issues the oldest stock first, so closing inventory is valued at the most recent prices. AVCO recalculates a weighted average after each receipt. LIFO issues the newest first and is not permitted under UK GAAP or IFRS.' },
 
-  { id: 'dd-018', topic: 'besy', difficulty: 'medium', type: 'dragdrop',
+  { id: 'dd-018', topic: 'besy', difficulty: 'medium', type: 'dragdrop', criteria: ['BESY-2.1'],
     q: 'Match each market structure to its key feature.',
     pairs: [
       { left: 'Perfect competition', right: 'Many firms, identical products, price takers' },
@@ -4539,7 +4539,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'The number of suppliers decides who sets the price. Under perfect competition each firm is too small to influence it and must take the market price; a monopoly faces no competitor and sets its own; oligopoly and monopolistic competition sit between the two.' },
 
-  { id: 'dd-019', topic: 'besy', difficulty: 'easy', type: 'dragdrop',
+  { id: 'dd-019', topic: 'besy', difficulty: 'easy', type: 'dragdrop', criteria: ['BESY-3.1'],
     q: 'Match each stakeholder to their main interest in a business.',
     pairs: [
       { left: 'Shareholders', right: 'Dividends and growth in share value' },
@@ -4549,7 +4549,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Each group wants something different from the same business: owners want return, employees want pay and security, suppliers want to be paid on time, customers want value, and lenders want evidence the debt can be serviced.' },
 
-  { id: 'dd-020', topic: 'besy', difficulty: 'medium', type: 'dragdrop',
+  { id: 'dd-020', topic: 'besy', difficulty: 'medium', type: 'dragdrop', criteria: ['BESY-2.2', 'BESY-2.3'],
     q: 'Match each economic change to its likely effect on a UK business.',
     pairs: [
       { left: 'Interest rates rise', right: 'Borrowing costs increase; consumer spending tends to fall' },
@@ -4563,7 +4563,7 @@ window.ALL_QUESTIONS.push(
 
 /* ── EXPANDED CONTENT: additional table-completion questions ── */
 window.ALL_QUESTIONS.push(
-  { id: 'tf-007', topic: 'itbk', difficulty: 'medium', type: 'tablefill',
+  { id: 'tf-007', topic: 'itbk', difficulty: 'medium', type: 'tablefill', criteria: ['ITBK-1.2'],
     q: 'Complete the trial balance extract by calculating the missing total.',
     table: {
       title: 'Trial balance (extract)',
@@ -4582,7 +4582,7 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'Total debits = 14,000 + 9,000 = 23,000. Total credits = 7,500 + 15,500 = 23,000. A trial balance must balance.' },
 
-  { id: 'tf-008', topic: 'itbk', difficulty: 'medium', type: 'tablefill',
+  { id: 'tf-008', topic: 'itbk', difficulty: 'medium', type: 'tablefill', criteria: ['ITBK-3.1'],
     q: 'Complete the calculation of the amount owed on a credit purchase.',
     table: {
       title: 'Supplier invoice',
@@ -4603,7 +4603,7 @@ window.ALL_QUESTIONS.push(
     exp: 'Take the trade discount off first: 2,000 − 200 = 1,800 net. VAT is then charged on what the customer is actually being charged, so 1,800 × 20% = 360, giving 2,160 total. Calculating VAT before the discount overstates both figures.' },
 
 
-  { id: 'tf-010', topic: 'pobc', difficulty: 'medium', type: 'tablefill',
+  { id: 'tf-010', topic: 'pobc', difficulty: 'medium', type: 'tablefill', criteria: ['POBC-1.1'],
     q: 'Complete the VAT control account by calculating the amount due to HMRC.',
     table: {
       title: 'VAT control account',
@@ -4616,7 +4616,7 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'Output tax charged on sales less input tax reclaimed on purchases leaves what is owed: 11,200 − 6,400 = 4,800. It is a credit balance because the business is holding HMRC’s money, not its own.' },
 
-  { id: 'tf-011', topic: 'pobc', difficulty: 'hard', type: 'tablefill',
+  { id: 'tf-011', topic: 'pobc', difficulty: 'hard', type: 'tablefill', criteria: ['POBC-2.3'],
     q: 'Complete the bank reconciliation statement.',
     table: {
       title: 'Bank reconciliation statement',
@@ -4631,7 +4631,7 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'Work from the statement to the cash book: 3,500 + 1,800 outstanding lodgement − 900 unpresented cheques = 4,400. Both adjustments are timing differences the bank has not yet processed, not errors in either record.' },
 
-  { id: 'tf-012', topic: 'poc', difficulty: 'medium', type: 'tablefill',
+  { id: 'tf-012', topic: 'poc', difficulty: 'medium', type: 'tablefill', criteria: ['POC-2.3'],
     q: 'Complete the overhead absorption calculation.',
     table: {
       title: 'Overhead absorption',
@@ -4651,7 +4651,7 @@ window.ALL_QUESTIONS.push(
     exp: 'The absorption rate is set from the budget: 90,000 ÷ 18,000 = £5 per hour. Overhead absorbed then uses the ACTUAL hours worked: £5 × 17,000 = £85,000. Mixing budgeted rate with budgeted hours is the usual error.' },
 
 
-  { id: 'tf-014', topic: 'poc', difficulty: 'hard', type: 'tablefill',
+  { id: 'tf-014', topic: 'poc', difficulty: 'hard', type: 'tablefill', criteria: ['POC-2.1'],
     q: 'Complete the FIFO stores record. 100 units are held at £4, then 200 are bought at £5, then 250 units are issued.',
     table: {
       title: 'FIFO inventory',
@@ -4669,7 +4669,7 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'FIFO issues the oldest stock first, so the 250 units come from the 100 at £4 and then 150 of the £5 batch: 400 + 750 = £1,150. The 50 units left are the newest, valued at £5 each, so closing inventory is £250.' },
 
-  { id: 'tf-015', topic: 'besy', difficulty: 'medium', type: 'tablefill',
+  { id: 'tf-015', topic: 'besy', difficulty: 'medium', type: 'tablefill', criteria: ['BESY-2.2'],
     q: 'Complete the calculation of weekly gross pay and the inflation rate.',
     table: {
       title: 'Pay and inflation',
@@ -4693,7 +4693,7 @@ window.ALL_QUESTIONS.push(
 
 /* ── EXPANDED CONTENT: additional scenario questions (ITBK / POBC) ── */
 window.ALL_QUESTIONS.push(
-  { id: 'sc-005', topic: 'itbk', difficulty: 'medium', type: 'scenario',
+  { id: 'sc-005', topic: 'itbk', difficulty: 'medium', type: 'scenario', criteria: ['ITBK-3.2'],
     setup: 'Maple Joinery is a sole trader. During March it buys timber on credit from Forest Supplies for £600 plus VAT at 20%. It later returns £100 (net) of damaged timber. Maple Joinery is registered for VAT.',
     parts: [
       { type: 'numeric', q: 'What is the total (gross) amount of the original credit purchase invoice?', answer: 720, unit: '£', exp: 'Add VAT to the net figure: £600 + £120 = £720. The gross amount is what the supplier is owed, and it is the figure that goes to the total column of the purchases day book.' },
@@ -4708,7 +4708,7 @@ window.ALL_QUESTIONS.push(
     exp: 'A credit purchase with VAT, followed by a returns adjustment — covering day books and VAT-inclusive amounts.' },
 
 
-  { id: 'sc-007', topic: 'itbk', difficulty: 'medium', type: 'scenario',
+  { id: 'sc-007', topic: 'itbk', difficulty: 'medium', type: 'scenario', criteria: ['ITBK-1.4'],
     setup: 'Crafty Pots started trading on 1 January when the owner paid £20,000 into the business bank account. During the year the business made a profit of £14,000 and the owner took drawings of £9,000.',
     parts: [
       { type: 'mcq', q: 'What is the double entry for the owner paying £20,000 into the business?',
@@ -4721,7 +4721,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'The capital account: capital introduced, profit and drawings combine to give closing capital.' },
 
-  { id: 'sc-008', topic: 'pobc', difficulty: 'hard', type: 'scenario',
+  { id: 'sc-008', topic: 'pobc', difficulty: 'hard', type: 'scenario', criteria: ['POBC-3.3'],
     setup: 'Oakfield Ltd extracted a trial balance that did not balance: the debit column totalled £248,600 and the credit column totalled £247,900. A suspense account was opened. On investigation, a £700 payment for rent had been debited to the rent account but not credited to the bank account.',
     parts: [
       { type: 'numeric', q: 'What is the value of the difference placed in the suspense account?', answer: 700, unit: '£', exp: 'The suspense account holds the difference until it is found: £248,600 − £247,900 = £700. Only errors that unbalance the trial balance produce a suspense entry; the ones that leave it balanced never show up here.' },
@@ -4734,7 +4734,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'A trial balance difference, a suspense account, and the correcting journal for a single-sided error.' },
 
-  { id: 'sc-009', topic: 'pobc', difficulty: 'medium', type: 'scenario',
+  { id: 'sc-009', topic: 'pobc', difficulty: 'medium', type: 'scenario', criteria: ['POBC-3.1'],
     setup: 'Belmont Trading runs monthly payroll. For one employee in April: gross pay is £2,800, PAYE is £420, employee NIC is £210, and the employee pays £140 into a pension. The employer\'s NIC for the month is £260.',
     parts: [
       { type: 'numeric', q: 'What is the employee\'s net pay for April?', answer: 2030, unit: '£', exp: 'Net pay is gross less the employee’s own deductions: 2,800 − 420 PAYE − 210 employee NIC − 140 pension = £2,030. Employer NIC is never deducted from the employee, so it is not in this calculation.' },
@@ -4745,7 +4745,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Payroll: distinguishing net pay (to the employee) from total employment cost (to the employer).' },
 
-  { id: 'sc-010', topic: 'pobc', difficulty: 'medium', type: 'scenario',
+  { id: 'sc-010', topic: 'pobc', difficulty: 'medium', type: 'scenario', criteria: ['POBC-1.1'],
     setup: 'Harbour Supplies keeps a purchases ledger control account. On 1 May the balance was £18,000 Cr. During May: credit purchases were £47,000, payments to suppliers were £41,000, purchases returns were £1,300, and a contra of £700 was made against the sales ledger.',
     parts: [
       { type: 'numeric', q: 'What is the closing balance on the purchases ledger control account at 31 May?', answer: 22000, unit: '£', exp: 'Start with what was owed, add credit purchases, then deduct everything that reduces the debt: 18,000 + 47,000 − 41,000 payments − 1,300 returns − 700 contra = £22,000. It is a credit balance because the business owes it.' },
@@ -4763,7 +4763,7 @@ window.ALL_QUESTIONS.push(
 /* ── EXPANDED CONTENT: additional scenario questions (POC / BESY) ── */
 window.ALL_QUESTIONS.push(
 
-  { id: 'sc-012', topic: 'poc', difficulty: 'hard', type: 'scenario',
+  { id: 'sc-012', topic: 'poc', difficulty: 'hard', type: 'scenario', criteria: ['POC-2.3'],
     setup: 'Delta Manufacturing absorbs production overheads on a labour-hour basis. Budgeted overheads were £150,000 and budgeted labour hours were 30,000. In the period, actual overheads were £148,000 and 29,000 labour hours were actually worked.',
     parts: [
       { type: 'numeric', q: 'What is the overhead absorption rate per labour hour?', answer: 5, unit: '£', exp: 'The absorption rate is set in advance from budgeted figures: £150,000 ÷ 30,000 = £5 per hour. It has to be budgeted, because a price has to be quoted before the actual overhead for the period is known.' },
@@ -4777,7 +4777,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Overhead absorption end to end: OAR, overhead absorbed, and the under/over-absorption adjustment.' },
 
-  { id: 'sc-013', topic: 'poc', difficulty: 'medium', type: 'scenario',
+  { id: 'sc-013', topic: 'poc', difficulty: 'medium', type: 'scenario', criteria: ['POC-2.5'],
     setup: 'Greenleaf Ltd is costing a job before quoting for it. The job needs direct materials of £1,200 and direct labour of £800. Production overheads are absorbed at 50% of direct labour cost.',
     parts: [
       { type: 'numeric', q: 'What is the prime cost of the job?', answer: 2000, unit: '£', exp: 'Prime cost is the total of the direct costs: £1,200 materials + £800 labour = £2,000. Overheads are excluded by definition — prime cost is what can be traced to the job itself.' },
@@ -4786,7 +4786,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Job costing in the order the assessment asks for it: prime cost, then absorbed overhead, then total production cost.' },
 
-  { id: 'sc-014', topic: 'besy', difficulty: 'medium', type: 'scenario',
+  { id: 'sc-014', topic: 'besy', difficulty: 'medium', type: 'scenario', criteria: ['BESY-4.1', 'BESY-5.3'],
     setup: 'Two friends, Priya and Sam, run a graphic-design business together as a general partnership. They are considering incorporating as a private limited company. They also have a major client who has not paid a £4,000 invoice that is now 90 days overdue.',
     parts: [
       { type: 'mcq', q: 'As a general partnership, Priya and Sam\'s liability for business debts is:',
@@ -4801,7 +4801,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Business structures, limited liability, and the cash-flow impact of overdue receivables.' },
 
-  { id: 'sc-015', topic: 'besy', difficulty: 'medium', type: 'scenario',
+  { id: 'sc-015', topic: 'besy', difficulty: 'medium', type: 'scenario', criteria: ['BESY-2.3', 'BESY-2.2'],
     setup: 'Coastline Imports buys stock from suppliers in the USA and sells to UK customers. The current exchange rate is £1 = $1.25. The Bank of England has just raised interest rates, and inflation in the UK is rising.',
     parts: [
       { type: 'numeric', q: 'Coastline orders stock costing $10,000. At £1 = $1.25, what is the cost in pounds?', answer: 8000, unit: '£', exp: 'With £1 buying $1.25, divide the dollar cost by the rate: $10,000 ÷ 1.25 = £8,000. If the pound then weakens, the same order costs more in sterling — which is the exchange-rate risk an importer carries.' },
@@ -4817,7 +4817,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'External economic factors: exchange rates, interest rates and inflation affecting an importer.' },
 
-  { id: 'sc-016', topic: 'besy', difficulty: 'hard', type: 'scenario',
+  { id: 'sc-016', topic: 'besy', difficulty: 'hard', type: 'scenario', criteria: ['BESY-3.3', 'BESY-3.4', 'BESY-3.2'],
     setup: 'Anya works as an accounting technician at a manufacturing company. Her manager asks her to delay recording several supplier invoices until after the year end so that this year\'s profit looks higher. The company also wants to start reporting on its environmental impact.',
     parts: [
       { type: 'mcq', q: 'Under the AAT Code of Professional Ethics, what should Anya do?',
@@ -4834,7 +4834,7 @@ window.ALL_QUESTIONS.push(
 
   /* ── Additional scenario questions (Phase 6 expansion) ── */
 
-  { id: 'sc-017', topic: 'itbk', difficulty: 'hard', type: 'scenario',
+  { id: 'sc-017', topic: 'itbk', difficulty: 'hard', type: 'scenario', criteria: ['ITBK-1.2'],
     setup: 'Blossom Interiors is a sole trader business. At 31 March the trial balance shows: Bank £2,400 Dr; Trade receivables £8,100 Dr; Inventory £3,600 Dr; Premises £45,000 Dr; Trade payables £5,200 Cr; Loan £12,000 Cr; Capital £28,500 Cr; Sales £62,000 Cr; Purchases £32,000 Dr; Wages £9,500 Dr; Rent £4,200 Dr; Drawings £2,900 Dr.',
     parts: [
       { type: 'mcq', q: 'The trial balance total (debit side) is:',
@@ -4852,7 +4852,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Trial balance composition, the nature of drawings, closing inventory, and errors of original entry.' },
 
-  { id: 'sc-018', topic: 'itbk', difficulty: 'medium', type: 'scenario',
+  { id: 'sc-018', topic: 'itbk', difficulty: 'medium', type: 'scenario', criteria: ['ITBK-3.2'],
     setup: 'Priya runs a craft supplies shop. She buys goods from Supplier X on credit. This month: purchases £4,800 net; VAT at 20%; she returns goods of £600 net + VAT and receives a credit note from Supplier X; a £200 trade discount was received (already deducted from the invoice); and she pays £3,000 to Supplier X during the month.',
     parts: [
       { type: 'mcq', q: 'The VAT on the purchase invoice (£4,800 net) is:',
@@ -4870,7 +4870,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'VAT on purchases, trade vs settlement discounts, purchases returns day book, and running payable balances.' },
 
-  { id: 'sc-019', topic: 'pobc', difficulty: 'hard', type: 'scenario',
+  { id: 'sc-019', topic: 'pobc', difficulty: 'hard', type: 'scenario', criteria: ['POBC-1.1'],
     setup: 'At 30 April, the sales ledger control account (SLCA) shows a closing balance of £18,400 Dr. The list of individual trade receivable balances totals £17,950. Investigation reveals: (1) The sales returns day book was undercast by £300, and the wrong total was posted. (2) A customer payment of £150 was posted to the wrong customer\'s account (the total posted was correct). (3) A credit note of £150 was posted twice to one customer\'s individual account; the day book entry itself was correct.',
     parts: [
       { type: 'mcq', q: 'Which of the three errors would cause the SLCA not to agree with the individual ledger list?',
@@ -4888,7 +4888,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Sales ledger control account reconciliation, error types, and correction journal entries.' },
 
-  { id: 'sc-020', topic: 'pobc', difficulty: 'medium', type: 'scenario',
+  { id: 'sc-020', topic: 'pobc', difficulty: 'medium', type: 'scenario', criteria: ['POBC-3.1'],
     setup: 'Callum earns a basic salary of £28,000 per year and worked 12 overtime hours this month at time-and-a-half. His hourly rate is £13.50. PAYE deducted this month: £320. Employee NIC: £198. Employer NIC rate: 15% on earnings above £416.67/month.',
     parts: [
       { type: 'mcq', q: 'Callum\'s overtime pay for the month is:',
@@ -4906,7 +4906,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Payroll: overtime calculation, gross pay, net pay and employer NIC cost.' },
 
-  { id: 'sc-021', topic: 'poc', difficulty: 'hard', type: 'scenario',
+  { id: 'sc-021', topic: 'poc', difficulty: 'hard', type: 'scenario', criteria: ['POC-2.3'],
     setup: 'A factory produces one product. Budgeted fixed production overhead is £84,000 for the month and budgeted production is 8,000 units. Actual production was 7,500 units. The overhead absorption rate is based on units produced.',
     parts: [
       { type: 'mcq', q: 'Based on budgeted production, the overhead absorption rate per unit is:',
@@ -4918,7 +4918,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Overhead absorption: setting the rate from budgeted figures, then finding the under- or over-absorption once actual output is known.' },
 
-  { id: 'sc-022', topic: 'poc', difficulty: 'medium', type: 'scenario',
+  { id: 'sc-022', topic: 'poc', difficulty: 'medium', type: 'scenario', criteria: ['POC-2.1'],
     setup: 'Meridian Co uses AVCO to value inventory. At 1 May: 200 units @ £5.00 each. Purchased 6 May: 300 units @ £6.50 each. Sold 10 May: 350 units. Purchased 15 May: 150 units @ £7.00 each. Sold 20 May: 200 units.',
     parts: [
       { type: 'mcq', q: 'After the 6 May purchase, the weighted average cost per unit is:',
@@ -4936,7 +4936,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'AVCO inventory valuation: recalculating weighted average after every purchase.' },
 
-  { id: 'sc-023', topic: 'besy', difficulty: 'medium', type: 'scenario',
+  { id: 'sc-023', topic: 'besy', difficulty: 'medium', type: 'scenario', criteria: ['BESY-4.1', 'BESY-4.2'],
     setup: 'Stella is considering leaving employment to set up her own business selling handmade ceramics. She is deciding between operating as a sole trader or incorporating as a private limited company (Ltd). She expects revenues of £90,000 in year 1 and a net profit of £35,000.',
     parts: [
       { type: 'mcq', q: 'As a sole trader, Stella\'s personal liability if the business fails would be:',
@@ -4954,7 +4954,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Business structures: sole trader vs private limited company — liability, share issuance and compliance.' },
 
-  { id: 'sc-024', topic: 'besy', difficulty: 'hard', type: 'scenario',
+  { id: 'sc-024', topic: 'besy', difficulty: 'hard', type: 'scenario', criteria: ['BESY-2.1'],
     setup: 'A coffee shop currently sells 600 cups per day at £3.00 each. Market research shows a 10% price increase would reduce demand to 480 cups per day. Meanwhile, a rival coffee shop increases its price by 20%, and demand for Bella\'s shop rises by 15%.',
     parts: [
       { type: 'mcq', q: 'The price elasticity of demand (PED) for the coffee shop\'s own product is:',
@@ -4973,7 +4973,7 @@ window.ALL_QUESTIONS.push(
     exp: 'PED (own-price elasticity), revenue implications, and cross-price elasticity (XED) between substitute goods.' }
 ,
 
-{ id: 'sc-025', topic: 'synoptic', difficulty: 'medium', type: 'scenario',
+{ id: 'sc-025', topic: 'synoptic', difficulty: 'medium', type: 'scenario', criteria: ['POBC-1.1', 'BESY-4.1'],
   setup: 'Hartley & Co is a sole trader selling office supplies. In March: credit sales £5,000 net (20% VAT standard-rated); credit purchases £3,000 net (20% VAT); fixed costs £800 paid cash; no payments received or made to suppliers/customers yet.',
   parts: [
     { type: 'mcq', q: 'VAT payable to HMRC for March?',
@@ -4990,7 +4990,7 @@ window.ALL_QUESTIONS.push(
 
 
 
-{ id: 'sc-028', topic: 'poc', difficulty: 'medium', type: 'scenario',
+{ id: 'sc-028', topic: 'poc', difficulty: 'medium', type: 'scenario', criteria: ['POC-2.1'],
   setup: 'Birch Furniture buys and sells chairs. April inventory: Opening 20 units @ £45. Purchase 1 (5 Apr): 30 units @ £50. Purchase 2 (20 Apr): 50 units @ £54. Sale (25 Apr): 60 units at £90 each. All purchases are on credit.',
   parts: [
     { type: 'mcq', q: 'Weighted average cost per unit after both purchases:',
@@ -5005,7 +5005,7 @@ window.ALL_QUESTIONS.push(
   ],
   exp: 'Cross-unit scenario covering AVCO inventory valuation and the cost of an issue (poc), with the payables ledger control account entry for the same purchase (pobc).' },
 
-{ id: 'sc-029', topic: 'poc', difficulty: 'medium', type: 'scenario',
+{ id: 'sc-029', topic: 'poc', difficulty: 'medium', type: 'scenario', criteria: ['BESY-4.1'],
   setup: 'Meadow Bakery is a sole trader run by Sarah. She is considering a £15,000 bank loan at 8% annual interest to buy equipment that would reduce her cost per unit. She has ruled out taking on a business partner.',
   parts: [
     { type: 'mcq', q: 'The bank loan is an example of:',
@@ -5017,7 +5017,7 @@ window.ALL_QUESTIONS.push(
   ],
   exp: 'Sources of business finance and the unlimited liability of a sole trader (besy), assessed through a financing decision the owner actually has to make.' },
 
-{ id: 'sc-030', topic: 'synoptic', difficulty: 'hard', type: 'scenario',
+{ id: 'sc-030', topic: 'synoptic', difficulty: 'hard', type: 'scenario', criteria: ['POBC-3.2', 'POBC-3.3', 'POBC-2.2'],
   setup: 'Whitmore Ltd\'s bookkeeper finds three errors after the trial balance: (1) Office equipment £2,500 posted as Dr Office expenses / Cr Bank — should be Dr Equipment / Cr Bank. (2) A credit sale of £800 entered in the sales day book as £80. (3) Bank charges £120 on the bank statement not in the cashbook.',
   parts: [
     { type: 'mcq', q: 'Error 1 (equipment posted to office expenses) is:',
@@ -5042,13 +5042,13 @@ window.ALL_QUESTIONS.push(
 
   // ── ITBK additional hard questions ──────────────────────────────────────
 
-  { id: 'itbk-200', calc: true, topic: 'itbk', difficulty: 'hard', type: 'mcq',
+  { id: 'itbk-200', calc: true, topic: 'itbk', difficulty: 'hard', type: 'mcq', criteria: ['ITBK-4.2'],
     q: 'The imprest petty cash fund is set at £150. At month-end, receipts total £112 and cash remaining in the tin is £38. What is the reimbursement cheque raised?',
     opts: ['£38', '£112', '£150', '£74'],
     ans: 1,
     exp: 'Under the imprest system the reimbursement always equals total vouchers (£112), restoring the fund to £150. Check: £38 + £112 = £150 ✓.' },
 
-  { id: 'itbk-201', calc: true, topic: 'itbk', difficulty: 'hard', type: 'mcq',
+  { id: 'itbk-201', calc: true, topic: 'itbk', difficulty: 'hard', type: 'mcq', criteria: ['ITBK-3.2'],
     q: 'A supplier sends a credit note for £200 net (plus VAT at 20%). How is this recorded in the BUYER\'s books?',
     opts: [
       'Dr PLCA £240, Cr Purchase returns £200, Cr VAT £40',
@@ -5058,7 +5058,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'A credit note from a supplier reduces what is owed: Dr PLCA £240 (gross). The credit note net reduces Purchase returns (Cr £200) and input VAT is recovered (Cr VAT £40). Debits must equal credits: £240 = £240.' },
 
-  { id: 'itbk-202', topic: 'itbk', difficulty: 'hard', type: 'mcq',
+  { id: 'itbk-202', topic: 'itbk', difficulty: 'hard', type: 'mcq', criteria: ['POBC-1.1'],
     q: 'A contra (set-off) is used where a business owes a supplier £600 (PLCA) and is also owed £600 by the same party as a customer (SLCA). What is the double entry?',
     opts: [
       'Dr PLCA £600, Cr SLCA £600',
@@ -5068,13 +5068,13 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'A contra: Dr PLCA £600 (remove the payable) / Cr SLCA £600 (remove the receivable). No cash moves. The entry must also appear in the individual personal accounts for both the payables and receivables ledger.' },
 
-  { id: 'itbk-203', calc: true, topic: 'itbk', difficulty: 'hard', type: 'mcq',
+  { id: 'itbk-203', calc: true, topic: 'itbk', difficulty: 'hard', type: 'mcq', criteria: ['ITBK-5.2'],
     q: 'At 1 April the SLCA has a Dr balance of £3,200. During April: credit sales £12,000; customer receipts £10,500; sales returns £400; discounts allowed £150; bad debt written off £200. What is the closing SLCA balance?',
     opts: ['£4,150', '£3,950', '£3,750', '£4,350'],
     ans: 1,
     exp: 'Dr side: £3,200 + £12,000 = £15,200. Cr side: £10,500 + £400 + £150 + £200 = £11,250. Closing balance: £15,200 − £11,250 = £3,950 Dr.' },
 
-  { id: 'itbk-204', topic: 'itbk', difficulty: 'hard', type: 'mcq',
+  { id: 'itbk-204', topic: 'itbk', difficulty: 'hard', type: 'mcq', criteria: ['ITBK-4.1'],
     q: 'Which of the following items appears on the CREDIT (payments) side of the cash book?',
     opts: [
       'Cash received from a credit customer',
@@ -5084,7 +5084,7 @@ window.ALL_QUESTIONS.push(
     ans: 2,
     exp: 'The credit side records PAYMENTS out of the bank. A standing order to a supplier is a payment. All receipts (options A, B) appear on the debit side. An opening balance in credit would be a debit opening entry.' },
 
-  { id: 'itbk-205', calc: true, topic: 'itbk', difficulty: 'hard', type: 'mcq',
+  { id: 'itbk-205', calc: true, topic: 'itbk', difficulty: 'hard', type: 'mcq', criteria: ['ITBK-2.3'],
     q: 'A customer settles their balance of £2,000 within the discount period, paying £1,960. What is the double entry for the DISCOUNT ALLOWED?',
     opts: [
       'Dr Discounts allowed £40, Cr SLCA £40',
@@ -5094,7 +5094,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: '2% discount = £40. Expense: Dr Discounts allowed £40 / Cr SLCA £40. Plus separately Dr Bank £1,960 / Cr SLCA £1,960. In a three-column cash book the discount column is a memorandum; at month-end the total is posted Dr Discounts allowed / Cr SLCA.' },
 
-  { id: 'itbk-206', topic: 'itbk', difficulty: 'hard', type: 'mcq',
+  { id: 'itbk-206', topic: 'itbk', difficulty: 'hard', type: 'mcq', criteria: ['ITBK-4.1'],
     q: 'In a three-column cash book, discounts RECEIVED appear:',
     opts: [
       'On the debit (receipts) side in the discount column',
@@ -5104,7 +5104,7 @@ window.ALL_QUESTIONS.push(
     ans: 1,
     exp: 'Discounts received reduce amounts paid to suppliers. They appear on the credit (payments) side memo column. At month-end the column total is posted: Dr PLCA / Cr Discounts received — the income entry enters the general ledger at that point.' },
 
-  { id: 'itbk-207', topic: 'itbk', difficulty: 'hard', type: 'mcq',
+  { id: 'itbk-207', topic: 'itbk', difficulty: 'hard', type: 'mcq', criteria: ['POBC-1.2'],
     q: 'The SLCA shows £22,500 but the total of the sales ledger listing is £21,900 (SLCA is higher by £600). Which error would cause this?',
     opts: [
       'A sales invoice of £600 posted to the SLCA but NOT to the individual customer account',
@@ -5114,7 +5114,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'Option A: Dr SLCA £600 (increases the control account) but the individual customer account is not updated — the listing stays the same. SLCA is therefore £600 higher than the listing ✓. This is the standard textbook cause: invoice posted to the control account but omitted from the personal ledger.' },
 
-  { id: 'itbk-208', topic: 'itbk', difficulty: 'hard', type: 'mcq',
+  { id: 'itbk-208', topic: 'itbk', difficulty: 'hard', type: 'mcq', criteria: ['ITBK-3.2'],
     q: 'When a business receives a credit note from a supplier (gross £480, VAT £80), which account is CREDITED?',
     opts: [
       'PLCA (reduces the liability)',
@@ -5124,7 +5124,7 @@ window.ALL_QUESTIONS.push(
     ans: 1,
     exp: 'Dr PLCA £480 / Cr Purchase returns £400 / Cr VAT control £80. The PLCA is debited (reducing the creditor). Purchase returns and VAT control are credited.' },
 
-  { id: 'itbk-209', calc: true, topic: 'itbk', difficulty: 'hard', type: 'mcq',
+  { id: 'itbk-209', calc: true, topic: 'itbk', difficulty: 'hard', type: 'mcq', criteria: ['POBC-3.1'],
     q: 'A bad debt of £840 is written off. The customer was VAT-registered and the original invoice included VAT at 20%. What is the VAT element that can be reclaimed (if the business uses the standard VAT accounting scheme)?',
     opts: ['£840', '£700', '£140', '£168'],
     ans: 2,
@@ -5132,7 +5132,7 @@ window.ALL_QUESTIONS.push(
 
   // ── POBC additional hard questions ──────────────────────────────────────
 
-  { id: 'pobc-200', topic: 'pobc', difficulty: 'hard', type: 'mcq',
+  { id: 'pobc-200', topic: 'pobc', difficulty: 'hard', type: 'mcq', criteria: ['POBC-2.3'],
     q: 'Which of the following is a TIMING DIFFERENCE in a bank reconciliation (i.e., it appears on the bank statement but NOT in the cash book, or vice versa)?',
     opts: [
       'A direct debit for rent that the bookkeeper forgot to enter in the cash book',
@@ -5142,7 +5142,7 @@ window.ALL_QUESTIONS.push(
     ans: 1,
     exp: 'An unpresented (uncleared) cheque: the business recorded it in the cash book when it was written, but the bank has not yet processed it — a classic timing difference. Options A and C are errors/omissions requiring cash book updates. Option D has not yet occurred in either record.' },
 
-  { id: 'pobc-201', topic: 'pobc', difficulty: 'hard', type: 'mcq',
+  { id: 'pobc-201', topic: 'pobc', difficulty: 'hard', type: 'mcq', criteria: ['POBC-3.2'],
     q: 'Which error would cause the debit side of the trial balance to exceed the credit side by £400 (requiring a credit entry to a suspense account of £400)?',
     opts: [
       'A credit sale of £400 omitted from all ledgers',
@@ -5152,7 +5152,7 @@ window.ALL_QUESTIONS.push(
     ans: 2,
     exp: 'Option C: Dr Rent £400 with no corresponding credit creates a debit excess of £400. A credit suspense entry of £400 is opened to restore balance. Option A is a complete omission (both sides missing — no imbalance). Options B and D are correctly balanced double entries.' },
 
-  { id: 'pobc-202', topic: 'pobc', difficulty: 'hard', type: 'mcq',
+  { id: 'pobc-202', topic: 'pobc', difficulty: 'hard', type: 'mcq', criteria: ['POBC-3.2'],
     q: 'A purchase of equipment for £3,000 is posted to the office expenses account. What type of error is this?',
     opts: [
       'Error of omission',
@@ -5162,20 +5162,20 @@ window.ALL_QUESTIONS.push(
     ans: 2,
     exp: 'An error of principle occurs when a transaction is posted to the correct side but the WRONG CLASS of account — here, a capital/non-current asset (equipment) is recorded as a revenue expense (office expenses). The capital vs revenue distinction is violated.' },
 
-  { id: 'pobc-203', calc: true, topic: 'pobc', difficulty: 'hard', type: 'mcq',
+  { id: 'pobc-203', calc: true, topic: 'pobc', difficulty: 'hard', type: 'mcq', criteria: ['POBC-3.2'],
     q: 'A transposition error occurs when rent of £450 is posted as £540. The trial balance total shows debits exceed credits by:',
     opts: ['£90', '£45', '£450', '£540'],
     ans: 0,
     exp: '£540 − £450 = £90. The same single amount is wrong on one side, creating a £90 imbalance. Transposition errors always produce a difference divisible by 9 (here 90 ÷ 9 = 10 — a useful check). A suspense account of £90 Cr would be opened to restore balance.' },
 
 
-  { id: 'pobc-205', calc: true, topic: 'pobc', difficulty: 'hard', type: 'mcq',
+  { id: 'pobc-205', calc: true, topic: 'pobc', difficulty: 'hard', type: 'mcq', criteria: ['POBC-1.1'],
     q: 'A business has output VAT of £18,400 and input VAT of £11,750 for the quarter. What amount is payable to HMRC?',
     opts: ['£18,400', '£11,750', '£6,650', '£30,150'],
     ans: 2,
     exp: 'Net VAT = output tax − input tax = £18,400 − £11,750 = £6,650 payable to HMRC. That figure is the credit balance left on the VAT control account once the quarter’s entries are complete, and it is settled by payment.' },
 
-  { id: 'pobc-206', topic: 'pobc', difficulty: 'hard', type: 'mcq',
+  { id: 'pobc-206', topic: 'pobc', difficulty: 'hard', type: 'mcq', criteria: ['POBC-1.2'],
     q: 'The PLCA balance is £13,600 but the total of individual supplier balances is £14,200. The list is higher than the PLCA by £600. Which error would explain this?',
     opts: [
       'A purchase invoice of £600 posted to the PLCA but not to the individual supplier account',
@@ -5185,7 +5185,7 @@ window.ALL_QUESTIONS.push(
     ans: 1,
     exp: 'If a payment of £600 was Dr PLCA (reducing it) but the individual account was NOT updated, the PLCA balance falls by £600 while the listing stays the same — list becomes £600 higher than PLCA ✓. Option A would make PLCA higher (Cr PLCA, no matching individual entry). Option C correctly matches — no difference. Option D would reduce PLCA twice.' },
 
-  { id: 'pobc-207', topic: 'pobc', difficulty: 'hard', type: 'mcq',
+  { id: 'pobc-207', topic: 'pobc', difficulty: 'hard', type: 'mcq', criteria: ['POBC-3.2'],
     q: 'Which of the following errors does NOT affect the trial balance agreement?',
     opts: [
       'A purchase of £750 debited to both the purchases account and the PLCA (two debits, no credit)',
@@ -5195,29 +5195,152 @@ window.ALL_QUESTIONS.push(
     ans: 2,
     exp: 'Option C is a complete omission — both the Dr (SLCA) and the Cr (Sales) entries are missing. Both sides are equally understated so the TB still agrees. Option A has two debits but no credit (Dr excess). Option B has Dr £600 and Cr £540 (£60 imbalance). Option D has only a debit and no credit — all three create TB imbalances.' },
 
-  { id: 'pobc-208', calc: true, topic: 'pobc', difficulty: 'hard', type: 'mcq',
+  { id: 'pobc-208', calc: true, topic: 'pobc', difficulty: 'hard', type: 'mcq', criteria: ['POBC-2.3'],
     q: 'A bank reconciliation shows: cash book balance £5,100; unpresented cheques £850; outstanding lodgements £1,200. What should the bank statement balance be?',
     opts: ['£5,100', '£4,750', '£5,450', '£6,150'],
     ans: 1,
     exp: 'Bank statement balance = Cash book balance + Unpresented cheques − Outstanding lodgements = £5,100 + £850 − £1,200 = £4,750. (Cheques written but not cleared inflate the cash book; lodgements paid in but not shown yet inflate the statement.)' },
 
-  { id: 'pobc-209', calc: true, topic: 'pobc', difficulty: 'hard', type: 'mcq',
+  { id: 'pobc-209', calc: true, topic: 'pobc', difficulty: 'hard', type: 'mcq', criteria: ['POBC-2.2'],
     q: 'After updating the cash book, the balance is £3,800 Dr. Unpresented cheques total £650 and outstanding lodgements total £420. The bank statement should show:',
     opts: ['£3,800', '£4,030', '£3,570', '£4,870'],
     ans: 1,
     exp: 'Statement balance = £3,800 + £650 − £420 = £4,030. The bank has not yet processed the unpresented cheques (so its balance is higher) and has not yet shown the lodgements (so its balance is lower than the cash book after lodgements).' },
 
+  // ── POC 1.6 and 3.1 ─────────────────────────────────────────────────────
+  // The same audit found two POC criteria taught and tested by nothing. 1.6 is
+  // carried by L-poc-1 and L-poc-18 (cost coding, and the manufacturing
+  // account in five cards); 3.1 by L-poc-6 and L-poc-11. The 3.1 gap was the
+  // odd one: 3.2, reporting on significant variances, had seven questions
+  // behind it while 3.1, CALCULATING the variance in the first place, had
+  // none — a reader could be asked to judge a number they were never asked to
+  // work out.
+  { id: 'poc-210', topic: 'poc', difficulty: 'medium', type: 'mcq', criteria: ['POC-1.6'],
+    q: 'Which of these belongs in a manufacturing account?',
+    opts: ['Depreciation of production machinery', 'Depreciation of delivery vehicles', 'The sales director\u2019s salary', 'Carriage outwards on finished goods'],
+    ans: 0,
+    exp: 'One rule decides every line: PRODUCTION costs only. Machinery used to make the product is production overhead and goes in. Delivery vehicles, the sales director and carriage outwards are all selling and distribution \u2014 period costs, and they belong in the statement of profit or loss below the cost of sales.' },
+
+  { id: 'poc-211', calc: true, topic: 'poc', difficulty: 'hard', type: 'mcq', criteria: ['POC-1.6'],
+    q: 'Raw materials: opening \u00a38,000, purchases \u00a390,000, carriage inwards \u00a32,000, closing \u00a311,000. Direct labour is \u00a345,000 and direct expenses \u00a36,000. What is prime cost?',
+    opts: ['\u00a3140,000', '\u00a3149,000', '\u00a3138,000', '\u00a3151,000'],
+    ans: 0,
+    exp: 'Materials CONSUMED first, not purchased: \u00a38,000 + \u00a390,000 + \u00a32,000 \u2212 \u00a311,000 = \u00a389,000. Carriage inwards is added because it is part of what the materials cost to acquire. Prime cost is then materials consumed plus direct labour plus direct expenses: \u00a389,000 + \u00a345,000 + \u00a36,000 = \u00a3140,000. Production overhead comes after prime cost, not before it.' },
+
+  { id: 'poc-212', topic: 'poc', difficulty: 'medium', type: 'mcq', criteria: ['POC-1.6'],
+    q: 'A manufacturer holds three kinds of inventory. Where does the WORK IN PROGRESS adjustment sit?',
+    opts: ['At the foot of the manufacturing account, reaching cost of goods manufactured', 'At the head of the manufacturing account, with raw materials', 'In cost of sales, outside the manufacturing account', 'It is not adjusted for, being incomplete at the year end'],
+    ans: 0,
+    exp: 'Three inventories, three places. Raw materials adjust at the TOP, to give materials consumed. Work in progress adjusts at the BOTTOM, turning manufacturing cost into cost of goods manufactured. Finished goods adjust in cost of sales, outside this account altogether. Keeping the three apart is most of the discipline in this topic.' },
+
+  { id: 'poc-213', topic: 'poc', difficulty: 'easy', type: 'mcq', criteria: ['POC-1.6'],
+    q: 'A business codes its costs as "PR-MAT-01", where PR is the production department and MAT is materials. What kind of coding system is this?',
+    opts: ['Alphanumeric \u2014 it uses letters and numbers together', 'Numeric \u2014 the code ends in a number', 'Alphabetic \u2014 the code begins with letters', 'Sequential \u2014 the codes run in order'],
+    ans: 0,
+    exp: 'Letters and digits in one code makes it alphanumeric, which is the commonest form in costing because the letters can carry meaning a reader recognises \u2014 PR for production, MAT for materials \u2014 while the digits keep each item distinct. A purely numeric code is faster to enter and tells the reader nothing on sight.' },
+
+  { id: 'poc-214', topic: 'poc', difficulty: 'medium', type: 'truefalse', criteria: ['POC-1.6'],
+    q: 'Identify whether each cost is included in the manufacturing account.',
+    statements: [
+      { text: 'Factory rent and rates.', answer: true },
+      { text: 'The production supervisor\u2019s salary.', answer: true },
+      { text: 'Office stationery.', answer: false },
+      { text: 'Interest on the business loan.', answer: false }
+    ],
+    exp: 'Factory costs and the people supervising production are production overhead and belong in the account. Office stationery is administration and loan interest is a finance cost \u2014 both are period costs, charged in the statement of profit or loss rather than absorbed into what the goods cost to make.' },
+
+  { id: 'poc-215', calc: true, topic: 'poc', difficulty: 'medium', type: 'mcq', criteria: ['POC-3.1'],
+    q: 'Budgeted materials cost is \u00a370,000 and the actual cost is \u00a371,800. What is the variance?',
+    opts: ['\u00a31,800 adverse', '\u00a31,800 favourable', '\u00a370,000 adverse', '\u00a31,800, neither adverse nor favourable'],
+    ans: 0,
+    exp: 'The arithmetic is a subtraction; the skill is the label. Spending \u00a31,800 MORE than budgeted on a cost reduces profit, so the variance is adverse. The direction reverses for income: earning more than budgeted is favourable. A variance reported without adverse or favourable attached is an incomplete answer.' },
+
+  { id: 'poc-216', calc: true, topic: 'poc', difficulty: 'medium', type: 'mcq', criteria: ['POC-3.1'],
+    q: 'Budgeted revenue is \u00a3240,000 and actual revenue is \u00a3228,000. What is the variance as a percentage of budget?',
+    opts: ['5.0% adverse', '5.0% favourable', '5.3% adverse', '4.8% adverse'],
+    ans: 0,
+    exp: 'The variance is \u00a3240,000 \u2212 \u00a3228,000 = \u00a312,000, and earning LESS income than budgeted is adverse. As a percentage: \u00a312,000 \u00f7 \u00a3240,000 \u00d7 100 = 5.0%. The denominator is always the BUDGET, because the budget is the standard being measured against \u2014 dividing by the actual gives 5.3% and answers a different question.' },
+
+  { id: 'poc-217', calc: true, topic: 'poc', difficulty: 'hard', type: 'mcq', criteria: ['POC-3.1'],
+    q: 'A business budgets for 10,000 units: materials at 2 kg per unit costing \u00a34 per kg, labour at 0.5 hours per unit at \u00a312 per hour, and fixed overheads of \u00a325,000. What is the total budgeted cost?',
+    opts: ['\u00a3165,000', '\u00a3140,000', '\u00a3185,000', '\u00a3105,000'],
+    ans: 0,
+    exp: 'Three lines flex with output and the fourth does not. Materials: 10,000 \u00d7 2 \u00d7 \u00a34 = \u00a380,000. Labour: 10,000 \u00d7 0.5 \u00d7 \u00a312 = \u00a360,000. Fixed overheads are a total for the period at \u00a325,000 and do not move with units. Together: \u00a380,000 + \u00a360,000 + \u00a325,000 = \u00a3165,000. Keeping the units of measurement visible is what stops the per-unit and per-hour figures being multiplied in the wrong order.' },
+
+  { id: 'poc-218', topic: 'poc', difficulty: 'medium', type: 'mcq', criteria: ['POC-3.1'],
+    q: 'A fixed budget assumed 10,000 units; the business actually made 12,000 and spent more on materials than budgeted. Why is comparing the two misleading?',
+    opts: ['More units were always going to cost more \u2014 the budget must be flexed first', 'A fixed budget may not be used for control at any level of output', 'Materials are a fixed cost, so the spend should not have changed', 'The variance should be measured against actual cost, not budget'],
+    ans: 0,
+    exp: 'A fixed budget is the right tool for planning and for asking whether the target was met. It is a poor tool for judging PERFORMANCE, because reporting the extra material cost of 2,000 extra units as an adverse variance blames the production manager for making more. Flexing the budget to actual output first is what makes the comparison fair.' },
+
+  { id: 'poc-219', topic: 'poc', difficulty: 'medium', type: 'truefalse', criteria: ['POC-3.1'],
+    q: 'Identify whether each variance is favourable.',
+    statements: [
+      { text: 'Actual labour cost is below the budgeted labour cost.', answer: true },
+      { text: 'Actual income is above the budgeted income.', answer: true },
+      { text: 'Actual overheads are above the budgeted overheads.', answer: false },
+      { text: 'Actual income is below the budgeted income.', answer: false }
+    ],
+    exp: 'A variance is favourable when it makes profit HIGHER than planned, and the direction reverses between costs and income. Costs below budget and income above budget both raise profit. Costs above budget and income below budget both lower it. Reading the label off the arithmetic without asking what it does to profit is how this goes wrong.' },
+
+  // ── POBC 2.1 payment methods ────────────────────────────────────────────
+  // The audit that tagged this bank found 2.1 taught by L-pobc-15 and tested by
+  // nothing at all: every other POBC criterion had questions behind it and this
+  // one had none. These six are written to the three groups the spec sets out
+  // (2.1.2) — reduce funds now, reduce funds later, no effect — because that
+  // classification is what the assessment asks for, not the names of the methods.
+  { id: 'pobc-210', topic: 'pobc', difficulty: 'easy', type: 'mcq', criteria: ['POBC-2.1'],
+    q: 'Which payment method reduces the bank balance on the date the payment is made?',
+    opts: ['A debit card payment', 'A cheque sent in the post', 'A BACS payment submitted today', 'A credit card payment'],
+    ans: 0,
+    exp: 'A debit card is drawn on the current account and authorised in real time, so the money has gone immediately and no timing difference arises. A cheque waits for the payee to bank it, BACS runs a three-day cycle, and a credit card spends the ISSUER\u2019s money \u2014 the bank balance does not move until the card account is settled.' },
+
+  { id: 'pobc-211', topic: 'pobc', difficulty: 'medium', type: 'mcq', criteria: ['POBC-2.1'],
+    q: 'A business pays a supplier by credit card on 28 June. What is the effect on the bank balance at that date?',
+    opts: ['None \u2014 a liability to the card issuer arises instead', 'It falls by the full amount of the payment', 'It falls by the minimum monthly repayment', 'It rises, because the purchase is financed'],
+    ans: 0,
+    exp: 'The money spent is the card issuer\u2019s, not the business\u2019s. Nothing leaves the current account on 28 June; what the business has instead is a payable to the card company. The bank balance changes later, when the card account is settled \u2014 usually by a separate direct debit.' },
+
+  { id: 'pobc-212', topic: 'pobc', difficulty: 'medium', type: 'mcq', criteria: ['POBC-2.1'],
+    q: 'A business pays rent of \u00a3900 on the first of every month, the amount fixed by the lease. Which method suits it, and who controls it?',
+    opts: ['Standing order \u2014 the payer instructs the bank', 'Direct debit \u2014 the payer instructs the bank', 'Standing order \u2014 the recipient claims the amount', 'Direct debit \u2014 the bank sets the amount'],
+    ans: 0,
+    exp: 'A standing order is the PAYER\u2019s instruction to send a fixed amount on fixed dates, which is exactly a rent at \u00a3900 on the first. A direct debit reverses the control: the recipient claims the amount, which is what suits a bill that varies. Confusing the two is the standard error here, and the test is who decides how much.' },
+
+  { id: 'pobc-213', topic: 'pobc', difficulty: 'medium', type: 'mcq', criteria: ['POBC-2.1'],
+    q: 'A business must pay \u00a3180,000 today to complete a property purchase. Which method fits, and why?',
+    opts: ['CHAPS \u2014 it settles the same working day, and the fee is worth the certainty', 'BACS \u2014 it is the cheapest way to move a large sum', 'Cheque \u2014 it gives a clear paper record of the payment', 'Standing order \u2014 it can be set up for the completion date'],
+    ans: 0,
+    exp: 'CHAPS exists for exactly this: large, time-critical payments that must land the same working day. It carries a fee of roughly \u00a320 to \u00a330, which is nothing against a completion that fails. BACS takes three days, a cheque takes longer still and can be lost, and a standing order is for repeating amounts rather than a one-off.' },
+
+  { id: 'pobc-214', topic: 'pobc', difficulty: 'medium', type: 'truefalse', criteria: ['POBC-2.1'],
+    q: 'Identify whether each payment reduces the bank balance on the day it is made.',
+    statements: [
+      { text: 'A Faster Payment sent to a supplier.', answer: true },
+      { text: 'A debit card payment at a trade counter.', answer: true },
+      { text: 'A cheque written and posted to a supplier.', answer: false },
+      { text: 'A purchase put on the company credit card.', answer: false }
+    ],
+    exp: 'The spec splits methods three ways and this is the first split. Faster Payments and debit cards settle in real time on the business\u2019s own account. A cheque leaves the balance untouched until the payee banks it and it clears, which is what makes it an unpresented cheque in the reconciliation. A credit card does not touch the balance at all at the point of purchase.' },
+
+  { id: 'pobc-215', topic: 'pobc', difficulty: 'hard', type: 'mcq', criteria: ['POBC-2.1'],
+    q: 'A wages run of \u00a362,000 covering forty employees is submitted by BACS on Monday. When does the bank balance fall, and why that method?',
+    opts: ['Wednesday \u2014 one submission pays every employee on a three-day cycle', 'Monday \u2014 BACS settles in real time like a Faster Payment', 'Wednesday \u2014 the bank holds the funds as security for three days', 'Monday \u2014 the funds leave at once and reach employees later'],
+    ans: 0,
+    exp: 'BACS runs submitted on day one, processed on day two, credited on day three \u2014 so a Monday submission lands Wednesday. Its advantage for payroll is not speed but volume: one file pays forty people. A Faster Payment would be immediate but would have to be sent forty times, which is why wages runs go by BACS.' },
+
+
   // ── POC additional hard questions ───────────────────────────────────────
 
 
 
-  { id: 'poc-202', calc: true, topic: 'poc', difficulty: 'hard', type: 'mcq',
+  { id: 'poc-202', calc: true, topic: 'poc', difficulty: 'hard', type: 'mcq', criteria: ['POC-2.3'],
     q: 'Budgeted factory overheads are £54,000 and budgeted machine hours are 9,000. Actual overheads incurred were £56,200 and actual machine hours worked were 9,000. What is the overhead absorption rate (OAR)?',
     opts: ['£6.00 per machine hour', '£6.24 per machine hour', '£54,000 in total', '£56,200 in total'],
     ans: 0,
     exp: 'OAR = Budgeted overheads ÷ Budgeted activity = £54,000 ÷ 9,000 = £6.00 per machine hour. The OAR is ALWAYS calculated using budgeted figures, not actual.' },
 
-  { id: 'poc-203', calc: true, topic: 'poc', difficulty: 'hard', type: 'mcq',
+  { id: 'poc-203', calc: true, topic: 'poc', difficulty: 'hard', type: 'mcq', criteria: ['POC-2.3'],
     q: 'Using the OAR of £6 per machine hour: actual machine hours worked were 9,000 but actual overheads incurred were £56,200. What is the absorption outcome?',
     opts: [
       'Over-absorbed by £2,200 — credit P&L',
@@ -5229,7 +5352,7 @@ window.ALL_QUESTIONS.push(
 
 
 
-  { id: 'poc-206', topic: 'poc', difficulty: 'hard', type: 'mcq',
+  { id: 'poc-206', topic: 'poc', difficulty: 'hard', type: 'mcq', criteria: ['POC-1.1'],
     q: 'Which of these is a direct cost of production?',
     opts: [
       'Factory manager\'s salary',
@@ -5239,14 +5362,14 @@ window.ALL_QUESTIONS.push(
     ans: 2,
     exp: 'A direct cost is directly traceable to a specific unit of output. Timber used in a chair can be measured per chair — it is a direct material. Factory manager salary, depreciation and rent cannot be traced to individual units; they are indirect (overhead) costs.' },
 
-  { id: 'poc-207', calc: true, topic: 'poc', difficulty: 'hard', type: 'mcq',
+  { id: 'poc-207', calc: true, topic: 'poc', difficulty: 'hard', type: 'mcq', criteria: ['POC-2.1'],
     q: 'Inventory records using AVCO: opening balance 200 units at £4.00. Purchase: 300 units at £5.00. What is the new weighted average cost per unit (to 2 d.p.)?',
     opts: ['£4.50', '£4.60', '£4.00', '£5.00'],
     ans: 1,
     exp: 'New AVCO = Total cost ÷ Total units = ((200 × £4.00) + (300 × £5.00)) ÷ (200 + 300) = (£800 + £1,500) ÷ 500 = £2,300 ÷ 500 = £4.60 per unit.' },
 
 
-  { id: 'poc-209', calc: true, topic: 'poc', difficulty: 'hard', type: 'mcq',
+  { id: 'poc-209', calc: true, topic: 'poc', difficulty: 'hard', type: 'mcq', criteria: ['POC-2.5'],
     q: 'A job requires 15 kg of material at £8/kg, 6 hours of direct labour at £12/hr, and overheads absorbed at £5 per labour hour. What is the total job cost?',
     opts: ['£282', '£252', '£222', '£312'],
     ans: 2,
@@ -5266,7 +5389,7 @@ window.ALL_QUESTIONS.push(
 
   // ── SCENARIO QUESTIONS ───────────────────────────────────────────────────
 
-  { id: 'sc-031', topic: 'itbk', difficulty: 'hard', type: 'scenario',
+  { id: 'sc-031', topic: 'itbk', difficulty: 'hard', type: 'scenario', criteria: ['POBC-2.2', 'POBC-2.3'],
     setup: 'Kelsey & Co keeps a three-column cash book. On 30 June the cash book shows a debit (bank) balance of £4,850. The bank statement at the same date shows £4,200. On checking: (i) a BACS receipt of £620 from a customer appears on the statement but not in the cash book; (ii) unpresented cheques total £1,300; (iii) a direct debit for business rates of £370 appears on the statement but not in the cash book; (iv) outstanding lodgements total £400.',
     parts: [
       { type: 'mcq', q: 'Which items require an UPDATE to the cash book before reconciling?',
@@ -5294,7 +5417,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'A full bank reconciliation workflow — cash book updates for bank-only items, then timing-difference reconciliation.' },
 
-  { id: 'sc-032', topic: 'poc', difficulty: 'hard', type: 'scenario',
+  { id: 'sc-032', topic: 'poc', difficulty: 'hard', type: 'scenario', criteria: ['POC-2.1'],
     setup: 'Oakwood Furniture Ltd has the following inventory movements for timber in March: Opening balance 100 units @ £10.00. Purchase 1: 200 units @ £11.00. Issue to production: 150 units. Purchase 2: 100 units @ £12.00. Issue to production: 180 units.',
     parts: [
       { type: 'numeric', q: 'Using FIFO, what is the cost of the first issue of 150 units (£)?',
@@ -5319,7 +5442,7 @@ window.ALL_QUESTIONS.push(
     exp: 'Inventory valuation using FIFO and AVCO, and their comparative impact on profit during price changes.' },
 
 
-  { id: 'sc-034', topic: 'pobc', difficulty: 'hard', type: 'scenario',
+  { id: 'sc-034', topic: 'pobc', difficulty: 'hard', type: 'scenario', criteria: ['POBC-3.3'],
     setup: 'Finch & Partners\' trial balance does not agree. A suspense account has been opened with a credit balance of £630. Investigation reveals three errors: (1) A sales invoice for £270 was entered as a debit to both the Sales account AND the SLCA. (2) Rent paid £900 was entered in the cash book correctly but posted to the Rent account as £990. (3) A purchase of stationery for £180 was completely omitted from the ledger.',
     parts: [
       { type: 'mcq', q: 'Error 1 (invoice debited to Sales AND SLCA) — what type of error is this?',
@@ -5355,7 +5478,7 @@ window.ALL_QUESTIONS.push(
 
   // ── TABLE-FILL QUESTIONS ─────────────────────────────────────────────────
 
-  { id: 'tf-016', topic: 'itbk', difficulty: 'medium', type: 'tablefill',
+  { id: 'tf-016', topic: 'itbk', difficulty: 'medium', type: 'tablefill', criteria: ['ITBK-5.2'],
     q: 'Complete the SLCA for the month. All figures in £.',
     table: {
       title: 'Sales Ledger Control Account',
@@ -5371,7 +5494,7 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'Total Dr: £8,400 + £41,200 = £49,600. Total Cr: £32,600 + £1,800 + £950 + £400 + balance c/d = £49,600. Balance c/d = £49,600 − £35,750 = £13,850.' },
 
-  { id: 'tf-017', topic: 'poc', difficulty: 'medium', type: 'tablefill',
+  { id: 'tf-017', topic: 'poc', difficulty: 'medium', type: 'tablefill', criteria: ['POC-2.5'],
     q: 'Complete the job cost card for Job 47. OAR = £8 per labour hour.',
     table: {
       title: 'Job Cost Card — Job 47',
@@ -5391,7 +5514,7 @@ window.ALL_QUESTIONS.push(
     exp: 'A job cost card totals the direct costs then adds absorbed overhead. Labour is 12 × £10 = £120 and overhead 12 × £8 = £96, so with £260 of materials the total production cost is £476.' },
 
 
-  { id: 'tf-019', topic: 'pobc', difficulty: 'hard', type: 'tablefill',
+  { id: 'tf-019', topic: 'pobc', difficulty: 'hard', type: 'tablefill', criteria: ['POBC-3.3'],
     q: 'A trial balance has a debit excess of £860 (suspense account: credit balance £860). Two correcting journals are processed. Complete the suspense account.',
     table: {
       title: 'Suspense Account',
@@ -5421,7 +5544,7 @@ window.ALL_QUESTIONS.push(
 window.ALL_QUESTIONS.push(
 
   /* ── Task 4 shape: process a transaction, then communicate it ── */
-  { id: 'wr-001', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-comms', marks: 8, minWords: 70,
+  { id: 'wr-001', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-comms', marks: 8, minWords: 70, criteria: ['BESY-6.2'],
     setup: 'You are an accounts assistant at Pemberton Blinds Ltd. A customer, Halewood Interiors, has emailed to say their statement shows £2,880 outstanding but their own records show £2,400. You check the sales ledger and find that invoice 4471 for £480 was issued on 28 June for a made-to-measure blind that Halewood cancelled on 26 June. The cancellation was never processed.',
     task: 'Draft an email to Halewood Interiors explaining the difference and what you will do about it.',
     rubric: [
@@ -5434,7 +5557,7 @@ window.ALL_QUESTIONS.push(
     modelAnswer: 'Subject: Your account — difference of £480 on the June statement\n\nDear Halewood Interiors,\n\nThank you for getting in touch about your statement.\n\nI have checked your account and the difference is £480: our statement shows £2,880 outstanding, while your records show £2,400.\n\nThe cause is invoice 4471, raised on 28 June for £480. This related to a made-to-measure blind that you cancelled on 26 June. The cancellation was not processed at our end, so the invoice was issued in error.\n\nI will raise a credit note for £480 today, which will bring your balance in line with your own records at £2,400. You will receive a copy by email once it has been posted.\n\nI am sorry for the confusion. Please contact me if anything else on the statement does not look right.\n\nKind regards,\nAccounts Assistant, Pemberton Blinds Ltd',
     exp: 'The marks are for identifying the figure, explaining the cause and stating a concrete action — not for length. Always quantify the difference and name the document that caused it.' },
 
-  { id: 'wr-002', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-comms', marks: 6, minWords: 60,
+  { id: 'wr-002', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-comms', marks: 6, minWords: 60, criteria: ['BESY-6.2'],
     setup: 'You work in the finance team at Ardley Tools Ltd. The sales manager has asked why a large credit customer, Crowther Fixings, has been placed on stop, which is blocking a new order worth £6,000. Crowther Fixings has an agreed credit limit of £5,000 and a balance of £7,200, of which £3,100 is more than 60 days overdue.',
     task: 'Draft a short email to the sales manager explaining why the account is on stop and what would need to happen for the order to be released.',
     rubric: [
@@ -5446,7 +5569,7 @@ window.ALL_QUESTIONS.push(
     modelAnswer: 'Subject: Crowther Fixings — account on stop\n\nHi,\n\nCrowther Fixings is on stop for two reasons. Their balance is £7,200 against an agreed credit limit of £5,000, so they are £2,200 over the limit. Of that balance, £3,100 is more than 60 days overdue.\n\nTo release the £6,000 order we would need either payment of the £3,100 overdue amount, which brings the account back within terms, or a credit limit increase authorised by the finance manager.\n\nHappy to chase the overdue invoices today if that helps — let me know if you would like me to contact them directly.\n\nThanks,\nFinance team',
     exp: 'Credit control questions want the specific figures and a route forward. Naming who can authorise an exception (the finance manager) shows you understand the control, not just the rule.' },
 
-  { id: 'wr-003', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-comms', marks: 6, minWords: 60,
+  { id: 'wr-003', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-comms', marks: 6, minWords: 60, criteria: ['BESY-6.2'],
     setup: 'You are an accounts assistant at Vellacott Catering Supplies. A colleague in the warehouse has emailed asking you to "just pay" a supplier invoice for £1,450 from Northgate Produce because the supplier is chasing. There is no purchase order on file and no goods received note, and the invoice is addressed to a slightly different company name.',
     task: 'Draft a reply explaining why you cannot process the payment yet and what you need.',
     rubric: [
@@ -5458,7 +5581,7 @@ window.ALL_QUESTIONS.push(
     modelAnswer: 'Subject: Northgate Produce invoice £1,450 — on hold pending checks\n\nHi,\n\nI am not able to process this one yet. Three things need resolving first.\n\nThere is no purchase order on file, so I cannot confirm the goods were ordered or at what price. There is also no goods received note, so I cannot confirm the goods actually arrived and were checked.\n\nThe invoice is also addressed to a slightly different company name from ours. That may be a simple error, but it can also be a sign of a fraudulent or misdirected invoice, so I need to verify it before any payment goes out.\n\nIf you can send me the purchase order number and the GRN, and confirm the delivery took place, I will get this paid in the next payment run.\n\nThanks,\nAccounts',
     exp: 'The three-way match — purchase order, goods received note, invoice — is the core purchases control. A mismatched company name is a classic invoice-fraud indicator and should always be flagged rather than assumed to be a typo.' },
 
-  { id: 'wr-004', topic: 'besy', difficulty: 'hard', type: 'written', skill: 'besy-comms', marks: 8, minWords: 80,
+  { id: 'wr-004', topic: 'besy', difficulty: 'hard', type: 'written', skill: 'besy-comms', marks: 8, minWords: 80, criteria: ['BESY-6.2'],
     setup: 'You work at Redmayne Joinery Ltd. You have completed the bank reconciliation for October. The cash book shows a balance of £14,320 but the bank statement shows £11,905. You have identified: unpresented cheques of £3,150; an outstanding lodgement of £4,900; bank charges of £45 not yet in the cash book; and a direct debit for insurance of £320 not yet in the cash book.',
     task: 'Draft a note to the finance manager explaining the reconciliation and what needs to be adjusted in the cash book.',
     rubric: [
@@ -5471,7 +5594,7 @@ window.ALL_QUESTIONS.push(
     modelAnswer: 'Note: October bank reconciliation — Redmayne Joinery Ltd\n\nTwo items need posting to the cash book because they are genuine transactions the bank has processed and we have not recorded: bank charges of £45 and the insurance direct debit of £320. Once posted, the corrected cash book balance is £14,320 − £45 − £320 = £13,955.\n\nThe unpresented cheques of £3,150 and the outstanding lodgement of £4,900 are timing differences, not errors. They are correctly in our cash book and will clear the bank shortly, so no adjustment is made for them.\n\nReconciling from the statement: £11,905 plus the outstanding lodgement £4,900 less unpresented cheques £3,150 gives £13,655. That leaves £300 against the corrected cash book balance of £13,955, which does not reconcile. I recommend we review October cash book postings for a transposition or an omitted item before signing off.\n\nAccounts Assistant',
     exp: 'The distinction that earns marks is between items needing a cash book adjustment (bank charges, direct debits, standing orders, interest) and timing differences (unpresented cheques, outstanding lodgements). Noting that the reconciliation does not fully agree — rather than forcing it — is what a real assistant should do.' },
 
-  { id: 'wr-005', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-comms', marks: 6, minWords: 60,
+  { id: 'wr-005', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-comms', marks: 6, minWords: 60, criteria: ['BESY-6.2'],
     setup: 'You are an accounts assistant at Thornbury Print. A junior colleague has posted a purchase of stationery for £240 (net) plus VAT of £48 as: Dr Stationery £288, Cr Bank £288. The business is VAT registered and the payment was made by bank transfer.',
     task: 'Draft a short message to your colleague explaining what is wrong with the entry and how to correct it.',
     rubric: [
@@ -5483,7 +5606,7 @@ window.ALL_QUESTIONS.push(
     modelAnswer: 'Hi,\n\nSmall fix needed on the stationery purchase. The total of £288 has gone entirely to Stationery, but £48 of that is VAT.\n\nThe entry should be:\nDr Stationery £240\nDr VAT £48\nCr Bank £288\n\nIt matters for two reasons. As we are VAT registered, the £48 input VAT is reclaimable from HMRC, and posting it to Stationery means we lose it. It also overstates the stationery expense by £48, which will distort the cost figures.\n\nEasy one to miss — give me a shout if you want to go through the VAT postings together.\n\nThanks',
     exp: 'Always split gross into net and VAT for a registered business. The double entry has three lines: two debits (expense and VAT) and one credit (bank), and it still balances at £288.' },
 
-  { id: 'wr-006', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-comms', marks: 6, minWords: 60,
+  { id: 'wr-006', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-comms', marks: 6, minWords: 60, criteria: ['BESY-6.2'],
     setup: 'You work at Calder Fabrications Ltd. The sales ledger control account shows a balance of £48,600 but the total of the sales ledger individual accounts is £48,150. You have found that a credit note for £450 was posted to the customer\'s individual account but not to the control account.',
     task: 'Draft a note explaining the difference and the correcting entry required.',
     rubric: [
@@ -5495,7 +5618,7 @@ window.ALL_QUESTIONS.push(
     modelAnswer: 'Note: SLCA reconciliation difference\n\nThe sales ledger control account shows £48,600 and the total of the individual customer accounts is £48,150 — a difference of £450.\n\nThe cause is a credit note for £450 posted to the customer\'s individual account but omitted from the control account. The individual accounts are therefore correct and the control account is overstated.\n\nThe correction is to credit the sales ledger control account with £450 (with the corresponding debit to sales returns). Once posted, the control account will show £48,150 and agree with the list of individual balances.\n\nAccounts Assistant',
     exp: 'Work out which side is wrong before writing the journal. Here the subsidiary ledger was right, so the control account moves — a credit reduces the receivables balance to match.' },
 
-  { id: 'wr-007', topic: 'besy', difficulty: 'hard', type: 'written', skill: 'besy-comms', marks: 8, minWords: 80,
+  { id: 'wr-007', topic: 'besy', difficulty: 'hard', type: 'written', skill: 'besy-comms', marks: 8, minWords: 80, criteria: ['BESY-6.2'],
     setup: 'You are an accounts assistant at Levenshulme Foods Ltd. Your manager has asked you to explain to a new trainee why the business keeps both a sales day book and a sales ledger control account, as the trainee thinks it is "doing the same job twice".',
     task: 'Draft an explanation for the trainee covering what each record does and why both are needed.',
     rubric: [
@@ -5508,7 +5631,7 @@ window.ALL_QUESTIONS.push(
     modelAnswer: 'Hi,\n\nGood question — they look similar but they do different jobs.\n\nThe sales day book is a book of prime entry. It is the first place a credit sale is written down: date, customer, invoice number, net, VAT and gross. Nothing is posted to the ledgers until it goes through here, so it is a listing rather than an account.\n\nThe sales ledger control account is a real account in the general ledger. It holds the total owed by all credit customers in one figure, so the trial balance has a single receivables balance rather than hundreds of them.\n\nThe reason we keep both is control. Each customer also has their own account in the sales ledger. At month end we add up all those individual balances and compare the total to the control account. If the two agree, the postings are very likely right. If they do not, we know there is an error and we can find it before it reaches the financial statements.\n\nSo the day book captures, the control account summarises, and the comparison between the control account and the individual accounts is what catches mistakes.\n\nHope that helps',
     exp: 'Books of prime entry capture; ledger accounts record; control accounts verify. The point of the control account is that it is built from a different route than the individual accounts, so agreement between them is meaningful evidence.' },
 
-  { id: 'wr-008', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-comms', marks: 6, minWords: 60,
+  { id: 'wr-008', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-comms', marks: 6, minWords: 60, criteria: ['BESY-6.2'],
     setup: 'You work at Ormskirk Garden Centre. A supplier has phoned to say an invoice for £1,260 is overdue. You check and find the invoice was received but is still awaiting authorisation by the department head, who has been on leave for three weeks.',
     task: 'Draft a reply to the supplier. You must not disclose internal staffing matters.',
     rubric: [
@@ -5521,7 +5644,7 @@ window.ALL_QUESTIONS.push(
     exp: 'Confidentiality applies to internal matters as well as customer data. "Awaiting internal authorisation" is honest and sufficient; naming an absent colleague is neither necessary nor appropriate.' },
 
   /* ── Task 7 shape: bookkeeping systems, receipts, payments, data security ── */
-  { id: 'wr-009', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-tech', marks: 8, minWords: 70,
+  { id: 'wr-009', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-tech', marks: 8, minWords: 70, criteria: ['BESY-6.2', 'BESY-7.2'],
     setup: 'You work at Haslingden Supplies Ltd. A colleague has emailed you a spreadsheet containing the full customer list — names, addresses, phone numbers and bank details — to their personal webmail account so they can "work on it at home this weekend". They have asked you to do the same with the supplier list.',
     task: 'Draft a reply explaining why you will not do this and what the risks are.',
     rubric: [
@@ -5534,7 +5657,7 @@ window.ALL_QUESTIONS.push(
     modelAnswer: 'Hi,\n\nI am not able to send you the supplier list that way, and I would ask you not to send any more of our data to a personal account.\n\nThe customer list contains personal data — names, addresses, phone numbers — plus bank details. Sending it to a personal webmail account is a data breach risk under data protection law, and we could be liable for it.\n\nThe specific problems are that the transfer is not encrypted or controlled by us; once it is in a personal account we have no way of knowing who can access it or how long it is retained; and if the home device is lost, stolen or shared, that data goes with it.\n\nIf you need to work at the weekend, please use the approved remote access to our systems, where the data stays on company servers and access is logged.\n\nOne more thing: the email you have already sent should be reported to our data protection lead so it can be assessed and, if necessary, recorded. I would rather flag it now than have it found later.\n\nThanks',
     exp: 'Data security answers should name the risk, the specific harms and the compliant alternative. Reporting a breach that has already happened is part of the answer — concealing it makes the position worse.' },
 
-  { id: 'wr-010', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-tech', marks: 6, minWords: 60,
+  { id: 'wr-010', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-tech', marks: 6, minWords: 60, criteria: ['BESY-6.2', 'BESY-7.2'],
     setup: 'You are an accounts assistant at Brindley Motors. An email has arrived, apparently from a regular supplier, saying their bank details have changed and asking that the £4,800 payment due this week be sent to a new account. The email address is very similar to the supplier\'s usual one but not identical, and the message stresses urgency.',
     task: 'Draft a note to your manager setting out your concerns and what you propose to do.',
     rubric: [
@@ -5546,7 +5669,7 @@ window.ALL_QUESTIONS.push(
     modelAnswer: 'Note to manager — suspected mandate fraud\n\nWe have received an email asking us to redirect this week\'s £4,800 payment to a new bank account. I think this is a mandate fraud attempt.\n\nThree things concern me. The sender\'s address is very close to the supplier\'s usual one but is not identical. The request stresses urgency, which is a standard pressure tactic. And a change of bank details has arrived unprompted, immediately before a known payment falls due.\n\nI propose we hold the payment until we have verified the change. I will telephone the supplier on the number we already hold on file — not any number given in the email — and speak to a known contact to confirm whether the request is genuine.\n\nI will not amend the supplier record until that call is made.\n\nAccounts Assistant',
     exp: 'The rule is: never verify a change of bank details using contact details supplied in the same message. Independent verification against records you already hold is the control that defeats this fraud.' },
 
-  { id: 'wr-011', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-tech', marks: 6, minWords: 60,
+  { id: 'wr-011', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-tech', marks: 6, minWords: 60, criteria: ['BESY-7.1', 'BESY-7.2'],
     setup: 'You work at Dunham Textiles Ltd, which is moving its bookkeeping from a desktop package to a cloud accounting system. Your manager has asked you to summarise the benefits and the risks for a short briefing.',
     task: 'Draft a summary covering the main benefits and the main risks of the move.',
     rubric: [
@@ -5558,7 +5681,7 @@ window.ALL_QUESTIONS.push(
     modelAnswer: 'Cloud accounting — briefing summary\n\nBenefits. The data is accessible from any location with an internet connection, which suits remote and multi-site working. Backups and software updates are handled by the provider, so we are always on the current version and no longer depend on someone remembering to back up. Bank feeds import transactions automatically, which cuts manual entry and keying errors. Several people can work in the system at once.\n\nRisks. We become dependent on our internet connection — no connection means no access to the ledgers. Our data is held on a third party\'s servers, so we are relying on their security and their continuity. It moves us from a one-off licence to an ongoing subscription cost. And because the system is reachable from anywhere, weak passwords or over-generous access rights are more dangerous than they were on a desktop system.\n\nMitigations. I would recommend multi-factor authentication for all users, access rights set by role rather than given in full to everyone, and a check of the provider\'s data location and retention terms before we commit.\n\nAccounts Assistant',
     exp: 'A balanced answer earns more than an enthusiastic one. The examiner is looking for genuine risks alongside the benefits, and at least one concrete control.' },
 
-  { id: 'wr-012', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-tech', marks: 6, minWords: 60,
+  { id: 'wr-012', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-tech', marks: 6, minWords: 60, criteria: ['BESY-7.2'],
     setup: 'You are an accounts assistant at Kirkstall Engineering. The business has one shared login for the accounting system, and the password — written on a note by the printer — has not been changed for two years. Everyone in the office uses it, including temporary staff.',
     task: 'Draft a note to your manager explaining the risks and recommending improvements.',
     rubric: [
@@ -5570,7 +5693,7 @@ window.ALL_QUESTIONS.push(
     modelAnswer: 'Note: access controls on the accounting system\n\nWe currently have one shared login. I think this needs to change.\n\nThe most serious problem is that we have no audit trail. Every posting looks identical in the system, so if an entry is wrong — or deliberately falsified — there is no way to establish who made it. That removes both accountability and any real deterrent.\n\nThe password is also written on a note by the printer, so anyone passing through the office can read it, including visitors. It has not been changed in two years, and temporary staff who have long since left still know it.\n\nI recommend individual logins for every user, with access rights set by role so that staff can only reach the parts of the system their job requires. We should adopt a password policy with periodic changes, remove the written note, and make deactivating a login part of the leaver process for permanent and temporary staff alike.\n\nAccounts Assistant',
     exp: 'Shared logins destroy the audit trail, which is the point examiners want. Segregation of duties and accountability both depend on knowing which individual made each entry.' },
 
-  { id: 'wr-013', topic: 'besy', difficulty: 'hard', type: 'written', skill: 'besy-ethics', marks: 8, minWords: 80,
+  { id: 'wr-013', topic: 'besy', difficulty: 'hard', type: 'written', skill: 'besy-ethics', marks: 8, minWords: 80, criteria: ['BESY-6.2', 'BESY-3.3', 'BESY-3.4'],
     setup: 'You are an accounts assistant at Netherfield Ltd. Two days before the year end, your manager asks you to date three sales invoices totalling £27,000 as 31 March rather than 3 April, "so the figures land in the right year". The goods were despatched on 3 April.',
     task: 'Draft a note setting out your position and what you intend to do.',
     rubric: [
@@ -5583,7 +5706,7 @@ window.ALL_QUESTIONS.push(
     modelAnswer: 'Note: request to date April invoices as 31 March\n\nI am not able to date these invoices 31 March. The goods were despatched on 3 April, so the sales were earned in the new financial year and belong in it. Dating them 31 March would overstate this year\'s revenue by £27,000 and understate next year\'s by the same amount.\n\nThis is not a presentational judgement. Recording a transaction on a date it did not occur is falsification of the accounting records, and it would mislead anyone relying on the financial statements.\n\nIt also puts me in breach of two fundamental ethical principles. Integrity requires me to be straightforward and honest, and not to be knowingly associated with information that is materially false or misleading. Objectivity requires that my professional judgement is not overridden by pressure from others.\n\nI will therefore process the three invoices with their correct date of 3 April. If there is a commercial reason this year\'s figures need to be understood differently, I am happy to help prepare a note explaining the timing. If the request stands, I will need to raise it with the finance director.\n\nAccounts Assistant',
     exp: 'Ethics answers need the principle named and the action stated. Declining is not enough on its own — the expected response is to decline, explain, offer a legitimate alternative, and escalate if the pressure continues.' },
 
-  { id: 'wr-014', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-ethics', marks: 6, minWords: 60,
+  { id: 'wr-014', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-ethics', marks: 6, minWords: 60, criteria: ['BESY-3.3', 'BESY-3.4'],
     setup: 'You work at Sandbach Interiors. A supplier you deal with regularly has offered you a weekend break worth around £400 "as a thank you for the smooth working relationship". You are the person who decides which supplier gets the next contract.',
     task: 'Draft a reply to the supplier and note what you will do internally.',
     rubric: [
@@ -5595,7 +5718,7 @@ window.ALL_QUESTIONS.push(
     modelAnswer: 'Dear Supplier,\n\nThank you for the kind offer, which I am afraid I have to decline.\n\nI am the person who decides which supplier is awarded the next contract. Accepting a gift of this value from you while that decision is pending would create a clear threat to my objectivity, and it would be reasonable for anyone looking at it from outside to question whether the decision had been influenced.\n\nA small token of nominal value would be a different matter, but at around £400 this is not trivial, and the timing makes it more difficult still.\n\nI value the working relationship and it will not be affected by this. I will record the offer in our gifts and hospitality register and mention it to my manager, which is our normal process.\n\nKind regards,\nSandbach Interiors',
     exp: 'The test is whether an informed third party would consider objectivity compromised. Value and timing both matter, and declaring the offer — not just refusing it — is what the register exists for.' },
 
-  { id: 'wr-015', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-finance', marks: 6, minWords: 60,
+  { id: 'wr-015', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-finance', marks: 6, minWords: 60, criteria: ['BESY-6.2', 'BESY-5.2', 'BESY-7.1'],
     setup: 'You work in the finance function at Padgate Ltd. The operations manager has asked why the finance team needs their weekly output figures, saying "you do the money, we do the making".',
     task: 'Draft a reply explaining how the finance function uses operational information and why it benefits operations.',
     rubric: [
@@ -5607,7 +5730,7 @@ window.ALL_QUESTIONS.push(
     modelAnswer: 'Hi,\n\nFair question — here is why we ask.\n\nWe cannot cost what you produce without knowing how much of it there is. Weekly output figures let us work out the cost per unit, which feeds directly into the price we quote and the margin we make.\n\nThey are also used in a few other places. We use them to build and flex the budget, so that when we compare actual against budget we are comparing like with like rather than penalising you for producing more. They drive variance analysis, which tells us whether a cost movement came from price or from volume. And they underpin the inventory valuation in the year-end accounts.\n\nThe benefit is not one-way. Better output data means the budget you are measured against is realistic, and it means that when you ask for investment we can evidence the case with real numbers rather than estimates.\n\nHappy to walk through what we do with them if that would be useful.\n\nThanks,\nFinance',
     exp: 'The finance function is a service function. Answers score best when they show the two-way flow — finance needs operational data, and operations gets better budgets and evidence in return.' },
 
-  { id: 'wr-016', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-finance', marks: 6, minWords: 60,
+  { id: 'wr-016', topic: 'besy', difficulty: 'medium', type: 'written', skill: 'besy-finance', marks: 6, minWords: 60, criteria: ['BESY-6.2', 'BESY-4.2'],
     setup: 'You are an accounts assistant at Wetherby Components Ltd, a limited company. A new colleague has asked why the business has to file accounts at Companies House when "the tax people already get everything they need".',
     task: 'Draft an explanation covering who receives what and why.',
     rubric: [
@@ -5631,7 +5754,7 @@ window.ALL_QUESTIONS.push(
    ──────────────────────────────────────────────────────────────────────── */
 window.ALL_QUESTIONS.push(
 
-  { id: 'tfq-001', topic: 'besy', difficulty: 'easy', type: 'truefalse', skill: 'besy-structure',
+  { id: 'tfq-001', topic: 'besy', difficulty: 'easy', type: 'truefalse', skill: 'besy-structure', criteria: ['BESY-4.1'],
     q: 'Identify whether the following statements about charities are true or false.',
     statements: [
       { text: 'A charity exists for public benefit, such as for religious, educational or scientific purposes.', answer: true },
@@ -5641,7 +5764,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Two of these are false. Charities are generally exempt from corporation tax on income applied to charitable purposes, so the tax statement is wrong. And a charity may certainly run a surplus — what it must not do is distribute it to trustees or members, because the surplus has to be applied to the charitable purposes.' },
 
-  { id: 'tfq-002', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-structure',
+  { id: 'tfq-002', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-structure', criteria: ['BESY-4.1', 'BESY-4.2'],
     q: 'Identify whether the following statements about limited companies are true or false.',
     statements: [
       { text: 'A limited company has a separate legal personality from its shareholders.', answer: true },
@@ -5651,7 +5774,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Two are false. Shareholders have LIMITED liability: they risk only what they paid for their shares. And separate legal personality gives the company perpetual succession — it continues to exist however often its shares change hands, which is exactly what makes shares saleable.' },
 
-  { id: 'tfq-003', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-structure',
+  { id: 'tfq-003', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-structure', criteria: ['BESY-4.1', 'BESY-4.2'],
     q: 'Identify whether the following statements about sole traders and partnerships are true or false.',
     statements: [
       { text: 'A sole trader is personally liable for the debts of the business without limit.', answer: true },
@@ -5661,7 +5784,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Two are false. An ordinary partnership is not a separate legal person, which is why its partners are personally liable; an LLP is, which is why it must file accounts publicly. And with no written agreement the Partnership Act 1890 shares profits EQUALLY, regardless of what each partner put in.' },
 
-  { id: 'tfq-004', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-law',
+  { id: 'tfq-004', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-law', criteria: ['BESY-1.3'],
     q: 'Identify whether the following statements about contract law are true or false.',
     statements: [
       { text: 'Goods displayed in a shop window with a price ticket constitute an offer that the customer can accept.', answer: false },
@@ -5671,7 +5794,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Goods on display are an invitation to treat, not an offer: the customer makes the offer at the till and the retailer may decline it. That is the classic trap in this topic.' },
 
-  { id: 'tfq-005', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-law',
+  { id: 'tfq-005', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-law', criteria: ['BESY-1.1', 'BESY-1.2'],
     q: 'Identify whether the following statements about the English legal system are true or false.',
     statements: [
       { text: 'Common law is developed by judges through their decisions in individual cases.', answer: true },
@@ -5681,7 +5804,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Two are false. Criminal law concerns offences against the state and is prosecuted by the state, whereas disputes between private parties are civil law. And delegated legislation exists precisely to AVOID a new Act each time: Parliament grants authority for the detail to be set by statutory instrument.' },
 
-  { id: 'tfq-006', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-ethics',
+  { id: 'tfq-006', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-ethics', criteria: ['BESY-3.3'],
     q: 'Identify whether the following statements about professional ethics are true or false.',
     statements: [
       { text: 'Confidentiality means client information may never be disclosed under any circumstances.', answer: false },
@@ -5691,7 +5814,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Confidentiality has limits: disclosure is required where there is a legal or professional duty, such as a suspicion of money laundering. Treating it as absolute is the common error.' },
 
-  { id: 'tfq-007', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-ethics',
+  { id: 'tfq-007', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-ethics', criteria: ['BESY-3.1', 'BESY-3.2'],
     q: 'Identify whether the following statements about sustainability and corporate social responsibility are true or false.',
     statements: [
       { text: 'Sustainable development meets the needs of the present without compromising the ability of future generations to meet their own needs.', answer: true },
@@ -5701,7 +5824,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'CSR is voluntary — it is a business choice, not a statutory obligation, though some reporting requirements do apply to larger companies. Do not confuse a widely adopted practice with a legal duty.' },
 
-  { id: 'tfq-008', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-finance',
+  { id: 'tfq-008', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-finance', criteria: ['BESY-5.2', 'BESY-5.3'],
     q: 'Identify whether the following statements about the finance function are true or false.',
     statements: [
       { text: 'The finance function provides information that supports decision-making across the whole organisation.', answer: true },
@@ -5711,7 +5834,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Two are false. Management accounts are internal, so their format is whatever management finds useful — no statutory format applies to them. And segregation of duties is the opposite of one person handling a transaction throughout: splitting the work is what stops a single person both causing an error and concealing it.' },
 
-  { id: 'tfq-009', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-finance',
+  { id: 'tfq-009', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-finance', criteria: ['BESY-6.1', 'BESY-7.1'],
     q: 'Identify whether the following statements about the finance function\'s information sources are true or false.',
     statements: [
       { text: 'Internal information includes payroll records, sales day books and production output data.', answer: true },
@@ -5721,7 +5844,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Non-financial information such as output volumes, staff turnover and customer complaints matters just as much; the finance function converts it into cost and performance measures.' },
 
-  { id: 'tfq-010', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-tech',
+  { id: 'tfq-010', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-tech', criteria: ['BESY-7.2'],
     q: 'Identify whether the following statements about data security are true or false.',
     statements: [
       { text: 'A shared login used by several staff removes the audit trail showing who made each entry.', answer: true },
@@ -5731,7 +5854,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Two are false. Phishing is social engineering — it deceives a person into revealing credentials rather than attacking hardware. And access should follow least privilege, granted according to what a role actually requires: blanket access for everyone removes the protection altogether.' },
 
-  { id: 'tfq-011', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-tech',
+  { id: 'tfq-011', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-tech', criteria: ['BESY-7.1', 'BESY-7.2'],
     q: 'Identify whether the following statements about accounting software and technology are true or false.',
     statements: [
       { text: 'Cloud accounting allows several users to work in the same ledgers at the same time.', answer: true },
@@ -5741,7 +5864,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Cloud systems make access control more important, not less: the ledgers are reachable from anywhere, so weak passwords and over-broad rights carry more risk than on an isolated desktop machine.' },
 
-  { id: 'tfq-012', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-comms',
+  { id: 'tfq-012', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-comms', criteria: ['BESY-6.2'],
     q: 'Identify whether the following statements about business communication are true or false.',
     statements: [
       { text: 'An email to an external customer about an account discrepancy should state the amount in question.', answer: true },
@@ -5751,7 +5874,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Match the register to the audience. Writing to a non-finance colleague means explaining terms rather than assuming them — clarity is what earns the communication marks.' },
 
-  { id: 'tfq-013', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-econ',
+  { id: 'tfq-013', topic: 'besy', difficulty: 'medium', type: 'truefalse', skill: 'besy-econ', criteria: ['BESY-2.1', 'BESY-2.2'],
     q: 'Identify whether the following statements about the external business environment are true or false.',
     statements: [
       { text: 'The Bank of England is responsible for monetary policy, including setting the base rate.', answer: true },
@@ -5761,7 +5884,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Two are false. Monetary policy is the Bank of England’s and fiscal policy the government’s — swapping the two is the most frequently penalised error in this topic. And inelastic demand means quantity responds LESS than proportionately to a price change, which is why a price rise increases total revenue.' },
 
-  { id: 'tfq-014', topic: 'itbk', difficulty: 'easy', type: 'truefalse', skill: 'itbk-docs',
+  { id: 'tfq-014', topic: 'itbk', difficulty: 'easy', type: 'truefalse', skill: 'itbk-docs', criteria: ['ITBK-1.1'],
     q: 'Identify whether the following statements about source documents are true or false.',
     statements: [
       { text: 'A purchase order is sent by the buyer to the supplier to request goods.', answer: true },
@@ -5771,7 +5894,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'A goods received note is an internal document confirming that goods arrived and were checked. The document requesting payment is the sales invoice.' },
 
-  { id: 'tfq-015', topic: 'itbk', difficulty: 'medium', type: 'truefalse', skill: 'itbk-vat',
+  { id: 'tfq-015', topic: 'itbk', difficulty: 'medium', type: 'truefalse', skill: 'itbk-vat', criteria: ['ITBK-2.1', 'POBC-1.1'],
     q: 'Identify whether the following statements about VAT are true or false.',
     statements: [
       { text: 'Output VAT is charged on sales; input VAT is incurred on purchases.', answer: true },
@@ -5781,7 +5904,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Only registered businesses reclaim input VAT. For an unregistered business the VAT is simply part of the cost. Gross ÷ 6 works because gross = net × 1.2, so VAT = gross × (0.2/1.2).' },
 
-  { id: 'tfq-016', topic: 'pobc', difficulty: 'medium', type: 'truefalse', skill: 'pobc-ca',
+  { id: 'tfq-016', topic: 'pobc', difficulty: 'medium', type: 'truefalse', skill: 'pobc-ca', criteria: ['POBC-1.1'],
     q: 'Identify whether the following statements about control accounts are true or false.',
     statements: [
       { text: 'The sales ledger control account total should agree with the sum of the individual customer balances.', answer: true },
@@ -5791,7 +5914,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Two are false. The subsidiary ledgers sit outside the double entry, so an error in one customer’s account does not unbalance the trial balance — which is precisely why the control account reconciliation exists. And a contra entry offsets a party who is both customer and supplier, so it REDUCES both control accounts.' },
 
-  { id: 'tfq-017', topic: 'pobc', difficulty: 'medium', type: 'truefalse', skill: 'pobc-bankrec',
+  { id: 'tfq-017', topic: 'pobc', difficulty: 'medium', type: 'truefalse', skill: 'pobc-bankrec', criteria: ['POBC-2.3'],
     q: 'Identify whether the following statements about bank reconciliation are true or false.',
     statements: [
       { text: 'Unpresented cheques are a timing difference and need no adjustment in the cash book.', answer: true },
@@ -5812,7 +5935,7 @@ window.ALL_QUESTIONS.push(
    ──────────────────────────────────────────────────────────────────────── */
 window.ALL_QUESTIONS.push(
 
-  { id: 'ms-001', topic: 'besy', difficulty: 'medium', type: 'multiselect', skill: 'besy-law', selectCount: 2,
+  { id: 'ms-001', topic: 'besy', difficulty: 'medium', type: 'multiselect', skill: 'besy-law', selectCount: 2, criteria: ['BESY-1.1'],
     q: 'Which TWO of the following statements about common law are NOT correct?',
     opts: [
       'It is the body of law developed by judges through their determination of individual cases',
@@ -5823,7 +5946,7 @@ window.ALL_QUESTIONS.push(
     answers: [1, 3],
     exp: 'Law created by Parliament is statute law, not common law. And where the two conflict, statute always prevails — the courts cannot question the validity of an Act of Parliament.' },
 
-  { id: 'ms-002', topic: 'besy', difficulty: 'medium', type: 'multiselect', skill: 'besy-law', selectCount: 2,
+  { id: 'ms-002', topic: 'besy', difficulty: 'medium', type: 'multiselect', skill: 'besy-law', selectCount: 2, criteria: ['BESY-1.3'],
     q: 'Which TWO of the following are essential elements required for a legally binding contract?',
     opts: [
       'Consideration passing between the parties to the agreement',
@@ -5834,7 +5957,7 @@ window.ALL_QUESTIONS.push(
     answers: [0, 1],
     exp: 'Offer, acceptance, consideration and intention to create legal relations are the essentials. Most contracts need no writing, witness or legal approval at all — a verbal agreement can bind.' },
 
-  { id: 'ms-003', topic: 'besy', difficulty: 'medium', type: 'multiselect', skill: 'besy-ethics', selectCount: 2,
+  { id: 'ms-003', topic: 'besy', difficulty: 'medium', type: 'multiselect', skill: 'besy-ethics', selectCount: 2, criteria: ['BESY-3.3'],
     q: 'Which TWO of the following are fundamental principles in the AAT Code of Professional Ethics?',
     opts: [
       'Objectivity — not allowing bias or undue influence to override professional judgement',
@@ -5845,7 +5968,7 @@ window.ALL_QUESTIONS.push(
     answers: [0, 1],
     exp: 'The five principles are integrity, objectivity, professional competence and due care, confidentiality, and professional behaviour. Deferring to seniority is the opposite of objectivity.' },
 
-  { id: 'ms-004', topic: 'besy', difficulty: 'medium', type: 'multiselect', skill: 'besy-ethics', selectCount: 2,
+  { id: 'ms-004', topic: 'besy', difficulty: 'medium', type: 'multiselect', skill: 'besy-ethics', selectCount: 2, criteria: ['BESY-3.3'],
     q: 'An accountant is offered a significant gift by a supplier whose contract they are about to review. Which TWO threats to the fundamental principles does this most clearly create?',
     opts: [
       'A self-interest threat, because a financial benefit could influence the accountant\'s judgement',
@@ -5856,7 +5979,7 @@ window.ALL_QUESTIONS.push(
     answers: [0, 1],
     exp: 'Advocacy concerns promoting a client\'s position; self-review concerns reassessing your own earlier work. Neither applies to accepting a gift — the threats here are self-interest and familiarity.' },
 
-  { id: 'ms-005', topic: 'besy', difficulty: 'medium', type: 'multiselect', skill: 'besy-structure', selectCount: 2,
+  { id: 'ms-005', topic: 'besy', difficulty: 'medium', type: 'multiselect', skill: 'besy-structure', selectCount: 2, criteria: ['BESY-4.1'],
     q: 'Which TWO of the following business types give their owners limited liability?',
     opts: [
       'A private limited company incorporated at Companies House',
@@ -5867,7 +5990,7 @@ window.ALL_QUESTIONS.push(
     answers: [0, 1],
     exp: 'Limited liability requires incorporation. A trading name changes nothing about a sole trader\'s legal position, and ordinary partners remain jointly liable without limit.' },
 
-  { id: 'ms-006', topic: 'besy', difficulty: 'medium', type: 'multiselect', skill: 'besy-tech', selectCount: 2,
+  { id: 'ms-006', topic: 'besy', difficulty: 'medium', type: 'multiselect', skill: 'besy-tech', selectCount: 2, criteria: ['BESY-7.2'],
     q: 'Which TWO of the following are the strongest indicators that an email requesting a change of supplier bank details may be fraudulent?',
     opts: [
       'The sender\'s address is very similar to the supplier\'s usual address but not identical',
@@ -5878,7 +6001,7 @@ window.ALL_QUESTIONS.push(
     answers: [0, 1],
     exp: 'A near-miss sender address and manufactured urgency are the classic mandate-fraud signals. Arriving in working hours is unremarkable, and quoting a genuine invoice number is easily done from a compromised mailbox — it is not reassurance.' },
 
-  { id: 'ms-007', topic: 'besy', difficulty: 'medium', type: 'multiselect', skill: 'besy-finance', selectCount: 2,
+  { id: 'ms-007', topic: 'besy', difficulty: 'medium', type: 'multiselect', skill: 'besy-finance', selectCount: 2, criteria: ['BESY-6.1', 'BESY-7.1'],
     q: 'Which TWO of the following are internal sources of information for the finance function?',
     opts: [
       'The payroll records showing hours worked and wages paid in the period',
@@ -5889,7 +6012,7 @@ window.ALL_QUESTIONS.push(
     answers: [0, 1],
     exp: 'Internal information is generated by the organisation\'s own systems. Base rates and competitor pricing come from outside it, however routinely they are monitored.' },
 
-  { id: 'ms-008', topic: 'besy', difficulty: 'medium', type: 'multiselect', skill: 'besy-econ', selectCount: 2,
+  { id: 'ms-008', topic: 'besy', difficulty: 'medium', type: 'multiselect', skill: 'besy-econ', selectCount: 2, criteria: ['BESY-2.2'],
     q: 'Which TWO of the following would normally be expected during a period of rising inflation?',
     opts: [
       'Suppliers increase their prices, raising the cost of the business\'s purchases',
@@ -5900,7 +6023,7 @@ window.ALL_QUESTIONS.push(
     answers: [0, 1],
     exp: 'Inflation erodes the purchasing power of cash rather than increasing it, and the usual monetary response to rising inflation is to raise the base rate, not cut it.' },
 
-  { id: 'ms-009', topic: 'besy', difficulty: 'medium', type: 'multiselect', skill: 'besy-comms', selectCount: 2,
+  { id: 'ms-009', topic: 'besy', difficulty: 'medium', type: 'multiselect', skill: 'besy-comms', selectCount: 2, criteria: ['BESY-6.2'],
     q: 'You must tell a credit customer that their account has exceeded its limit. Which TWO of the following should the email do?',
     opts: [
       'State the current balance and the agreed credit limit so the customer can see the difference',
@@ -5911,7 +6034,7 @@ window.ALL_QUESTIONS.push(
     answers: [0, 1],
     exp: 'Give the figures and the route forward. Naming internal decision-makers is unnecessary, and disclosing a customer\'s payment position to third parties breaches confidentiality.' },
 
-  { id: 'ms-010', topic: 'itbk', difficulty: 'medium', type: 'multiselect', skill: 'itbk-docs', selectCount: 2,
+  { id: 'ms-010', topic: 'itbk', difficulty: 'medium', type: 'multiselect', skill: 'itbk-docs', selectCount: 2, criteria: ['ITBK-3.1'],
     q: 'Which TWO documents should be matched against a purchase invoice before it is authorised for payment?',
     opts: [
       'The purchase order confirming the goods were ordered and at what price',
@@ -5922,7 +6045,7 @@ window.ALL_QUESTIONS.push(
     answers: [0, 1],
     exp: 'This is the three-way match: purchase order, goods received note and invoice. A remittance advice relates to payments already made, and a statement is a reconciliation tool rather than an authorisation control.' },
 
-  { id: 'ms-011', topic: 'pobc', difficulty: 'medium', type: 'multiselect', skill: 'pobc-errors', selectCount: 2,
+  { id: 'ms-011', topic: 'pobc', difficulty: 'medium', type: 'multiselect', skill: 'pobc-errors', selectCount: 2, criteria: ['POBC-3.2'],
     q: 'Which TWO of the following errors would cause the trial balance to disagree?',
     opts: [
       'A purchase of £450 debited to the purchases account but not credited to the payables account',
@@ -5933,7 +6056,7 @@ window.ALL_QUESTIONS.push(
     answers: [0, 1],
     exp: 'One-sided entries and transposition on one side only break the balance. An error of principle (right amount, wrong account) and a complete omission both leave the debits and credits equal.' },
 
-  { id: 'ms-012', topic: 'pobc', difficulty: 'medium', type: 'multiselect', skill: 'pobc-bankrec', selectCount: 2,
+  { id: 'ms-012', topic: 'pobc', difficulty: 'medium', type: 'multiselect', skill: 'pobc-bankrec', selectCount: 2, criteria: ['POBC-2.2'],
     q: 'Which TWO items require an adjustment to the cash book during a bank reconciliation?',
     opts: [
       'Bank charges shown on the statement that have not been recorded in the cash book',
@@ -5956,7 +6079,7 @@ window.ALL_QUESTIONS.push(
    ──────────────────────────────────────────────────────────────────────── */
 window.ALL_QUESTIONS.push(
 
-  { id: 'besy-301', topic: 'besy', difficulty: 'medium', skill: 'besy-finance',
+  { id: 'besy-301', topic: 'besy', difficulty: 'medium', skill: 'besy-finance', criteria: ['BESY-5.2'],
     q: 'What is the primary purpose of the finance function within an organisation?',
     opts: [
       'To record financial transactions and provide information that supports decision-making',
@@ -5967,7 +6090,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'Finance is a service function: it records what happened and turns it into information others can act on. Maximising reported profit is not its purpose, and purchasing negotiation belongs to procurement.' },
 
-  { id: 'besy-302', topic: 'besy', difficulty: 'medium', skill: 'besy-finance',
+  { id: 'besy-302', topic: 'besy', difficulty: 'medium', skill: 'besy-finance', criteria: ['BESY-5.2'],
     q: 'Which of the following best distinguishes financial accounting from management accounting?',
     opts: [
       'Financial accounting reports to external users in a regulated format; management accounting reports internally in any useful format',
@@ -5978,7 +6101,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'The split is audience and regulation. Financial accounts serve shareholders, lenders and HMRC in a prescribed form; management accounts serve internal decision-makers in whatever form helps.' },
 
-  { id: 'besy-303', topic: 'besy', difficulty: 'medium', skill: 'besy-finance',
+  { id: 'besy-303', topic: 'besy', difficulty: 'medium', skill: 'besy-finance', criteria: ['BESY-7.1'],
     q: 'Why does the finance function need non-financial information such as production output volumes?',
     opts: [
       'Because costs cannot be attributed to units of output without knowing how many units were produced',
@@ -5989,7 +6112,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'Unit costing, budget flexing and inventory valuation all depend on volume data. It is an input to the numbers, not a disclosure requirement or a substitute for the ledgers.' },
 
-  { id: 'besy-304', topic: 'besy', difficulty: 'medium', skill: 'besy-finance',
+  { id: 'besy-304', topic: 'besy', difficulty: 'medium', skill: 'besy-finance', criteria: ['BESY-5.3'],
     q: 'What is the main control benefit of segregating duties within the finance function?',
     opts: [
       'No single individual can both perpetrate an error or fraud and conceal it in the normal course of their work',
@@ -6000,7 +6123,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'Segregation works by requiring collusion. It typically needs more people rather than fewer, and it complements reconciliations rather than replacing them.' },
 
-  { id: 'besy-305', topic: 'besy', difficulty: 'medium', skill: 'besy-finance',
+  { id: 'besy-305', topic: 'besy', difficulty: 'medium', skill: 'besy-finance', criteria: ['BESY-4.2'],
     q: 'A business submits its annual accounts to Companies House. What is the primary purpose of this filing?',
     opts: [
       'To place the company\'s financial position on the public record in exchange for limited liability',
@@ -6011,7 +6134,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'Companies House filings are the public-transparency counterpart of limited liability. Tax is settled with HMRC, and PAYE registration is a separate HMRC process.' },
 
-  { id: 'besy-306', topic: 'besy', difficulty: 'medium', skill: 'besy-finance',
+  { id: 'besy-306', topic: 'besy', difficulty: 'medium', skill: 'besy-finance', criteria: ['BESY-5.2'],
     q: 'Which of the following best describes the relationship between the finance function and other departments?',
     opts: [
       'Finance depends on operational data from other departments and returns analysis those departments can act on',
@@ -6022,7 +6145,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'The flow runs both ways. Finance cannot cost or budget without operational data, and the departments supplying it get realistic budgets and evidence in return.' },
 
-  { id: 'besy-307', topic: 'besy', difficulty: 'easy', skill: 'besy-finance',
+  { id: 'besy-307', topic: 'besy', difficulty: 'easy', skill: 'besy-finance', criteria: ['BESY-4.2'],
     q: 'Which external body is responsible for collecting corporation tax and VAT from UK businesses?',
     opts: [
       'HM Revenue and Customs, the UK government department responsible for tax collection',
@@ -6033,7 +6156,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'HMRC collects tax. Companies House registers companies, the FCA regulates financial services, and the Bank of England runs monetary policy — none of them collect tax.' },
 
-  { id: 'besy-308', topic: 'besy', difficulty: 'medium', skill: 'besy-finance',
+  { id: 'besy-308', topic: 'besy', difficulty: 'medium', skill: 'besy-finance', criteria: ['BESY-7.1'],
     q: 'The finance function produces a monthly report three weeks after the month end. What quality of useful information does this most clearly fail?',
     opts: [
       'Timeliness — information produced too late to influence a decision has little practical value',
@@ -6044,7 +6167,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'Timeliness is the failing: the figures may be entirely accurate and complete, but if the decision has already been made the report cannot influence it.' },
 
-  { id: 'besy-309', topic: 'besy', difficulty: 'medium', skill: 'besy-finance',
+  { id: 'besy-309', topic: 'besy', difficulty: 'medium', skill: 'besy-finance', criteria: ['BESY-7.1'],
     q: 'Why is a budget prepared before the start of an accounting period?',
     opts: [
       'To set a financial plan against which actual performance can later be compared',
@@ -6055,7 +6178,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'A budget is a plan and a control benchmark. It is not the reported result, not a tax computation, and not a legal publication requirement.' },
 
-  { id: 'besy-310', topic: 'besy', difficulty: 'medium', skill: 'besy-finance',
+  { id: 'besy-310', topic: 'besy', difficulty: 'medium', skill: 'besy-finance', criteria: ['BESY-5.2'],
     q: 'Which of the following is a responsibility of the credit control function within finance?',
     opts: [
       'Monitoring customer balances against agreed limits and pursuing amounts that fall overdue',
@@ -6066,7 +6189,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'Credit control manages the receivables risk. Pricing is a commercial decision, and depreciation and payroll sit elsewhere in the finance function.' },
 
-  { id: 'besy-311', topic: 'besy', difficulty: 'medium', skill: 'besy-comms',
+  { id: 'besy-311', topic: 'besy', difficulty: 'medium', skill: 'besy-comms', criteria: ['BESY-6.2'],
     q: 'You need to explain a bookkeeping discrepancy to a colleague outside the finance team. Which approach is most appropriate?',
     opts: [
       'Explain the cause and the effect in plain language, defining any technical terms you must use',
@@ -6077,7 +6200,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'Communication marks are awarded for being understood. Unexplained jargon, raw data and omitted causes all fail that test even when the underlying accounting is right.' },
 
-  { id: 'besy-312', topic: 'besy', difficulty: 'medium', skill: 'besy-comms',
+  { id: 'besy-312', topic: 'besy', difficulty: 'medium', skill: 'besy-comms', criteria: ['BESY-6.2'],
     q: 'A supplier telephones to chase an invoice that is awaiting internal authorisation. What should you tell them?',
     opts: [
       'That the invoice has been received and is going through authorisation, with a realistic date for payment',
@@ -6088,7 +6211,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'Be honest and specific without disclosing internal staffing matters. Inventing a lost invoice is dishonest, and naming an absent colleague breaches confidentiality unnecessarily.' },
 
-  { id: 'besy-313', topic: 'besy', difficulty: 'medium', skill: 'besy-comms',
+  { id: 'besy-313', topic: 'besy', difficulty: 'medium', skill: 'besy-comms', criteria: ['BESY-6.2'],
     q: 'Which communication medium is most appropriate for formally notifying a customer that legal proceedings may follow non-payment?',
     opts: [
       'A formal letter, which creates a dated written record appropriate to the seriousness of the notice',
@@ -6099,7 +6222,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'Match the medium to the gravity and to the need for evidence. A formal notice needs a dated, retrievable written record; the other three either lack formality or lack proof of service.' },
 
-  { id: 'besy-314', topic: 'besy', difficulty: 'medium', skill: 'besy-comms',
+  { id: 'besy-314', topic: 'besy', difficulty: 'medium', skill: 'besy-comms', criteria: ['BESY-6.2'],
     q: 'What should an email reporting a month-end variance to a department manager contain?',
     opts: [
       'The size of the variance, its likely cause, and what action is proposed or requested',
@@ -6110,7 +6233,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'Figure, cause, action is the structure that earns communication marks. A transaction dump shifts the analytical work back onto the reader.' },
 
-  { id: 'besy-315', topic: 'besy', difficulty: 'medium', skill: 'besy-comms',
+  { id: 'besy-315', topic: 'besy', difficulty: 'medium', skill: 'besy-comms', criteria: ['BESY-6.2'],
     q: 'When writing to an external customer about an error made by your own organisation, what tone is most appropriate?',
     opts: [
       'Professional and factual, acknowledging the error and stating clearly how it will be put right',
@@ -6121,7 +6244,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'Acknowledge, quantify, commit. Defensiveness and vagueness both damage the relationship the communication is meant to protect.' },
 
-  { id: 'besy-316', topic: 'besy', difficulty: 'medium', skill: 'besy-comms',
+  { id: 'besy-316', topic: 'besy', difficulty: 'medium', skill: 'besy-comms', criteria: ['BESY-6.2'],
     q: 'Why should an email about an account discrepancy state the specific amount in question?',
     opts: [
       'It allows the recipient to identify the transaction and check it against their own records',
@@ -6132,7 +6255,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'Precision makes the message actionable — the recipient can find the item. None of the other three describe a real effect of stating a figure.' },
 
-  { id: 'besy-317', topic: 'besy', difficulty: 'medium', skill: 'besy-tech',
+  { id: 'besy-317', topic: 'besy', difficulty: 'medium', skill: 'besy-tech', criteria: ['BESY-7.2'],
     q: 'What is the main risk created by staff sharing a single login to the accounting system?',
     opts: [
       'The audit trail cannot identify which individual made any given entry in the ledgers',
@@ -6143,7 +6266,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'Accountability is the casualty. Without individual logins there is no way to attribute an entry, which undermines both segregation of duties and any investigation.' },
 
-  { id: 'besy-318', topic: 'besy', difficulty: 'medium', skill: 'besy-tech',
+  { id: 'besy-318', topic: 'besy', difficulty: 'medium', skill: 'besy-tech', criteria: ['BESY-7.2'],
     q: 'A business backs up its accounting data daily to a separate location. Which aspect of information security does this primarily protect?',
     opts: [
       'Availability — the data can still be recovered and used if the original is lost or corrupted',
@@ -6154,7 +6277,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'Backups address availability. Confidentiality is handled by access controls and encryption; integrity by validation and audit trails.' },
 
-  { id: 'besy-319', topic: 'besy', difficulty: 'medium', skill: 'besy-tech',
+  { id: 'besy-319', topic: 'besy', difficulty: 'medium', skill: 'besy-tech', criteria: ['BESY-7.2'],
     q: 'What is phishing?',
     opts: [
       'An attempt to deceive a person into revealing credentials or making a payment, usually by email',
@@ -6165,7 +6288,7 @@ window.ALL_QUESTIONS.push(
     ans: 0,
     exp: 'Phishing is social engineering — it targets the person, not the system, which is why staff awareness is the primary control against it.' },
 
-  { id: 'besy-320', topic: 'besy', difficulty: 'medium', skill: 'besy-tech',
+  { id: 'besy-320', topic: 'besy', difficulty: 'medium', skill: 'besy-tech', criteria: ['BESY-7.2'],
     q: 'Which of the following is a genuine risk of moving from a desktop accounting package to a cloud system?',
     opts: [
       'Access to the ledgers depends on an internet connection and on a third party\'s continuity',
@@ -6188,7 +6311,7 @@ window.ALL_QUESTIONS.push(
    ──────────────────────────────────────────────────────────────────────── */
 window.ALL_QUESTIONS.push(
 
-  { id: 'sc-051', topic: 'synoptic', difficulty: 'medium', type: 'scenario', skill: 'besy-comms',
+  { id: 'sc-051', topic: 'synoptic', difficulty: 'medium', type: 'scenario', skill: 'besy-comms', criteria: ['ITBK-2.1', 'ITBK-2.2', 'BESY-6.2'],
     setup: 'You are an accounts assistant at Foxglove Interiors Ltd, a VAT-registered company. On 12 May the business sells goods on credit to Marchmont Design for £1,600 plus VAT at 20%. On 19 May Marchmont returns goods with a net value of £200 and a credit note is issued. On 30 May Marchmont pays the balance in full by bank transfer.',
     parts: [
       { type: 'mcq', q: 'What is the double entry for the sale on 12 May?',
@@ -6214,7 +6337,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'This mirrors synoptic Task 4: process the transactions correctly, then explain the resulting balance to the customer in plain terms.' },
 
-  { id: 'sc-052', topic: 'synoptic', difficulty: 'hard', type: 'scenario', skill: 'besy-comms',
+  { id: 'sc-052', topic: 'synoptic', difficulty: 'hard', type: 'scenario', skill: 'besy-comms', criteria: ['POBC-1.2', 'BESY-6.2'],
     setup: 'You work at Glenmore Supplies Ltd. The purchase ledger control account shows £32,400 at 31 July. The total of the individual supplier accounts is £33,150. Investigation finds that a purchase invoice for £750 was entered in the purchase day book and posted to the supplier\'s individual account, but the day book total posted to the control account was understated by the same amount.',
     parts: [
       { type: 'numeric', q: 'What is the difference between the control account and the list of supplier balances?', answer: 750, unit: '£',
@@ -6246,7 +6369,7 @@ window.ALL_QUESTIONS.push(
     ],
     exp: 'Synoptic Task 5 shape combined with Task 4 communication: reconcile the control account, then report the reconciliation clearly.' },
 
-  { id: 'sc-053', topic: 'synoptic', difficulty: 'medium', type: 'scenario', skill: 'besy-tech',
+  { id: 'sc-053', topic: 'synoptic', difficulty: 'medium', type: 'scenario', skill: 'besy-tech', criteria: ['BESY-7.2'],
     setup: 'You are an accounts assistant at Rowan Fabrications Ltd. While processing the weekly payment run you notice that a supplier record was amended two days ago to change the bank account details. The amendment was made using the shared office login, and there is no supporting documentation on file. A payment of £8,400 to that supplier is due today.',
     parts: [
       { type: 'mcq', q: 'What is the most appropriate immediate action?',
@@ -7379,7 +7502,249 @@ window.ALL_QUESTIONS.push(
       'It cannot be attributed, so the publisher cannot be named in a report',
       'It was probably gathered for a different sector from the one that is being examined',
     ], ans: 0,
-    exp: 'A perfectly reliable statistic from four years ago can be badly wrong today, which is why the date matters as much as the publisher. The commonest failure in practice is not fabrication but staleness, and an undated figure is one you cannot defend.' }
+    exp: 'A perfectly reliable statistic from four years ago can be badly wrong today, which is why the date matters as much as the publisher. The commonest failure in practice is not fabrication but staleness, and an undated figure is one you cannot defend.' },
+
+  /* ── BESY-3.3  The fundamental principles of ethics ─────────────────── */
+
+  { id: 'besy-426', topic: 'besy', difficulty: 'medium', skill: 'besy-ethics', criteria: ['BESY-3.3'],
+    q: 'You prepare the accounts of a company in which your brother is a shareholder. Which fundamental principle is threatened?',
+    opts: [
+      'Objectivity, because a family interest may bias the judgements you make',
+      'Confidentiality, because a relative could learn the figures before they are published',
+      'Professional competence and due care, because family work needs a higher standard',
+      'Professional behaviour, because working for a relative brings the profession into disrepute',
+    ], ans: 0,
+    exp: 'Objectivity is the principle that your judgement must not be swayed by bias, conflict of interest or the influence of others. A family shareholding is a self-interest threat to exactly that. The work is not forbidden, but the threat has to be identified and safeguarded — by disclosure, or by someone else reviewing what you produce.' },
+
+  { id: 'besy-427', topic: 'besy', difficulty: 'medium', skill: 'besy-ethics', criteria: ['BESY-3.3'],
+    q: 'Your manager asks you to prepare a corporation tax computation, which you have never done and were not trained to do. What does the ethical code require?',
+    opts: [
+      'Say so and get training or supervision before the work is done',
+      'Attempt it, because refusing work assigned by a manager is unprofessional',
+      'Attempt it and add a note to the file recording that you were not trained',
+      'Decline permanently, because unfamiliar work may never be undertaken',
+    ], ans: 0,
+    exp: 'Professional competence and due care means working only where you have the knowledge and skill to do the job properly, and keeping that knowledge current. The answer is not a permanent refusal — it is saying so, then getting the training or the supervision. Recording the gap on the file does nothing to close it.' },
+
+  { id: 'besy-428', topic: 'besy', difficulty: 'medium', skill: 'besy-ethics', criteria: ['BESY-3.3'],
+    q: 'A friend at a social event asks how one of your employer’s customers is doing financially. What does confidentiality require?',
+    opts: [
+      'Say nothing about the customer, and do not use what you know for your own gain',
+      'Answer in general terms only, as long as no specific figures are mentioned',
+      'Answer freely, because the duty applies only to information marked confidential',
+      'Answer only if the friend agrees to keep what you tell them to themselves',
+    ], ans: 0,
+    exp: 'Confidentiality covers information acquired through work whether or not anyone labelled it confidential, and it has two limbs: do not disclose it, and do not use it for personal advantage. General terms still disclose. Passing the duty on to the listener does not discharge it — the obligation is yours, and it outlasts the job.' },
+
+  { id: 'besy-429', topic: 'besy', difficulty: 'hard', skill: 'besy-ethics', criteria: ['BESY-3.3'],
+    q: 'An accounting technician posts a comment online mocking a client’s staff. No confidential figures are revealed. Is a fundamental principle breached?',
+    opts: [
+      'Yes, professional behaviour, because the conduct discredits the profession',
+      'No, because no confidential information was disclosed in the post',
+      'No, because a personal social media account is outside the scope of the code',
+      'Yes, objectivity, because the comment shows bias against the client',
+    ], ans: 0,
+    exp: 'Professional behaviour is the principle that catches conduct a reasonable person would think discredits the profession, and it is not limited to working hours or work accounts. Nothing confidential needs to leak for it to be breached. Objectivity is about bias in your judgements, not about discourtesy.' },
+
+  /* ── BESY-4.2  The legal administration of a business ───────────────── */
+
+  { id: 'besy-430', topic: 'besy', difficulty: 'medium', skill: 'besy-structure', criteria: ['BESY-4.2'],
+    q: 'For how long must a sole trader keep the records supporting a self assessment tax return?',
+    opts: [
+      'Five years after the 31 January submission deadline for that tax year',
+      'Five years after the end of the tax year the records relate to',
+      'Until the return has been submitted and the tax for the year paid',
+      'Indefinitely, because HMRC may open an enquiry at any time in the future',
+    ], ans: 0,
+    exp: 'The clock runs from the filing deadline, not from the end of the tax year — five years after the 31 January on which the return was due. The two are nearly ten months apart, which is what the question is testing. Paying the tax does not close the window, because an enquiry can follow.' },
+
+  { id: 'besy-431', topic: 'besy', difficulty: 'medium', skill: 'besy-structure', criteria: ['BESY-4.2'],
+    q: 'What does a company’s confirmation statement filed at Companies House contain?',
+    opts: [
+      'A check that the registered details held for the company are still correct',
+      'The profit or loss the company made during the year just ended',
+      'The corporation tax the company calculates it owes for the year',
+      'A forecast of the trading the company expects in the year ahead',
+    ], ans: 0,
+    exp: 'The confirmation statement is a check on the register, not a financial return: registered office, directors, shareholders, share capital and what the company does. It is filed at least once every twelve months. The financial results reach Companies House separately, in the annual accounts, and the tax reaches HMRC separately again.' },
+
+  { id: 'besy-432', topic: 'besy', difficulty: 'medium', skill: 'besy-structure', criteria: ['BESY-4.2'],
+    q: 'Which of these is a statutory book that a limited company must maintain?',
+    opts: [
+      'The register of members, recording who holds the company’s shares',
+      'The purchases day book, listing the invoices received from suppliers',
+      'The petty cash book, recording small payments made in cash',
+      'The non-current asset register, listing what the company owns',
+    ], ans: 0,
+    exp: 'Statutory books are the registers company law requires — members, directors, people with significant control, and charges over the company’s assets. The other three are accounting records. Good practice keeps them all, but only the registers are demanded by the Companies Act, and only they are open to inspection.' },
+
+  { id: 'besy-433', topic: 'besy', difficulty: 'medium', skill: 'besy-structure', criteria: ['BESY-4.2'],
+    q: 'Under Making Tax Digital, what must a VAT registered business do?',
+    opts: [
+      'Keep its VAT records digitally and file returns using compatible software',
+      'File a VAT return every month rather than once a quarter',
+      'Submit a scanned copy of every sales invoice alongside the VAT return',
+      'Have its VAT records reviewed by an accountant before each return is filed',
+    ], ans: 0,
+    exp: 'Making Tax Digital changes how the records are kept and how the return travels, not how often it is due or what backing paperwork goes with it. The records must be digital, and the figures must reach HMRC from that software rather than being retyped into a website.' },
+
+  /* ── BESY-4.3  Business formation ───────────────────────────────────── */
+
+  { id: 'besy-434', topic: 'besy', difficulty: 'medium', skill: 'besy-structure', criteria: ['BESY-4.3'],
+    q: 'What is needed to bring a private limited company into existence?',
+    opts: [
+      'Registration at Companies House, with a memorandum and articles of association',
+      'A written partnership agreement signed by all of the intended shareholders',
+      'Registration with HMRC for self assessment by the person setting it up',
+      'A bank account opened in the company name and share capital paid into it',
+    ], ans: 0,
+    exp: 'A company exists only once the registrar issues the certificate of incorporation, and that follows registration with a memorandum and articles. A sole trader by contrast simply tells HMRC, and an ordinary partnership needs no registration at all — which is the distinction being tested. Opening a bank account creates nothing.' },
+
+  { id: 'besy-435', topic: 'besy', difficulty: 'hard', skill: 'besy-structure', criteria: ['BESY-4.3'],
+    q: 'What is the main advantage of buying an “off the shelf” company?',
+    opts: [
+      'It already exists, so trading can begin without waiting for incorporation',
+      'It costs less in total than registering a new company at Companies House',
+      'It carries a trading history that makes credit easier to obtain from suppliers',
+      'It is exempt from filing accounts for its first year after it is bought',
+    ], ans: 0,
+    exp: 'An off the shelf company is one a formation agent incorporated in advance and has never traded. Speed is the whole point. It has no trading history to lend it credit, no filing exemption, and the shares and often the name and articles must then be changed — which is the cost that offsets the convenience.' },
+
+  { id: 'besy-436', topic: 'besy', difficulty: 'hard', skill: 'besy-structure', criteria: ['BESY-4.3'],
+    q: 'Someone signs a supply contract on behalf of a company that has not yet been incorporated. Who is liable on that contract?',
+    opts: [
+      'The person who signed it, personally, because the company did not yet exist',
+      'The company, once it is incorporated and begins to trade under the contract',
+      'Nobody, because a contract made for a non-existent party is void from the start',
+      'The supplier, who should have checked the register before agreeing to supply',
+    ], ans: 0,
+    exp: 'A company cannot make a contract before it exists, and it cannot later adopt one it was not party to. The signatory is personally liable on a pre-incorporation contract. The way round it is to make a fresh contract once the company is formed — which is exactly why some businesses use one.' },
+
+  { id: 'besy-437', topic: 'besy', difficulty: 'medium', skill: 'besy-structure', criteria: ['BESY-4.3'],
+    q: 'Which of these would prevent a proposed company name from being registered?',
+    opts: [
+      'It is the same as a name already on the register of companies',
+      'It is longer than the name of any company already on the register',
+      'It does not describe the trade the company intends to carry on',
+      'It uses a family surname that the founders do not themselves hold',
+    ], ans: 0,
+    exp: 'The register cannot hold two identical names, and names that are offensive, or that imply a connection with government, or that use a sensitive word without approval, are also refused. Nothing requires a name to describe the trade or to match anybody’s surname — and length is not a test at all.' },
+
+  /* ── BESY-5.1  The different functions of a business ────────────────── */
+
+  { id: 'besy-438', topic: 'besy', difficulty: 'easy', skill: 'besy-finance', criteria: ['BESY-5.1'],
+    q: 'Which business function is responsible for recruitment, training and staff welfare?',
+    opts: [
+      'Human resources',
+      'Operations',
+      'Distribution and logistics',
+      'Sales and marketing',
+    ], ans: 0,
+    exp: 'Human resources handles the people: recruiting them, training them, paying attention to their welfare and holding the employment records. Operations makes the product, distribution moves it, and sales and marketing find the customer for it. Finance meets all four, because each of them spends money and generates data.' },
+
+  { id: 'besy-439', topic: 'besy', difficulty: 'medium', skill: 'besy-finance', criteria: ['BESY-5.1'],
+    q: 'In a business of eight people, one person handles invoicing, payroll and the bank. What does this show?',
+    opts: [
+      'Functions are often combined in a small organisation, so roles overlap',
+      'The business has no need of the functions a larger organisation would have',
+      'The business is in breach of the law, because the functions must be separated',
+      'The functions are being outsourced rather than carried out in the business',
+    ], ans: 0,
+    exp: 'The functions still exist in a small business; there are simply fewer people to spread them across, so one person wears several hats. No law forbids it. It does make segregation of duties harder, which is why small businesses lean more heavily on the owner reviewing what is done.' },
+
+  { id: 'besy-440', topic: 'besy', difficulty: 'medium', skill: 'besy-finance', criteria: ['BESY-5.1'],
+    q: 'A sale is entered once and the stock figure, the invoice and the delivery note all follow from it. What does this illustrate?',
+    opts: [
+      'Technology connecting the functions, so one entry serves several of them',
+      'Operations taking over work that properly belongs to the finance function',
+      'A control weakness, because a single entry should never update several records',
+      'Distribution and logistics being merged into the sales and marketing function',
+    ], ans: 0,
+    exp: 'An integrated system is what lets one transaction serve sales, finance, inventory and despatch at once. That is the interconnection technology brings, and it removes the rekeying that used to introduce errors. It is a strength rather than a weakness — though it does make the accuracy of the single entry matter more.' },
+
+  { id: 'besy-441', topic: 'besy', difficulty: 'medium', skill: 'besy-finance', criteria: ['BESY-5.1'],
+    q: 'How does the information technology function contribute to business success?',
+    opts: [
+      'It keeps the systems the other functions depend on running and secure',
+      'It decides the prices at which the organisation sells its products',
+      'It negotiates the terms on which suppliers deliver goods to the business',
+      'It prepares the statutory financial statements at the end of the year',
+    ], ans: 0,
+    exp: 'IT is a supporting function: it keeps the systems available, connected and secure so that operations, sales, finance and the rest can do their own work. Pricing belongs to sales and marketing, purchasing terms to operations or procurement, and the statutory accounts to finance.' },
+
+  /* ── BESY-6.3  Plan workload to meet the needs of the organisation ──── */
+
+  { id: 'besy-442', topic: 'besy', difficulty: 'medium', skill: 'besy-comms', criteria: ['BESY-6.3'],
+    q: 'Two tasks are outstanding: a VAT return due tomorrow, and a filing job with no deadline. How should they be ordered?',
+    opts: [
+      'The VAT return first, because it is both urgent and important',
+      'The filing first, because it can be cleared quickly and reduce the list',
+      'Whichever was asked for first, so that requests are dealt with in order',
+      'The filing first, because a VAT return can be submitted late without consequence',
+    ], ans: 0,
+    exp: 'Prioritising weighs urgency against importance. A statutory deadline carrying a penalty scores high on both, so it goes first. Clearing quick jobs to shorten the list feels productive and is how deadlines get missed, and a late VAT return does have consequences — that is the whole reason it is urgent.' },
+
+  { id: 'besy-443', topic: 'besy', difficulty: 'medium', skill: 'besy-comms', criteria: ['BESY-6.3'],
+    q: 'You realise on Monday that a report due Friday cannot be finished on time. What should you do?',
+    opts: [
+      'Tell your manager now, with what is achievable and what you need',
+      'Work on and tell your manager on Friday if it has not been finished',
+      'Submit an incomplete report on Friday without drawing attention to the gaps',
+      'Ask a colleague to take the task over without telling your manager',
+    ], ans: 0,
+    exp: 'A deadline problem raised on Monday can still be solved — by help, by moving the date, or by cutting the scope. The same problem raised on Friday cannot. Telling someone early is not an admission of failure; silence, a quietly incomplete report, or a private handover all remove their chance to act.' },
+
+  { id: 'besy-444', topic: 'besy', difficulty: 'medium', skill: 'besy-comms', criteria: ['BESY-6.3'],
+    q: 'Why does a bank reconciliation left undone matter beyond your own workload?',
+    opts: [
+      'Others rely on it, so the delay passes down the chain to their work',
+      'The reconciliation becomes impossible to complete once the month has closed',
+      'The bank will refuse to issue further statements until it has been done',
+      'The error it would have found is automatically corrected by the software',
+    ], ans: 0,
+    exp: 'Work in a finance team is a chain. An unreconciled bank balance holds up the management accounts, which hold up the decisions taken from them, so the cost of the delay falls on people other than you. The reconciliation stays perfectly possible later — it is just later, and by then the error has been reported.' },
+
+  { id: 'besy-445', topic: 'besy', difficulty: 'medium', skill: 'besy-comms', criteria: ['BESY-6.3'],
+    q: 'What is the purpose of reviewing a work plan after the tasks in it are finished?',
+    opts: [
+      'To see what the estimates got wrong, so the next plan is better',
+      'To produce a record that proves the deadlines set were all achieved',
+      'To identify which colleagues were responsible for any time that was lost',
+      'To confirm the plan was followed exactly as it was originally written',
+    ], ans: 0,
+    exp: 'Planning is a cycle: prioritise, monitor as you go, review at the end. The review earns its place by comparing what things actually took against what you thought they would, so the next set of estimates is better. A review aimed at proving success, or at finding someone to blame, teaches nobody anything.' },
+
+  /* ── BESY-7.1  The role of information in the finance function ──────── */
+
+  { id: 'besy-446', topic: 'besy', difficulty: 'hard', skill: 'besy-tech', criteria: ['BESY-7.1'],
+    q: 'A business changes how it splits costs between departments and does not restate last year. Which characteristic of useful information suffers?',
+    opts: [
+      'Comparability, because this year and last year no longer measure the same thing',
+      'Relevance, because departmental cost splits do not bear on any decision',
+      'Timeliness, because restating a prior year always delays the current report',
+      'Understandability, because the new split is harder for a reader to follow',
+    ], ans: 0,
+    exp: 'Comparability is what lets a reader set one period against another and draw a conclusion. Change the basis without restating, and the movement they see is partly the change of method rather than the business. The cure is to restate the comparative, or to say plainly that the basis changed.' },
+
+  { id: 'besy-447', topic: 'besy', difficulty: 'medium', skill: 'besy-tech', criteria: ['BESY-7.1'],
+    q: 'A remittance advice arrives from a customer. What does the finance function learn from it?',
+    opts: [
+      'Which invoices the payment received is intended to settle',
+      'What the customer expects to order from the business next',
+      'Whether the customer has been granted a credit limit',
+      'What the goods on the original order actually cost to make',
+    ], ans: 0,
+    exp: 'A remittance advice is the note that travels with a payment to say what it is for. Without it a round-sum receipt has to be allocated by guesswork, and the sales ledger stops matching what the customer thinks they owe. It says nothing about future orders, credit limits or costs.' },
+
+  { id: 'besy-448', topic: 'besy', difficulty: 'medium', skill: 'besy-tech', criteria: ['BESY-7.1'],
+    q: 'Which of these is a document produced by the finance function and sent out to a customer?',
+    opts: [
+      'A statement of account listing the invoices still outstanding',
+      'A purchase order requesting goods from one of the suppliers',
+      'A supplier invoice charging the business for goods delivered',
+      'A goods received note recording what arrived at the warehouse',
+    ], ans: 0,
+    exp: 'Finance sends out sales invoices, credit notes and statements of account. The other three travel the other way or stay inside the business: a purchase order goes to a supplier, a supplier invoice comes in, and a goods received note is raised in the warehouse when a delivery arrives.' },
 
 );
 
@@ -7389,7 +7754,7 @@ window.ALL_QUESTIONS.push(
    table"; what it cannot ask is which column or which side, because its blanks
    are placed for the reader before they start. */
 window.ALL_QUESTIONS.push(
-  { id: 'itbk-500', topic: 'itbk', difficulty: 'medium', type: 'entrygrid',
+  { id: 'itbk-500', topic: 'itbk', difficulty: 'medium', type: 'entrygrid', criteria: ['ITBK-2.2'],
     q: 'A credit customer is invoiced £2,400 plus VAT at 20%. Record the double entry in the general ledger.',
     entrygrid: {
       title: 'General ledger', rowHeader: 'Account', columns: ['Debit £', 'Credit £'],
@@ -7401,7 +7766,7 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'The customer owes the whole invoice, so the SLCA is debited with the GROSS £2,880. The business has earned the net £2,400 and owes HMRC the £480, and both are credits. It is the gross figure on the debit side that makes the entry balance at £2,880 each way — debiting the net instead is the commonest way to get this wrong, and it leaves the journal £480 out.' },
 
-  { id: 'itbk-501', topic: 'itbk', difficulty: 'medium', type: 'picklist',
+  { id: 'itbk-501', topic: 'itbk', difficulty: 'medium', type: 'picklist', criteria: ['ITBK-1.2'],
     q: 'Choose the book of prime entry for each document.',
     picklist: {
       title: 'Documents to be entered', rowHeader: 'Document', choiceHeader: 'Book of prime entry',
@@ -7417,7 +7782,7 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'The two credit notes are the pair to be careful with, and the test is who SENT it: one the business sends to its own customer cancels a sale and belongs in the sales returns day book, while one received from a supplier cancels a purchase. The petty cash book is a separate book from the cash book, not a column in it — small cash reimbursements go there, cheques go in the cash book.' },
 
-  { id: 'pobc-500', topic: 'pobc', difficulty: 'hard', type: 'entrygrid',
+  { id: 'pobc-500', topic: 'pobc', difficulty: 'hard', type: 'entrygrid', criteria: ['POBC-3.1'],
     q: 'A debt of £1,440 including VAT at 20%, more than six months past its due date, is written off as irrecoverable. Record the journal.',
     entrygrid: {
       title: 'Journal', rowHeader: 'Account', columns: ['Debit £', 'Credit £'],
@@ -7429,7 +7794,7 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'The whole £1,440 comes out of receivables, so the SLCA is credited with the gross. Because the debt is over six months past its due date the VAT of £1,440 ÷ 6 = £240 can be reclaimed, which DEBITS the VAT control account and reduces what is owed to HMRC — leaving the net £1,200 as the real cost to the business. Writing the full £1,440 to irrecoverable debts overstates the expense and forgets a reclaim the business is entitled to.' },
 
-  { id: 'pobc-501', topic: 'pobc', difficulty: 'medium', type: 'picklist',
+  { id: 'pobc-501', topic: 'pobc', difficulty: 'medium', type: 'picklist', criteria: ['POBC-2.3'],
     q: 'A bank reconciliation is being prepared. Where does each item belong?',
     picklist: {
       title: 'Reconciling items', rowHeader: 'Item', choiceHeader: 'Treatment',
@@ -7452,7 +7817,7 @@ window.ALL_QUESTIONS.push(
      statement. Four tables cannot supply thirty marks without serving the same
      ones every sitting, which is a paper the reader learns rather than sits. */
 
-  { id: 'itbk-502', topic: 'itbk', difficulty: 'medium', type: 'entrygrid',
+  { id: 'itbk-502', topic: 'itbk', difficulty: 'medium', type: 'entrygrid', criteria: ['ITBK-3.2'],
     q: 'A supplier invoices the business £1,600 plus VAT at 20% for goods bought on credit. Record the double entry in the general ledger.',
     entrygrid: {
       title: 'General ledger', rowHeader: 'Account', columns: ['Debit £', 'Credit £'],
@@ -7464,7 +7829,7 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'A purchase invoice is the mirror of a sales invoice. The business owes the supplier the whole £1,920, so the purchases ledger control account is credited with the GROSS. The cost of the goods is the net £1,600 and the £320 of VAT is input tax the business can reclaim from HMRC, so both are debits — the VAT is not part of the cost, which is why it goes to the VAT control account rather than to purchases.' },
 
-  { id: 'itbk-503', topic: 'itbk', difficulty: 'medium', type: 'picklist',
+  { id: 'itbk-503', topic: 'itbk', difficulty: 'medium', type: 'picklist', criteria: ['ITBK-1.2'],
     q: 'In which ledger is each account kept?',
     picklist: {
       title: 'Accounts in the bookkeeping system', rowHeader: 'Account', choiceHeader: 'Ledger',
@@ -7480,7 +7845,7 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'The CONTROL accounts live in the general ledger and are part of the double entry — the sales ledger control account is the one figure for everything customers owe. The individual customer and supplier accounts are memorandum accounts kept in the sales and purchases ledgers: they say who owes what, but they are not part of the double entry, which is why their total is checked AGAINST the control account rather than added to it.' },
 
-  { id: 'itbk-504', topic: 'itbk', difficulty: 'medium', type: 'entrygrid',
+  { id: 'itbk-504', topic: 'itbk', difficulty: 'medium', type: 'entrygrid', criteria: ['ITBK-2.1'],
     q: 'The business issues a credit note to a credit customer for £300 plus VAT at 20% for goods returned. Record the double entry in the general ledger.',
     entrygrid: {
       title: 'General ledger', rowHeader: 'Account', columns: ['Debit £', 'Credit £'],
@@ -7492,7 +7857,7 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'A credit note reverses a sale, so every entry is the other way round from the invoice: the customer no longer owes the £360, so the sales ledger control account is CREDITED with the gross. The £300 goes to sales returns rather than being deducted from sales, so the books still show what was sold and what came back, and the £60 of output tax is taken back off what is owed to HMRC by debiting the VAT control account.' },
 
-  { id: 'itbk-505', topic: 'itbk', difficulty: 'medium', type: 'picklist',
+  { id: 'itbk-505', topic: 'itbk', difficulty: 'medium', type: 'picklist', criteria: ['ITBK-5.1'],
     q: 'Is the entry in the named account a debit or a credit?',
     picklist: {
       title: 'Entries in the general ledger', rowHeader: 'Account and transaction', choiceHeader: 'Entry',
@@ -7508,7 +7873,7 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'Two of these are the same transaction seen from both sides: a customer paying by BACS debits the bank because the business has more money, and credits the sales ledger control account because it is owed less. The pair that catches people is the control accounts — the SALES ledger control account is an asset and falls on the credit side when it is settled, while the PURCHASES ledger control account is a liability and falls on the debit side when it is paid.' },
 
-  { id: 'pobc-502', topic: 'pobc', difficulty: 'medium', type: 'entrygrid',
+  { id: 'pobc-502', topic: 'pobc', difficulty: 'medium', type: 'entrygrid', criteria: ['POBC-3.2'],
     q: 'A payment of £480 for motor expenses was posted in error to the motor vehicles account. The bank entry was correct. Record the journal to correct the error.',
     entrygrid: {
       title: 'Journal', rowHeader: 'Account', columns: ['Debit £', 'Credit £'],
@@ -7519,7 +7884,7 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'Only the two accounts that were confused move, because the bank side was right and the trial balance still agreed — this is an error of principle, which a trial balance cannot find. Take the £480 out of motor vehicles by crediting it, and put it where it belonged by debiting motor expenses. Running the cost through an asset account instead of an expense would overstate both the year\u2019s profit and what the business owns.' },
 
-  { id: 'pobc-503', topic: 'pobc', difficulty: 'hard', type: 'picklist',
+  { id: 'pobc-503', topic: 'pobc', difficulty: 'hard', type: 'picklist', criteria: ['POBC-3.2'],
     q: 'Name the type of error in each case.',
     picklist: {
       title: 'Errors found during the month', rowHeader: 'What happened', choiceHeader: 'Type of error',
@@ -7535,7 +7900,7 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'Every one of these leaves the trial balance agreeing, which is the point: a balanced trial balance is not a correct one. The pair most often swapped is principle and commission — commission is the RIGHT KIND of account and the wrong one within it (one customer instead of another), while principle is the WRONG KIND altogether (an expense posted to an asset). A reversal has both entries the right size and on the wrong sides, so correcting it takes twice the amount, not once.' },
 
-  { id: 'pobc-504', topic: 'pobc', difficulty: 'medium', type: 'picklist',
+  { id: 'pobc-504', topic: 'pobc', difficulty: 'medium', type: 'picklist', criteria: ['POBC-1.1'],
     q: 'Which side of the sales ledger control account does each item go on?',
     picklist: {
       title: 'Sales ledger control account', rowHeader: 'Item', choiceHeader: 'Side',
@@ -7551,7 +7916,7 @@ window.ALL_QUESTIONS.push(
     },
     exp: 'The account is an asset — what customers owe — so anything that INCREASES the debt is a debit and anything that reduces it is a credit. Selling on credit and starting the month owed money are debits; receipts, returns and discounts allowed all reduce the debt and are credits. The dishonoured cheque is the one to think about: the receipt was credited when it came in, and the cheque bouncing puts the debt straight back on, so it is debited.' },
 
-  { id: 'pobc-505', topic: 'pobc', difficulty: 'medium', type: 'picklist',
+  { id: 'pobc-505', topic: 'pobc', difficulty: 'medium', type: 'picklist', criteria: ['POBC-4.1'],
     q: 'Would each balance appear in the debit or the credit column of the trial balance?',
     picklist: {
       title: 'Balances at the year end', rowHeader: 'Balance', choiceHeader: 'Trial balance column',
