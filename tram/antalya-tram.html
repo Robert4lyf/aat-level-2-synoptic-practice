@@ -252,7 +252,23 @@ window.TRAM = {"meta":{"feed":"antalya.zip (GTFS published by Otobus Tramvay / a
   function fetchPath(code, dir) {
     var url = API + '?region=' + REGION + '&lang=tr&direction=' + dir +
       '&displayRouteCode=' + encodeURIComponent(code) + '&resultType=111110';
-    return fetch(url, { cache: 'no-store' }).then(function (r) {
+    /* A blocked request can hang rather than fail — the artifact viewer's CSP
+       refuses this host outright, a captive portal swallows it — and a page
+       that reads "loading" for ever is a lie of a different kind. */
+    var opts = { cache: 'no-store' };
+    var timer;
+    if (typeof AbortController === 'function') {
+      var ac = new AbortController();
+      opts.signal = ac.signal;
+      timer = setTimeout(function () { ac.abort(); }, 8000);
+    }
+    return fetch(url, opts).then(function (r) {
+      if (timer) clearTimeout(timer);
+      return r;
+    }, function (e) {
+      if (timer) clearTimeout(timer);
+      throw e;
+    }).then(function (r) {
       if (!r.ok) throw new Error('HTTP ' + r.status);
       return r.json();
     }).then(function (d) {
