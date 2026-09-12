@@ -317,6 +317,10 @@ body[data-subject="aat3"] #app { background: var(--a3-paper); }
   border: 1px solid transparent; border-radius: var(--a3-r-sm);
   cursor: pointer; -webkit-tap-highlight-color: transparent;
 }
+/* The label is its own element so the handler can rewrite the text without
+   touching the arrow beside it. It takes the free width, so "Practise Outcomes
+   1, 2 and 5" wraps inside the button rather than pushing the arrow off it. */
+.a3-sum-pick-lbl { flex: 1 1 auto; min-width: 0; }
 .a3-sum-pick-go:hover:not([disabled]) { border-color: var(--a3-brand); }
 .a3-sum-pick-go:focus-visible { outline: 2px solid var(--a3-brand); outline-offset: 2px; }
 /* DISABLED RATHER THAN ABSENT. A button that appears on the first tap and
