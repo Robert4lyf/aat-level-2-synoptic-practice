@@ -1,13 +1,11 @@
-# Antalya tram board — T1A
+# Antalya tram board
 
-A one-page departure board for T1A, Fatih to the airport. Open
-`antalya-tram.html`, pick a direction and a stop, and it counts down the next
-six trams. Tap a departure to see when that tram reaches every stop further
-down the line. Below the board, a map of the line puts every tram where the
-timetable says it should be.
-
-ONE LINE ON PURPOSE. T1B, T2 and T3 are in the same feed and are deliberately
-not carried; rebuild them by widening the route filter in step 1 below.
+A one-page departure board for Antalya's trams — T1A, T1B, T3 and the T2
+nostalgic line. Open `antalya-tram.html`, pick a line, a direction and a stop,
+and it counts down the next six trams. Tap a departure to see when that tram
+reaches every stop further down the line. Below the board, a map of the network
+puts every tram where the timetable says it should be — worked out from the
+schedule, not observed, which the page says twice around the map.
 
 ONE FILE, ON PURPOSE. Markup, styles, timetable and logic are all in
 `antalya-tram.html` — no build, no imports, no network calls at runtime, no
@@ -40,8 +38,8 @@ nothing anywhere marks it stale — this paragraph is the only thing that does.
 
 To rebuild the timetable, download that zip and flatten it:
 
-1. `trips.txt` — keep `route_id` T1A (or whichever lines you want); note
-   `service_id` and `direction_id`.
+1. `trips.txt` — keep `route_id` in T1A, T1B, T2, T3; note `service_id` and
+   `direction_id`.
 2. `stop_times.txt` — group by `trip_id`, order by `stop_sequence`, and write
    each trip as `[departure minute, then minutes after departure at each stop]`
    into the `window.TRAM` object at the top of `antalya-tram.html`.
@@ -54,7 +52,7 @@ and Sunday — but all three are marked `1` for all seven days, so read literall
 they put the weekday and the Sunday timetable on the road simultaneously. The
 first cut of this page did that and offered Sunday trams that do not run: 99
 departures a day against the real 61. Each day now takes the one calendar meant
-for it: 63 weekday departures, 63 Saturday, 61 Sunday.
+for it.
 
 Stop names keep the feed's trailing `1`/`2`, which marks the two sides of the
 track; the page strips it, because the sign on the street does not have it.
