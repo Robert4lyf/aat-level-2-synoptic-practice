@@ -571,6 +571,94 @@ try {
     'that is sometimes wrong about arithmetic');
 }
 
+/* ── 8. Where the control sits, which is not a cosmetic question ─────────── */
+{
+  /* The two halves want opposite placements and the reason is the same one.
+
+     The calibration ask HAS TO BE ANSWERED FIRST, so it comes first: a control
+     that must precede the answer and renders after it is one the reader meets
+     having already decided, and the nudge that fires when they submit without
+     it then appears below the button they just pressed.
+
+     The ordinary toggle is optional and comes last, because it is a note about
+     an answer being given rather than one of the ways to give it — and because
+     on a narrow screen anything sharing the answer row's right edge lands
+     directly under the primary button at the same width, which is what a
+     second submit looks like.
+
+     BOTH SIDES ARE ASSERTED, so moving either one is a deliberate act. The
+     anchor is the first answer control on screen, and if a question renders
+     none of them this throws rather than passing: an ordering assertion with
+     nothing to order against is the shape that reports whatever it is given. */
+  const ANSWER_ACTS = ['ans', 'tf', 'tfsubmit', 'numinput', 'numsubmit'];
+  function firstAnswerAt(el) {
+    const h = el.innerHTML;
+    const at = ANSWER_ACTS
+      .map(a => h.indexOf('data-a3="' + a + '"'))
+      .filter(i => i !== -1);
+    if (!at.length) {
+      throw new Error('no answer control on screen to order the ask against — ' +
+        'actions present: ' + acts(el).join(', '));
+    }
+    return Math.min.apply(null, at);
+  }
+
+  const cal = open();
+  cal.UI.AAT3_UI.reset('practice', 'tpfb');
+  cal.UI.AAT3_UI.mount(cal.el);
+  click(cal.el, 'startpractice', n => n.getAttribute('data-lo') === 'calib');
+
+  /* EVERY QUESTION OF THE RUN, not the first: the ask is emitted from one
+     place but the answer controls are a dozen branches, and a type that
+     rendered its own before the stem would only show up further in. */
+  let seen = 0;
+  while (seen < 10 && !done(cal.el)) {
+    const askAt = cal.el.innerHTML.indexOf('a3-conf-ask');
+    ok(askAt !== -1, 'the calibration ask vanished partway through the run');
+    ok(askAt !== -1 && askAt < firstAnswerAt(cal.el),
+      'the calibration ask renders below the answer controls, so the one thing that has to be ' +
+      'answered first is met last');
+    seen++;
+    click(cal.el, 'conf', b => b.getAttribute('data-c') === 'sure');
+    NOW += 3000;
+    answerCurrent(cal.el);
+    if (done(cal.el)) break;
+    click(cal.el, 'nextq');
+  }
+  ok(seen >= 10, `the calibration run ended after ${seen} questions, so most of it went unchecked`);
+
+  const ord = open();
+  ord.UI.AAT3_UI.reset('practice', 'tpfb');
+  ord.UI.AAT3_UI.mount(ord.el);
+  click(ord.el, 'startpractice', n => n.getAttribute('data-lo') === 'mix');
+
+  let oseen = 0;
+  while (oseen < 10 && !done(ord.el)) {
+    const loneAt = ord.el.innerHTML.indexOf('a3-conf-lone');
+    ok(loneAt !== -1, 'the lone toggle lost the class that positions it below the answer controls');
+    ok(loneAt !== -1 && loneAt > firstAnswerAt(ord.el),
+      'the lone toggle renders above the answer controls, coming between the question and the ' +
+      'way to answer it');
+    oseen++;
+    NOW += 3000;
+    answerCurrent(ord.el);
+    if (done(ord.el)) break;
+    click(ord.el, 'nextq');
+  }
+  ok(oseen >= 10, `the ordinary run ended after ${oseen} questions, so most of it went unchecked`);
+
+  /* AND IT IS STILL REACHABLE. Everything above is about order; this is the
+     assertion that a toggle small enough to get out of the way is still a
+     toggle, which is the failure a placement change is most likely to cause. */
+  const tap = open();
+  tap.UI.AAT3_UI.reset('practice', 'tpfb');
+  tap.UI.AAT3_UI.mount(tap.el);
+  click(tap.el, 'startpractice', n => n.getAttribute('data-lo') === 'mix');
+  click(tap.el, 'conf');
+  eq(nodes(tap.el, 'conf').map(n => n.getAttribute('aria-pressed')), ['true'],
+    'the repositioned toggle no longer answers a tap');
+}
+
 } finally {
   Date.now = realNow;
   unseed();

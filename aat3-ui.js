@@ -2504,6 +2504,16 @@
        scenario sits below it inside the block. */
     var h = '<h2 class="a3-q">' + md(q.q) + '</h2>';
 
+    /* THE CALIBRATION ASK COMES FIRST, above every answer control, because it
+       is the one thing on this screen that has to be answered before the
+       question is: a control that must precede the answer and sits after it is
+       one the reader meets once they have already decided, and the nudge that
+       fires when they submit without it then appears below the button they
+       just pressed. The ordinary run's lone toggle is the opposite case — an
+       optional aside about an answer already being given — so it stays below,
+       where it cannot come between the question and the way to answer it. */
+    if (S.answered === null && !isMock() && confOffered(q) && isCalib()) h += confHtml();
+
     if (t === 'mcq') {
       if (!S._order) S._order = shuffle(q.opts.map(function (_, i) { return i; }));
       h += '<div class="a3-opts">' + S._order.map(function (oi, di) {
@@ -2648,7 +2658,7 @@
     if (isMock()) {
       h += '<button class="a3-btn a3-btn-primary a3-wide" data-a3="mocknext">' +
         (S.qIdx === n - 1 ? 'Finish the paper' : 'Next question') + '</button>';
-    } else if (S.answered === null && confOffered(q)) {
+    } else if (S.answered === null && confOffered(q) && !isCalib()) {
       h += confHtml();
     } else if (S.answered !== null) {
       h += '<div class="a3-exp-box"><div class="a3-exp-l">Why</div><p class="a3-exp">' + md(q.exp || '') + '</p></div>';
@@ -2681,9 +2691,13 @@
      its handler rather than only on its button — a disabled button is a hint to
      a person and no obstacle to a stale repaint.
 
-     ABOVE THE CONTROLS, not below them: it has to be answered first, and a
-     control that has to come first and sits last is one a reader meets after
-     they have already decided. */
+     WHERE EACH ONE SITS follows from that difference. The calibration ask goes
+     above the answer controls, because it has to be answered first. The lone
+     toggle goes below them and hard left, small: right-aligned it landed
+     directly underneath the primary button on a narrow screen, the same width
+     and the same rounded shape, which is what a second submit looks like. It
+     is a note about the answer, not one of the ways to give one, so it is
+     quieter and smaller than anything that is. */
   var CONF_LABEL = { sure: 'Sure', think: 'Fairly sure', guess: 'Guessing' };
   function confHtml() {
     if (isCalib()) {
@@ -2695,10 +2709,10 @@
             ' aria-pressed="' + (S.qConf === k ? 'true' : 'false') + '">' + CONF_LABEL[k] + '</button>';
         }).join('') + '</div>';
     }
-    return '<div class="a3-conf">' +
+    return '<div class="a3-conf a3-conf-lone">' +
       '<button type="button" class="a3-conf-b a3-conf-one" data-a3="conf" data-c="guess"' +
       ' aria-pressed="' + (S.qConf === 'guess' ? 'true' : 'false') + '">' +
-      'Guessing</button></div>';
+      '<span class="a3-conf-tick" aria-hidden="true"></span>Guessing</button></div>';
   }
   /* What a question is banked at. An untouched toggle in an ordinary run means
      the reader was sure enough not to say otherwise — which is the whole design:
