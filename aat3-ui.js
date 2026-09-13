@@ -107,6 +107,32 @@
     tryShown: false,
     tryInput: '',
     tryResult: null,
+    /* ── The question stopwatch ────────────────────────────────────────────
+       `qShownAt` is set by resetQState, which runs once per question on every
+       path into one. `qHidden` latches true the moment the page goes to the
+       background and is never cleared until the next question, because a
+       reading interrupted halfway is not rescued by coming back. */
+    qShownAt: 0,
+    qHidden: false,
+    /* ── How sure the reader is, before they find out ──────────────────────
+       `qConf` is what they said about the question on screen: null until they
+       say anything, then 'sure', 'think' or 'guess'.
+
+       TWO WAYS IN, DELIBERATELY DIFFERENT IN COST. In an ordinary run there is
+       one button — "Guessing" — off by default, and the cost of being confident
+       is nothing at all. That bias is the right way round: the state worth
+       catching is CONFIDENT AND WRONG, and this records confidence by
+       inaction, which is exactly how a confident wrong answer is actually
+       given. In a calibration run the question cannot be answered until one of
+       three is chosen, which is slower and is the only unbiased data there is.
+
+       Cleared with the rest of the per-question state, for the reason
+       `taskNudge` is: a flag that survived into the next question would mark
+       every answer after the first guess as a guess. */
+    qConf: null,
+    /* A submit was attempted in a calibration run before saying how sure. The
+       twin of `taskNudge`, and cleared in the same place. */
+    confNudge: false,
     scrollToNext: false,  // the next repaint should bring the advance button into view
     /* ── The on-screen calculator ──────────────────────────────────────────
        Shown on the screens that have a numeric answer box and nowhere else —
@@ -171,6 +197,13 @@
           los: (u.los && typeof u.los === 'object') ? u.los : {},
           qs: (u.qs && typeof u.qs === 'object') ? u.qs : {},
           hist: (u.hist && typeof u.hist === 'object') ? u.hist : {},
+          /* HOW SURE THE READER WAS, and how often they were right to be. Three
+             pairs of monotonic counters, which is the one shape that survives
+             the MAX-merge — see the note above about `correct` rather than
+             `wrong`. A single "overconfidence score" would be a derived number
+             stored, and two devices would merge it into a figure neither of
+             them measured. */
+          conf: (u.conf && typeof u.conf === 'object') ? u.conf : {},
         };
       });
     }
@@ -179,7 +212,7 @@
     if (legacyRuns || Object.keys(legacyLos).length) {
       /* The COMPLETE record shape, matching practiceRec() — `{ runs, los }`
          alone is exactly the partial-record trap the comment above names. */
-      var t = out.units.tpfb || (out.units.tpfb = { runs: 0, mocks: 0, mockBest: 0, los: {}, qs: {}, hist: {} });
+      var t = out.units.tpfb || (out.units.tpfb = { runs: 0, mocks: 0, mockBest: 0, los: {}, qs: {}, hist: {}, conf: {} });
       t.runs = Math.max(t.runs, legacyRuns);
       Object.keys(legacyLos).forEach(function (lo) {
         var was = legacyLos[lo] || {}, now = t.los[lo] || { attempted: 0, correct: 0 };
@@ -253,14 +286,22 @@
      unit to name — would create and then persist a bucket under the key
      "null", which merges across devices and shows up in the backup summary as
      a unit nobody studied. */
+  /* THE FIELD LIST LIVES HERE TOO, and in normalisePractice above, and in the
+     repairs below. Three places, and all three have to know about a new field:
+     miss the blank and a brand-new unit gets `undefined` on the reader's very
+     first run in it; miss the repair and every store written before the field
+     existed stays without it. normalisePractice's own comment records what it
+     cost the last time one of them was forgotten. */
   function practiceRec(unitKey) {
-    var blank = { runs: 0, mocks: 0, mockBest: 0, los: {}, qs: {}, hist: {} };
+    var blank = { runs: 0, mocks: 0, mockBest: 0, los: {}, qs: {}, hist: {}, conf: {} };
     if (!unitKey) return blank;
     var u = data.practice.units[unitKey];
     if (!u) u = data.practice.units[unitKey] = blank;
     if (!u.qs) u.qs = {};
     /* A record written before the history existed has no `hist`. */
     if (!u.hist) u.hist = {};
+    /* Nor a `conf`, for the same reason. */
+    if (!u.conf) u.conf = {};
     return u;
   }
 
@@ -314,7 +355,7 @@
     if (built || practiceBank(unitKey).length) _answerable[unitKey] = byId;
     return byId;
   }
-  function recordQuestion(unitKey, qId, correct) {
+  function recordQuestion(unitKey, qId, correct, conf) {
     if (!qId) return;
     var map;
     if (isLessonQId(qId)) map = data.lessonQs;
@@ -334,7 +375,11 @@
     /* The id is the spread key: it is what gives this question its own place
        in the review window instead of the same day as everything else graded
        in the same sitting. See spaced.js. */
-    if (root.AATSpaced) rec.sr = root.AATSpaced.schedule(rec.sr, correct, undefined, qId);
+    /* The confidence goes to the SCHEDULER but not into this record. What is
+       worth remembering per question is when it was last right and last wrong;
+       how sure the reader felt on one particular sighting is an input to the
+       next interval, not a property of the question. */
+    if (root.AATSpaced) rec.sr = root.AATSpaced.schedule(rec.sr, correct, undefined, qId, conf);
   }
   function isOutstanding(rec) {
     return !!(rec && n0(rec.w) > n0(rec.r));
@@ -513,6 +558,121 @@
   }
   function clearPos() {
     try { localStorage.removeItem(POS_KEY); } catch (e) {}
+  }
+
+  /* ── How long a question takes ────────────────────────────────────────────
+     The assessment is 80 marks in 150 minutes, and until now this module
+     recorded not one millisecond of how long anything took. Accuracy alone
+     cannot tell a question the reader KNOWS from one they reconstructed in
+     ninety seconds under pressure — and only the first of those survives an
+     exam room.
+
+     ITS OWN KEY, OUTSIDE THE PROGRESS RECORD, and device-local for two
+     reasons. The first is mechanical: a mean cannot survive progress-backup's
+     merge-by-MAX, which takes the larger of each number independently and
+     would divide one device's total by the other's count. The second is the
+     real one — PACE IS GENUINELY DEVICE-SPECIFIC. Typing a figure into a phone
+     is slower than typing it into a laptop, so a merged pace figure would
+     describe nobody. A reader who switches device starts this record again,
+     which is the honest outcome rather than a lost one.
+
+     Totals rather than a mean: `n` and `ms` are both monotonic, so the mean is
+     computed on the way out and there is only ever one source of truth. */
+  var PACE_KEY = STORE_KEY + '_pace';
+  /* WHY THESE THREE BOUNDS. A stopwatch that records whatever it is given is
+     not a stopwatch, it is a record of how often the reader was interrupted.
+
+     HIDDEN — the page-visibility flag is the one that matters. A reader who
+     puts the phone down mid-question comes back to a reading of eleven
+     minutes, and eleven minutes is not how long they thought about it.
+     Discarded rather than clamped: there is no honest reading to salvage.
+
+     TOO LONG — ten minutes catches a walk-away the visibility flag missed,
+     such as a second monitor the browser never reports as hidden. The longest
+     legitimate question in this bank is a multi-part task or a twelve-cell
+     entry grid, and ten minutes is generous for both.
+
+     TOO SHORT — 400ms is a double tap or a stale repaint, not an answer. */
+  var PACE_MAX_MS = 10 * 60 * 1000;
+  var PACE_MIN_MS = 400;
+  function paceAll() {
+    var all;
+    try { all = JSON.parse(localStorage.getItem(PACE_KEY) || '{}'); } catch (e) { all = {}; }
+    return (all && typeof all === 'object' && !Array.isArray(all)) ? all : {};
+  }
+  /* One bucket, repaired on read. Every number that comes back out of here has
+     been through n0(), so a hand-edited store cannot put a string or a negative
+     into an average. */
+  function paceCell(bucket, key) {
+    var b = bucket[key];
+    if (!b || typeof b !== 'object') b = bucket[key] = {};
+    return { n: n0(b.n), ms: n0(b.ms) };
+  }
+  function paceRec(unitKey) {
+    var all = paceAll();
+    var u = all[unitKey];
+    if (!u || typeof u !== 'object') u = all[unitKey] = {};
+    if (!u.byLo || typeof u.byLo !== 'object') u.byLo = {};
+    if (!u.byType || typeof u.byType !== 'object') u.byType = {};
+    if (!u.byMode || typeof u.byMode !== 'object') u.byMode = {};
+    return { all: all, unit: u };
+  }
+  /* THE ONE PLACE A READING IS BANKED. Called from settle() and from the mock's
+     two banking sites — never from gradeAnswer(), which the mock REVIEW also
+     calls, once for every time the reader opens a banked question. A counter
+     hooked into grading climbs every time the paper is browsed, for a reason
+     nobody would think to look for. */
+  function recordPace(unitKey, q, mode, ms) {
+    if (!unitKey || !q) return false;
+    if (!(ms >= PACE_MIN_MS) || ms > PACE_MAX_MS) return false;
+    var r = paceRec(unitKey);
+    var lo = String(q.lo);
+    var type = (q.type || 'mcq');
+    /* THREE BUCKETS, AND `byMode` IS THE ONE THAT EARNS ITS KEEP. A lesson
+       check, a practice question and a mock question are answered under three
+       different pressures, and averaging them together produces a pace figure
+       that describes no situation the reader is ever actually in. Keeping the
+       lesson readings apart is also what lets this record exist at all without
+       disturbing the practice record — see check-aat3-practice-summary.js,
+       which asserts a whole lesson leaves that record byte-identical. */
+    [[r.unit.byLo, lo], [r.unit.byType, type], [r.unit.byMode, mode]].forEach(function (pair) {
+      var cell = paceCell(pair[0], pair[1]);
+      pair[0][pair[1]] = { n: cell.n + 1, ms: cell.ms + Math.round(ms) };
+    });
+    try { localStorage.setItem(PACE_KEY, JSON.stringify(r.all)); } catch (e) {}
+    return true;
+  }
+  /* Read back as a mean, never stored as one. `null` rather than 0 below a
+     floor of readings: a pace claimed from three questions is noise wearing a
+     number, and the screens that show it must be able to tell "not enough yet"
+     from "fast". */
+  var PACE_MIN_N = 8;
+  function paceMean(unitKey, kind, key) {
+    var u = paceAll()[unitKey];
+    var bucket = u && u[kind];
+    var b = bucket && bucket[key];
+    var n = n0(b && b.n), ms = n0(b && b.ms);
+    return n >= PACE_MIN_N ? Math.round(ms / n) : null;
+  }
+  /* Everything answered in this unit, however it was answered. The done screen
+     wants one number, not three. */
+  /* "38s" under a minute, "2m 10s" over it. Whole seconds throughout: a pace
+     figure quoted to the millisecond claims a precision a stopwatch that
+     discards a third of its readings has not got. */
+  function paceText(ms) {
+    var sec = Math.round(n0(ms) / 1000);
+    if (sec < 60) return sec + 's';
+    var m = Math.floor(sec / 60);
+    return m + 'm ' + (sec - m * 60) + 's';
+  }
+  function paceOverall(unitKey) {
+    var u = paceAll()[unitKey] || {};
+    var n = 0, ms = 0;
+    Object.keys(u.byMode || {}).forEach(function (k) {
+      var c = paceCell(u.byMode, k);
+      n += c.n; ms += c.ms;
+    });
+    return n >= PACE_MIN_N ? { n: n, ms: Math.round(ms / n) } : null;
   }
   /* ── Which outcomes the reader wants questions from ───────────────────────
      A reader partway through a unit has finished some outcomes and not started
@@ -811,6 +971,7 @@
     /* Without this the label falls through and an endless run is described as
        "Outcome endless" on its own result screen. */
     if (S.practiceLo === 'endless') return 'endless practice';
+    if (S.practiceLo === 'calib') return 'a calibration run';
     if (Array.isArray(S.practiceLo)) {
       return (S.practiceLo.length === 1 ? 'Outcome ' : 'Outcomes ') + loList(S.practiceLo);
     }
@@ -874,6 +1035,85 @@
     cell.a++;
     if (wasCorrect) cell.c++;
     pruneHist(rec.hist);
+  }
+
+  /* ── How sure the reader was ───────────────────────────────────────────────
+     Three buckets, each a pair: how many answers were given at that confidence
+     and how many of them were right. The pair is what makes the claim
+     assertable in both directions — "when you said sure you were right 71% of
+     the time" needs both halves, and both rise, so the pair survives a merge
+     where a stored percentage would not.
+
+     PRACTICE ONLY. A lesson check is teaching, not a test, and the calibration
+     claim is about what the reader knows when nobody is showing them. It is
+     also what keeps this out of the practice record during a lesson, which
+     check-aat3-practice-summary.js asserts is byte-identical afterwards. */
+  var CONF_KINDS = { sure: 1, think: 1, guess: 1 };
+  function recordConfidence(unitKey, conf, wasCorrect) {
+    if (!unitKey || !CONF_KINDS[conf]) return false;
+    var c = practiceRec(unitKey).conf;
+    var cell = c[conf] || (c[conf] = { n: 0, right: 0 });
+    cell.n = n0(cell.n) + 1;
+    if (wasCorrect) cell.right = n0(cell.right) + 1;
+    return true;
+  }
+  /* Read back clamped, because a merged backup takes the larger `n` and the
+     larger `right` independently and can arrive claiming more right than given
+     — the same arithmetic practiceTrend already guards against. */
+  function confidenceRead(unitKey) {
+    var c = (practiceRec(unitKey) || {}).conf || {};
+    var out = { total: 0 };
+    Object.keys(CONF_KINDS).forEach(function (k) {
+      var n = n0(c[k] && c[k].n);
+      var right = Math.min(n, n0(c[k] && c[k].right));
+      out[k] = { n: n, right: right, pct: n ? Math.round((right / n) * 100) : null };
+      out.total += n;
+    });
+    return out;
+  }
+
+  /* WHAT THE READER IS TOLD ABOUT THEIR OWN JUDGEMENT.
+
+     ONE SENTENCE, AND ONLY ABOVE A FLOOR. Thirty answers is not many, and it is
+     the point at which "you were right 71% of the time when you said sure"
+     stops being a statement about four questions. Below it the panel says how
+     many more are needed rather than drawing a figure nobody should act on —
+     the same rule the trend chart follows at two points and the pace line at
+     eight readings.
+
+     THE GAP IS THE FINDING, not the percentage. A reader who is right 95% of
+     the time when sure is calibrated; one who is right 60% of the time when
+     sure is walking into the exam believing things that are not so, and that is
+     the single most useful thing this app can tell them. */
+  var CONF_MIN_N = 30;
+  function confPanel() {
+    var c = confidenceRead(activeUnit());
+    if (!c.total) return '';
+    if (c.total < CONF_MIN_N) {
+      return '<div class="a3-cal"><div class="a3-cal-k">How well you know what you know</div>' +
+        '<p class="a3-cal-m">' + c.total + ' of ' + CONF_MIN_N + ' answers so far. A calibration ' +
+        'run is ten of them.</p></div>';
+    }
+    var rows = ['sure', 'think', 'guess'].filter(function (k) { return c[k].n > 0; })
+      .map(function (k) {
+        return '<li class="a3-cal-row"><span class="a3-cal-l">' + CONF_LABEL[k] + '</span>' +
+          '<span class="a3-cal-bar"><span class="a3-cal-fill ' + bandClass(c[k].pct) +
+            '" style="width:' + c[k].pct + '%"></span></span>' +
+          '<span class="a3-cal-v">' + c[k].pct + '%<span> of ' + c[k].n + '</span></span></li>';
+      }).join('');
+    /* Named only where it is real. Overconfidence is the gap between believing
+       and being right, and calling a reader overconfident on a five-point gap
+       would be the checker that is sometimes wrong about arithmetic. */
+    var gap = c.sure.pct === null ? null : 100 - c.sure.pct;
+    var verdict = gap === null ? ''
+      : gap >= 15
+        ? '<p class="a3-cal-m">When you said <b>sure</b> you were wrong ' + gap +
+          '% of the time. That gap is what costs marks in an exam: you would not ' +
+          'look those up, because you did not know they were wrong.</p>'
+        : '<p class="a3-cal-m">When you said <b>sure</b> you were right ' + c.sure.pct +
+          '% of the time, so your own judgement is worth trusting.</p>';
+    return '<div class="a3-cal"><div class="a3-cal-k">How well you know what you know</div>' +
+      '<ul class="a3-cal-rows">' + rows + '</ul>' + verdict + '</div>';
   }
 
   /* The lifetime practice picture as one object.
@@ -2408,6 +2648,8 @@
     if (isMock()) {
       h += '<button class="a3-btn a3-btn-primary a3-wide" data-a3="mocknext">' +
         (S.qIdx === n - 1 ? 'Finish the paper' : 'Next question') + '</button>';
+    } else if (S.answered === null && confOffered(q)) {
+      h += confHtml();
     } else if (S.answered !== null) {
       h += '<div class="a3-exp-box"><div class="a3-exp-l">Why</div><p class="a3-exp">' + md(q.exp || '') + '</p></div>';
       /* A review is the same graded screen with somewhere else to go: it moves
@@ -2422,6 +2664,50 @@
       }
     }
     return h;
+  }
+
+  /* ── Saying how sure you are, before you find out ─────────────────────────
+     One row, above the answer controls, and it reads two ways depending on the
+     run.
+
+     ORDINARY RUN: a single "Guessing" toggle, off, costing a confident reader
+     nothing. The label is the honest one — it says what tapping it MEANS, not
+     what it measures — and `aria-pressed` carries the state rather than colour,
+     so it survives greyscale and a screen reader alike.
+
+     CALIBRATION RUN: three buttons, one of which must be chosen before the
+     question can be answered. The answer controls stay on screen but the
+     submits refuse, which is the same guard every other type already keeps in
+     its handler rather than only on its button — a disabled button is a hint to
+     a person and no obstacle to a stale repaint.
+
+     ABOVE THE CONTROLS, not below them: it has to be answered first, and a
+     control that has to come first and sits last is one a reader meets after
+     they have already decided. */
+  var CONF_LABEL = { sure: 'Sure', think: 'Fairly sure', guess: 'Guessing' };
+  function confHtml() {
+    if (isCalib()) {
+      return '<div class="a3-conf a3-conf-ask' + (S.confNudge ? ' is-nudge' : '') + '"' +
+        ' role="group" aria-label="How sure are you?">' +
+        '<span class="a3-conf-k">' + (S.confNudge ? 'Say how sure first' : 'How sure are you?') + '</span>' +
+        ['sure', 'think', 'guess'].map(function (k) {
+          return '<button type="button" class="a3-conf-b" data-a3="conf" data-c="' + k + '"' +
+            ' aria-pressed="' + (S.qConf === k ? 'true' : 'false') + '">' + CONF_LABEL[k] + '</button>';
+        }).join('') + '</div>';
+    }
+    return '<div class="a3-conf">' +
+      '<button type="button" class="a3-conf-b a3-conf-one" data-a3="conf" data-c="guess"' +
+      ' aria-pressed="' + (S.qConf === 'guess' ? 'true' : 'false') + '">' +
+      'Guessing</button></div>';
+  }
+  /* What a question is banked at. An untouched toggle in an ordinary run means
+     the reader was sure enough not to say otherwise — which is the whole design:
+     the dangerous state is recorded by inaction, because that is how it happens.
+     A calibration run never reaches here without a choice, and everywhere the
+     control is not offered at all banks nothing. */
+  function confOf(q) {
+    if (!confOffered(q)) return null;
+    return S.qConf || 'sure';
   }
 
   /* ── Multi-part task ───────────────────────────────────────────────────────
@@ -3012,6 +3298,17 @@
       (isP ? '' : '<div class="a3-stars a3-stars-big">' + [1,2,3].map(function (n) {
         return '<span class="' + (n <= st ? 'on' : '') + '">★</span>'; }).join('') + '</div>') +
       (S.lastXp > 0 ? '<div class="a3-done-xp">+' + S.lastXp + ' XP · ' + data.xp + ' total</div>' : '') +
+      /* HOW LONG, beside how many. The paper is 80 marks in 150 minutes, so
+         "right" and "right in time" are two different questions and only one of
+         them was ever answered here. Shown only once the record has enough
+         readings to mean anything — see PACE_MIN_N — because a pace claimed
+         from three questions is noise wearing a number. */
+      (function () {
+        var pc = paceOverall(S.practiceUnit || activeUnit());
+        if (!pc) return '';
+        return '<div class="a3-done-pace">About ' + paceText(pc.ms) +
+          ' a question in this unit<span> · over ' + pc.n + ' timed</span></div>';
+      }()) +
       weak +
       '<div class="a3-done-actions">' +
         /* THE FIRST THING OFFERED AFTER A PAPER, and ahead of more practice.
@@ -3319,6 +3616,16 @@
        above can, because they are sums. */
     if (!empty) h += renderTrend(practiceTrend(practiceRec(activeUnit()).hist));
 
+    /* HOW LONG THIS OUTCOME TAKES, where there are enough readings to say.
+       Appended to the row's own line rather than given a column of its own: it
+       is a second fact about the same outcome, and a column that is blank for
+       most rows most of the time is a column that reads as missing data. */
+    var paceUnit = activeUnit();
+    function paceSuffix(n) {
+      var ms = paceMean(paceUnit, 'byLo', String(n));
+      return ms === null ? '' : ' · ' + paceText(ms) + ' each';
+    }
+
     h += '<div class="a3-sum-rows">';
     s.rows.forEach(function (r) {
       var isWorst = !!(s.worst && s.worst.n === r.n);
@@ -3341,7 +3648,7 @@
           (isWorst ? '<span class="a3-sum-tag">most mistakes</span>' : '') + '</span>' +
         bar + '<span class="a3-sum-bar-fill ' + bandClass(r.accuracy) + '" style="width:' + pct + '%"></span></span>' +
         '<span class="a3-sum-row-m">' + (r.attempted
-          ? r.wrong + ' wrong / ' + r.attempted
+          ? r.wrong + ' wrong / ' + r.attempted + paceSuffix(r.n)
           : 'not practised') + '</span>';
       h += live
         ? '<button class="a3-sum-row is-live' + (isWorst ? ' is-worst' : '') + '"' +
@@ -3756,6 +4063,27 @@
         '<span class="a3-mixed-go" aria-hidden="true">→</span>' +
       '</button>' +
     '</div>';
+
+    /* ── THE CALIBRATION RUN, and why it is offered separately ──────────────
+       The "Guessing" toggle on an ordinary question is cheap and biased: a
+       reader who never taps it produces data saying they were always sure. That
+       is useful for catching confident-wrong answers and useless for measuring
+       how well the reader judges themselves, because the denominator is a
+       fiction.
+
+       This is the unbiased half. Ten questions, each of which has to be called
+       before it can be answered, which is slower and is the only thing the
+       figure below can honestly be computed from. */
+    h += '<button class="a3-calib" data-a3="startpractice" data-lo="calib">' +
+      '<span class="a3-calib-i" aria-hidden="true">?</span>' +
+      '<span class="a3-calib-tx">' +
+        '<span class="a3-calib-t">Calibration run</span>' +
+        '<span class="a3-calib-m">' + PRACTICE_LEN + ' questions, each one called before you answer it. ' +
+          'Finds out how well you know what you know.</span>' +
+      '</span>' +
+      '<span class="a3-calib-go" aria-hidden="true">→</span>' +
+      '</button>';
+    h += confPanel();
 
     /* The way back from "I know this". Retiring is reversible one question at a
        time only while that question is still being served, and it is not — so
@@ -4576,6 +4904,26 @@
      reached. A lesson could not be completed until something else happened to
      reset practiceLo. */
   function isEndless() { return S.mode === 'practice' && S.practiceLo === 'endless'; }
+  /* A calibration run: ten questions that cannot be answered until the reader
+     has said how sure they are. Mode-gated the same way isEndless is, and for
+     the same reason — `practiceLo` outlives a finished run. */
+  function isCalib() { return S.mode === 'practice' && S.practiceLo === 'calib'; }
+  /* WHICH QUESTIONS CARRY THE CONTROL AT ALL.
+
+     Not a mock: nothing is revealed there, so there is no moment of finding
+     out to be sure or unsure ahead of, and a paper is slow enough already.
+
+     Not a lesson: a check inside a lesson is teaching, and the calibration
+     claim is about practice.
+
+     NOT A WRITTEN TASK, which is the one worth naming. It is submitted through
+     `wrmark`, and `wrmark` is only reachable once the model answer has been
+     revealed — so asking "how sure were you?" there asks a reader who is
+     looking at the answer. There is no honest reading to take. */
+  function confOffered(q) {
+    if (isMock() || S.mode === 'lesson') return false;
+    return ((q && q.type) || 'mcq') !== 'written';
+  }
 
   /* More questions, excluding everything already served this run. When the
      unit's whole bank has been seen the set is allowed to start again — an
@@ -4638,6 +4986,12 @@
       topUpEndless();
     } else if (lo === 'mix') {
       S.practiceQs = drawWeighted(S.practiceUnit, PRACTICE_LEN);
+    } else if (lo === 'calib') {
+      /* Drawn exactly as a mixed run is. A calibration run is not a different
+         set of questions, it is the same questions with a different thing asked
+         first — and drawing it from anywhere narrower would measure how well
+         the reader judges one corner of the unit. */
+      S.practiceQs = drawWeighted(S.practiceUnit, PRACTICE_LEN);
     } else if (Array.isArray(lo)) {
       /* Drawn the way "all outcomes" is drawn, over the chosen few: the seats
          go by exam weighting rather than by bank size, so a reader who has
@@ -4678,6 +5032,11 @@
     if (_calc) _calc.reset();
   }
   function resetQState() {
+    /* The stopwatch starts where every other per-question field is cleared, so
+       a question type added later is timed without anyone remembering to time
+       it. openReviewQ() reaches here too, through restoreAnswer() — which is
+       harmless only because nothing on the review path reads the clock. */
+    S.qShownAt = Date.now(); S.qHidden = false; S.qConf = null; S.confNudge = false;
     S.answered = null; S.picked = null; S.tfPicks = {}; S.gapPicks = {}; S.numInput = '';
     S._order = null; S._gapOrder = null;
     S.plPicks = {}; S.egCells = {}; S.calcCell = null; S._plOrder = null;
@@ -4718,7 +5077,43 @@
      identical copies of the same three lines. Adding a sixth thing to do to all
      of them by hand is how one of them ends up silent, which is a defect a
      reader notices and no check would: the question still grades. */
+  /* THE PAGE-VISIBILITY LATCH. Bound once at module scope rather than per
+     question: there is one document, the listener outlives every question on
+     it, and a listener added per question is a leak with a growing cost. The
+     three other files that watch this event — app.js, progress-sync.js and
+     guitar-audio.js — bind the same way.
+
+     Guarded because this module is also loaded in Node by the build checks,
+     where there is no document at all. */
+  if (typeof document !== 'undefined' && document.addEventListener) {
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'hidden') S.qHidden = true;
+    });
+  }
+
+  /* What the stopwatch says, and whether it is worth believing.
+
+     `mode` is passed rather than read from S because the mock banks its
+     questions from a handler where S.mode is still 'mock' but the READING
+     belongs to the question being left behind — and because naming it at the
+     call site is what made the three call sites auditable at all. */
+  function bankPace(q, mode) {
+    if (S.qHidden || !S.qShownAt) return false;
+    return recordPace(S.practiceUnit || activeUnit(), q, mode, Date.now() - S.qShownAt);
+  }
+
   function settle(q) {
+    /* A CALIBRATION RUN CANNOT BE ANSWERED UNTIL THE READER HAS COMMITTED. The
+       guard is here, in the one funnel every type grades through, rather than
+       in each of the eight handlers — which is where it would have to be
+       otherwise, and where one of them would eventually be forgotten. */
+    if (isCalib() && confOffered(q) && !S.qConf) { S.confNudge = true; return rerender(); }
+    S.confNudge = false;
+    /* Banked BEFORE grading, not after: gradeAnswer on a multi-part task writes
+       S.taskResults, and a reading taken after that is a reading of the
+       marker's own work as well as the reader's. The difference is a
+       millisecond and the principle is the whole point of a stopwatch. */
+    bankPace(q, S.mode === 'lesson' ? 'lesson' : 'practice');
     S.answered = gradeAnswer(q);
     if (S.answered) S.score++;
     beep(S.answered ? 'correct' : 'wrong');
@@ -4901,6 +5296,11 @@
        never grade it twice. */
     if (S.mode === 'mock' && S.mockResults && S.mockResults.length === S.qIdx && checks[S.qIdx]) {
       var qOpen = checks[S.qIdx];
+      /* The third and last banking site: the question that was open when the
+         clock ran out. It is graded here rather than by mocknext, so it is
+         timed here too — otherwise the one question a reader ran out of time on
+         is the one the pace record never sees, which is precisely backwards. */
+      bankPace(qOpen, 'mock');
       var okOpen = gradeAnswer(qOpen);
       var mOpen = awardMarks(qOpen);
       S.mockMarks += mOpen.awarded; S.mockMax += mOpen.max;
@@ -5286,7 +5686,8 @@
       if (S.mode === 'practice' && S.screen === 'quiz' && q && S.answered !== null) {
         if (S.answered === false) S.practiceMissed.push(q);
         recordPractice(S.practiceUnit || activeUnit(), q.lo, S.answered === true);
-        recordQuestion(S.practiceUnit || activeUnit(), q.id, S.answered === true);
+        recordConfidence(S.practiceUnit || activeUnit(), confOf(q), S.answered === true);
+        recordQuestion(S.practiceUnit || activeUnit(), q.id, S.answered === true, confOf(q));
         save();
       }
       /* An endless run has no last question, so leaving IS finishing it — and a
@@ -5452,6 +5853,16 @@
       return rerender();
     }
 
+    if (act === 'conf') {
+      if (S.answered !== null) return;
+      var ck = n.getAttribute('data-c');
+      if (!CONF_KINDS[ck]) return;
+      /* The single toggle turns off again; the three-way ask does not, because
+         there is no "unsaid" state a calibration run can be answered from. */
+      S.qConf = (S.qConf === ck && !isCalib()) ? null : ck;
+      return rerender();
+    }
+
     if (act === 'ans') {
       if (S.answered !== null) return;
       S.picked = +n.getAttribute('data-i');
@@ -5527,6 +5938,11 @@
        per-question result the report is built from. A question left blank
        grades as wrong, which is what the assessment does with it. */
     if (act === 'mocknext') {
+      /* The mock's own banking site. Nothing is revealed here, so there is no
+         settle() to hang the reading on — the time from render to "move on" IS
+         the time the question took, and the paper is strictly forward-only, so
+         each question is shown once and timed once. */
+      bankPace(q, 'mock');
       var mCorrect = gradeAnswer(q);
       var mMark = awardMarks(q);
       S.mockMarks += mMark.awarded; S.mockMax += mMark.max;
@@ -5564,10 +5980,14 @@
       if (S.mode === 'practice' && q && S.answered !== null) {
         if (S.answered === false) S.practiceMissed.push(q);
         recordPractice(S.practiceUnit || activeUnit(), q.lo, S.answered === true);
+        /* HOW SURE, banked beside the result and on the same condition — a
+           tally kept on any other condition than "this counted as an attempt"
+           would drift away from the attempts it claims to describe. */
+        recordConfidence(S.practiceUnit || activeUnit(), confOf(q), S.answered === true);
         /* Only practice questions have ids. A lesson check has no identity of
            its own to remember, and the lesson it belongs to is already tracked
            by its own progress record. */
-        recordQuestion(S.practiceUnit || activeUnit(), q.id, S.answered === true);
+        recordQuestion(S.practiceUnit || activeUnit(), q.id, S.answered === true, confOf(q));
         /* Written now rather than at the end of the run. A reader who answers
            six questions and then leaves has attempted six questions, and the
            summary that claims to count what they attempted has to agree. The
@@ -5682,6 +6102,19 @@
        it contains those outcomes and nothing else, in the proportion the exam
        weights them — is a property of the draw, and the draw is pure. Reaching
        it through the screen would test the navigation instead. */
+    /* Exposed for scripts/check-aat3-pace.js. The stopwatch is the one thing
+       in this module with no visible output until a threshold is crossed, so a
+       check confined to the screen could only assert that nothing appeared —
+       which is what a broken stopwatch also looks like. `paceRead` returns the
+       raw totals; `paceMeanOf` is the same rounding the screens use, so the
+       check cannot pass on a mean the reader never sees. */
+    /* Exposed for scripts/check-aat3-confidence.js, for the same reason the pace
+       reads are: the counters have no visible output below their floor, so a
+       check confined to the screen could only assert that nothing appeared —
+       which is what a broken counter also looks like. */
+    confidenceRead: function (unitKey) { return confidenceRead(unitKey); },
+    paceRead: function (unitKey) { return paceAll()[unitKey] || null; },
+    paceMeanOf: function (unitKey, kind, key) { return paceMean(unitKey, kind, key); },
     drawPractice: function (unitKey, n, onlyLos) {
       return drawWeighted(unitKey, n, false, false, false, onlyLos);
     },

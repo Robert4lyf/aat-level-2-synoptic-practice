@@ -4,7 +4,27 @@
 ground. Nothing here touches Levels 1 or 2, CIPS, French or guitar. If it works,
 each phase ports outward on its own.
 
-**Status:** planning. Nothing below is built.
+**Status:** Phase 1 is built and merged — the two signals the module was blind
+to. Everything from Phase 2 on is still planning.
+
+| Phase | State |
+|---|---|
+| 1.1 Timing | **Built** — `check-aat3-pace.js`, 30 assertions, 10 mutations |
+| 1.2 Confidence | **Built** — `check-aat3-confidence.js`, 75 assertions, 17 mutations |
+| 2 Misconceptions | Planned |
+| 3 Cover-the-options | Planned |
+| 4 Follow-through marking | Planned |
+| 5 Readiness and mastery | Planned |
+| 6 Diagnosis screen | Planned |
+
+**What Phase 1 changed about the plan below.** Two of its estimates were
+optimistic in the way §11 warned they would be: both halves needed a second
+round after mutation testing, and in both cases the mutations found holes in the
+*gate* rather than in the code — a stopwatch check that passed vacuously because
+the fake DOM answers faster than the floor it was measuring against, and a
+compatibility assertion that could not fail because it compared two calls that
+take the same path. Neither was a surprise about the feature; both were a
+surprise about the check. Read the remaining phases' session counts accordingly.
 
 ---
 

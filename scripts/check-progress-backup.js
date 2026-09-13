@@ -141,9 +141,14 @@ console.log('\x1b[1mProgress backup\x1b[0m\n');
     prep_v2_aat1_losel: [1, 2],
     prep_v2_aat3_losel: { faps: [1, 2] },
     prep_v2_aat3_trendoff: { faps: { 4: 1 } },
+    /* A mean's ingredients, and the one key here that is about the device
+       rather than the reader: max(n) from one device over max(ms) from the
+       other is a pace neither of them has. */
+    prep_v2_aat3_pace: { tpfb: { byLo: { '3': { n: 41, ms: 512000 } } } },
   }, choices);
   const doc3 = PB.buildExport({ store: choices, now: T0 });
-  ['aatPrep_v2_topicsel', 'prep_v2_aat1_losel', 'prep_v2_aat3_losel', 'prep_v2_aat3_trendoff'].forEach(k => {
+  ['aatPrep_v2_topicsel', 'prep_v2_aat1_losel', 'prep_v2_aat3_losel', 'prep_v2_aat3_trendoff',
+    'prep_v2_aat3_pace'].forEach(k => {
     ok(!(k in doc3.keys), `${k} is a study choice and must never be written into an exported file`);
   });
   /* And it cannot arrive, either — the filter has to hold on import as well, or
@@ -153,11 +158,15 @@ console.log('\x1b[1mProgress backup\x1b[0m\n');
   PB.writeAll({ prep_v2_aat1_losel: [5] }, target3);
   PB.applyImport({ format: PB.FORMAT, version: 1, keys: {
     aatPrep_v2: phone, prep_v2_aat1_losel: [1, 2], prep_v2_aat3_trendoff: { faps: { 4: 1 } },
+    prep_v2_aat3_pace: { tpfb: { byLo: { '3': { n: 900, ms: 9 } } } },
   } }, 'replace', target3);
   eq(JSON.parse(target3.getItem('prep_v2_aat1_losel')), [5],
     'importing a file that carries a chosen outcome set leaves this device\'s own set alone');
   ok(target3.getItem('prep_v2_aat3_trendoff') === null,
     'importing a file that carries hidden trend lines does not hide them on this device');
+  ok(target3.getItem('prep_v2_aat3_pace') === null,
+    'importing a file that carries another device\'s pace does not import it — a mean ' +
+    'cannot survive this merge, and the figure would describe neither device');
 }
 
 /* ── Nothing is lost ────────────────────────────────────────────────────── */
