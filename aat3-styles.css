@@ -1287,6 +1287,14 @@ body[data-subject="aat3"] .a3-streak.is-legendary .a3-streak-n::after {
   margin: 10px 0 0; font-size: var(--a3-t-meta); font-weight: 700;
   color: var(--a3-brand);
 }
+/* How long that run took, under how well it went. Quieter than the XP line
+   above it: pace is context for the score, not a second score. The count of
+   timed questions is quieter still, because it is there to say how much to
+   trust the figure rather than to be read every time. */
+.a3-done-pace {
+  margin: 8px 0 0; font-size: var(--a3-t-meta); color: var(--a3-ink-3);
+}
+.a3-done-pace span { opacity: .72; }
 .a3-try-row-mock { margin-bottom: 6px; }
 
 /* ── The context bar ─────────────────────────────────────────────────────────

@@ -67,9 +67,17 @@
        record still matched `prep_v2_*` and travelled anyway, so the claim was
        true of the intent and false of the code. Losing any of them costs a
        reader one tap; merging them hides a trend line on a device nobody hid it
-       on. */
+       on.
+
+       `*_pace` is here for a different and stronger reason. It holds totals
+       that are read back as a MEAN, and a mean cannot survive this file's
+       merge: taking the larger `n` from one device and the larger `ms` from the
+       other divides one reader's total by the other's count and reports a pace
+       neither of them has. It is also the one record here that is genuinely
+       about the DEVICE — typing a figure into a phone is slower than typing it
+       into a laptop, so a merged pace figure would describe nobody. */
     return k === 'multisubject_active' || k === 'prep_v2_settings' || k === 'prep_v2_sync' ||
-           /_(pos|losel|topicsel|trendoff)$/.test(k);
+           /_(pos|losel|topicsel|trendoff|pace)$/.test(k);
   }
 
   function isObj(v) { return v !== null && typeof v === 'object' && !Array.isArray(v); }
