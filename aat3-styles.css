@@ -1317,10 +1317,39 @@ body[data-subject="aat3"] .a3-streak.is-legendary .a3-streak-n::after {
    submit is attempted without it, the label says so rather than nothing
    happening, which is what a control that silently refuses looks like. */
 .a3-conf-ask.is-nudge .a3-conf-k { color: var(--a3-bad); font-weight: 700; }
-/* The lone toggle on an ordinary question. Pushed to the right so it sits away
-   from the answer controls rather than alongside them: it is an aside about the
-   answer, not one of the ways to give it. */
-.a3-conf-one { margin-left: auto; }
+/* The lone toggle on an ordinary question. Below the answer controls and hard
+   LEFT. Right-aligned it landed directly beneath the primary button on a narrow
+   screen — same edge, same width, same rounded shape — which is what a second
+   submit looks like, and a reader who has just typed a figure should not have
+   to work out which of two stacked buttons checks it. It is a note about the
+   answer rather than one of the ways to give one, so it is smaller and quieter
+   than every control above it, and it carries a tick box: a thing you set,
+   not a thing you press. */
+.a3-conf-lone { margin: 14px 0 0; }
+.a3-conf-one {
+  display: inline-flex; align-items: center; gap: 7px;
+  min-height: 0; padding: 6px 12px 6px 10px;
+  font-size: 12.5px; font-weight: 600; border-radius: 9px; border-width: 1px;
+  border-color: var(--a3-line); color: var(--a3-ink-3);
+}
+.a3-conf-tick {
+  flex: none; width: 13px; height: 13px; border-radius: 4px;
+  border: 1.5px solid var(--a3-line-2); background: var(--a3-surface);
+  transition: background .12s ease, border-color .12s ease;
+}
+.a3-conf-one:hover .a3-conf-tick { border-color: var(--a3-brand); }
+/* SET, AND NOT BY COLOUR ALONE — the box fills as well as the chip, so the
+   state survives greyscale exactly as the calibration pills' does. A WASH
+   rather than the pills' solid brand: filled solid it read as a second primary
+   button stacked under the first, which is the thing the placement above is
+   there to avoid, and a flag a reader sets on the way past should not end up
+   the loudest control on the card. */
+.a3-conf-one[aria-pressed="true"] {
+  background: var(--a3-brand-wash); border-color: var(--a3-brand); color: var(--a3-brand-ink);
+}
+.a3-conf-one[aria-pressed="true"] .a3-conf-tick {
+  background: var(--a3-brand); border-color: var(--a3-brand);
+}
 
 /* The calibration run's own card on the practice screen. */
 .a3-calib {
