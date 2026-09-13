@@ -113,8 +113,34 @@
 
      A MISS RESETS THE COUNT, not the ease. Coming back tomorrow is the point;
      dropping the ease by more than the successes raise it is what makes a
-     repeatedly missed item stay frequent for longer than one round. */
-  function schedule(rec, correct, now, key) {
+     repeatedly missed item stay frequent for longer than one round.
+
+     ── `conf`, AND WHY IT IS THE FIFTH PARAMETER AND NOT THE SECOND ──────────
+
+     How sure the reader was, where they were asked: 'sure', 'think' or 'guess'.
+     OPTIONAL, and its absence reproduces the four-argument behaviour exactly —
+     which is not politeness, it is the whole reason it goes on the end. This
+     function is called by aat1-ui.js, aat3-ui.js and app.js, so one reader
+     meets one algorithm rather than three. Level 3 is the only caller that asks
+     about confidence today; a change that altered the schedule for the other
+     two would silently reschedule two levels that never opted in.
+
+     WHAT IT CHANGES, and both of these are about the same thing — that being
+     right and knowing it are different events:
+
+       RIGHT BUT GUESSED does not climb the ladder. A guess that landed is not
+       recall, and treating it as the second success in a row spaces it out to a
+       fortnight on the strength of a coin flip. It is held at one rep, so it
+       comes back soon and gets a chance to be answered rather than hit.
+
+       WRONG WHILE SURE costs more ease than an ordinary miss. This is the most
+       dangerous state in learning and the one the reader will never fix on
+       their own: they are not going to look it up, because they do not know
+       they are wrong. Coming back harder is the only thing that helps.
+
+     A miss while guessing is left exactly as it was — the reader already knows
+     they do not know it, and there is nothing to correct. */
+  function schedule(rec, correct, now, key, conf) {
     var t = num(now, Date.now());
     var ease = num(rec && rec.ease, EASE_DEFAULT);
     var reps = num(rec && rec.reps, 0);
@@ -122,14 +148,20 @@
 
     if (correct) {
       reps += 1;
+      /* Held at one rep rather than reset to nought: a guess that landed is
+         still a sighting, and sending it back to day one would make a lucky
+         answer cost more than a wrong one. */
+      if (conf === 'guess') reps = Math.min(reps, 1);
       if (reps === 1) interval = FIRST_INTERVAL;
       else if (reps === 2) interval = SECOND_INTERVAL;
       else interval = Math.max(1, Math.round(interval * ease));
-      ease = Math.min(EASE_MAX, ease + 0.08);
+      /* And it earns no ease either. Ease is how fast the gaps widen, and a
+         guess is no evidence that they should. */
+      if (conf !== 'guess') ease = Math.min(EASE_MAX, ease + 0.08);
     } else {
       reps = 0;
       interval = 1;
-      ease = Math.max(EASE_MIN, ease - 0.2);
+      ease = Math.max(EASE_MIN, ease - (conf === 'sure' ? 0.35 : 0.2));
     }
     interval = Math.min(interval, INTERVAL_MAX);
     /* `interval` stays the nominal ladder position — the spread moves the DUE

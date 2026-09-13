@@ -77,6 +77,8 @@ jobs:
         run: npm run check:picker
       - name: Check Level 3 question timing (bounds, buckets, and the review that must not re-time)
         run: npm run check:pace
+      - name: Check Level 3 confidence (the shared scheduler, the control, the record)
+        run: npm run check:confidence
       - name: Check no Level 3 question is answerable from option position
         run: npm run check:aat3-position
       - name: Check Level 3 multi-part tasks behave (grading, per-part feedback, no state leak)
