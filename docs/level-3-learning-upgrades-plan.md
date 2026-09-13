@@ -4,15 +4,15 @@
 ground. Nothing here touches Levels 1 or 2, CIPS, French or guitar. If it works,
 each phase ports outward on its own.
 
-**Status:** Phase 1 is built and merged — the two signals the module was blind
-to. Everything from Phase 2 on is still planning.
+**Status:** Phases 1 and 3 are built and merged — the two signals the module was
+blind to, and the run that stops recognition standing in for recall.
 
 | Phase | State |
 |---|---|
 | 1.1 Timing | **Built** — `check-aat3-pace.js`, 30 assertions, 10 mutations |
-| 1.2 Confidence | **Built** — `check-aat3-confidence.js`, 75 assertions, 17 mutations |
+| 1.2 Confidence | **Built** — `check-aat3-confidence.js`, 118 assertions, 20 mutations |
 | 2 Misconceptions | Planned |
-| 3 Cover-the-options | Planned |
+| 3 Cover-the-options | **Built** — `check-aat3-covered.js`, 96 assertions, 13 mutations |
 | 4 Follow-through marking | Planned |
 | 5 Readiness and mastery | Planned |
 | 6 Diagnosis screen | Planned |
@@ -25,6 +25,31 @@ the fake DOM answers faster than the floor it was measuring against, and a
 compatibility assertion that could not fail because it compared two calls that
 take the same path. Neither was a surprise about the feature; both were a
 surprise about the check. Read the remaining phases' session counts accordingly.
+
+**What Phase 3 changed about §5 below.** Three corrections, all of them found
+while building rather than while reviewing, and §5 has been rewritten to match:
+
+1. **True/false is not coverable, so the mode is `mcq` only.** §5's own
+   argument is that the gap measures "how long you needed before the options
+   could rescue you" — and a true/false question offers the same two words every
+   time. There is nothing to be rescued *by*. Covering them delays nothing,
+   cues nothing, and adds a tap.
+2. **The run is therefore drawn from multiple choices alone**, not mixed. §5
+   said a run would mix covered and uncovered questions; that was written when
+   three quarters of the bank looked coverable. With true/false out, a weighted
+   draw is about a third multiple choice, so a mixed covered run would do the
+   thing it is named for on three or four questions in ten — and the gap bucket
+   needs eight readings before it says anything, so the measurement would take
+   three runs to arrive. The outcome weighting is kept; only the format mix
+   narrows.
+3. **The gap gets its own bucket, `byGap`, not a `covered` key in `byMode`.**
+   §5 said "storage: none new", which is still true of localStorage keys but was
+   wrong about fields. `recordPace()` writes `byLo`, `byType` and `byMode` in one
+   pass, so filing the gap as a mode would have put a *part* of an answer into
+   two buckets that hold *whole* ones — and `paceOverall()` sums `byMode`, so
+   the app would have quoted a pace no reader ever took. The gap is filed by
+   outcome in `byGap`; the whole answer still goes to all three of the others,
+   with `byMode` under `covered`.
 
 ---
 
@@ -578,11 +603,11 @@ maybe two sessions, 2b four or more.
 
 ---
 
-## 5. Phase 3 — cover-the-options retrieval
+## 5. Phase 3 — cover-the-options retrieval  — **BUILT**
 
-**What.** A practice mode where the stem appears with the options hidden. The
-reader thinks, taps **"I have my answer"**, and only then do the options appear
-to be picked from.
+**What.** A practice run where the stem appears with the options *not in the
+page*. The reader thinks, taps **"I have my answer"**, and only then are the
+options rendered to be picked from.
 
 **Why this shape.** Free-recall self-grading ("did I have it?") is a claim about
 a thought, and unverifiable. Delaying the options keeps the grading fully
@@ -590,34 +615,59 @@ objective while still forcing retrieval before recognition — and the gap betwe
 the two taps is a real measurement: *how long you needed before the options could
 rescue you*.
 
-**Scope: `mcq` and `truefalse` only.** Numeric, entrygrid and picklist questions
-are already blank-page by construction — there is nothing to cover. Gap-fill is
-the awkward one and is deliberately left out: its options are pills rendered
-*inline inside the sentence*, so hiding them leaves a sentence full of holes,
-which is a different exercise (cloze recall) rather than a covered multiple
-choice. It may well be a good exercise. It is not this one, and bundling it here
-would mean one mode with two meanings.
+**Scope: `mcq` only.** This was drafted as mcq *and* truefalse and narrowed
+during the build, for the reason the paragraph above gives: the measurement only
+exists where the options could have rescued the reader, and a true/false question
+offers the same two words every time. Numeric, entry grid and pick list
+questions are already blank-page by construction — there is nothing to cover.
+Gap fill renders its options as pills *inline inside the sentence*, so hiding
+them leaves a sentence full of holes: that is cloze recall, a different exercise,
+and bundling it here would make one mode mean two things.
 
-A run therefore mixes covered and uncovered questions, and the screen has to say
-which is which rather than leaving the reader wondering why some questions have
-a "reveal" step and some do not.
+**Drawn from multiple choices alone**, weighted across the outcomes exactly as a
+mixed run is. The draft had a covered run mixing covered and uncovered
+questions; with true/false out, that would have meant doing the named thing on
+three or four questions in ten, and the gap bucket needs eight readings before it
+reports anything. The format narrows; the weighting does not. The exam rehearsal
+is the mock.
 
-**Storage.** None new: the gap lands in the Phase 1 pace record under a
-`covered` bucket.
+**Not offered below five live multiple choices.** Retirement counts against it,
+so a reader who has put most of a unit away is not handed a "run" of two
+questions calling itself a drill — the rule the mistakes and review runs already
+follow.
+
+**Storage.** No new localStorage key, but one new field. The gap is filed by
+outcome in `pace[unit].byGap`, NOT as a `covered` key in `byMode`:
+`recordPace()` writes `byLo`, `byType` and `byMode` in one pass, so a gap filed
+as a mode would put a *part* of an answer into two buckets holding *whole* ones,
+and `paceOverall()` sums `byMode`. The whole answer still goes to all three, with
+`byMode` under `covered` — a fourth pressure beside practice, lesson and mock.
+`byGap` has to be named in `paceRec()`'s repair list; see §1.5.
 
 **Screen.** A fourth run type on the practice screen beside Mixed / Endless /
-Mistakes, and a per-question blur-then-reveal.
+Mistakes / Calibration, wearing the calibration card's clothes because both
+change how a question is asked rather than which questions are asked. On the
+question itself: one line saying the options come next, and the button.
 
-**Gate:** `scripts/check-aat3-covered.js` — options are genuinely absent from the
-DOM rather than merely hidden by CSS (a reader can read hidden text; so can a
-screen reader); the reveal is one-way within a question; the run grades and
-records exactly as an ordinary run does.
+**Gate:** `scripts/check-aat3-covered.js`, 96 assertions — the options are
+genuinely absent from the DOM rather than hidden by CSS (every option string is
+checked against the painted HTML, since a reader can select hidden text and a
+screen reader will read it); the reveal is one-way within a question and clears
+between them; the handler refuses a pick while covered rather than relying on
+the buttons not being drawn; the gap and the whole answer never mix.
 
-**Mutations:** render the options with `visibility: hidden` instead of omitting
-them; let the reveal toggle back.
+**Mutations run: 13, 12 killed.** Rendering the options and hiding them (3
+failures); the reveal toggling back (3); `qRevealed` surviving into the next
+question (3); the handler guard removed, so a stale tap grades a covered
+question (2); the gap filed as a mode (5); a covered answer banked as ordinary
+practice (1); the run not narrowed to mcq (1); the offer ignoring the live count
+(1); `byGap` dropped from `paceRec()`'s field list (a TypeError — the field is
+load-bearing and fails loudly); the gap floor removed (2); the backgrounded
+guard removed (1); `byGap` keyed by type rather than outcome (1); `COVER_TYPES`
+widened back to true/false (1). The survivor is `reveal` dropped from
+`NAV_SOUNDS`, which the sound gate owns rather than this one.
 
-**Size:** ~200 lines app, ~150 gate. One session. **Best value-to-effort on this
-list after Phase 1.**
+**Size:** ~170 lines app, ~330 gate.
 
 ---
 
@@ -846,16 +896,16 @@ wrong before in one direction — the last three changes each turned up a real
 defect during mutation testing that needed a second round. **Read them as "no
 smaller than", not as "about".**
 
-| # | Phase | Sessions | Depends on | Ship on its own? |
-|---|---|---|---|---|
-| 1 | Timing + confidence | 2–3 | — | Yes |
-| 3 | Cover-the-options | 1 | Phase 1 (for the gap timing) | Yes |
-| 2a | Misconception registry + TPFB numeric | 2 | — | Yes |
-| 4 | Follow-through marking | 1–2 | — | Yes |
-| 2b | TPFB MCQ distractors | 4+ | 2a | Yes |
-| 5 | Readiness + mastery | 2 | Phase 1 | Yes |
-| 6 | Diagnosis screen | 1 | 1, 2, 5 | Yes |
-| 2c | Remaining units | 6+ | 2b, and evidence it works | Yes |
+| # | Phase | Sessions | Depends on | Ship on its own? | State |
+|---|---|---|---|---|---|
+| 1 | Timing + confidence | 2–3 | — | Yes | **Built** |
+| 3 | Cover-the-options | 1 | Phase 1 (for the gap timing) | Yes | **Built** |
+| 2a | Misconception registry + TPFB numeric | 2 | — | Yes | Planned |
+| 4 | Follow-through marking | 1–2 | — | Yes | Planned |
+| 2b | TPFB MCQ distractors | 4+ | 2a | Yes | Planned |
+| 5 | Readiness + mastery | 2 | Phase 1 | Yes | Planned |
+| 6 | Diagnosis screen | 1 | 1, 2, 5 | Yes | Planned |
+| 2c | Remaining units | 6+ | 2b, and evidence it works | Yes | Planned |
 
 Every row ships independently behind `npm test` green. Nothing below row 1 is
 started before row 1 is merged, because every later phase reads its data.
