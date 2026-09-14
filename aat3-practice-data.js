@@ -86,6 +86,12 @@
         '5 December',
       ],
       ans: 0,
+      why: [
+        null,
+        'notification-deadline-and-registration-date-swapped',
+        'notification-period-counted-from-the-wrong-starting-point',
+        null,
+      ],
       exp: 'Notification under the historic test is due within ' + T.registration.historicTest.notifyWithinDays.value + ' days of the END of the month in which the threshold was passed. Thirty days from 30 November is 30 December. Registration itself takes effect separately, from 1 January.',
     },
     {
@@ -135,6 +141,12 @@
         'The payment is late, but only if the business also filed its return late',
       ],
       ans: 0,
+      why: [
+        null,
+        'payment-treated-as-made-when-it-was-instructed',
+        null,
+        null,
+      ],
       exp: 'What the law requires is that cleared funds REACH HMRC by the deadline, not that the instruction was given by then. Bacs takes three working days, so a payment started on the due date arrives late. Faster Payments or CHAPS would have arrived in time.',
     },
     {
@@ -160,6 +172,12 @@
         'No penalty arises, because points expire after twelve months of trading',
       ],
       ans: 0,
+      why: [
+        null,
+        null,
+        'the-fixed-penalty-attached-to-points-rather-than-to-the-threshold',
+        'point-expiry-taken-as-twelve-months',
+      ],
       exp: 'The threshold for monthly filers is ' + T.penalties.lateSubmission.thresholds.monthly + ' points, so the fifth late return reaches it and triggers the fixed penalty — with a further one for each later late return while at the threshold. Monthly filers get the highest threshold because they file most often.',
     },
     {
@@ -181,6 +199,12 @@
         'It owes the VAT, but no penalty can arise at all where the failure was not deliberate',
       ],
       ans: 0,
+      why: [
+        null,
+        'backdated-liability-ignored-on-a-late-registration',
+        'penalty-treated-as-replacing-the-tax',
+        'a-figure-read-off-the-wrong-row-of-the-penalty-table',
+      ],
       exp: 'Liability runs from the date registration fell due, so output tax is owed on sales made since — usually absorbed, since customers will not pay a surcharge afterwards. The penalty is a percentage of that potential lost revenue, and coming forward unprompted reduces it substantially.',
     },
     {
@@ -233,6 +257,12 @@
         'Zero-rated supplies are made only to consumers and exempt ones only to businesses',
       ],
       ans: 0,
+      why: [
+        null,
+        'exempt-supply-treated-as-zero-rated',
+        null,
+        null,
+      ],
       exp: 'Zero-rated is a taxable supply charged at 0%, so the input tax attributable to it is recoverable in full. Exempt is outside the charge, and the input tax that relates to it is not recoverable — which is the whole practical consequence of the distinction.',
     },
     {
@@ -260,6 +290,12 @@
         'Until the return has been accepted by HMRC without query',
       ],
       ans: 0,
+      why: [
+        null,
+        'retention-period-confused-with-another-period',
+        'the-form-records-may-take-misjudged',
+        'acceptance-of-a-return-treated-as-approval',
+      ],
       exp: 'The retention period is six years, and the form is the business’s choice provided the records are complete and readable. Four years is the normal assessment window, which is a different rule — and acceptance of a return closes nothing.',
     },
     {
@@ -307,6 +343,12 @@
         '30 April — the day notification is due',
       ],
       ans: 0,
+      why: [
+        null,
+        'registration-dated-from-the-start-of-a-later-month',
+        null,
+        null,
+      ],
       exp: 'Under the historic test, notification is due within 30 days of the end of the month in which the threshold was crossed, and registration takes effect from the first day of the SECOND month after it. The two dates are close together and neither is the date the threshold was passed.',
     },
     {
@@ -320,6 +362,12 @@
         '1 August — the first day of the second month after',
       ],
       ans: 0,
+      why: [
+        null,
+        'notification-deadline-and-registration-date-swapped',
+        'registration-dated-from-the-start-of-a-later-month',
+        null,
+      ],
       exp: 'The future test registers a business from the date the expectation arose, not from the end of the period or the start of a later month. That is the opposite of the historic test, and it means VAT must be charged from a date already in the past by the time the paperwork is done.',
     },
     {
@@ -333,6 +381,12 @@
         'Whether the business expects to trade above the threshold in its next accounting year',
       ],
       ans: 0,
+      why: [
+        null,
+        'a-forward-looking-test-measured-over-the-wrong-span',
+        null,
+        null,
+      ],
       exp: 'It is a 30-day test and it is about those 30 days on their own, not a projection of the year ahead. A business expecting steady growth to just above the threshold over a year does not meet it — it will meet the historic test instead, later.',
     },
     {
@@ -359,6 +413,12 @@
         '30 September',
       ],
       ans: 0,
+      why: [
+        null,
+        'filing-deadline-missing-the-seven-days',
+        'filing-deadline-counted-without-the-calendar-month',
+        null,
+      ],
       exp: 'The standard deadline is one calendar month and seven days after the end of the period, and it applies to the filing and the payment alike. One month takes it to 31 July and the seven days to 7 August.',
     },
     {
@@ -372,6 +432,12 @@
         'A higher rate of VAT on the small part of its trade that is standard-rated',
       ],
       ans: 0,
+      why: [
+        null,
+        'cost-of-more-frequent-filing-seen-only-as-a-fee',
+        null,
+        'filing-frequency-thought-to-change-the-tax',
+      ],
       exp: 'The gain is cash flow and the price is administration: twelve filings instead of four. Nothing about the rates or the recoverability changes — only how long the business waits, which for a repayment trader is the whole question.',
     },
     {
@@ -385,6 +451,12 @@
         'There is no payment deadline, because the scheme settles everything by direct debit',
       ],
       ans: 0,
+      why: [
+        null,
+        'the-other-schemes-filing-deadline-used',
+        null,
+        null,
+      ],
       exp: 'Annual accounting replaces four returns with one, but spreads the money across the year as interim payments, with the return and the balancing payment due two months after the year end — a month later than the standard deadline would fall.',
     },
     {
@@ -398,6 +470,12 @@
         'Totals must be entered monthly rather than once a quarter',
       ],
       ans: 0,
+      why: [
+        null,
+        'the-form-records-may-take-misjudged',
+        null,
+        null,
+      ],
       exp: 'Manual re-keying is the step Making Tax Digital removes: the submission has to come from compatible software, with digital links back to the records. A spreadsheet can be part of that chain — bridging software connects it — but typing figures into a website cannot.',
     },
     {
@@ -420,6 +498,12 @@
         'One that pays its own suppliers before their due dates',
       ],
       ans: 0,
+      why: [
+        null,
+        null,
+        'what-the-cash-accounting-scheme-moves-misjudged',
+        null,
+      ],
       /* This said "paying suppliers early actually delays input tax recovery
          under the scheme", which has the direction backwards: the scheme ties
          recovery to PAYMENT, so paying early brings recovery FORWARD. What
@@ -451,6 +535,12 @@
         'It joins the flat rate scheme in place of normal accounting',
       ],
       ans: 0,
+      why: [
+        null,
+        'the-duty-to-notify-hmrc-misjudged',
+        null,
+        null,
+      ],
       exp: 'Compulsory deregistration follows from ceasing to make taxable supplies — the business stops trading, is sold, or its supplies become wholly exempt. Falling below the threshold makes deregistration voluntary, and a change of rate or scheme does not raise the question at all.',
     },
     {
@@ -473,6 +563,12 @@
         'Nothing further, because the penalty replaces the tax that was not charged',
       ],
       ans: 0,
+      why: [
+        null,
+        'output-tax-made-to-depend-on-what-the-customer-pays',
+        'backdated-liability-ignored-on-a-late-registration',
+        'penalty-treated-as-replacing-the-tax',
+      ],
       exp: 'Registration takes effect from the date it was due, so the business owes the output tax on everything it supplied since then — whether or not it charged its customers. That liability is usually far larger than the penalty, and it cannot be avoided by not having invoiced for it.',
     },
     {
@@ -486,6 +582,12 @@
         'Twenty years in every case, matching the record-keeping requirement',
       ],
       ans: 0,
+      why: [
+        null,
+        'retention-period-confused-with-another-period',
+        null,
+        null,
+      ],
       exp: 'The normal window is four years, and deliberate behaviour extends it to twenty. Six years is the record retention period, which is a different rule — and it is longer than the normal assessment window precisely so the records outlast it.',
     },
     {
@@ -585,6 +687,12 @@
         'It may stay, and could rejoin on the same terms if it left',
       ],
       ans: 0,
+      why: [
+        null,
+        'wrong-vat-threshold-used',
+        'flat-rate-rejoining-bar-misplaced',
+        null,
+      ],
       exp: money(1480000) + ' sits between the two thresholds. Joining needs turnover of ' +
         money(T.schemes.cashAccounting.joinThreshold.value) + ' or less, so this business could not start using the scheme now. Leaving is only compulsory above ' +
         money(T.schemes.cashAccounting.leaveThreshold.value) + ', which it has not reached, so it stays. Two different figures, and a business can sit between them: too big to join, not yet big enough to be put out. The twelve-month bar on rejoining belongs to the flat rate scheme, not this one.',
@@ -606,6 +714,12 @@
         'In either quarter, provided the same basis is used throughout',
       ],
       ans: 0,
+      why: [
+        null,
+        'what-the-cash-accounting-scheme-moves-misjudged',
+        null,
+        'timing-treated-as-a-policy-choice',
+      ],
       exp: 'Cash accounting applies to input tax exactly as it applies to output tax — the scheme is not a rule about sales alone. Output tax waits for the customer to pay; input tax waits for the supplier to be paid. Payment was made on 12 April, which falls in the quarter ended 30 June, so that is when the input tax is reclaimable. The invoice date and the normal tax point rules do not govern it while the business is in the scheme.',
     },
     /* ── Outcome 1, second pass ──────────────────────────────────────────────
@@ -650,6 +764,12 @@
         'It pays VAT only on the value it adds and reclaims the rest later',
       ],
       ans: 0,
+      why: [
+        null,
+        'rate-made-to-depend-on-who-the-customer-is',
+        null,
+        null,
+      ],
       exp: 'The VAT a business is charged comes back as input tax and the VAT it charges goes on to HMRC as output tax, so the tax passes through without settling on it. Neutrality is not a lower rate, and there is no collection fee. The last option is the common near-miss: the NET EFFECT is that each business pays tax on the value it adds, but that is the arithmetic of the mechanism rather than a separate rule — and neutrality fails wherever input tax is blocked, exempt supplies intervene or the flat rate scheme applies.',
     },
     {
@@ -752,6 +872,12 @@
         'HMRC may remove records only where fraud has already been proved',
       ],
       ans: 0,
+      why: [
+        null,
+        null,
+        'inspection-powers-made-to-need-a-court-order',
+        'inspection-powers-made-to-depend-on-suspicion',
+      ],
       exp: 'The power to inspect includes the power to remove and copy records, and the officer should receipt what is taken so the business knows what it no longer holds. The three distractors each invent a limit that does not exist. A business that objects has the review and appeal routes open to it, but the officer does not need a court order or a finding of fraud before picking up an invoice file.',
     },
     {
@@ -821,6 +947,12 @@
         'Wait until a second month exceeds the threshold',
       ],
       ans: 0,
+      why: [
+        null,
+        'the-duty-to-notify-hmrc-misjudged',
+        null,
+        null,
+      ],
       exp: 'Exception from registration is exactly this case: the business notifies HMRC and asks not to be registered, on the basis that taxable turnover for the NEXT 12 months will be below the deregistration threshold. HMRC decides. What it cannot do is stay silent — the notification obligation runs whether or not exception is later granted, and the other three options all begin by ignoring it.',
     },
     {
@@ -834,6 +966,12 @@
         'By 31 December, the end of the calendar quarter',
       ],
       ans: 0,
+      why: [
+        null,
+        'notification-period-counted-from-the-wrong-starting-point',
+        null,
+        null,
+      ],
       exp: 'This is the FUTURE test, and its clock is different from the historic one. Notification is due by the end of the same 30-day period in which the threshold is expected to be passed — here 3 November. The historic test is the one that runs 30 days from the end of the MONTH, and answering with that deadline is the standard error. Registration then takes effect from 4 October, the date the expectation arose.',
     },
     {
@@ -847,6 +985,12 @@
         'That its turnover will exceed the threshold at some point',
       ],
       ans: 0,
+      why: [
+        null,
+        'a-forward-looking-test-measured-over-the-wrong-span',
+        null,
+        null,
+      ],
       exp: 'Thirty days alone, not twelve months — the whole threshold has to be expected within a single month for the test to bite. That is a demanding condition, and it is why the future test usually turns on one identifiable event such as a contract or an order. Reading it as a 12-month projection makes the test far easier to trip than it really is.',
     },
     {
@@ -865,6 +1009,12 @@
         'Notify by 17 August, registered from 1 September',
       ],
       ans: 0,
+      why: [
+        null,
+        'notification-period-counted-from-the-wrong-starting-point',
+        'registration-dated-from-the-start-of-a-later-month',
+        null,
+      ],
       exp: 'The historic test runs from the END of the month, not from the date the threshold was passed. July ends on the 31st, so notification is due by 30 August. Registration then takes effect from the first day of the SECOND month after the month of exceeding, which is 1 September. Counting ' + T.registration.historicTest.notifyWithinDays.value + ' days from 18 July gives 17 August, and that is the commonest wrong answer here.',
     },
     {
@@ -901,6 +1051,12 @@
         'Cancel it at the end of the current VAT accounting year',
       ],
       ans: 0,
+      why: [
+        null,
+        'the-duty-to-notify-hmrc-misjudged',
+        null,
+        null,
+      ],
       exp: 'Deregistration is COMPULSORY once a business ceases to make taxable supplies, and the notification is due within 30 days of the date it stopped being eligible. Late notification may attract a penalty. Nothing happens automatically — HMRC does not know the business has stopped — and filing nil returns keeps a registration alive that should have ended.',
     },
     {
@@ -914,6 +1070,12 @@
         'Zero-rated sales must be recharged at the standard rate',
       ],
       ans: 0,
+      why: [
+        null,
+        'what-registration-does-to-a-supply-misjudged',
+        null,
+        null,
+      ],
       exp: 'A registered business must charge VAT, and a customer who cannot reclaim it — a consumer, or an exempt business — sees the price rise by a fifth in substance. That is the real cost, alongside the compliance time. Registration is what UNLOCKS input tax recovery rather than removing it, it has nothing to do with Corporation Tax, and a zero-rated supply stays zero-rated after registration.',
     },
     {
@@ -952,6 +1114,12 @@
         'At any time before HMRC issues the repayment',
       ],
       ans: 0,
+      why: [
+        null,
+        'filing-deadline-missing-the-seven-days',
+        'the-other-schemes-filing-deadline-used',
+        null,
+      ],
       exp: 'The filing deadline is one calendar month and seven days after the period end whichever way the return falls, so 31 March gives 7 May. A repayment position changes nothing about the deadline — and filing late still earns a late submission point even though HMRC owes the money, which is the part readers find counter-intuitive.',
     },
     {
@@ -984,6 +1152,12 @@
         'A fixed annual charge levied by HMRC',
       ],
       ans: 0,
+      why: [
+        null,
+        'filing-frequency-thought-to-change-the-tax',
+        null,
+        'cost-of-more-frequent-filing-seen-only-as-a-fee',
+      ],
       exp: 'Monthly filing is three times the compliance work, and that is the whole of the cost — HMRC charges nothing for it and the tax itself is unchanged. The benefit runs the other way: a repayment trader gets its money back every month rather than waiting up to four. So the decision is administrative effort against cash flow, not tax against tax.',
     },
     {
@@ -1009,6 +1183,12 @@
         'Ask HMRC for a short extension in advance',
       ],
       ans: 0,
+      why: [
+        null,
+        'payment-treated-as-made-when-it-was-instructed',
+        null,
+        null,
+      ],
       exp: 'Bacs takes three working days and does not run at weekends, so the money has to have REACHED HMRC by the last working day before the deadline — Friday 5 June. There is no next-working-day concession for VAT: a deadline falling on a weekend brings the effective date forward, it does not push it back. Faster Payments and CHAPS would be different, since both can move money on the day.',
     },
     {
@@ -1022,6 +1202,12 @@
         'A standing order',
       ],
       ans: 0,
+      why: [
+        null,
+        'payment-treated-as-made-when-it-was-instructed',
+        null,
+        null,
+      ],
       exp: 'Faster Payments moves money the same or next day and runs at weekends and on bank holidays, which is what makes it the safe method close to a deadline. CHAPS is same-day but only on a working day. Bacs takes three working days, a cheque has to be received and cleared, and a standing order is a fixed instruction rather than a way of paying a variable amount on time.',
     },
     {
@@ -1047,6 +1233,12 @@
         'The return must be prepared by an agent rather than in house',
       ],
       ans: 0,
+      why: [
+        null,
+        'the-form-records-may-take-misjudged',
+        null,
+        null,
+      ],
       exp: 'Making Tax Digital requires the data to travel from record to return by DIGITAL LINK, and copying figures by hand across to another file breaks it however accurate the copying is. Spreadsheets are perfectly permissible — bridging software exists precisely to file from one — provided the transfers between them are digital. Neither same-day filing nor an agent is required.',
     },
     {
@@ -1121,6 +1313,12 @@
         'Annual accounting with cash accounting',
       ],
       ans: 0,
+      why: [
+        null,
+        'the-other-schemes-filing-deadline-used',
+        null,
+        null,
+      ],
       exp: 'Cash accounting changes only the point at which VAT is accounted for: still four returns a year, still one month and seven days. Annual accounting is the scheme that changes both, to one return and two months. Any combination that includes annual accounting inherits its filing pattern, which is why the last two options are wrong — and why a business on cash accounting that files annually is doing so because of the other scheme.',
     },
     {
@@ -1155,6 +1353,12 @@
         'Only once its turnover has fallen by a further half',
       ],
       ans: 0,
+      why: [
+        null,
+        'flat-rate-rejoining-bar-misplaced',
+        null,
+        null,
+      ],
       exp: 'The twelve-month bar on rejoining is specific to the flat rate scheme and exists to stop a business hopping in and out as its costs move. Cash accounting and annual accounting carry no such bar. It is worth knowing before leaving, because a business that leaves in a bad quarter cannot simply return in a good one.',
     },
     {
@@ -1180,6 +1384,12 @@
         'The input tax the business failed to reclaim while unregistered',
       ],
       ans: 0,
+      why: [
+        null,
+        'a-penalty-computed-on-the-wrong-base',
+        null,
+        null,
+      ],
       exp: 'The penalty is a percentage of the POTENTIAL LOST REVENUE — the VAT that should have reached HMRC. Turnover is the wrong base because it takes no account of the rate or of the mix of supplies, and there is no fixed monthly sum. The business also still owes that VAT itself: the penalty sits on top of the tax, not instead of it.',
     },
     {
@@ -1218,6 +1428,12 @@
         'It owes half the output tax as a concession for the backdated period',
       ],
       ans: 0,
+      why: [
+        null,
+        'backdated-liability-ignored-on-a-late-registration',
+        'output-tax-made-to-depend-on-what-the-customer-pays',
+        null,
+      ],
       exp: 'Registration is backdated to the date the obligation arose, and output tax is due on supplies made from that date whether or not the business charged any. It may try to recover the VAT from customers, but that is a commercial matter between them and often impossible. Input tax incurred in the same period is recoverable, which softens the figure without removing the problem — and this is why the future test, which backdates furthest, is the expensive one to miss.',
     },
     {
@@ -1249,6 +1465,12 @@
         'The business is moved to monthly filing by HMRC',
       ],
       ans: 0,
+      why: [
+        null,
+        'the-fixed-penalty-attached-to-points-rather-than-to-the-threshold',
+        null,
+        null,
+      ],
       exp: 'The fixed penalty of ' + money(T.penalties.lateSubmission.penalty.value) + ' is charged when the threshold is reached AND again for every late submission after that, for as long as the business sits at the threshold. Points do not keep accumulating beyond it — the penalty replaces the point — so the cost of the fifth, sixth and seventh late return is the same each time. Nothing about the threshold or the filing frequency changes.',
     },
     {
@@ -1285,6 +1507,12 @@
         'HMRC must withdraw the assessment before the return is valid',
       ],
       ans: 0,
+      why: [
+        null,
+        'an-estimate-treated-as-settling-the-matter',
+        null,
+        null,
+      ],
       exp: 'An assessment is a placeholder to the best of HMRC’s judgement, not a settlement: the obligation to file survives it and the return displaces it once made. An assessment may be too high or too low, and where it UNDERSTATES the liability the business must tell HMRC within 30 days or send a correct return — staying quiet about a favourable assessment risks a penalty of up to 30% of the shortfall.',
     },
     {
@@ -1325,6 +1553,12 @@
         'Correct it only after HMRC has raised an assessment',
       ],
       ans: 0,
+      why: [
+        null,
+        'error-threshold-floor-and-percentage-confused',
+        'the-four-year-correction-window-misread',
+        null,
+      ],
       exp: 'A net error may be corrected on the next return if it is under the net error limit, and the limit is the greater of that figure and ' + T.errorCorrection.turnoverPercentage.value + '% of Box 6 turnover up to the absolute ceiling. £6,200 is inside the basic limit on its own, so no separate notification is needed. The four-year rule is about how far BACK an error may be corrected, not a bar on correcting anything over a year old.',
     },
     {
@@ -1350,6 +1584,12 @@
         'The recovery stands, since HMRC did not query the returns',
       ],
       ans: 0,
+      why: [
+        null,
+        null,
+        null,
+        'acceptance-of-a-return-treated-as-approval',
+      ],
       exp: 'Input tax on business entertaining is blocked, so none of it should have been recovered. The over-recovery is an error: the tax comes back, interest runs on it from the date each return was due, and a penalty may follow depending on whether the behaviour was careless or deliberate. HMRC not having queried a return is not approval of it — returns are self-assessed, and the four-year assessment window is exactly the period in which that silence means nothing.',
     },
     /* ── Outcome 2 — calculate VAT (30%) ───────────────────────────────── */
@@ -1384,6 +1624,12 @@
         '11 June, being exactly 30 days after the goods were physically delivered',
       ],
       ans: 0,
+      why: [
+        null,
+        'fourteen-day-override-misapplied',
+        'tax-point-taken-from-the-payment-date',
+        'the-fourteen-day-window-and-the-thirty-day-limit-confused',
+      ],
       exp: 'The basic tax point is 12 May, but an invoice issued within ' + T.invoicing.actualTaxPointDays.value + ' days after it overrides it. 21 May is nine days later, so the invoice date becomes the actual tax point. Payment date is irrelevant here — the business is not on cash accounting.',
     },
     {
@@ -1425,6 +1671,12 @@
         '1 April',
       ],
       ans: 0,
+      why: [
+        null,
+        'the-six-month-clock-on-bad-debt-relief-misread',
+        null,
+        null,
+      ],
       exp: 'The debt must be at least ' + T.badDebtRelief.debtAgeMonths.value + ' months overdue, measured from the later of the due date and the date of supply. Six months from 1 March is 1 September. The claim must then be made within four years and six months.',
     },
     {
@@ -1449,6 +1701,12 @@
         'The VAT is recovered in Box 4 only, with nothing at all declared in Box 1',
       ],
       ans: 0,
+      why: [
+        null,
+        null,
+        'postponed-accounting-thought-to-remove-the-entries',
+        'recovered-without-the-matching-declaration',
+      ],
       exp: 'Postponed accounting declares and recovers the same figure, so it nets to nil only for a business that could recover the VAT anyway. A partially exempt business cannot recover it all, so the Box 4 entry is smaller than the Box 1 entry and the difference is a genuine cost.',
     },
     {
@@ -1498,6 +1756,12 @@
         'Neither, because it was entered after the period closed',
       ],
       ans: 0,
+      why: [
+        null,
+        'posting-date-used-instead-of-the-tax-point',
+        'timing-treated-as-a-policy-choice',
+        null,
+      ],
       exp: 'The return covers a period of time, and what puts a transaction in it is the tax point rather than the date somebody keyed it. Entering late is a bookkeeping delay; it does not move the supply into another quarter.',
     },
     {
@@ -1511,6 +1775,12 @@
         'Sales less credit notes and less input tax',
       ],
       ans: 0,
+      why: [
+        null,
+        null,
+        'outputs-box-filled-with-the-tax-instead-of-the-value',
+        null,
+      ],
       exp: 'Box 6 is a value of supplies, not an amount of tax, and it is stated net. Box 1 holds the output tax itself. Confusing the two is the single most common extraction error, and it makes the return fail an obvious sense check.',
     },
     {
@@ -1524,6 +1794,12 @@
         'The purchase ledger, because it is the business’s own record',
       ],
       ans: 0,
+      why: [
+        null,
+        'supplier-statement-treated-as-evidence-of-input-tax',
+        null,
+        null,
+      ],
       exp: 'Input tax is evidenced by the VAT invoice itself. A statement summarises what a supplier believes is outstanding and carries no VAT detail, and choosing between records by which gives the better answer is not validation at all.',
     },
     {
@@ -1537,6 +1813,12 @@
         'It reports the error to HMRC when the return is submitted',
       ],
       ans: 0,
+      why: [
+        null,
+        null,
+        'software-expected-to-block-rather-than-flag',
+        null,
+      ],
       exp: 'Software checks the internal consistency of what it has been given and raises the discrepancy for a person to resolve. It cannot know which of the two figures was the mistake, and silently changing either one would replace a visible error with a hidden one.',
     },
     {
@@ -1564,6 +1846,12 @@
         '30 September, because it falls at the end of the month of supply',
       ],
       ans: 0,
+      why: [
+        null,
+        'invoice-date-taken-as-the-tax-point-whenever-one-exists',
+        'tax-point-taken-from-the-payment-date',
+        'tax-point-moved-to-the-end-of-the-period',
+      ],
       exp: 'The basic tax point is the date of supply. An invoice issued within 14 days after it overrides it, but 25 September is 22 days later, so the override does not apply and the basic tax point stands.',
     },
     {
@@ -1577,6 +1865,12 @@
         'It decides whether the customer may recover the input tax',
       ],
       ans: 0,
+      why: [
+        null,
+        null,
+        null,
+        'input-tax-recovery-made-to-depend-on-the-tax-point',
+      ],
       exp: 'The tax point allocates a supply to a period. It does not change whether the supply is taxable, at what rate, or whether the customer can recover — but moving output tax a quarter earlier or later is a real cash-flow consequence, and getting it wrong understates or overstates a return.',
     },
     {
@@ -1590,6 +1884,12 @@
         '7 August',
       ],
       ans: 0,
+      why: [
+        null,
+        'the-fourteen-day-window-and-the-thirty-day-limit-confused',
+        null,
+        null,
+      ],
       exp: 'A VAT invoice must normally be issued within ' + T.invoicing.issueWithinDays.value + ' days of the supply, which is 8 July. The 14-day figure is the window in which an invoice OVERRIDES the basic tax point, and 7 August would be the return deadline for a June quarter — three different periods that are easily merged.',
     },
     {
@@ -1603,6 +1903,12 @@
         'Nothing — electronic invoices may always be sent instead',
       ],
       ans: 0,
+      why: [
+        null,
+        'hmrc-approval-invented-for-electronic-invoicing',
+        null,
+        'customer-agreement-to-electronic-invoicing-misjudged',
+      ],
       exp: 'Electronic invoicing rests on the customer accepting it, and on the authenticity, integrity and legibility of the invoice being assured. HMRC approval is not required for each customer, and a digital signature is one way of assuring integrity rather than a requirement in itself.',
     },
     {
@@ -1629,6 +1935,12 @@
         'VAT must be rounded up wherever a fraction of a penny arises',
       ],
       ans: 0,
+      why: [
+        null,
+        null,
+        'rounding-conventions-swapped-between-the-two-kinds-of-box',
+        null,
+      ],
       exp: 'The concession on an invoice runs in the taxpayer’s favour: a fraction of a penny may be ignored. On the return it is the VAT boxes (1 to 5) that carry pounds and pence — the value boxes hold whole pounds — and there is no rule anywhere requiring VAT to be rounded up.',
     },
     {
@@ -1651,6 +1963,12 @@
         'It is left to the supplier to decide which figure to declare',
       ],
       ans: 0,
+      why: [
+        null,
+        'discount-refused-but-vat-reduced',
+        'credit-note-used-where-an-adjustment-was-needed',
+        null,
+      ],
       exp: 'The discount only affects the VAT if it is actually taken. Where the customer pays the full amount, the full VAT stands — and no adjustment is needed, because the invoice was raised on that basis in the first place.',
     },
     {
@@ -1664,6 +1982,12 @@
         'It must restrict its input tax under the partial exemption rules',
       ],
       ans: 0,
+      why: [
+        null,
+        'recovery-rule-reversed-between-zero-rated-and-exempt',
+        'what-registration-does-to-a-supply-misjudged',
+        'zero-rated-supply-treated-as-exempt',
+      ],
       exp: 'Zero-rated supplies are taxable, so input tax is fully recoverable while output tax is nil — the classic repayment trader. Partial exemption is triggered by exempt supplies, not by zero-rated ones, which is precisely the difference between the two categories.',
     },
     {
@@ -1700,6 +2024,12 @@
         'It exempts the business from charging VAT on the vehicle’s use',
       ],
       ans: 0,
+      why: [
+        null,
+        'scale-charge-applied-on-the-input-tax-side',
+        null,
+        null,
+      ],
       exp: 'The scale charge is an output tax adjustment, not an input tax restriction: the business recovers the VAT on all the fuel and then declares a fixed amount of output tax for the private element. It goes on the other side of the return from the recovery it is balancing.',
     },
     {
@@ -1722,6 +2052,12 @@
         'Reopen the earlier return and amend the original claim',
       ],
       ans: 0,
+      why: [
+        null,
+        'what-bad-debt-relief-actually-requires-misjudged',
+        'credit-note-used-where-an-adjustment-was-needed',
+        'a-filed-return-thought-to-be-amendable',
+      ],
       exp: 'Relief is given for VAT on money not received, so it has to be given back when the money arrives. The adjustment belongs in the current period rather than in the old return — the earlier claim was correct when it was made.',
     },
     {
@@ -1735,6 +2071,12 @@
         'Nil, because postponed accounting removes the VAT from the return entirely',
       ],
       ans: 0,
+      why: [
+        null,
+        'declared-without-the-matching-recovery',
+        'recovered-without-the-matching-declaration',
+        'postponed-accounting-thought-to-remove-the-entries',
+      ],
       exp: 'Postponed accounting declares the import VAT in Box 1 and recovers it in Box 4, so a fully taxable business is neutral overall. The benefit is cash flow — the VAT is never paid at the border — rather than a reduction in tax.',
     },
     {
@@ -1804,6 +2146,12 @@
         'Outside the scope, and excluded from the return entirely',
       ],
       ans: 0,
+      why: [
+        null,
+        'rate-made-to-depend-on-who-the-customer-is',
+        'zero-rated-supply-treated-as-exempt',
+        'taxable-supply-left-off-the-return-as-outside-the-scope',
+      ],
       exp: 'Exports of goods are zero-rated where the evidence of removal is held, so no VAT is charged but the sale still appears in Box 6 as a value. Zero-rated and exempt behave very differently for input tax recovery, and only one of them is a taxable supply.',
     },
     {
@@ -1826,6 +2174,12 @@
         'The software cannot handle supplies at more than one rate',
       ],
       ans: 0,
+      why: [
+        null,
+        'software-suspected-of-arithmetic-error',
+        null,
+        null,
+      ],
       exp: 'Automation removes arithmetic error and leaves classification error untouched — and a wrong rate applied faultlessly to every transaction in a series is harder to spot than an obvious miscalculation, because nothing about the figures looks inconsistent.',
     },
     {
@@ -1848,6 +2202,12 @@
         'Its exempt input tax is below the limit in at least one month of the quarter',
       ],
       ans: 0,
+      why: [
+        null,
+        'de-minimis-allowed-on-one-limb',
+        'de-minimis-limb-measured-on-turnover-rather-than-input-tax',
+        null,
+      ],
       exp: 'De minimis has two limbs and both must be satisfied: an amount test and a proportion test of ' + T.partialExemption.inputTaxProportion.value + '%. Passing one alone is not enough, and the test is applied to the period as a whole rather than month by month.',
     },
     {
@@ -1884,6 +2244,12 @@
         'The purchase orders raised during the period',
       ],
       ans: 0,
+      why: [
+        null,
+        'supplier-statement-treated-as-evidence-of-input-tax',
+        null,
+        null,
+      ],
       exp: 'Input tax is evidenced by the VAT invoice, and without one there is generally no right to recover at all. A supplier statement shows what is owed rather than what VAT was charged; a bank statement shows money moving, which is not the same event unless the business is on cash accounting; and an order records an intention, not a supply.',
     },
     {
@@ -1909,6 +2275,12 @@
         'The quarter ended 30 September, as it was posted late',
       ],
       ans: 0,
+      why: [
+        null,
+        'posting-date-used-instead-of-the-tax-point',
+        'timing-treated-as-a-policy-choice',
+        null,
+      ],
       exp: 'A return covers the transactions whose TAX POINT falls in the period, not the ones that happened to be keyed in it. Posting late is a bookkeeping fact with no VAT consequence: the invoice belongs to the June quarter and the cut-off procedure exists to catch exactly this. Treating it as a July item understates one return and overstates the next, and both are errors.',
     },
     {
@@ -1980,6 +2352,12 @@
         'By preventing any transaction being edited after posting',
       ],
       ans: 0,
+      why: [
+        null,
+        null,
+        'software-credited-with-judging-the-rate',
+        null,
+      ],
       exp: 'Software is good at arithmetic consistency: it can see that £100 at the standard rate should carry £20 and query £5. What it cannot do is know whether the supply was standard-rated in the first place — that is a judgement about the goods, and a confidently wrong code produces a perfectly consistent and perfectly wrong figure. Zero-rated and exempt transactions must be postable, and blocking all edits would prevent legitimate correction.',
     },
     {
@@ -2030,6 +2408,12 @@
         'Before the customer settles the invoice',
       ],
       ans: 0,
+      why: [
+        null,
+        'the-fourteen-day-window-and-the-thirty-day-limit-confused',
+        null,
+        null,
+      ],
       exp: 'Thirty days from the basic tax point is the issuing deadline. The 14-day figure is a different rule with a different job: an invoice issued within 14 days AFTER the basic tax point takes over as the actual tax point. Both numbers attach to the same date and do quite different things, which is why they are so often swapped.',
     },
     {
@@ -2043,6 +2427,12 @@
         '11 May, thirty days after removal',
       ],
       ans: 0,
+      why: [
+        null,
+        'fourteen-day-override-misapplied',
+        'tax-point-moved-to-the-end-of-the-period',
+        'the-fourteen-day-window-and-the-thirty-day-limit-confused',
+      ],
       exp: 'The basic tax point is 11 April, the date of removal. But an invoice issued within ' + T.invoicing.actualTaxPointDays.value + ' days after the basic tax point becomes the ACTUAL tax point, and 22 April is eleven days later — so the invoice date takes over. Had the invoice been issued on 28 April, seventeen days later, the basic tax point of 11 April would have stood.',
     },
     {
@@ -2056,6 +2446,12 @@
         '31 March, the end of the VAT quarter',
       ],
       ans: 0,
+      why: [
+        null,
+        'advance-payment-tax-point-overlooked',
+        'invoice-date-taken-as-the-tax-point-whenever-one-exists',
+        'tax-point-moved-to-the-end-of-the-period',
+      ],
       exp: 'A payment received BEFORE the basic tax point creates its own tax point on the date of receipt, to the extent of the amount received. The 14-day rule works forwards from the basic tax point and has nothing to say about an event that precedes it. So the advance is accounted for in the February period and only the balance follows the March dates.',
     },
     {
@@ -2081,6 +2477,12 @@
         'Whichever of the two rates is lower for the customer',
       ],
       ans: 0,
+      why: [
+        null,
+        null,
+        'tax-point-taken-from-the-payment-date',
+        null,
+      ],
       exp: 'The tax point fixes the rate as well as the period, which is the second job it does and the one readers forget. The invoice is 28 days after 27 March, outside the ' + T.invoicing.actualTaxPointDays.value + '-day window, so the basic tax point stands and the OLD rate applies — even though the invoice itself is dated after the change. Nothing is wrong with the invoice: 28 days is still inside the ' + T.invoicing.issueWithinDays.value + '-day deadline for issuing one. An invoice dated after a rate change does not carry the new rate with it; the tax point decides, and only the shorter window moves the tax point.',
     },
     {
@@ -2094,6 +2496,12 @@
         'It decides whether the invoice needs to be issued at all',
       ],
       ans: 0,
+      why: [
+        null,
+        null,
+        'input-tax-recovery-made-to-depend-on-the-tax-point',
+        null,
+      ],
       exp: 'A day either side of a quarter end moves the VAT a full three months in cash terms — into the return being prepared, or into the next one. The amount is unaffected, and so is the customer’s right to recover, which turns on holding a valid invoice rather than on the date. This is why cut-off matters and why a supply straddling a period end is worth checking rather than assuming.',
     },
     {
@@ -2107,6 +2515,12 @@
         'VAT on £600 in January and on the whole £3,000 again in February',
       ],
       ans: 0,
+      why: [
+        null,
+        null,
+        'advance-payment-tax-point-overlooked',
+        null,
+      ],
       exp: 'A payment received in advance creates a tax point TO THE EXTENT OF THE AMOUNT RECEIVED, so the deposit is dealt with in January and the balance follows the February tax point. Splitting a supply across two periods this way is normal. The last option double-counts, which is the error a business makes when it raises a VAT invoice for the deposit and then invoices the full amount again.',
     },
     {
@@ -2145,6 +2559,12 @@
         'Ask HMRC to rule on whether the withdrawal is effective',
       ],
       ans: 0,
+      why: [
+        null,
+        'customer-agreement-to-electronic-invoicing-misjudged',
+        null,
+        'hmrc-approval-invented-for-electronic-invoicing',
+      ],
       exp: 'Electronic invoicing rests on the customer’s acceptance, and acceptance can be withdrawn as well as given. The supplier goes back to paper for that customer and carries on electronically with everybody else. Nothing about the supply itself is affected, and HMRC has no role in a matter that is between the two parties.',
     },
     {
@@ -2194,6 +2614,12 @@
         'The invoices will be excluded from the VAT return entirely',
       ],
       ans: 0,
+      why: [
+        null,
+        'software-expected-to-block-rather-than-flag',
+        'software-suspected-of-arithmetic-error',
+        null,
+      ],
       exp: 'A default is applied without anyone deciding, so an error in it repeats across every transaction and looks entirely consistent while doing so. The arithmetic will agree perfectly — that is what makes it hard to spot — and the invoices will appear on the return, at the wrong rate. Defaults save time and move the point at which judgement has to be exercised earlier, to the setting up of the record.',
     },
     {
@@ -2207,6 +2633,12 @@
         'Whole pounds in the VAT boxes; pounds and pence in the value boxes',
       ],
       ans: 0,
+      why: [
+        null,
+        null,
+        null,
+        'rounding-conventions-swapped-between-the-two-kinds-of-box',
+      ],
       exp: 'The return has two kinds of box and two conventions. The VAT boxes (1 to 5) carry pounds and pence — a published mock return shows Box 4 as £8,464.58 — while the value boxes (6 to 9) hold net values in whole pounds. That is a different rule again from the one on invoices, where the total VAT may be rounded DOWN to the nearest penny in the taxpayer’s favour, and where a task states its own rounding rule, that instruction beats any convention.',
     },
     {
@@ -2236,6 +2668,12 @@
         'Issue two invoices, one at each price, and cancel the unused one',
       ],
       ans: 0,
+      why: [
+        null,
+        'discount-refused-but-vat-reduced',
+        null,
+        null,
+      ],
       exp: 'The supplier does not know at invoice date whether the discount will be taken, so it may invoice the full amount and issue a credit note if it is — or state both figures on the invoice and let the customer account for what it actually pays. What it cannot do is assume the discount will be taken and understate the VAT, delay the invoice past its issuing deadline, or raise two competing invoices for one supply.',
     },
     {
@@ -2269,6 +2707,12 @@
         'Neither may register, so neither recovers anything at all',
       ],
       ans: 0,
+      why: [
+        null,
+        null,
+        'recovery-rule-reversed-between-zero-rated-and-exempt',
+        'what-registration-does-to-a-supply-misjudged',
+      ],
       exp: 'Neither charges VAT to a customer, which is why the two look identical from outside. The difference is entirely on the recovery side: zero-rating is a TAXABLE supply at 0%, so input tax comes back and the business is a repayment trader. Exemption is not a taxable supply, so the input tax sticks and becomes a real cost. The zero-rated business must register once above the threshold; the exempt one cannot register at all.',
     },
     {
@@ -2321,6 +2765,12 @@
         'An annual amount of exempt supplies, and a tenth of total turnover',
       ],
       ans: 0,
+      why: [
+        null,
+        'de-minimis-limb-measured-on-turnover-rather-than-input-tax',
+        null,
+        null,
+      ],
       exp: 'Both limbs are about INPUT TAX, not turnover: exempt input tax must average no more than ' + money(T.partialExemption.deMinimisPerMonth.value) + ' a month AND must be no more than ' + T.partialExemption.inputTaxProportion.value + '% of total input tax. Substituting turnover for input tax in either limb is the standard misremembering, and it can flip the answer in both directions.',
     },
     {
@@ -2338,6 +2788,12 @@
         'No — the proportion is over the limit, though the average is not',
       ],
       ans: 0,
+      why: [
+        null,
+        'de-minimis-allowed-on-one-limb',
+        null,
+        'de-minimis-limb-measured-on-turnover-rather-than-input-tax',
+      ],
       exp: 'De minimis needs BOTH limbs. Exempt input tax must average no more than ' + money(T.partialExemption.deMinimisPerMonth.value) + ' a month — ' + money(T.partialExemption.deMinimisPerYear.value) + ' over a year, ' + money(T.partialExemption.deMinimisPerQuarter.value) + ' over a quarter. It must also be no more than ' + T.partialExemption.inputTaxProportion.value + '% of total input tax. Here the proportion limb is met at 42%, but £640 a month is over ' + money(T.partialExemption.deMinimisPerMonth.value) + ', so the business fails. Failing costs only the exempt input tax: the wholly taxable and apportioned parts still come back.',
     },
     {
@@ -2363,6 +2819,12 @@
         'Goods taken from stock for the owner’s home',
       ],
       ans: 0,
+      why: [
+        null,
+        'blocked-vat-left-in-the-claim',
+        null,
+        'deemed-supply-treated-as-a-recovery',
+      ],
       exp: 'Entertaining overseas customers is the exception to the block on business entertaining, and entertaining your own STAFF is recoverable too — the block is on entertaining others, and employees are not others. Entertaining UK customers is blocked outright. A car available for private use is blocked whether or not private use occurs — availability is the test, which is why pool cars need real restrictions. And goods taken for private use are a deemed supply, so output tax is due rather than input tax recovered.',
     },
     {
@@ -2428,6 +2890,12 @@
         'It is at least twelve months overdue and under £5,000 in value',
       ],
       ans: 0,
+      why: [
+        null,
+        'what-bad-debt-relief-actually-requires-misjudged',
+        null,
+        'the-six-month-clock-on-bad-debt-relief-misread',
+      ],
       exp: 'Six months overdue — measured from the later of the due date and the date of supply — and written off in the refunds for bad debts account. Nothing turns on the customer’s fate: relief is available whether or not the customer has failed, and there is no requirement to sue. The claim must be made within ' + T.badDebtRelief.claimWindow.value + ' of the later of those two dates.',
     },
     {
@@ -2461,6 +2929,12 @@
         'Boxes 2, 8 and 9',
       ],
       ans: 0,
+      why: [
+        null,
+        'purchases-and-sales-boxes-swapped',
+        'recovered-without-the-matching-declaration',
+        null,
+      ],
       exp: 'The import VAT is declared as output tax in Box 1 and recovered as input tax in Box 4 subject to the normal rules, and the net value of the goods goes in Box 7 as a purchase. Box 6 is for outputs and an import is not a sale. Boxes 2, 8 and 9 concern Northern Ireland and the EU and are outside this unit.',
     },
     {
@@ -2510,6 +2984,12 @@
         'Divide the gross by 105',
       ],
       ans: 0,
+      why: [
+        null,
+        'reduced-rate-supply-taxed-at-the-standard-rate',
+        'vat-rate-applied-to-a-gross-figure',
+        null,
+      ],
       exp: 'At the reduced rate the gross is 105% of the net, so the VAT is 5/105 of the gross, which cancels to one twenty-first. One sixth is the standard-rate fraction. Multiplying the gross by 5% treats a gross figure as though it were net and understates the tax, and dividing by 105 gives one per cent of the gross rather than the VAT.',
     },
     {
@@ -2539,6 +3019,12 @@
         'The difference only arises where a prompt payment discount applies',
       ],
       ans: 0,
+      why: [
+        null,
+        null,
+        'vat-rate-applied-to-a-gross-figure',
+        null,
+      ],
       exp: 'VAT is a fifth OF THE NET, which makes it a sixth of the gross. Taking 20% off the gross removes a fifth of a larger number and takes away too much: on a gross of £120 it removes £24 and leaves £96, when the net is £100. The two never agree, on any figure, and the gap grows with the amount.',
     },
     {
@@ -2594,6 +3080,12 @@
         'Goods taken from stock for private use',
       ],
       ans: 0,
+      why: [
+        null,
+        'scale-charge-applied-on-the-input-tax-side',
+        null,
+        'deemed-supply-treated-as-a-recovery',
+      ],
       exp: 'Bad debt relief is claimed as input tax in Box 4, even though the debt arose from a sale. The other three all sit on the output side: the scale charge adds to output tax, a credit note issued reduces it, and goods taken for private use are a deemed supply on which output tax is due. Knowing which side an adjustment lands on matters more than the arithmetic.',
     },
     {
@@ -2607,6 +3099,12 @@
         'The customer pays import VAT at the border on the value',
       ],
       ans: 0,
+      why: [
+        null,
+        'reverse-charge-left-with-the-supplier',
+        'taxable-supply-left-off-the-return-as-outside-the-scope',
+        null,
+      ],
       exp: 'For most business-to-business services the place of supply is where the customer belongs, and the customer accounts for the VAT itself — charging output tax and recovering it as input tax on the same return, subject to the normal rules. That is the same mechanism as the domestic reverse charge, applied across a border. Import VAT at the border is a rule for goods, not services.',
     },
     {
@@ -2628,6 +3126,12 @@
         'As zero-rated, because the input tax was never recovered',
       ],
       ans: 0,
+      why: [
+        null,
+        null,
+        'taxable-supply-left-off-the-return-as-outside-the-scope',
+        'exempt-supply-treated-as-zero-rated',
+      ],
       exp: 'The sale mirrors the purchase. Because the input tax was blocked on the way in, the disposal is exempt on the way out — charging output tax would tax the same value twice. A van is the other way round: its input tax was recovered, so its sale is a standard-rated supply like any other disposal of a business asset. Second-hand status on its own changes nothing.',
     },
     /* ── Outcome 3 — review and verify (20%) ───────────────────────────── */
@@ -2650,6 +3154,12 @@
         'Method 2 — every error above £10,000 must be separately notified',
       ],
       ans: 0,
+      why: [
+        null,
+        'the-error-reporting-limit-tested-on-one-figure-alone',
+        null,
+        null,
+      ],
       exp: '1% of £2,400,000 is £24,000, and £31,000 exceeds it. The second limb fails, so Method 2 is required even though the error is below the ' + money(T.errorCorrection.absoluteCeiling.value) + ' ceiling. Both limbs must be satisfied.',
     },
     {
@@ -2708,6 +3218,12 @@
         'Nothing can be inferred, since the two boxes are unrelated',
       ],
       ans: 0,
+      why: [
+        null,
+        'the-outputs-ratio-read-in-the-wrong-direction',
+        null,
+        'the-outputs-ratio-check-thought-to-prove-nothing',
+      ],
       exp: '£310,000 × 20% = £62,000, so the ratio is exactly right for a wholly standard-rated trader. This single check is the most productive review test available, and it passes here.',
     },
     {
@@ -2769,6 +3285,12 @@
         '30% of the potential lost revenue',
       ],
       ans: 0,
+      why: [
+        null,
+        null,
+        'a-penalty-taken-from-the-wrong-regime',
+        null,
+      ],
       exp: 'Errors in a return fall under the inaccuracy regime, where a careless error carries a maximum of ' + T.errorCorrection.penaltyForError.careless.max + '% reduced to a minimum of ' + T.errorCorrection.penaltyForError.careless.promptedMin + '% on a prompted disclosure. Unprompted, it can fall to ' + T.errorCorrection.penaltyForError.careless.unpromptedMin + '%. The 10% figure belongs to the separate failure-to-notify regime.',
     },
 
@@ -2783,6 +3305,12 @@
         'It arose in the immediately preceding period rather than an earlier one',
       ],
       ans: 0,
+      why: [
+        null,
+        'deliberate-error-thought-correctable-on-the-next-return',
+        null,
+        'the-four-year-correction-window-misread',
+      ],
       exp: 'Three conditions run together: size, behaviour and time. A deliberate error must always be notified separately whatever its size, and the ' + T.errorCorrection.timeLimitYears.value + '-year limit closes the period off regardless of how small the error is.',
     },
     {
@@ -2813,6 +3341,12 @@
         'Left alone, because the business did not make the error itself',
       ],
       ans: 0,
+      why: [
+        null,
+        'deliberate-error-thought-correctable-on-the-next-return',
+        null,
+        null,
+      ],
       exp: 'Size is only one of the conditions. A deliberate error must be disclosed separately whatever its amount, and it makes no difference that the person responsible has gone — the liability belongs to the business.',
     },
     {
@@ -2826,6 +3360,12 @@
         'By amending the original return through its accounting software',
       ],
       ans: 0,
+      why: [
+        null,
+        'correcting-inside-a-return-treated-as-disclosure',
+        'waiting-for-hmrc-treated-as-disclosure',
+        'a-filed-return-thought-to-be-amendable',
+      ],
       exp: 'Separate notification is a disclosure in its own right, setting out what went wrong, when, and for how much. A note attached to a return is still a correction on the return, and waiting for HMRC turns an unprompted disclosure into a prompted one — which costs more.',
     },
     {
@@ -2857,6 +3397,12 @@
         'The period must be re-opened once HMRC has processed the correction',
       ],
       ans: 0,
+      why: [
+        null,
+        'where-a-correction-on-the-next-return-lands-misjudged',
+        null,
+        null,
+      ],
       exp: 'A Method 1 correction lands entirely in the period it is made, so that return shows more VAT than the period’s own trading produced. Anyone comparing the return to the management accounts needs to know why, which is the practical reason for flagging it.',
     },
     {
@@ -2892,6 +3438,12 @@
         'Nowhere, because no VAT arises on the supply',
       ],
       ans: 0,
+      why: [
+        null,
+        'notional-output-tax-invented-for-a-zero-rated-sale',
+        'purchases-and-sales-boxes-swapped',
+        'taxable-supply-left-off-the-return-as-outside-the-scope',
+      ],
       exp: 'Box 6 is a value of supplies and it includes zero-rated ones, so an exporter with no output tax still reports substantial sales. Omitting them makes the return look inconsistent against the accounts for no reason.',
     },
     {
@@ -2905,6 +3457,12 @@
         'The review is what fixes the tax point of the supplies in the period',
       ],
       ans: 0,
+      why: [
+        null,
+        null,
+        'review-treated-as-protection-from-enquiry',
+        null,
+      ],
       exp: 'The cost of an error rises sharply once the return has gone: it becomes an error to be corrected or disclosed, with interest and possibly a penalty. Reviewing does not confer any protection from assessment — it simply catches the error while it is still free to fix.',
     },
     {
@@ -2918,6 +3476,12 @@
         'Input tax has been over-recovered by the same amount',
       ],
       ans: 0,
+      why: [
+        null,
+        'a-reconciling-difference-diagnosed-without-asking-what-it-equals',
+        null,
+        null,
+      ],
       exp: 'A difference equal to a known adjustment usually means the adjustment exists in one record and not the other. Reconciling is largely the work of recognising a difference as a familiar figure rather than hunting for it from scratch.',
     },
     {
@@ -2955,6 +3519,12 @@
         'Nothing can be concluded without the input tax figure',
       ],
       ans: 0,
+      why: [
+        null,
+        'the-outputs-ratio-check-thought-to-prove-nothing',
+        'outputs-box-treated-as-a-gross-figure-in-the-ratio-check',
+        null,
+      ],
       exp: 'For a wholly standard-rated trader Box 1 should be a fifth of Box 6, so £48,000 is expected against the £44,000 reported. Box 6 has been agreed to the ledger, so the £4,000 gap is in the tax: a mis-rated batch, or a sale left out of the VAT calculation. Six times Box 1 is the wrong test — that would be right if Box 6 were stated gross, and Box 6 is always net of VAT.',
     },
     {
@@ -2968,6 +3538,12 @@
         'Zero-rated sales are reported in Box 7 rather than Box 6',
       ],
       ans: 0,
+      why: [
+        null,
+        'taxable-supply-left-off-the-return-as-outside-the-scope',
+        null,
+        'purchases-and-sales-boxes-swapped',
+      ],
       exp: 'Box 6 covers all taxable supplies including those at 0%, so the ratio falls below a fifth by however much of the trade is zero-rated. The check still works — it just needs the standard-rated share, not the whole of Box 6.',
     },
     {
@@ -3031,6 +3607,12 @@
         'By leaving it until HMRC raises an assessment',
       ],
       ans: 0,
+      why: [
+        null,
+        'a-filed-return-thought-to-be-amendable',
+        null,
+        'waiting-for-hmrc-treated-as-disclosure',
+      ],
       exp: 'Method 1 is the adjustment route: the error goes through the VAT account and into the next return, with a record kept of what was wrong and why. A filed VAT return cannot be amended and refiled — that option describes a mechanism that does not exist. Waiting for HMRC turns a correctable error into an undisclosed one.',
     },
     {
@@ -3080,6 +3662,12 @@
         'Split it across four returns so no single adjustment is too large',
       ],
       ans: 0,
+      why: [
+        null,
+        'the-error-reporting-limit-tested-on-one-figure-alone',
+        null,
+        'an-error-split-across-returns-to-stay-under-a-limit',
+      ],
       exp: '1% of £8,000,000 is £80,000, but the threshold is capped at the absolute ceiling — so the real threshold is that ceiling, and £58,000 is above it. The cap exists precisely so that a very large business cannot self-correct very large errors. Splitting an error across returns to stay under a limit is not a technique, it is a further error.',
     },
     {
@@ -3104,6 +3692,12 @@
         'One discovered by the business rather than by HMRC',
       ],
       ans: 0,
+      why: [
+        null,
+        'the-four-year-correction-window-misread',
+        null,
+        null,
+      ],
       exp: 'Deliberate errors go on the separate notification whatever their size, because the method is a concession for honest mistakes. Age alone does not force notification, only the four-year bar does. An error confined to Box 6 has no VAT effect at all and so no net error to report. And discovering an error yourself is the good case, not the bad one — it is what makes a disclosure unprompted.',
     },
     {
@@ -3129,6 +3723,12 @@
         'Correct the earliest return still within four years instead',
       ],
       ans: 0,
+      why: [
+        null,
+        'the-four-year-correction-window-misread',
+        null,
+        null,
+      ],
       exp: 'Four years is the outer limit for correcting a VAT error in either direction, so an error six years old cannot be corrected by any route — the business cannot claim a refund and HMRC cannot assess. Moving the correction into a period it does not belong to would create a new and current error in place of a time-barred one.',
     },
     {
@@ -3142,6 +3742,12 @@
         'It notifies, and the penalty is automatically the maximum',
       ],
       ans: 0,
+      why: [
+        null,
+        null,
+        null,
+        'a-figure-read-off-the-wrong-row-of-the-penalty-table',
+      ],
       exp: 'The obligation to notify is unchanged. What changes is the reduction available: a disclosure is unprompted only where the business had no reason to think HMRC had discovered, or was about to discover, the error, and an open enquiry makes that harder to argue. Waiting is worse on every view, and no penalty is automatic — behaviour and disclosure still set the range.',
     },
     {
@@ -3204,6 +3810,12 @@
         'It has no effect, as HMRC recalculates the period afterwards',
       ],
       ans: 0,
+      why: [
+        null,
+        null,
+        'where-a-correction-on-the-next-return-lands-misjudged',
+        'hmrc-thought-to-recalculate-a-return-on-receipt',
+      ],
       exp: 'The correction goes through the same boxes as current trading, so a comparison against the previous quarter or against Box 6 is no longer like for like. That is a reason to record the adjustment clearly, not a reason to avoid making it. Corrections do not bypass the return under Method 1, and HMRC does not recalculate anything on the business’s behalf.',
     },
     {
@@ -3229,6 +3841,12 @@
         'A fall in the value of the business’s own sales',
       ],
       ans: 0,
+      why: [
+        null,
+        'a-one-sided-movement-explained-by-ordinary-trading',
+        null,
+        null,
+      ],
       exp: 'Box 4 and Box 7 normally move together, because more purchases mean more input tax. When one moves and the other does not, the VAT has come from somewhere other than ordinary buying — an error correction, bad debt relief, or import VAT under postponement. More purchasing would have lifted Box 7 too, and a rate change would show across the whole return rather than on one side.',
     },
     {
@@ -3262,6 +3880,12 @@
         'The value of a capital asset bought during the period',
       ],
       ans: 0,
+      why: [
+        null,
+        'outputs-box-filled-with-the-tax-instead-of-the-value',
+        'purchases-and-sales-boxes-swapped',
+        null,
+      ],
       exp: 'Box 6 takes the value of ALL outputs excluding VAT, which includes exempt supplies as well as zero-rated and standard-rated ones. Output tax belongs in Box 1. Purchases of any kind — stock or capital — belong in Box 7, since they are inputs however they will be used.',
     },
     {
@@ -3275,6 +3899,12 @@
         'Neither box 6 nor box 7',
       ],
       ans: 0,
+      why: [
+        null,
+        'purchases-and-sales-boxes-swapped',
+        null,
+        null,
+      ],
       exp: 'The £40,000 is the value of a purchase, so it goes in Box 7 alone — an import is not a sale and has no place in Box 6. The VAT of £8,000 goes into Box 1 and Box 4, which is where the postponement mechanism does its work. Keeping the value and the tax straight is what makes this question worth asking.',
     },
     {
@@ -3288,6 +3918,12 @@
         'Nowhere, as the supply is outside the scope',
       ],
       ans: 0,
+      why: [
+        null,
+        'notional-output-tax-invented-for-a-zero-rated-sale',
+        'purchases-and-sales-boxes-swapped',
+        'taxable-supply-left-off-the-return-as-outside-the-scope',
+      ],
       exp: 'An export with evidence of removal is ZERO-RATED, which makes it a taxable supply at 0%: the value goes into Box 6 like any other sale and no output tax arises for Box 1. It is not outside the scope — that distinction matters, because a zero-rated export still counts towards taxable turnover and still carries full input tax recovery.',
     },
     {
@@ -3313,6 +3949,12 @@
         'A reviewed return is exempt from later HMRC enquiry',
       ],
       ans: 0,
+      why: [
+        null,
+        null,
+        'software-expected-to-block-rather-than-flag',
+        'review-treated-as-protection-from-enquiry',
+      ],
       exp: 'There is no amendment mechanism: once a return is filed, a mistake becomes an error correction with its own thresholds, records and possible penalty. Five minutes before submission is cheaper than the whole of that process afterwards. HMRC charges no processing fee, software validates arithmetic rather than judgement, and no review makes a return immune from enquiry.',
     },
     {
@@ -3338,6 +3980,12 @@
         'A change in the business’s VAT accounting scheme',
       ],
       ans: 0,
+      why: [
+        null,
+        'a-one-sided-movement-explained-by-ordinary-trading',
+        'a-relationship-between-boxes-explained-as-an-adding-up-slip',
+        null,
+      ],
       exp: 'If sales really had fallen 40%, output tax would have fallen with them. Box 1 holding steady while Box 6 drops says the two are being fed from different places — most often sales recorded at the wrong rate, or exempt and zero-rated turnover being left out of Box 6 while the standard-rated tax stays right. It is the RELATIONSHIP between the boxes that carries the signal, which is why a review looks at ratios rather than at each box alone.',
     },
     {
@@ -3351,6 +3999,12 @@
         'The business has claimed bad debt relief it was not entitled to',
       ],
       ans: 0,
+      why: [
+        null,
+        'a-reconciling-difference-diagnosed-without-asking-what-it-equals',
+        null,
+        null,
+      ],
       exp: 'Under cash accounting the return is built from money received and the sales ledger from invoices raised, so the two disagree by the unpaid invoices at each period end. That is a legitimate difference by design, and a reconciliation that expected them to match was asking the wrong question. The other three are real errors — the point of the reconciliation is to tell them apart from this.',
     },
     {
@@ -3383,6 +4037,12 @@
         'A missing invoice whose value is a multiple of nine',
       ],
       ans: 0,
+      why: [
+        null,
+        'a-duplicate-posting-offered-for-a-difference-divisible-by-nine',
+        null,
+        null,
+      ],
       exp: 'Swapping two adjacent digits always changes a number by a multiple of nine — £429 for £492 differs by £63, and £375 for £357 by £18. It is the oldest check in bookkeeping and it narrows the search enormously. A duplicate posting gives a difference equal to the entry itself, and a wrong rate gives a difference in a fixed proportion rather than a multiple of nine.',
     },
     {
@@ -3396,6 +4056,12 @@
         'Box 6 is too low and should be nearer £500,000',
       ],
       ans: 0,
+      why: [
+        null,
+        null,
+        'figures-that-agree-treated-as-figures-that-are-right',
+        null,
+      ],
       exp: 'For a wholly standard-rated trader Box 1 should be about 20% of Box 6: £420,000 × 20% = £84,000. The reported £70,000 is a sixth of Box 6 rather than a fifth, which is the signature of treating the Box 6 figure as VAT-INCLUSIVE. The check only works where all supplies are standard-rated — any zero-rated or exempt turnover breaks the ratio legitimately.',
     },
     {
@@ -3417,6 +4083,12 @@
         'That no error correction can be needed this period',
       ],
       ans: 0,
+      why: [
+        null,
+        'figures-that-agree-treated-as-figures-that-are-right',
+        null,
+        null,
+      ],
       exp: 'Internal consistency is the weakest thing a return can have: a figure keyed at the wrong rate, a supply classified wrongly or a whole month omitted all produce a return that adds up perfectly. Arithmetic is what software already guarantees, so a human review that stops there has added nothing. The useful checks are against expectations and against the records.',
     },
     {
@@ -3489,6 +4161,12 @@
         'Whether the customer has queried the amount of the invoice',
       ],
       ans: 0,
+      why: [
+        null,
+        'a-reconciling-difference-diagnosed-without-asking-what-it-equals',
+        null,
+        null,
+      ],
       exp: 'A difference equal to one invoice’s input tax points straight at that invoice, and the commonest legitimate reason for it to be in one place and not the other is that the VAT was blocked. Establish that first, because if so there is nothing to correct. Payment date only matters under cash accounting, and a customer query has nothing to do with a purchase invoice.',
     },
     /* ── Outcome 4 — payroll (15%) ─────────────────────────────────────── */
@@ -3542,6 +4220,12 @@
         'A P11D',
       ],
       ans: 0,
+      why: [
+        null,
+        'a-year-end-certificate-offered-for-another-job',
+        null,
+        'p11d-offered-for-something-other-than-a-benefit',
+      ],
       exp: 'A P45 is issued when an employee leaves, recording pay and tax to that date so the next employer can operate the right code. A P60 goes to those still employed at 5 April, and a starter checklist is completed by a new employee without a P45.',
     },
     {
@@ -3580,6 +4264,12 @@
       q: 'An employer pays PAYE electronically. For the tax month ending 5 October, by what date must the payment reach HMRC?',
       opts: ['19 October', '22 October', '22 November', '19 November'],
       ans: 1,
+      why: [
+        'the-paye-payment-deadline-taken-from-the-other-method',
+        null,
+        null,
+        null,
+      ],
       exp: 'The tax month runs from 6 September to 5 October, and payment is due by the 22nd of the month in which it ends. That is 22 October, not a month later. The slip to avoid is reading “the following month” as the month after the tax month closes. Non-electronic payment is due by the 19th of that same month, and the same split applies to the Class 1A deadline in July.',
     },
     {
@@ -3593,6 +4283,12 @@
         '5% of the tax that should have been reported on the return',
       ],
       ans: 0,
+      why: [
+        null,
+        null,
+        'a-penalty-computed-on-the-wrong-base',
+        'a-penalty-taken-from-the-wrong-regime',
+      ],
       exp: 'Late filing penalties are scaled by headcount, and 120 employees falls in the 50 to 249 band. Only the FIRST failure in a tax year is excused, so the second is charged. The 5% charge applies once a return is more than three months late.',
     },
     {
@@ -3618,6 +4314,12 @@
         'No Class 1A National Insurance is due on a benefit that has been payrolled',
       ],
       ans: 0,
+      why: [
+        null,
+        'how-payrolling-benefits-works-misjudged',
+        null,
+        null,
+      ],
       exp: 'Payrolling spreads the tax across the year alongside ordinary pay, so the employee pays as they go and avoids a tax code adjustment later. The benefit remains taxable, the employee still bears the tax, and Class 1A NIC is still due via the P11D(b).',
     },
     {
@@ -3631,6 +4333,12 @@
         'Retaining payroll records for three years after the end of the tax year',
       ],
       ans: 0,
+      why: [
+        null,
+        'what-counts-as-a-data-protection-breach-misjudged',
+        null,
+        null,
+      ],
       exp: 'Leaving payslips on view breaches the security principle and discloses pay data to people with no need to know. Keeping absence records is required, restricted access is exactly what security demands, and three-year retention is the rule.',
     },
 
@@ -3674,6 +4382,12 @@
         'They are the same figure described in two different ways',
       ],
       ans: 0,
+      why: [
+        null,
+        'what-separates-gross-pay-from-taxable-gross-pay-misjudged',
+        null,
+        null,
+      ],
       exp: 'Some deductions come off before tax is worked out — a net pay pension arrangement is the common one — and taxable gross pay is what is left. Gross less everything, tax included, is net pay, which is a third figure again.',
     },
     {
@@ -3687,6 +4401,12 @@
         'For as long as the employee remains employed',
       ],
       ans: 0,
+      why: [
+        null,
+        'retention-period-confused-with-another-period',
+        null,
+        null,
+      ],
       exp: 'Payroll records are kept for ' + T.payroll.records.retentionYears.value + ' years from the END of the tax year, which is a shorter period than the six years VAT records require. The two are easily confused, and running payroll to the VAT rule is at least harmless — running VAT to the payroll rule is not.',
     },
     {
@@ -3700,6 +4420,12 @@
         'The date on which each employee was paid',
       ],
       ans: 0,
+      why: [
+        null,
+        'the-full-payment-submission-and-the-employer-payment-summary-swapped',
+        null,
+        null,
+      ],
       exp: 'The FPS says what was paid; the EPS says why less is owed than the FPS implies — recovered statutory pay, the Employment Allowance, CIS deductions suffered, or a month with no employees paid at all. An EPS is sent only when there is something of that kind to report.',
     },
     {
@@ -3713,6 +4439,12 @@
         'The same date as the Full Payment Submission',
       ],
       ans: 0,
+      why: [
+        null,
+        'the-paye-payment-deadline-taken-from-the-other-method',
+        null,
+        'the-paye-filing-and-payment-deadlines-swapped',
+      ],
       exp: 'Non-electronic payment is due by the ' + T.payroll.paymentToHmrc.nonElectronicDeadline.value + 'th and electronic payment by the ' + T.payroll.paymentToHmrc.electronicDeadline.value + 'nd — three days later, because the money moves faster. The FPS deadline is different again: on or before the day the employees are paid.',
     },
     {
@@ -3740,6 +4472,12 @@
         'The tax code that will apply to them in the year ahead',
       ],
       ans: 0,
+      why: [
+        null,
+        null,
+        'p11d-offered-for-something-other-than-a-benefit',
+        null,
+      ],
       exp: 'A P60 is the year-end summary, issued to everyone still employed at 5 April. Benefits go on a P11D where they are not payrolled, a payslip covers a single period, and a tax code arrives on its own notice.',
     },
     {
@@ -3753,6 +4491,12 @@
         'HMRC has no power to act until the following tax year ends',
       ],
       ans: 0,
+      why: [
+        null,
+        'an-estimate-treated-as-settling-the-matter',
+        'a-loss-of-records-thought-to-carry-no-consequence',
+        null,
+      ],
       exp: 'Estimation and penalty run together: HMRC may determine what it thinks is owed and charge up to ' + money(T.payroll.records.penalty.value) + ' for the failure to keep records. Lost records must be reported at once and reconstructed as far as possible, which mitigates rather than removes the problem.',
     },
     {
@@ -3824,6 +4568,12 @@
         'Cancel the employer’s PAYE scheme and write off the amounts',
       ],
       ans: 0,
+      why: [
+        null,
+        'an-estimate-treated-as-settling-the-matter',
+        null,
+        null,
+      ],
       exp: 'HMRC may specify the amount it believes is due and enforce it, exactly as it may assess a missing VAT return. The obligation to file survives the estimate. Employees are not made liable for an employer’s failure to operate PAYE properly, and nothing is written off — the debt stands until displaced by correct returns.',
     },
     {
@@ -3849,6 +4599,12 @@
         'Estimate the figures and file without mentioning the loss',
       ],
       ans: 0,
+      why: [
+        null,
+        'a-loss-of-records-thought-to-carry-no-consequence',
+        null,
+        null,
+      ],
       exp: 'Loss of records must be reported straight away, and the employer is expected to rebuild what it can from bank records, payslips and the submissions already made. The obligation does not disappear with the paperwork. Filing estimated figures silently turns an accident into a false return, which is a far worse position than the fire left the employer in.',
     },
     {
@@ -3916,6 +4672,12 @@
         'A trade union subscription deducted from pay',
       ],
       ans: 0,
+      why: [
+        null,
+        null,
+        null,
+        'what-separates-gross-pay-from-taxable-gross-pay-misjudged',
+      ],
       exp: 'Only pre-tax deductions reduce taxable gross pay, and a net pay arrangement pension is the standard example. National Insurance and student loan repayments are both calculated FROM pay rather than deducted before tax is worked out, and a union subscription is a non-statutory deduction taken from net pay. All four reduce what the employee receives; only one reduces what is taxed.',
     },
     {
@@ -3987,6 +4749,12 @@
         'It registers automatically on filing its first submission',
       ],
       ans: 0,
+      why: [
+        null,
+        'the-employer-registration-window-misjudged',
+        null,
+        null,
+      ],
       exp: 'Registration must be in place before the first payday, and it cannot be made more than two months in advance — so a September payday gives a window opening in July. Registering afterwards is late, and nothing happens automatically: an employer that has not registered has no scheme to file against and cannot submit an FPS at all.',
     },
     {
@@ -4012,6 +4780,12 @@
         'An error that will misstate the amount owed to HMRC',
       ],
       ans: 0,
+      why: [
+        null,
+        'what-counts-as-a-data-protection-breach-misjudged',
+        null,
+        null,
+      ],
       exp: 'Sending personal data to the wrong recipient is a data breach, and one involving whole-workforce salary information is serious enough that reporting has to be considered. Nothing about the FPS, the retention of records or the amount owed to HMRC is affected — the payroll itself is untouched, which is precisely why the risk is easy to under-rate.',
     },
     {
@@ -4062,6 +4836,12 @@
         'An exemption from Real Time Information reporting',
       ],
       ans: 0,
+      why: [
+        null,
+        'the-paye-filing-and-payment-deadlines-swapped',
+        null,
+        null,
+      ],
       exp: 'An employer whose average monthly liability is under ' + money(T.payroll.paymentToHmrc.quarterlyThreshold.value) + ' may pay quarterly instead of monthly. That is a concession on PAYMENT only: the FPS is still due on or before every payday, whatever the payment pattern. Nothing about the rate or the reporting obligation changes.',
     },
     {
@@ -4086,6 +4866,12 @@
         'The tax code has been applied to the wrong figure',
       ],
       ans: 0,
+      why: [
+        null,
+        'what-separates-gross-pay-from-taxable-gross-pay-misjudged',
+        null,
+        null,
+      ],
       exp: 'A net pay arrangement pension reduces taxable gross pay; here the two figures are equal, so the contribution has been taken after tax instead — a relief-at-source scheme, where the provider reclaims basic rate relief. Nothing is missing and nothing is wrong: the payslip is telling you which kind of scheme this is, and reading that off the relationship between two figures is the point of the reconciliation.',
     },
     {
@@ -4099,6 +4885,12 @@
         'An Employer Payment Summary',
       ],
       ans: 0,
+      why: [
+        null,
+        'a-year-end-certificate-offered-for-another-job',
+        'p11d-offered-for-something-other-than-a-benefit',
+        'the-full-payment-submission-and-the-employer-payment-summary-swapped',
+      ],
       exp: 'The starter checklist collects what is needed to work out a temporary tax code until HMRC issues the real one. A P60 is a year-end certificate and is not a substitute — it says what happened last year, not what code applies now. A P11D reports benefits, and an EPS is a submission to HMRC rather than a form about an employee.',
     },
     {
@@ -4124,6 +4916,12 @@
         'Nothing — payrolling may begin at any point in the year',
       ],
       ans: 0,
+      why: [
+        null,
+        'how-payrolling-benefits-works-misjudged',
+        null,
+        null,
+      ],
       exp: 'Registration must be in place BEFORE the tax year in which payrolling is to start, and missing that window means waiting a full year. Employee agreement is not required, though employees must be told. And a P11D(b) is still needed for the Class 1A National Insurance even where every benefit is payrolled — payrolling removes the P11D, not the employer’s declaration.',
     },
     {
@@ -4137,6 +4935,12 @@
         'Within 30 days of the end of the tax month',
       ],
       ans: 0,
+      why: [
+        null,
+        'the-paye-filing-and-payment-deadlines-swapped',
+        null,
+        null,
+      ],
       exp: 'On or before payday — that is what makes the reporting "real time". The 19th is the EPS deadline and the 22nd is the electronic PAYMENT deadline, so all three dates belong to different obligations. The FPS deadline holds even for an employer paying HMRC quarterly, which is the case that most often catches people out.',
     },
     {
@@ -4203,6 +5007,12 @@
         'Nobody — it will show on the return',
       ],
       ans: 0,
+      why: [
+        null,
+        'hmrc-told-what-the-return-will-say-in-due-course',
+        'reporting-outside-before-raising-it-inside',
+        'a-problem-left-to-announce-itself',
+      ],
       exp: 'A large, dated, non-negotiable outflow has to be budgeted for, and whoever controls cash cannot plan for a payment they do not know about. HMRC learns the figure from the return in the normal way.',
     },
     {
@@ -4228,6 +5038,12 @@
         'The VAT rate applied increases once turnover passes a set threshold',
       ],
       ans: 0,
+      why: [
+        null,
+        null,
+        null,
+        'filing-frequency-thought-to-change-the-tax',
+      ],
       exp: 'More sales mean more output tax, and growth usually absorbs working capital at the same time. The quarter after a boom brings the largest payment the business has faced, which is why growth is a cash-flow risk and not only a benefit.',
     },
     {
@@ -4241,6 +5057,12 @@
         'A reminder sent on the deadline day itself, to ensure it is fresh',
       ],
       ans: 0,
+      why: [
+        null,
+        'a-communication-missing-what-the-reader-needs-to-act',
+        'a-source-handed-over-in-place-of-advice',
+        'a-warning-sent-too-late-to-act-on',
+      ],
       exp: 'A useful deadline communication says what is due, when, how much and what follows from missing it — and arrives with time to act. A reminder on the day is technically a communication and practically useless.',
     },
     {
@@ -4265,6 +5087,12 @@
         'It is a courtesy only, and carries no particular professional significance',
       ],
       ans: 0,
+      why: [
+        null,
+        null,
+        'authorisation-treated-as-transferring-responsibility',
+        'authorisation-treated-as-a-formality',
+      ],
       exp: 'The return commits the business and exposes it to penalties, so whoever is accountable is entitled to see it first. The approval is also a genuine last check by someone who may know something the preparer does not.',
     },
     {
@@ -4290,6 +5118,12 @@
         'Resign immediately, on the basis that the position cannot be resolved internally',
       ],
       ans: 0,
+      why: [
+        null,
+        null,
+        'reporting-outside-before-raising-it-inside',
+        'acting-alone-instead-of-escalating',
+      ],
       exp: 'Integrity does not yield to instruction, and the obligation runs to the accuracy of what is submitted. The Code expects the matter raised, escalated and documented, with advice from AAT if it stays unresolved. Reporting behind the employer’s back is not the first step.',
     },
     {
@@ -4316,6 +5150,12 @@
         'Deductions remain correct, because HMRC recalculates them all on receipt',
       ],
       ans: 0,
+      why: [
+        null,
+        'stale-software-expected-to-fail-visibly',
+        'hmrc-thought-to-validate-the-figures-on-receipt',
+        'hmrc-thought-to-recalculate-a-return-on-receipt',
+      ],
       exp: 'Stale software does not fail visibly. It applies last year’s rules consistently and produces figures that look entirely normal, which is why updates must be applied before the change takes effect rather than after.',
     },
     {
@@ -4329,6 +5169,12 @@
         'Confirmation once the change has taken effect and the position is certain',
       ],
       ans: 0,
+      why: [
+        null,
+        null,
+        null,
+        'a-warning-sent-too-late-to-act-on',
+      ],
       exp: 'Facts without consequences are not advice. The directors need to know how much of turnover is affected, what has to change, who does it and by when. The tax point mechanism matters to whoever implements it, not to the people deciding on pricing.',
     },
     {
@@ -4372,6 +5218,12 @@
         'Inspection rights apply only to businesses using Making Tax Digital',
       ],
       ans: 0,
+      why: [
+        null,
+        'inspection-powers-made-to-depend-on-suspicion',
+        'inspection-powers-made-to-need-a-court-order',
+        null,
+      ],
       exp: 'HMRC may inspect records and enter business premises at a reasonable time. Most visits are arranged in advance and are ordinary compliance work rather than an allegation — the powers exist because the business is holding public money, not because it is suspected of anything.',
     },
     {
@@ -4385,6 +5237,12 @@
         '31 March',
       ],
       ans: 0,
+      why: [
+        null,
+        'filing-deadline-missing-the-seven-days',
+        'filing-deadline-counted-without-the-calendar-month',
+        'the-other-schemes-filing-deadline-used',
+      ],
       exp: 'One calendar month and seven days after the period end. One calendar month from 31 January is 28 February, and seven days further is 7 March. Note that "one calendar month" is not thirty days — counting 37 days would give the wrong answer here.',
     },
     {
@@ -4435,6 +5293,12 @@
         'Three months after the end of the VAT year',
       ],
       ans: 0,
+      why: [
+        null,
+        'the-other-schemes-filing-deadline-used',
+        null,
+        null,
+      ],
       exp: 'Annual accounting uses a two-month deadline for both, not the one month and seven days that applies to quarterly returns. Carrying the quarterly deadline across to the annual scheme is a common and easily avoided error.',
     },
     {
@@ -4456,6 +5320,12 @@
         'HMRC will issue an assessment for double the amount involved',
       ],
       ans: 0,
+      why: [
+        null,
+        'correcting-inside-a-return-treated-as-disclosure',
+        null,
+        null,
+      ],
       exp: 'Adjusting a figure inside a later return tells HMRC nothing, so the original inaccuracy has still not been disclosed. No separate penalty is created by the choice of method — what is lost is the discount: when HMRC finds the error, the disclosure is prompted and the higher minimum applies. The notification requirement exists so HMRC can see the scale and pattern of errors — an error buried in a return is invisible, and that is what is being protected.',
     },
     {
@@ -4481,6 +5351,12 @@
         'It must remain registered until turnover falls below £50,000',
       ],
       ans: 0,
+      why: [
+        null,
+        'the-duty-to-notify-hmrc-misjudged',
+        'a-forward-looking-test-measured-over-the-wrong-span',
+        'wrong-vat-threshold-used',
+      ],
       exp: 'Voluntary deregistration is available where taxable turnover for the NEXT 12 months is expected to fall below ' + money(T.registration.deregistrationThreshold.value) + '. It is a forward-looking test and it is permissive, not compulsory — HMRC may also refuse the application.',
     },
     {
@@ -4512,6 +5388,12 @@
         'On no fixed date, points falling away only once a period of compliance is served',
       ],
       ans: 0,
+      why: [
+        null,
+        'point-expiry-dated-from-the-wrong-day',
+        'point-expiry-taken-as-twelve-months',
+        'what-clears-a-set-of-late-submission-points-misjudged',
+      ],
       exp: 'A point always expires on a MONTH END, never on the anniversary of the deadline. 7 May 2026 was not the last day of a month, so the point runs to the last day of the month ' + T.penalties.lateSubmission.pointExpiryMonths.value + ' months later — 31 May 2028. Had the deadline itself been a month end, it would have been ' + T.penalties.lateSubmission.pointExpiryMonthEndMonths.value + ' months instead. Below the threshold nothing has to be done to earn the expiry.',
     },
     {
@@ -4525,6 +5407,12 @@
         'On no fixed date, an annual filer clearing points only by a period of compliance',
       ],
       ans: 2,
+      why: [
+        'point-expiry-dated-from-the-wrong-day',
+        'point-expiry-taken-as-twelve-months',
+        null,
+        'what-clears-a-set-of-late-submission-points-misjudged',
+      ],
       exp: 'The deadline WAS the last day of a month, and that is the case the reference material gives ' + T.penalties.lateSubmission.pointExpiryMonthEndMonths.value + ' months rather than ' + T.penalties.lateSubmission.pointExpiryMonths.value + '. Counting on from March 2026 gives April 2028, and the point falls away on its last day — 30 April 2028. The extra month turns on where the DEADLINE fell in the month, not on how often the business files.',
     },
     {
@@ -4538,6 +5426,12 @@
         'Each on its own, ' + T.penalties.lateSubmission.pointExpiryMonths.value + ' months on from the return that earned it',
       ],
       ans: 3,
+      why: [
+        null,
+        null,
+        'what-clears-a-set-of-late-submission-points-misjudged',
+        null,
+      ],
       exp: 'Separately. Below the threshold a point is a thing in its own right and ages out on its own timetable, so a business can carry three points with three different expiry dates. Only at the threshold do they start behaving as one set, and then they clear together or not at all.',
     },
     {
@@ -4551,6 +5445,12 @@
         'They stay, and will reset once a further ' + T.penalties.lateSubmission.complianceMonths.quarterly + ' months of compliance is served',
       ],
       ans: 2,
+      why: [
+        'what-clears-a-set-of-late-submission-points-misjudged',
+        null,
+        null,
+        null,
+      ],
       exp: 'Both conditions have to be met, not either. The period of compliance — ' + T.penalties.lateSubmission.complianceMonths.quarterly + ' months for a quarterly filer — is one; having submitted every outstanding return for the previous ' + T.penalties.lateSubmission.pointExpiryMonths.value + ' months is the other. Serving the time with a return still missing achieves nothing, and serving more of it will not help either — the missing return has to be filed. Each further late return costs another £' + T.penalties.lateSubmission.penalty.value + ' meanwhile.',
     },
     {
@@ -4602,6 +5502,12 @@
         'The PAYE Income Tax first, and any National Insurance after that',
       ],
       ans: 0,
+      why: [
+        null,
+        'how-the-employment-allowance-is-given-misjudged',
+        null,
+        null,
+      ],
       exp: 'Only the employer’s (secondary) Class 1 National Insurance. PAYE, the employees’ National Insurance, student loan deductions and the Class 1A on benefits are all untouched and still go to HMRC in full. Setting it against the whole amount due is the error the narrowness of the relief invites.',
     },
     {
@@ -4615,6 +5521,12 @@
         'It is set against the year-end liability when the final submission is made',
       ],
       ans: 2,
+      why: [
+        'how-the-employment-allowance-is-given-misjudged',
+        null,
+        null,
+        null,
+      ],
       exp: 'The allowance is claimed, not granted. The claim goes on the Employer Payment Summary — the return whose whole purpose is to report why less is owed than the FPS implies — and an eligible employer that never files one simply pays more, with nothing arriving to point out the mistake.',
     },
     {
@@ -4654,6 +5566,12 @@
         'Both of them, each accounting for one half of the VAT on the supply',
       ],
       ans: 1,
+      why: [
+        'reverse-charge-left-with-the-supplier',
+        null,
+        'taxable-supply-left-off-the-return-as-outside-the-scope',
+        null,
+      ],
       exp: 'The customer accounts for it. The supplier charges no VAT at all; the contractor declares the output tax on the supplier’s behalf and reclaims the same amount as input tax under the normal rules. Nobody is ever paid VAT that they might then fail to hand over, which is what the rule exists to prevent.',
     },
     {
@@ -4709,6 +5627,12 @@
         'It exempts the business from the digital record-keeping rules',
       ],
       ans: 0,
+      why: [
+        null,
+        null,
+        'software-credited-with-judging-the-rate',
+        null,
+      ],
       exp: 'Software applies rates consistently and can flag duplicates, gaps in invoice numbering and unusual values. What it cannot do is judge whether the rate it was given is the right one — it will apply a wrong rate perfectly, on every transaction, which is why review still matters.',
     },
     {
@@ -4764,6 +5688,12 @@
         'There is no tax point for a deposit',
       ],
       ans: 0,
+      why: [
+        null,
+        'advance-payment-tax-point-overlooked',
+        'invoice-date-taken-as-the-tax-point-whenever-one-exists',
+        null,
+      ],
       exp: 'A payment received in advance of supply creates a tax point for the amount received, on the date of receipt. So the deposit belongs to the April period and the balance to May — one transaction, two tax points. Security deposits, which are refundable, are different.',
     },
     {
@@ -4785,6 +5715,12 @@
         'Outside the scope, with no entry required anywhere on the return',
       ],
       ans: 0,
+      why: [
+        null,
+        'rate-made-to-depend-on-who-the-customer-is',
+        'zero-rated-supply-treated-as-exempt',
+        'taxable-supply-left-off-the-return-as-outside-the-scope',
+      ],
       exp: 'Exports are zero-rated, so no VAT is charged and Box 1 is unaffected — but the net value still belongs in Box 6 like any other zero-rated sale. An exporter omitting exports from Box 6 would report almost nothing there while reclaiming substantial input tax.',
     },
     {
@@ -4822,6 +5758,12 @@
         '24 June, and the invoice was issued late',
       ],
       ans: 1,
+      why: [
+        'fourteen-day-override-misapplied',
+        null,
+        'the-fourteen-day-window-and-the-thirty-day-limit-confused',
+        null,
+      ],
       exp: 'Two different periods, and they are not the same rule. The basic tax point is the delivery date, 3 June. An invoice issued within ' + T.invoicing.actualTaxPointDays.value + ' days AFTER the basic tax point moves the tax point to the invoice date. Here the invoice came 21 days later, so the tax point stays at 3 June. The ' + T.invoicing.issueWithinDays.value + '-day limit for issuing the invoice runs to 3 July, so the invoice itself is in time.',
     },
     {
@@ -4863,6 +5805,12 @@
         'HMRC issues a revised assessment for the original period instead',
       ],
       ans: 0,
+      why: [
+        null,
+        'an-error-split-across-returns-to-stay-under-a-limit',
+        'where-a-correction-on-the-next-return-lands-misjudged',
+        'hmrc-thought-to-recalculate-a-return-on-receipt',
+      ],
       exp: 'Method 1 folds the correction into the ordinary figures of one return, so a year of under-declaration arrives as a single amount on one due date. Only the VAT account shows it separately — which is why an unexplained jump in a period’s liability is worth investigating.',
     },
     {
@@ -4895,6 +5843,12 @@
         'An arithmetic slip in the VAT control account total',
       ],
       ans: 0,
+      why: [
+        null,
+        'a-duplicate-posting-offered-for-a-difference-divisible-by-nine',
+        null,
+        'a-relationship-between-boxes-explained-as-an-adding-up-slip',
+      ],
       exp: '£1,530 − £1,350 = £180, and any transposition of two digits produces a difference divisible by 9. Sizing the difference and looking at its shape usually names the cause faster than searching transaction by transaction.',
     },
     {
@@ -4908,6 +5862,12 @@
         'The business must have made substantial zero-rated sales',
       ],
       ans: 0,
+      why: [
+        null,
+        'figures-that-agree-treated-as-figures-that-are-right',
+        'outputs-box-treated-as-a-gross-figure-in-the-ratio-check',
+        'the-outputs-ratio-read-in-the-wrong-direction',
+      ],
       exp: '£180,000 × 20% = £36,000, so £54,000 is far too high — 30% of Box 6. Zero-rated sales would push Box 1 DOWN relative to Box 6, not up, so that cannot explain it. Something has inflated output tax.',
     },
     {
@@ -4958,6 +5918,12 @@
         'Only in the tax year in which it starts trading',
       ],
       ans: 0,
+      why: [
+        null,
+        'the-employer-registration-window-misjudged',
+        null,
+        null,
+      ],
       exp: 'Registration must happen before the first payday and cannot be made more than two months ahead. The window is narrow at both ends, and the employer PAYE reference that follows is needed before any submission can be filed.',
     },
     {
@@ -4983,6 +5949,12 @@
         'Only if the employee also changes tax code',
       ],
       ans: 0,
+      why: [
+        null,
+        null,
+        'a-year-end-certificate-offered-for-another-job',
+        null,
+      ],
       exp: 'The FPS carries changes to employee details alongside pay and deductions, and is submitted on or before each payday. Starters, leavers and changes of detail all travel on it — there is no separate notification for them.',
     },
     {
@@ -5004,6 +5976,12 @@
         '5% of the amount paid late',
       ],
       ans: 0,
+      why: [
+        null,
+        null,
+        null,
+        'a-penalty-taken-from-the-wrong-regime',
+      ],
       exp: 'The first failure in a tax year is not a default. Defaults 1 to 3 carry 1%, defaults 4 to 6 carry 2%. The fifth late payment is the fourth default, so 2% applies. The rate escalates with repetition rather than with elapsed time — the opposite of the VAT regime.',
     },
 
@@ -5019,6 +5997,12 @@
         'Exports are outside the scope, so they need not appear on the return',
       ],
       ans: 0,
+      why: [
+        null,
+        'zero-rated-supply-treated-as-exempt',
+        'rate-made-to-depend-on-who-the-customer-is',
+        'taxable-supply-left-off-the-return-as-outside-the-scope',
+      ],
       exp: 'Exports are zero-rated: no output tax, but input tax remains fully recoverable, so a substantial exporter often moves into repayment. That in turn makes monthly returns worth considering — which is exactly the kind of consequence a director needs told.',
     },
     {
@@ -5067,6 +6051,12 @@
         'Ask a colleague of the same grade to authorise it instead',
       ],
       ans: 0,
+      why: [
+        null,
+        'acting-alone-instead-of-escalating',
+        null,
+        null,
+      ],
       exp: 'A deadline does not remove the authorisation requirement, and neither does absence — the answer is to find the person who can authorise, and to do it while there is still time. Submitting unauthorised and filing late are both failures the technician has chosen; escalating early is the one action that may avoid either. A colleague of the same grade has no more authority than the technician does.',
     },
     {
@@ -5092,6 +6082,12 @@
         'Apply the reverse charge, as the safer of the two treatments',
       ],
       ans: 0,
+      why: [
+        null,
+        null,
+        'a-question-pushed-back-to-the-person-who-asked-it',
+        null,
+      ],
       exp: 'Working beyond your competence is a professional failure even where the guess turns out right. Referring upward is quick and costs nothing. A provisional answer will be relied on as if it were settled, and picking the "safer" treatment without knowing is still a decision made without the knowledge to make it — a wrongly applied reverse charge misstates both parties’ returns.',
     },
     {
@@ -5137,6 +6133,12 @@
         'Give a general warning that payroll deadlines are monthly',
       ],
       ans: 0,
+      why: [
+        null,
+        'a-source-handed-over-in-place-of-advice',
+        null,
+        null,
+      ],
       exp: 'A deadline is only actionable with the amount attached and the method named, because the date itself depends on the method — the ' + T.payroll.paymentToHmrc.electronicDeadline.value + 'nd electronically and the ' + T.payroll.paymentToHmrc.nonElectronicDeadline.value + 'th by cheque. A statutory reference asks the reader to do the work; a date without a figure cannot be planned for; a general warning is not a deadline at all.',
     },
     {
@@ -5162,6 +6164,12 @@
         'HMRC, confirming the business is aware of the change',
       ],
       ans: 0,
+      why: [
+        null,
+        null,
+        'reporting-outside-before-raising-it-inside',
+        'hmrc-told-what-the-return-will-say-in-due-course',
+      ],
       exp: 'A rule that is not in the software does not happen, and the configuration has to be right before the first payday of the new year — so that is where the lead time is needed. Employees are told once the effect is known. Auditors see it afterwards, and HMRC neither needs nor wants confirmation that a business has read its guidance.',
     },
     {
@@ -5175,6 +6183,12 @@
         'Employees being paid nothing until it is updated',
       ],
       ans: 0,
+      why: [
+        null,
+        'stale-software-expected-to-fail-visibly',
+        'hmrc-thought-to-validate-the-figures-on-receipt',
+        null,
+      ],
       exp: 'Out-of-date software carries on working and produces confidently wrong figures on last year’s bases — which is far more dangerous than a refusal to run, because the payroll completes, the FPS files and nobody is alerted. The error surfaces later as an underpayment or overpayment of tax across every employee, and correcting it means revisiting each one.',
     },
     {
@@ -5188,6 +6202,12 @@
         'A recommendation to wait and see whether HMRC notices it',
       ],
       ans: 0,
+      why: [
+        null,
+        'a-communication-missing-what-the-reader-needs-to-act',
+        'a-judgement-taken-alone-that-was-not-the-technicians-to-take',
+        'waiting-for-hmrc-treated-as-disclosure',
+      ],
       exp: 'A report that gives a figure without the route and the deadline leaves the manager unable to act. What went wrong matters because it may still be happening; the correction method matters because the threshold decides between adjusting the next return and notifying separately; and the deadline matters because disclosure that is prompted is worth less than disclosure that is not. The last two options are a technician deciding alone and a technician recommending concealment.',
     },
     {
@@ -5213,6 +6233,12 @@
         'Adjust the next payslip to compensate and say nothing',
       ],
       ans: 0,
+      why: [
+        null,
+        'software-credited-with-judging-the-rate',
+        'a-question-pushed-back-to-the-person-who-asked-it',
+        'a-judgement-taken-alone-that-was-not-the-technicians-to-take',
+      ],
       exp: 'Not knowing is acceptable; guessing and stonewalling are not. The deduction may be perfectly right, in which case the employee deserves the explanation, or wrong, in which case it needs correcting properly rather than being netted off a later payslip. Sending an employee to HMRC about a deduction the employer made puts the burden in the wrong place.',
     },
     {
@@ -5251,6 +6277,12 @@
         'The return becomes capable of amendment after filing',
       ],
       ans: 0,
+      why: [
+        null,
+        'review-treated-as-protection-from-enquiry',
+        'authorisation-treated-as-transferring-responsibility',
+        'a-filed-return-thought-to-be-amendable',
+      ],
       exp: 'Authorisation puts a second person, with the standing to accept the liability, behind the figures. It does not transfer the preparer’s responsibility — both are accountable for their own part — and it has no effect at all on HMRC’s right to enquire or on the impossibility of amending a filed return. Treating it as a shield is how it comes to be treated as a formality.',
     },
     {
@@ -5264,6 +6296,12 @@
         'The return cannot be submitted until it is read properly',
       ],
       ans: 0,
+      why: [
+        null,
+        'authorisation-treated-as-a-formality',
+        'authorisation-treated-as-transferring-responsibility',
+        null,
+      ],
       exp: 'A control that is exercised without being performed is not a control — the second pair of eyes was the whole point, and trust is not review. The return can still be submitted, so the answer is not that it is blocked; it is that nobody should believe it has been checked twice. The technician’s responsibility for their own work is unchanged either way.',
     },
     {
@@ -5302,6 +6340,12 @@
         'Include the claim and note the doubt in their own file only',
       ],
       ans: 0,
+      why: [
+        null,
+        null,
+        'a-judgement-taken-alone-that-was-not-the-technicians-to-take',
+        null,
+      ],
       exp: 'Acting in good faith means the person deciding does so knowing what is uncertain — a private note in the technician’s own file protects the technician and helps nobody else. Including it on the basis that errors are correctable treats the correction regime as a licence, and excluding it silently loses the business a recovery it may well be entitled to. Both silent options substitute the technician’s judgement for a decision that is not theirs.',
     },
     /* ── Exam-shaped tasks ───────────────────────────────────────────────
@@ -5336,6 +6380,12 @@
         'Nobody, until the amount involved becomes material',
       ],
       ans: 0,
+      why: [
+        null,
+        'reporting-outside-before-raising-it-inside',
+        null,
+        'a-problem-left-to-announce-itself',
+      ],
       exp: 'Reporting runs inside the organisation first: the manager decides what to do and who says it. Going straight to HMRC or to another business commits the employer to a position nobody has authorised, and waiting for materiality lets a recurring error compound.',
     },
     {
@@ -7159,6 +8209,12 @@
         'Nowhere, unless and until HMRC raises an assessment',
       ],
       ans: 0,
+      why: [
+        null,
+        null,
+        'hmrc-thought-to-recalculate-a-return-on-receipt',
+        null,
+      ],
       exp: 'Software is a tool and not a defence. A return is the business\u2019s own declaration, so an out-of-date rate produces an inaccurate return the business answers for, with the behaviour-based penalties that follow. Suppliers do issue updates, but applying them and checking they took effect is part of keeping the records. HMRC recalculates nothing on receipt.',
     },
   ];
