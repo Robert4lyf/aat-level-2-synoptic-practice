@@ -1411,6 +1411,28 @@ body[data-subject="aat3"] .a3-streak.is-legendary .a3-streak-n::after {
 }
 .a3-cover-go { margin-top: 12px; }
 
+/* ── What the wrong answer actually was ──────────────────────────────
+   Above the explanation and louder than it, because it is about the reader
+   rather than about the question — and because a reader who has just got
+   something wrong reads one thing before they start scrolling.
+
+   THE "WRONG" WASH, NOT THE ALARM COLOUR ON THE TEXT. The verdict above it is
+   already red; a second red block would read as two separate failures. The bar
+   down the left carries the association instead, which is also why it survives
+   greyscale. */
+.a3-mis {
+  margin: 0 0 12px; padding: 12px 14px 12px 15px;
+  border-radius: var(--a3-r); border: 1px solid var(--a3-line);
+  border-left: 4px solid var(--a3-bad);
+  background: var(--a3-bad-wash);
+}
+.a3-mis-t {
+  margin: 0; font-size: 15px; font-weight: 700; line-height: 1.35; color: var(--a3-bad);
+}
+.a3-mis-e {
+  margin: 6px 0 0; font-size: 14px; line-height: 1.65; color: var(--a3-ink-2);
+}
+
 /* ── How well you know what you know ──────────────────────────────────────
    One row per confidence, each showing how often it was right. Read as three
    bars rather than three numbers because the SHAPE is the finding: a reader

@@ -175,7 +175,12 @@
      synthetic id begins with the lesson's globally-unique id, so units cannot
      collide — and it merges between devices exactly as `qs` does: two
      timestamps per question under MAX. */
-  var data = { lessons: {}, xp: 0, lessonQs: {}, practice: { units: {} }, srSpreadAt: 0 };
+  /* `lessonMisc` is the misconception tally for LESSON check questions, and it
+     sits outside `practice` for exactly the reason `lessonQs` does:
+     check-aat3-practice-summary.js asserts that a whole lesson leaves the
+     practice record byte-identical, so a lesson check must not write inside
+     `practice.units[k]` at all. */
+  var data = { lessons: {}, xp: 0, lessonQs: {}, lessonMisc: {}, practice: { units: {} }, srSpreadAt: 0 };
 
   function n0(v) { return typeof v === 'number' && isFinite(v) && v > 0 ? v : 0; }
 
@@ -211,6 +216,15 @@
              stored, and two devices would merge it into a figure neither of
              them measured. */
           conf: (u.conf && typeof u.conf === 'object') ? u.conf : {},
+          /* WHICH NAMED ERRORS THIS READER KEEPS MAKING. One monotonic count
+             per misconception id, which is the shape that survives the
+             MAX-merge for the reason `runs` does: two devices that each caught
+             the same error four times merge to four rather than eight, and
+             that is the right answer to "is this still catching me" even
+             though it is the wrong answer to "how many times in total". A
+             count that could be wrong in the other direction would be worse:
+             it would tell a reader they have a problem they have fixed. */
+          misc: (u.misc && typeof u.misc === 'object') ? u.misc : {},
         };
       });
     }
@@ -219,7 +233,7 @@
     if (legacyRuns || Object.keys(legacyLos).length) {
       /* The COMPLETE record shape, matching practiceRec() — `{ runs, los }`
          alone is exactly the partial-record trap the comment above names. */
-      var t = out.units.tpfb || (out.units.tpfb = { runs: 0, mocks: 0, mockBest: 0, los: {}, qs: {}, hist: {}, conf: {} });
+      var t = out.units.tpfb || (out.units.tpfb = { runs: 0, mocks: 0, mockBest: 0, los: {}, qs: {}, hist: {}, conf: {}, misc: {} });
       t.runs = Math.max(t.runs, legacyRuns);
       Object.keys(legacyLos).forEach(function (lo) {
         var was = legacyLos[lo] || {}, now = t.los[lo] || { attempted: 0, correct: 0 };
@@ -240,6 +254,7 @@
         data.lessons = p.lessons || {};
         data.xp = p.xp || 0;
         data.lessonQs = (p.lessonQs && typeof p.lessonQs === 'object') ? p.lessonQs : {};
+        data.lessonMisc = (p.lessonMisc && typeof p.lessonMisc === 'object') ? p.lessonMisc : {};
         data.practice = normalisePractice(p.practice);
         data.srSpreadAt = n0(p.srSpreadAt);
       }
@@ -300,7 +315,7 @@
      existed stays without it. normalisePractice's own comment records what it
      cost the last time one of them was forgotten. */
   function practiceRec(unitKey) {
-    var blank = { runs: 0, mocks: 0, mockBest: 0, los: {}, qs: {}, hist: {}, conf: {} };
+    var blank = { runs: 0, mocks: 0, mockBest: 0, los: {}, qs: {}, hist: {}, conf: {}, misc: {} };
     if (!unitKey) return blank;
     var u = data.practice.units[unitKey];
     if (!u) u = data.practice.units[unitKey] = blank;
@@ -309,6 +324,8 @@
     if (!u.hist) u.hist = {};
     /* Nor a `conf`, for the same reason. */
     if (!u.conf) u.conf = {};
+    /* Nor a `misc`. Three places, every time — see normalisePractice. */
+    if (!u.misc) u.misc = {};
     return u;
   }
 
@@ -674,6 +691,94 @@
     try { localStorage.setItem(PACE_KEY, JSON.stringify(r.all)); } catch (e) {}
     return true;
   }
+  /* ── What the wrong answer actually was ─────────────────────────────
+     Until now every wrong answer got the same response: the explanation of the
+     RIGHT one. That is worth saying and it is not a diagnosis — a reader who
+     divided by five instead of six and a reader with no idea were told the same
+     thing, and only one of them needed it.
+
+     A tagged wrong answer names the error instead. Two shapes carry the tags:
+     `why`, an array parallel to an MCQ's options, and `nearMiss`, a list of
+     predicted wrong VALUES on a numeric question. The second is the more
+     valuable of the two, because it catches the reader's own arithmetic rather
+     than a choice among four things someone else wrote.
+
+     THE REGISTRY IS A SEPARATE FILE and the tags are ids into it. Tags written
+     inline, one per question as it was authored, become fifty near synonyms
+     that diagnose nothing: two readers making the same error are never told the
+     same thing, and the app can never say "this is the fourth time". */
+  function miscList() {
+    var m = root.AAT3_MISCONCEPTIONS;
+    return Object.prototype.toString.call(m) === '[object Array]' ? m : [];
+  }
+  function miscById(id) {
+    if (!id) return null;
+    var all = miscList();
+    for (var i = 0; i < all.length; i++) if (all[i] && all[i].id === id) return all[i];
+    return null;
+  }
+  /* WHICH NAMED ERROR THIS ANSWER WAS, or null. Returns the registry entry
+     rather than the id, so every caller either has something to show or has
+     nothing at all — an id that is not in the registry is the same as no tag,
+     which is what keeps a stale tag from rendering an empty box. */
+  function miscOf(q) {
+    if (!q || S.answered !== false) return null;
+    var t = q.type || 'mcq';
+    if (t === 'mcq') {
+      /* INDEXED AGAINST THE UNSHUFFLED OPTIONS. `S.picked` is the option's
+         ORIGINAL index — the renderer shuffles the order it draws them in and
+         writes the original index into data-i — so `why` lines up with `opts`
+         directly and must never be indexed by screen position. Getting this
+         wrong attaches every diagnosis to a different option on every run,
+         which is worse than having none. */
+      return (q.why && S.picked !== null) ? miscById(q.why[S.picked]) : null;
+    }
+    if (t === 'numeric') {
+      var g = num(S.numInput);
+      if (g === null || !q.nearMiss) return null;
+      for (var i = 0; i < q.nearMiss.length; i++) {
+        var nm = q.nearMiss[i];
+        /* THE SAME TOLERANCE GRADING USES. A near miss matched on a looser one
+           could sit inside the range that counts as right, and a reader would
+           be told their correct answer was a named mistake. */
+        if (nm && typeof nm.value === 'number' && Math.abs(g - nm.value) < 0.005) return miscById(nm.why);
+      }
+    }
+    return null;
+  }
+  /* Banked where the rest of this reader's record is banked, and split the same
+     way: a practice question writes inside its unit, a lesson check writes to a
+     flat map outside `practice` entirely. check-aat3-practice-summary.js
+     asserts a whole lesson leaves the practice record byte-identical, so a
+     lesson check that wrote into `practice.units[k].misc` would fail it — and
+     rightly, because the practice summary is an answer to "what did I
+     practise". */
+  function recordMisconception(unitKey, id, isLesson) {
+    if (!id || !miscById(id)) return false;
+    var map = isLesson ? data.lessonMisc : (unitKey ? practiceRec(unitKey).misc : null);
+    if (!map) return false;
+    map[id] = n0(map[id]) + 1;
+    return true;
+  }
+  /* Called from the two places every other per-answer tally is written from,
+     and on the same condition, so a count that claims to describe attempts
+     cannot drift away from the attempts. A right answer, an untagged wrong
+     answer and a wrong answer whose tag is not in the registry all bank
+     nothing — miscOf() has already decided which. */
+  function bankMisconception(q, isLesson) {
+    var m = miscOf(q);
+    if (!m) return false;
+    return recordMisconception(S.practiceUnit || activeUnit(), m.id, !!isLesson);
+  }
+  /* How often each named error has caught this reader, for the screens that
+     want to say so. Registry order rather than store order, so the list reads
+     the same way twice running. */
+  function miscRead(unitKey) {
+    var u = (data.practice.units[unitKey] || {}).misc || {};
+    return miscList().filter(function (m) { return n0(u[m.id]) > 0; })
+      .map(function (m) { return { id: m.id, label: m.label, n: n0(u[m.id]) }; });
+  }
+
   /* Read back as a mean, never stored as one. `null` rather than 0 below a
      floor of readings: a pace claimed from three questions is noise wearing a
      number, and the screens that show it must be able to tell "not enough yet"
@@ -2705,6 +2810,16 @@
     } else if (S.answered === null && confOffered(q) && !isCalib()) {
       h += confHtml();
     } else if (S.answered !== null) {
+      /* ABOVE THE EXPLANATION, AND IT DOES NOT REPLACE IT. The two answer
+         different questions: this says what the reader's own answer WAS, and
+         `exp` says why the right one is right. A reader who has just got it
+         wrong reads the first line on the screen, so the diagnosis goes there;
+         the explanation they need next stays underneath, unchanged. */
+      var mis = miscOf(q);
+      if (mis) {
+        h += '<div class="a3-mis"><p class="a3-mis-t">' + esc(mis.label) + '</p>' +
+          '<p class="a3-mis-e">' + md(mis.explain) + '</p></div>';
+      }
       h += '<div class="a3-exp-box"><div class="a3-exp-l">Why</div><p class="a3-exp">' + md(q.exp || '') + '</p></div>';
       /* A review is the same graded screen with somewhere else to go: it moves
          through a finished paper rather than through a run, so it brings its
@@ -5839,6 +5954,7 @@
         recordPractice(S.practiceUnit || activeUnit(), q.lo, S.answered === true);
         recordConfidence(S.practiceUnit || activeUnit(), confOf(q), S.answered === true);
         recordQuestion(S.practiceUnit || activeUnit(), q.id, S.answered === true, confOf(q));
+        bankMisconception(q, false);
         save();
       }
       /* An endless run has no last question, so leaving IS finishing it — and a
@@ -6163,6 +6279,9 @@
            its own to remember, and the lesson it belongs to is already tracked
            by its own progress record. */
         recordQuestion(S.practiceUnit || activeUnit(), q.id, S.answered === true, confOf(q));
+        /* WHAT THE WRONG ANSWER WAS, where it has a name. Banked beside the
+           result and on the same condition as everything else here. */
+        bankMisconception(q, false);
         /* Written now rather than at the end of the run. A reader who answers
            six questions and then leaves has attempted six questions, and the
            summary that claims to count what they attempted has to agree. The
@@ -6175,6 +6294,10 @@
          lesson, which used to vanish without trace. */
       if (S.mode === 'lesson' && q && S.answered !== null && l && !l.isSheet) {
         recordQuestion(activeUnit(), l.id + LESSON_Q_SEP + S.qIdx, S.answered === true);
+        /* Into data.lessonMisc, NOT into the unit's practice record — see the
+           note on that field, and check-aat3-practice-summary.js, which asserts
+           a whole lesson leaves the practice record byte-identical. */
+        bankMisconception(q, true);
         save();
       }
       /* The streak is the endless run's only sense of position, so it is kept

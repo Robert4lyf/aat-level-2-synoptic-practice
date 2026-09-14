@@ -4,14 +4,17 @@
 ground. Nothing here touches Levels 1 or 2, CIPS, French or guitar. If it works,
 each phase ports outward on its own.
 
-**Status:** Phases 1 and 3 are built and merged — the two signals the module was
-blind to, and the run that stops recognition standing in for recall.
+**Status:** Phases 1, 3 and 2a are built — the two signals the module was blind
+to, the run that stops recognition standing in for recall, and the registry that
+lets a wrong answer be named rather than merely marked.
 
 | Phase | State |
 |---|---|
 | 1.1 Timing | **Built** — `check-aat3-pace.js`, 30 assertions, 10 mutations |
 | 1.2 Confidence | **Built** — `check-aat3-confidence.js`, 118 assertions, 20 mutations |
-| 2 Misconceptions | Planned |
+| 2a Registry + TPFB numeric | **Built** — `check-aat3-misconceptions.js`, 1,237 assertions, 10 mutations |
+| 2b TPFB MCQ distractors | Planned |
+| 2c Remaining units | Planned |
 | 3 Cover-the-options | **Built** — `check-aat3-covered.js`, 96 assertions, 13 mutations |
 | 4 Follow-through marking | Planned |
 | 5 Readiness and mastery | Planned |
@@ -510,6 +513,36 @@ four:
 
 Matched on the same `< 0.005` tolerance `gradeAnswer` already uses.
 
+### 4.2a What 2a changed about §4
+
+**The three-use floor is two in 2a.** §4.6 requires every registry entry to be
+used by at least three questions, and the reason it gives is right: a taxonomy
+with singletons is a list of excuses. But applied to the 107 numeric questions
+alone — the only tags 2a authors — a floor of three forces genuinely distinct,
+specifically named errors off the list entirely. The Employment Allowance and
+the overtime multiplier each have exactly two numeric questions in the whole
+unit; there is no third, and there never will be until 2b's distractors arrive.
+Dropping them makes the feedback worse rather than better, and a two-use entry
+is not a singleton. The floor is two in `check-aat3-misconceptions.js` today and
+**rises to three when 2b lands**, which is the volume it was written for.
+
+**Sixteen numeric questions are untagged, each with a declared reason**, and the
+reason is always the same shape: the error that question tests appears exactly
+once in the numeric bank, so naming it would put a single-use entry in the
+registry. They are the first candidates for tagging in 2b. The allowlist is
+checked for staleness in both directions.
+
+**The MCQ machinery shipped with no MCQ tags**, and the shuffle assertion is
+made against a synthetic tagged question. That is deliberate: §4.6 calls the
+shuffle "the most important assertion in the file", and it has to be in place
+BEFORE 2b authors six hundred tags against it, not after.
+
+**One rule was added that §4.6 does not have.** The near-miss match is pinned
+from BOTH sides: a value inside the grading tolerance of a predicted answer is
+matched, and one a pound outside it is not. Without the second half, loosening
+the tolerance to anything at all passes — and a diagnosis that fires on a value
+near the predicted one is a guess wearing a name, which is worse than silence.
+
 ### 4.3 Scale — be honest about it
 
 | Unit | MCQ | Distractors | Numeric |
@@ -900,7 +933,7 @@ smaller than", not as "about".**
 |---|---|---|---|---|---|
 | 1 | Timing + confidence | 2–3 | — | Yes | **Built** |
 | 3 | Cover-the-options | 1 | Phase 1 (for the gap timing) | Yes | **Built** |
-| 2a | Misconception registry + TPFB numeric | 2 | — | Yes | Planned |
+| 2a | Misconception registry + TPFB numeric | 2 | — | Yes | **Built** |
 | 4 | Follow-through marking | 1–2 | — | Yes | Planned |
 | 2b | TPFB MCQ distractors | 4+ | 2a | Yes | Planned |
 | 5 | Readiness + mastery | 2 | Phase 1 | Yes | Planned |
