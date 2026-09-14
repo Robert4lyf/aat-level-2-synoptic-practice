@@ -2083,7 +2083,7 @@
           },
           p: [
             'A standard is only useful while it is still true. A supplier price rise, a new machine, a change of material — any of these makes the card wrong. Once the card is wrong, the variances measure the staleness of the standard rather than the performance of the department.',
-            'That is why "revise the standard" is a legitimate answer to a persistent variance. If every month for six months has shown the same adverse material price variance, the price has changed and the card has not.',
+            'A **variance** is the gap between the standard and what actually happened, and an **adverse** one means the gap went against the business. Lesson 4D works through them. That is why "revise the standard" is a legitimate answer to a persistent variance. If every month for six months has shown the same adverse material price variance, the price has changed and the card has not.',
           ],
         },
       ],

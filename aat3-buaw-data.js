@@ -855,7 +855,7 @@
             { text: 'A competitor’s new technology makes the main product obsolete within five years', answer: 2 },
             ],
           },
-          exp: 'A customer failing to pay is a credit exposure and so financial. A shift in demand for what the business sells is the risk of being in that trade at all. Ransomware is a systems and process failure, which is operational — cyber risk sits there. Obsolescence over five years threatens the direction of the business, which is strategic.',
+          exp: 'A customer failing to pay is a credit exposure and so financial. A shift in demand for what the business sells is the risk of being in that trade at all. Ransomware — software that locks a business out of its own systems until it pays — is a systems and process failure, which is operational — cyber risk sits there. Obsolescence over five years threatens the direction of the business, which is strategic.',
         },
         {
           type: 'mcq',
