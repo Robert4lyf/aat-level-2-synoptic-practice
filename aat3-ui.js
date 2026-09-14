@@ -114,6 +114,13 @@
        reading interrupted halfway is not rescued by coming back. */
     qShownAt: 0,
     qHidden: false,
+    /* ── Cover-the-options ─────────────────────────────────────────────────
+       `qRevealed` is whether the options for THIS question have been asked
+       for, and `qRevealAt` is when. Both are cleared with the rest of the
+       per-question state; the reveal is one-way while a question is on screen,
+       so nothing between here and the next question sets them back. */
+    qRevealed: false,
+    qRevealAt: 0,
     /* ── How sure the reader is, before they find out ──────────────────────
        `qConf` is what they said about the question on screen: null until they
        say anything, then 'sure', 'think' or 'guess'.
@@ -615,6 +622,14 @@
     if (!u.byLo || typeof u.byLo !== 'object') u.byLo = {};
     if (!u.byType || typeof u.byType !== 'object') u.byType = {};
     if (!u.byMode || typeof u.byMode !== 'object') u.byMode = {};
+    /* A FOURTH BUCKET, AND IT HOLDS A DIFFERENT QUANTITY FROM THE OTHER THREE.
+       byLo, byType and byMode all hold how long a whole answer took; byGap
+       holds how long the reader thought before ASKING for the options on a
+       covered question, which is a part of that. Mixing the two in one bucket
+       would be the arithmetic error this record exists to avoid — it is why
+       the gap is not filed as a mode, where paceOverall() would sum it in
+       beside whole answers and report a pace nobody ever took. */
+    if (!u.byGap || typeof u.byGap !== 'object') u.byGap = {};
     return { all: all, unit: u };
   }
   /* THE ONE PLACE A READING IS BANKED. Called from settle() and from the mock's
@@ -639,6 +654,23 @@
       var cell = paceCell(pair[0], pair[1]);
       pair[0][pair[1]] = { n: cell.n + 1, ms: cell.ms + Math.round(ms) };
     });
+    try { localStorage.setItem(PACE_KEY, JSON.stringify(r.all)); } catch (e) {}
+    return true;
+  }
+  /* HOW LONG BEFORE THE OPTIONS WERE ASKED FOR, on a covered question. Filed
+     by outcome, and by outcome only: it is a measure of retrieval from one
+     body of material, and there is no second question type it could be
+     compared across while `mcq` is the only type that can be covered.
+
+     Same floor and ceiling as a whole reading, and for the same reasons: under
+     400ms is a double tap landing on the reveal button rather than a reader
+     who knew it instantly, and over ten minutes is a phone left on a table. */
+  function recordGap(unitKey, q, ms) {
+    if (!unitKey || !q) return false;
+    if (!(ms >= PACE_MIN_MS) || ms > PACE_MAX_MS) return false;
+    var r = paceRec(unitKey);
+    var cell = paceCell(r.unit.byGap, String(q.lo));
+    r.unit.byGap[String(q.lo)] = { n: cell.n + 1, ms: cell.ms + Math.round(ms) };
     try { localStorage.setItem(PACE_KEY, JSON.stringify(r.all)); } catch (e) {}
     return true;
   }
@@ -972,6 +1004,7 @@
        "Outcome endless" on its own result screen. */
     if (S.practiceLo === 'endless') return 'endless practice';
     if (S.practiceLo === 'calib') return 'a calibration run';
+    if (S.practiceLo === 'covered') return 'covered options';
     if (Array.isArray(S.practiceLo)) {
       return (S.practiceLo.length === 1 ? 'Outcome ' : 'Outcomes ') + loList(S.practiceLo);
     }
@@ -2514,7 +2547,18 @@
        where it cannot come between the question and the way to answer it. */
     if (S.answered === null && !isMock() && confOffered(q) && isCalib()) h += confHtml();
 
-    if (t === 'mcq') {
+    if (t === 'mcq' && optionsHidden(q)) {
+      /* THE OPTIONS ARE NOT IN THE PAGE. Not blurred, not `visibility: hidden`,
+         not behind a `display: none` — absent. Hidden text is still text: it
+         can be selected, it is read out by a screen reader, and a retrieval
+         exercise a reader can defeat by looking harder is not one. This is also
+         why the shuffle below has not run yet: the order is decided when the
+         options are asked for, so there is nothing to leak in the meantime. */
+      h += '<div class="a3-cover">' +
+        '<p class="a3-cover-m">Work out your answer first. The options come next.</p>' +
+        '<button class="a3-btn a3-btn-primary a3-wide a3-cover-go" data-a3="reveal">' +
+        'I have my answer</button></div>';
+    } else if (t === 'mcq') {
       if (!S._order) S._order = shuffle(q.opts.map(function (_, i) { return i; }));
       h += '<div class="a3-opts">' + S._order.map(function (oi, di) {
         var cls = '';
@@ -4097,6 +4141,27 @@
       '</span>' +
       '<span class="a3-calib-go" aria-hidden="true">→</span>' +
       '</button>';
+
+    /* ── THE COVERED RUN ──────────────────────────────────────────────────
+       Offered only where there is enough to draw one from. A reader who has
+       retired most of a unit's multiple choices would otherwise be handed a
+       "run" of two questions calling itself a drill, and the honest answer to
+       that is not to offer it — the same rule the mistakes and review runs
+       already follow, which are rendered only when they have something in
+       them. The count is of LIVE questions, so retirement is respected here
+       exactly as it is in the draw. */
+    var coverN = livePool(activeUnit()).filter(coverable).length;
+    if (coverN >= COVER_MIN_N) {
+      h += '<button class="a3-covered" data-a3="startpractice" data-lo="covered">' +
+        '<span class="a3-covered-i" aria-hidden="true">…</span>' +
+        '<span class="a3-covered-tx">' +
+          '<span class="a3-covered-t">Covered options</span>' +
+          '<span class="a3-covered-m">Multiple choices with the options held back until you say ' +
+            'you have the answer. Recall rather than recognition.</span>' +
+        '</span>' +
+        '<span class="a3-covered-go" aria-hidden="true">→</span>' +
+        '</button>';
+    }
     h += confPanel();
 
     /* The way back from "I know this". Retiring is reversible one question at a
@@ -4463,7 +4528,7 @@
      A shortfall in one outcome is redistributed rather than left as a gap: a
      run that asked for three and found two must still be ten questions long, or
      the score at the end is out of a different number than the reader thinks. */
-  function drawWeighted(unitKey, n, tasksFirst, noWritten, keepRetired, onlyLos) {
+  function drawWeighted(unitKey, n, tasksFirst, noWritten, keepRetired, onlyLos, onlyTypes) {
     /* WHY A MOCK STILL DRAWS FROM RETIRED QUESTIONS, and nothing else does.
        Everywhere else, "I know this" means stop asking me. A mock is the one
        place where honouring that would work against the reader: it is a
@@ -4496,6 +4561,16 @@
       var want = {};
       onlyLos.forEach(function (x) { want[Number(x)] = 1; });
       bank = bank.filter(function (q) { return want[q.lo] === 1; });
+    }
+    /* NARROWING BY FORMAT, and it re-normalises exactly as narrowing by outcome
+       does: the seat allocation below runs over the outcomes still represented
+       in the bank, so a run of multiple choices alone is still weighted between
+       the outcomes the way the exam weights them — rather than by how many
+       multiple choices each outcome happens to have been written. */
+    if (onlyTypes && onlyTypes.length) {
+      var kind = {};
+      onlyTypes.forEach(function (t) { kind[String(t)] = 1; });
+      bank = bank.filter(function (q) { return kind[q.type || 'mcq'] === 1; });
     }
     var os = outcomes(unitKey).filter(function (o) {
       return bank.some(function (q) { return q.lo === o.n; });
@@ -4922,6 +4997,43 @@
      has said how sure they are. Mode-gated the same way isEndless is, and for
      the same reason — `practiceLo` outlives a finished run. */
   function isCalib() { return S.mode === 'practice' && S.practiceLo === 'calib'; }
+  /* ── Cover-the-options ─────────────────────────────────────────────────────
+     A run where the stem arrives on its own and the options are not in the
+     page at all until the reader says they have an answer. Recognition is a
+     different and much easier act than recall, and every multiple choice in
+     this app has been quietly letting the second stand in for the first: four
+     options are four hints, and a reader who could not have produced the
+     answer can very often still point at it.
+
+     MCQ ONLY, and that is narrower than this was first sketched as. The
+     measurement only exists where the options could have RESCUED the reader,
+     and a true/false question offers the same two words every time — covering
+     them delays nothing and cues nothing, it just adds a tap. Numeric, entry
+     grid and pick list questions are already blank-page by construction. Gap
+     fill renders its options inline inside the sentence, so hiding them leaves
+     a sentence full of holes: that is cloze recall, a different exercise, and
+     bundling it here would make one mode mean two things.
+
+     THE RUN IS DRAWN FROM MCQ ALONE rather than covering whatever multiple
+     choices a mixed draw happened to contain. A weighted draw is about a third
+     multiple choice, so a mixed covered run would do the thing it is named for
+     on three or four questions out of ten — and the gap bucket needs eight
+     readings before it will say anything, so the measurement would take three
+     runs to arrive. The outcome weighting is kept; it is the format mix that
+     narrows, which is what a format drill is. The exam rehearsal is the mock. */
+  var COVER_TYPES = ['mcq'];
+  /* Below this many live multiple choices the run is not offered at all. Half a
+     full run: shorter than that and the thing on offer is not what its label
+     says it is. */
+  var COVER_MIN_N = 5;
+  function isCovered() { return S.mode === 'practice' && S.practiceLo === 'covered'; }
+  function coverable(q) { return COVER_TYPES.indexOf((q && q.type) || 'mcq') !== -1; }
+  /* The options are absent from the page, not merely out of sight. Hidden text
+     is still text: a reader can select it, a screen reader will read it, and a
+     retrieval exercise that can be defeated by looking harder is not one. */
+  function optionsHidden(q) {
+    return isCovered() && coverable(q) && S.answered === null && !S.qRevealed;
+  }
   /* WHICH QUESTIONS CARRY THE CONTROL AT ALL.
 
      Not a mock: nothing is revealed there, so there is no moment of finding
@@ -5000,6 +5112,11 @@
       topUpEndless();
     } else if (lo === 'mix') {
       S.practiceQs = drawWeighted(S.practiceUnit, PRACTICE_LEN);
+    } else if (lo === 'covered') {
+      /* Weighted across the outcomes exactly as a mixed run is, over the
+         multiple choices alone — see COVER_TYPES for why the format narrows
+         and the weighting does not. */
+      S.practiceQs = drawWeighted(S.practiceUnit, PRACTICE_LEN, false, false, false, null, COVER_TYPES);
     } else if (lo === 'calib') {
       /* Drawn exactly as a mixed run is. A calibration run is not a different
          set of questions, it is the same questions with a different thing asked
@@ -5051,6 +5168,10 @@
        it. openReviewQ() reaches here too, through restoreAnswer() — which is
        harmless only because nothing on the review path reads the clock. */
     S.qShownAt = Date.now(); S.qHidden = false; S.qConf = null; S.confNudge = false;
+    /* Cleared here rather than at the reveal, for the reason every other
+       per-question flag is: a `qRevealed` that survived would uncover the whole
+       rest of the run from the first question the reader asked about. */
+    S.qRevealed = false; S.qRevealAt = 0;
     S.answered = null; S.picked = null; S.tfPicks = {}; S.gapPicks = {}; S.numInput = '';
     S._order = null; S._gapOrder = null;
     S.plPicks = {}; S.egCells = {}; S.calcCell = null; S._plOrder = null;
@@ -5127,7 +5248,15 @@
        S.taskResults, and a reading taken after that is a reading of the
        marker's own work as well as the reader's. The difference is a
        millisecond and the principle is the whole point of a stopwatch. */
-    bankPace(q, S.mode === 'lesson' ? 'lesson' : 'practice');
+    /* A COVERED QUESTION IS ITS OWN PRESSURE, and files under its own mode for
+       the reason a mock and a lesson check do: answering without the options in
+       front of you is a different act from answering with them, and averaging
+       the two produces a pace figure describing neither. What lands here is the
+       WHOLE answer — stem to submit — so byLo, byType and byMode stay
+       comparable with every other reading in the record. The part of it spent
+       before the options were asked for is filed separately, by recordGap. */
+    bankPace(q, S.mode === 'lesson' ? 'lesson'
+      : (isCovered() && coverable(q)) ? 'covered' : 'practice');
     S.answered = gradeAnswer(q);
     if (S.answered) S.score++;
     beep(S.answered ? 'correct' : 'wrong');
@@ -5534,6 +5663,11 @@
        double-tap lands on whatever button has taken the same coordinates on
        the next question. */
     plsubmit: 1, egsubmit: 1, wrshow: 1, wrmark: 1, retire: 1,
+    /* The reveal sits where the previous question's "Next question" button was
+       a moment ago, so without this the second tap of a double-tap uncovers the
+       next question's options before its stem has been read — which is the one
+       thing this mode exists to prevent. */
+    reveal: 1,
     /* The grade buttons sit where the flip button was a moment ago, which is
        the double-tap this guard exists for. */
     flashflip: 1, flashyes: 1, flashno: 1,
@@ -5562,6 +5696,9 @@
        it sounds like one. Recording the mark is not here: it goes through
        settle(), which makes the right-or-wrong noise instead. */
     wrshow: 1,
+    /* Asking for the options is a move to the next step of the same question,
+       exactly as revealing a model answer is. */
+    reveal: 1,
     /* Retiring is a decision about the pool, not a move through it, so it gets
        the flat click rather than the advance noise. */
     retire: 1, restore: 1,
@@ -5877,8 +6014,32 @@
       return rerender();
     }
 
+    if (act === 'reveal') {
+      /* ONE WAY, AND ONLY WHILE THIS QUESTION IS ON SCREEN. There is no path
+         back to covered: a reader who has seen the options cannot un-see them,
+         so offering to hide them again would record a second, longer gap for a
+         question whose retrieval moment has already passed. resetQState clears
+         both fields on the way to the next question.
+
+         BANKED HERE RATHER THAN AT GRADING, because this is the moment the
+         measurement is complete — and because a reader who gives up on the
+         question after revealing still thought for as long as they thought. */
+      if (!optionsHidden(q)) return;
+      S.qRevealed = true;
+      S.qRevealAt = Date.now();
+      if (!S.qHidden && S.qShownAt) {
+        recordGap(S.practiceUnit || activeUnit(), q, S.qRevealAt - S.qShownAt);
+      }
+      return rerender();
+    }
     if (act === 'ans') {
       if (S.answered !== null) return;
+      /* THE GUARD IS IN THE HANDLER, not only in the absence of the buttons.
+         The options are not rendered while a question is covered, so there is
+         nothing to tap — but a stale repaint is not a person, and every other
+         rule this module enforces about what may be answered when lives where
+         the answer arrives rather than where the button is drawn. */
+      if (optionsHidden(q)) return;
       S.picked = +n.getAttribute('data-i');
       /* Under exam conditions a pick is a pick, not a commitment: it can be
          changed until the reader moves on, and nothing is revealed. Everywhere
