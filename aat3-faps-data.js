@@ -2027,7 +2027,96 @@
     lessons: [
       {
         id: 'L3-FAPS-4A',
-        title: 'What depreciation is for',
+        title: 'The three accounts, and what each holds',
+        icon: '🗄️',
+        /* Shares 4.2.1 with 4D. This lesson explains what the general ledger
+           accounts ARE; 4D posts to them and reconciles the register. Neither
+           half is the criterion on its own. */
+        criteria: ['FAPS-4.2.1'],
+        cards: [
+          {
+            h: 'One machine, three records',
+            p: [
+              'A business buys a machine for £10,000. From that moment the machine appears in three places, and each one answers a different question.',
+              'It is worth meeting all three now. Everything else in this outcome is arithmetic that ends up in one of them.',
+            ],
+            table: {
+              headers: ['The record', 'What it holds', 'What it answers'],
+              rows: [
+                ['Asset at cost', 'The £10,000 paid. It never changes.', 'What did we pay for this?'],
+                ['Accumulated depreciation', 'Everything charged against it so far.', 'How much of that cost have we used up?'],
+                ['Depreciation expense', 'This year’s charge, and nothing else.', 'What did using it cost us this year?'],
+              ],
+            },
+            callout: { kind: 'key', text: 'Cost and accumulated depreciation are balance sheet accounts and carry forward. The expense account is emptied into profit at every year end and starts again at nil.' },
+          },
+          {
+            h: 'Why the cost account is left alone',
+            p: [
+              'The obvious way to record depreciation would be to take it off the cost account. Accounting does not do that, and the reason is that it would destroy information.',
+              'Once £2,000 has been taken off a £10,000 machine, the account says £8,000. Was that an £8,000 machine, or a £10,000 machine two years old? Nobody can tell.',
+              'So the reduction is kept in an account of its own. **Accumulated depreciation** is a **contra-asset**: an account with a credit balance that sits directly against an asset and is read as a subtraction from it.',
+              'Keeping the two apart means the accounts can report both facts. What the asset cost, and how much of that cost has gone.',
+            ],
+          },
+          {
+            h: 'Carrying amount, and where it comes from',
+            formula: 'Carrying amount = Cost − Accumulated depreciation',
+            p: [
+              'The **carrying amount** is what is left of the cost. It is not held in an account of its own; it is worked out from the other two whenever it is needed.',
+              'That is why a statement of financial position shows all three figures in a row. The asset register carries all three against every line too.',
+              'Here is the machine over three years. The top row never moves. The second row only ever grows. The third is the first minus the second.',
+              'The bottom row is the odd one out. It is not a running total: each year it starts at nil, takes that year’s charge, and is closed into profit.',
+            ],
+            example: {
+              title: 'The £10,000 machine, charged at £2,000 a year',
+              rows: [
+                ['', 'End of year 1', 'End of year 2', 'End of year 3'],
+                ['Asset at cost', '£10,000', '£10,000', '£10,000'],
+                ['Accumulated depreciation', '£2,000', '£4,000', '£6,000'],
+                ['Carrying amount', '£8,000', '£6,000', '£4,000'],
+                ['Depreciation expense for the year', '£2,000', '£2,000', '£2,000'],
+              ],
+            },
+          },
+        ],
+        check: [
+          {
+            type: 'mcq',
+            q: 'An asset cost £40,000 and accumulated depreciation on it stands at £15,000. Which account holds the £25,000 carrying amount?',
+            opts: [
+              'None — the carrying amount is worked out from the other two, not held anywhere',
+              'The asset cost account, which is reduced to £25,000',
+              'The accumulated depreciation account, as a debit balance',
+              'A separate carrying amount account maintained beside the other two',
+            ],
+            ans: 0,
+            exp: 'There are two accounts and three figures. Cost stays at £40,000 and accumulated depreciation stays at £15,000; the £25,000 is the difference between them, computed whenever the statement of financial position or the asset register needs it. Keeping cost and accumulated depreciation apart is what lets the accounts say both what was paid and how much has been used up.',
+          },
+          {
+            type: 'truefalse',
+            q: 'Identify whether each statement about the three records is correct.',
+            statements: [
+              { text: 'The asset cost account stays at cost for the whole life of the asset.', answer: true },
+              { text: 'Accumulated depreciation carries forward from one year to the next.', answer: true },
+              { text: 'The depreciation expense account carries forward in the same way.', answer: false },
+              { text: 'Accumulated depreciation has a credit balance and is set against an asset.', answer: true },
+            ],
+            exp: 'Cost never moves, which is what lets the accounts say what was paid even years later. Accumulated depreciation is a balance sheet account and goes on growing across years. The expense account does not: it is closed into profit at each year end and starts the next year at nil, which is why it holds one year\'s charge and never a total. And a credit balance sitting against an asset is what a contra-asset is.',
+          },
+        ],
+      },
+
+      /* OUT OF SEQUENCE ON PURPOSE. This lesson was split out of 4A, which had
+         grown to six cards against a unit norm of three — the accounts needed
+         explaining before anything else in the outcome could refer to them, and
+         that is a sit of its own. It reads SECOND and it is placed second; the
+         id is 4E because renaming 4B, 4C and 4D would hand a reader who had
+         completed "Straight line" the credit for a lesson about something
+         else. `data.lessons` is keyed by these ids. */
+      {
+        id: 'L3-FAPS-4E',
+        title: 'What depreciation is, and is not',
         icon: '📉',
         criteria: ['FAPS-4.1.1', 'FAPS-4.1.2', 'FAPS-4.1.3'],
         cards: [
@@ -2035,14 +2124,23 @@
             h: 'Not a valuation, and not a fund',
             p: [
               'Two things depreciation is regularly mistaken for, and it is neither.',
-              'It is **not an attempt to value the asset**. A machine carried at £15,360 is not being claimed to be worth £15,360. The figure is what is left of a cost after some of it has been charged to profit. A three-year-old van whose market value collapsed after a recall carries on depreciating on its original schedule, because the schedule was never about market value. A permanent fall below the carrying amount is dealt with separately, by impairment, which this unit does not assess.',
-              'It is **not money set aside**. Charging £4,000 of depreciation puts nothing in the bank and funds no replacement. The credit goes to accumulated depreciation, which is a contra-asset sitting against cost, not a pot of cash.',
-              'What depreciation does is allocate. The **depreciable amount** — cost less residual value — is spread across the periods the asset serves. Each year carries a share of the cost of the asset it used. That is the accruals principle applied to something that was paid for once and consumed slowly.',
+              'It is **not an attempt to value the asset**. The £10,000 machine in the last lesson carries at £4,000 after three years. Nobody is claiming it would fetch £4,000.',
+              'A three-year-old van whose market value collapsed after a recall carries on depreciating on its original schedule. The schedule was never about market value.',
+              'It is **not money set aside**. Charging £2,000 puts nothing in the bank and funds no replacement. The credit went to a contra-asset account, not to a pot of cash.',
+              'What depreciation does is allocate. Each year carries a share of the cost of the asset it used, which is the accruals principle applied to something paid for once and consumed slowly.',
             ],
             callout: { kind: 'key', text: 'Depreciation allocates cost across the periods that benefit. It does not value the asset and it sets no money aside.' },
           },
           {
-            h: 'The two decisions behind every charge',
+            h: 'How much cost is there to spread?',
+            formula: 'Depreciable amount = Cost − Residual value',
+            p: [
+              'Not all of the cost gets charged. The business expects to get something back at the end, and that part was never really consumed.',
+              'The **depreciable amount** is the part that was: cost less what is expected back. It is the figure the methods in the next two lessons spread out.',
+              'Two estimates decide it, and both are made years before anyone knows the answer.',
+              'Both move profit, which is why the specification attaches professional scepticism here. A life quietly extended improves reported profit every year until the asset is sold.',
+              'Neither change looks like anything on the face of the accounts. When an estimate turns out wrong, the correction arrives later, as a gain or loss on disposal.',
+            ],
             split: {
               left: {
                 title: 'How long — useful life',
@@ -2063,17 +2161,16 @@
                 ],
               },
             },
-            p: [
-              'Both are estimates, both are made years before the truth is known, and both move profit. That combination is why the specification attaches professional scepticism to this area. A life quietly extended, or a residual value quietly raised, improves reported profit every year until the asset is sold. Neither change looks like anything on the face of the accounts.',
-              'When either estimate turns out wrong, the correction arrives as a gain or loss on disposal. That is why persistent gains or losses are a signal about the estimates rather than about the sale.',
-            ],
           },
           {
             h: 'Where the charge is computed',
             p: [
-              'Accounting software will hold the method, the rate and the in-service date, calculate the charge every period, post it, and update both the ledger and the register. A spreadsheet will do the same arithmetic and leave a journal to be entered by hand.',
-              'Both are normal and the specification names both. The difference that matters is where the risk sits.',
-              'Software cannot get the arithmetic wrong and cannot forget an asset. What it can do is apply the right method to the wrong inputs. An in-service date a month out, a life copied from the previous line, a class that carries someone else’s policy. It then goes on doing it, cleanly and consistently, for the whole of the asset’s life. A reconciliation will not find it, because the register and the ledger agree. Only somebody reading the register line against the invoice will.',
+              'Accounting software holds the method, the rate and the in-service date. It calculates the charge every period, posts it, and updates both the ledger and the register.',
+              'A spreadsheet does the same arithmetic and leaves a journal to be entered by hand. Both are normal, and the specification names both.',
+              'The difference that matters is where the risk sits. Software cannot get the arithmetic wrong and cannot forget an asset.',
+              'What it can do is apply the right method to the wrong inputs. An in-service date a month out, a life copied from the line above, a class carrying someone else’s policy.',
+              'It then goes on doing it, cleanly and consistently, for the whole of the asset’s life. A reconciliation will not find it, because the register and the ledger agree.',
+              'Only somebody reading the register line against the original invoice will.',
             ],
             examtrap: 'Depreciation begins when the asset is **available for use**, which is not always the date on the invoice. A machine delivered in March and commissioned in May starts depreciating in May, and a pro-rata policy computes from then.',
           },
@@ -2082,9 +2179,14 @@
           {
             type: 'mcq',
             q: 'Which of these best describes what depreciation does?',
-            opts: ['Allocates the cost of an asset over the periods that use it', 'Restates the asset at what it would fetch on the open market', 'Sets aside cash so the asset can be replaced when it wears out', 'Records the fall in the asset\'s value during the period concerned'],
+            opts: [
+              'Allocates the cost of an asset over the periods that use it',
+              'Restates the asset at what it would fetch on the open market',
+              'Sets aside cash so the asset can be replaced when it wears out',
+              'Records the fall in the asset’s value during the period concerned',
+            ],
             ans: 0,
-            exp: 'Depreciation spreads the depreciable amount — cost less residual value — across the asset\'s useful life, so each period carries a share of the cost of what it used. It is an allocation, not a valuation and not a fund: the credit goes to accumulated depreciation, which holds no cash.',
+            exp: 'Depreciation spreads the depreciable amount — cost less residual value — across the asset’s useful life, so each period carries a share of the cost of what it used. It is an allocation, not a valuation and not a fund: the credit goes to accumulated depreciation, which holds no cash.',
           },
           {
             type: 'truefalse',
@@ -2110,8 +2212,12 @@
             h: 'The same amount every year',
             formula: 'Annual charge = (Cost − Residual value) ÷ Useful life · or · Annual charge = Cost × the given percentage',
             p: [
-              'Straight line charges an equal amount to every year of the asset’s life. It is the right choice where the asset is consumed evenly — a building, office furniture, a fixture that works as hard in year six as in year one.',
-              'A policy states it in one of two ways and the two are not interchangeable. **By useful life**, where the depreciable amount is divided by the number of years. **By percentage**, where a stated rate is applied to **cost** every year. Read the policy: a rate applied to cost is straight line, and the same rate applied to the carrying amount is the other method entirely.',
+              'Straight line charges an equal amount to every year of the asset’s life. The depreciable amount — cost less residual value — is simply divided up.',
+              'It suits an asset consumed evenly. A building, office furniture, a fixture that works as hard in year six as in year one.',
+              'A policy states it in one of two ways, and the two are not interchangeable.',
+              '**By useful life.** The depreciable amount is divided by the number of years.',
+              '**By percentage.** A stated rate is applied to **cost** every year, and to cost again the year after.',
+              'Read which base the percentage attaches to. A rate applied to cost is straight line; the same rate applied to the carrying amount is the other method entirely.',
             ],
           },
           {
@@ -2139,9 +2245,12 @@
           {
             h: 'Full year, or pro-rata',
             p: [
-              'A policy also says how the year of acquisition is treated, and the two conventions give different answers to the same question.',
-              'A **full year in the year of acquisition and none in the year of disposal** is the simpler convention. An asset bought on any date in the year takes a whole year\'s charge; the year it is sold takes none. No apportionment is needed and the policy does the work.',
-              '**Pro-rata** charges by the months the asset was available for use. The £4,000 machine above, available from 1 October with a 31 December year end, is charged for three months: £4,000 × 3 ÷ 12 = £1,000. The following year takes the full £4,000.',
+              'An asset is rarely bought on the first day of a year, so a policy also says how the year of acquisition is treated. There are two conventions, and they give different answers to the same question.',
+              '**A full year in the year of acquisition, and none in the year of disposal.** This is the simpler one. An asset bought on any date in the year takes a whole year\'s charge, and the year it is sold takes none.',
+              'Nothing is apportioned. The policy does the work.',
+              '**Pro-rata.** The charge follows the months the asset was available for use.',
+              'Take the machine above, with its £4,000 annual charge, available from 1 October and a 31 December year end. That is three months: £4,000 × 3 ÷ 12 = £1,000.',
+              'The following year, with the machine available throughout, takes the full £4,000.',
               'Which convention applies is stated in the question. Apply the wrong one and a correctly-calculated figure is marked wrong.',
             ],
             examtrap: 'Pro-rata months run from when the asset was **available for use**, not from the invoice date and not from the date it was paid for. Where a question gives a delivery date and a commissioning date, the commissioning date is the one that starts the clock.',
@@ -2193,9 +2302,11 @@
             h: 'A percentage of what is left',
             formula: 'Annual charge = Carrying amount at the start of the year × the given percentage',
             p: [
-              'Diminishing balance applies a fixed percentage to the **carrying amount** rather than to cost. Because the carrying amount falls every year, so does the charge: large early, small later, and never quite reaching nil.',
-              'That pattern suits assets that give most of their service early, or lose most of their value early. Vehicles, computers, anything that is worth markedly less the moment it is a year old. It also roughly offsets the fact that repair costs rise as an asset ages, so the total annual cost of owning it stays steadier than either figure alone.',
-              'The specification asks for this method **for a full year with a given percentage**, so no residual value is deducted and no pro-rata apportionment is needed. The percentage does all the work.',
+              'Diminishing balance applies a fixed percentage to the **carrying amount** rather than to cost. The rate is fixed; the base is not.',
+              'Carrying amount is cost less accumulated depreciation, and accumulated depreciation only grows. So the base falls every year, and so does the charge: large early, small later, and never quite reaching nil.',
+              'That pattern suits an asset that gives most of its service early, or loses most of its value early. Vehicles, computers, anything worth markedly less the moment it is a year old.',
+              'It has a second effect worth knowing. Repair costs tend to rise as an asset ages, so a falling depreciation charge keeps the total annual cost of owning it steadier than either figure alone.',
+              'The specification asks for this method **for a full year with a given percentage**. So no residual value is deducted and nothing is apportioned. The percentage does all the work.',
             ],
             callout: { kind: 'key', text: 'Straight line applies the rate to cost. Diminishing balance applies it to the carrying amount, so the charge falls every year.' },
           },
@@ -2234,8 +2345,10 @@
               ],
             },
             p: [
-              'The method is chosen to match how the asset is consumed, and once chosen the consistency principle keeps it. A change is permitted when the pattern of use genuinely changes. A change made because a different method would report a better number is the example the ethics material uses.',
-              'A question can give either method, or both for different classes in the same business, and the class is what tells you which. Vehicles on diminishing balance and buildings on straight line in one trial balance is an ordinary arrangement rather than a trick.',
+              'The method is chosen to match how the asset is consumed, and once chosen the consistency principle keeps it.',
+              'A change is permitted when the pattern of use genuinely changes. A change made because the other method would report a better number is the example the ethics material uses.',
+              'A question can give either method, or both at once for different classes in the same business. The class is what tells you which.',
+              'Vehicles on diminishing balance and buildings on straight line, in one trial balance, is an ordinary arrangement rather than a trick.',
             ],
           },
         ],
@@ -2275,7 +2388,7 @@
         criteria: ['FAPS-4.2.1', 'FAPS-4.2.2'],
         cards: [
           {
-            h: 'One journal, two accounts, and the register',
+            h: 'The journal, and the register',
             p: [
               'The charge for the period is entered by journal: **debit depreciation expense**, **credit accumulated depreciation**. The debit is an expense and reaches the statement of profit or loss. The credit builds up in a contra-asset account that sits against cost.',
               'What the entry does **not** touch is the asset cost account. Cost stays at cost for the whole life of the asset, and the reduction is shown separately. That is why the statement of financial position can present all three figures — cost, accumulated depreciation and carrying amount — and why the register carries all three too.',
@@ -2314,8 +2427,11 @@
             flow: ['Bring assets sold up to date, as the policy requires', 'Work out the gain or loss on those disposals', 'Charge depreciation on everything still held', 'Update the register line by line', 'Reconcile register totals to the ledger'],
             p: [
               'Doing these out of order produces answers that are individually correct and collectively wrong.',
-              'Assets being sold are dealt with **first**. The gain or loss compares the proceeds with the carrying amount at the date of disposal. That carrying amount is not right until the policy has been applied for the final period. Under pro-rata that means a part-year charge; under a full-year policy it means no charge at all in the year of sale. Either way the figure comes from the policy, and reaching for last year’s accumulated depreciation instead is the commonest error in a disposal question.',
-              'The reconciliation comes **last**, because it is the check rather than a step. Run it before the disposals have been written out of the register and it produces a difference that is not a fault. Chasing that wastes the time that should have gone on the real one.',
+              'Assets being sold are dealt with **first**, and the reason is the carrying amount. A gain or loss compares the proceeds with the carrying amount at the date of disposal.',
+              'That carrying amount is not right until the policy has been applied for the final period. Under pro-rata that means a part-year charge; under a full-year policy it means no charge at all in the year of sale.',
+              'Either way the figure comes from the policy. Reaching for last year’s accumulated depreciation instead is the commonest error in a disposal question.',
+              'The reconciliation comes **last**, because it is the check rather than a step.',
+              'Run it before the disposals have been written out of the register and it reports a difference that is not a fault. Chasing that wastes the time the real one needed.',
             ],
           },
         ],
@@ -2356,6 +2472,8 @@
         h: 'Outcome 4 at a glance',
         p: [
           'Depreciation spreads the cost of an asset across the periods that get the use of it. It is not a valuation of the asset and it sets no money aside, which are the two things it is most often mistaken for.',
+          'Three records hold it. **Asset at cost**, which never moves. **Accumulated depreciation**, a contra-asset that only grows. **Depreciation expense**, which holds one year and is closed into profit.',
+          'Carrying amount is the first less the second. It is worked out when needed and is not an account at all.',
         ],
         formula: 'Straight line = (Cost − Residual value) ÷ Useful life · Diminishing balance = Carrying amount at the start of the year × the rate',
         table: {
