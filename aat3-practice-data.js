@@ -1868,10 +1868,10 @@
       why: [
         null,
         null,
-        null,
+        'a-period-boundary-read-as-a-rate-boundary',
         'input-tax-recovery-made-to-depend-on-the-tax-point',
       ],
-      exp: 'The tax point allocates a supply to a period. It does not change whether the supply is taxable, at what rate, or whether the customer can recover — but moving output tax a quarter earlier or later is a real cash-flow consequence, and getting it wrong understates or overstates a return.',
+      exp: 'The tax point allocates a supply to a period. A quarter end is a boundary between periods, not between rates. Crossing it moves the VAT up to three months in cash terms and changes nothing else about it, so getting it wrong understates one return and overstates the next. Whether the supply is taxable, and whether the customer may recover, are settled by other rules entirely. The boundary that DOES decide the rate is a change of rate, and there the tax point picks which of the two applies.',
     },
     {
       id: 'P-2-35', unitKey: 'tpfb', lo: 2, criteria: ['TPFB-2.2.4'],
@@ -2498,7 +2498,7 @@
       ans: 0,
       why: [
         null,
-        null,
+        'a-period-boundary-read-as-a-rate-boundary',
         'input-tax-recovery-made-to-depend-on-the-tax-point',
         null,
       ],

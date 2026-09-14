@@ -38,7 +38,7 @@
  *       entry can say "second time", which is a category, and a one-use entry
  *       cannot say anything its question did not already say.
  *
- *   The tags — 289 named distractors across 176 multiple choices, plus 2a's
+ *   The tags — 291 named distractors across 176 multiple choices, plus 2a's
  *   116 near misses
  *     - every `why` id and every `nearMiss.why` exists in the registry
  *     - `why.length === opts.length`, and `why[ans]` is null — the key is not a
@@ -106,7 +106,7 @@ const MIN_TAGGED = 85;            /* numeric scope floor — 91 carry nearMiss t
    before these were tightened. Removing a tag on purpose means editing this
    line, which is the point. */
 const MIN_TAGGED_MCQ = 176;       /* multiple choices carrying why[] */
-const MIN_MCQ_TAGS = 289;         /* named distractors between them */
+const MIN_MCQ_TAGS = 291;         /* named distractors between them */
 const UNITS = ['tpfb', 'faps', 'mats', 'buaw'];
 
 const REGISTRY = require(path.join(ROOT, 'aat3-misconceptions.js')).AAT3_MISCONCEPTIONS;
