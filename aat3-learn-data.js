@@ -35,7 +35,7 @@
         {
           h: 'What Tax Processes for Businesses is about',
           p: [
-            'This unit is about **two taxes a business handles on other people\'s behalf**. VAT is collected from its customers for HMRC. Payroll taxes are deducted from its employees, again for HMRC. In neither case is the business paying tax of its own.',
+            'This unit is about **two taxes a business handles on other people\'s behalf**. VAT is collected from its customers for HMRC — His Majesty’s Revenue and Customs, the department that runs the tax system. Payroll taxes are deducted from its employees, again for HMRC. In neither case is the business paying tax of its own.',
             'That one fact drives almost every rule in the unit. If the money were the business\'s own, HMRC would be an ordinary creditor waiting to be paid. It is not. A shop holds the Exchequer\'s VAT from the moment a customer pays until the return falls due. So the law puts obligations round that money that would look heavy-handed for an ordinary debt.',
             'HMRC can require registration. It can say what records to keep and for how long, demand returns on a fixed calendar, inspect those records and visit the premises. It can charge penalties for lateness that look out of all proportion to a few days\' delay. That is what happens when a private business is made a tax collector.',
             'The same thread runs through the rules that look fussy. Why a valid VAT invoice is needed before input tax can be reclaimed. Why a deposit can create a tax liability before anything is delivered. Why a penalty starts on a named day. Each one protects public money held in private hands.',
@@ -75,7 +75,7 @@
               ['1. Legislation relating to VAT', '25%', 'Know the rules — registration, schemes, deadlines, penalties'],
               ['2. Calculate VAT', '**30%**', 'Do the arithmetic and the adjustments'],
               ['3. Review and verify VAT returns', '20%', 'Check a return, correct errors, reconcile'],
-              ['4. Principles of payroll', '15%', 'Employer duties, the pay figures, RTI'],
+              ['4. Principles of payroll', '15%', 'Employer duties, the pay figures, and reporting to HMRC in real time'],
               ['5. Report information', '10%', 'Tell the right person the right thing in time'],
             ],
           },
@@ -91,13 +91,26 @@
         {
           h: 'What the exam gives you',
           p: [
-            'One feature of this assessment changes how you should revise, and it is easy to miss. **AAT supplies reference material you can view during the exam.** A published mock\'s model answers cite it at almost every numerical step.',
-            'So many of the figures this unit teaches are **looked up, not recalled**. The fuel scale charges. The flat rate percentages. The partial exemption de minimis limits (lesson 2D). The conditions for bad debt relief. The penalty points thresholds and the £' + T.penalties.lateSubmission.penalty.value + ' penalty. The late payment percentages and the days they run from. The interest rate, and the Bank of England base rate it is built on. The behaviour tables for errors and for failure to notify.',
-            'Two of those will mean nothing yet. The **fuel scale charge** and **bad debt relief** are defined in the next lesson and dealt with properly in 2E. They appear above only because the assessment hands you their figures.',
+            'One feature of this assessment changes how you should revise, and it is easy to miss. **AAT — the Association of Accounting Technicians, which sets this assessment — supplies reference material you can view during the exam.** A published mock\'s model answers cite it at almost every numerical step.',
+            'So many of the figures this unit teaches are **looked up, not recalled**. The table below is what the reference material hands you.',
+            'Every name in that table will be new, and none of it has to mean anything yet. The middle column says roughly what each one is, and the last says where it is taught. What matters here is the pattern rather than the contents: these are the parts of the unit you are handed rather than asked to remember.',
             'This is not permission to stop learning them. Knowing roughly what the de minimis limit is tells you a calculation is needed at all. And looking up a table you do not understand is slow and error-prone under time pressure. Familiarity is what lets you find the right row fast and know what to do with it.',
             'What it does change is where the effort goes. The marks are in knowing **which rule applies**, **whether its conditions are met** and **how to apply it** — not in reciting figures. If you are drilling percentages, you are revising the part the exam hands you and neglecting the part it tests.',
             'What is *not* supplied is judgement. Which category a supply falls into. Which method an error correction requires. Which side of the return a figure belongs on. Whether a business must register at all. Those are the questions this material spends its time on, and that is where the marks are.',
           ],
+          table: {
+            headers: ['What you are given', 'Roughly what it is', 'Taught in'],
+            rows: [
+              ['Fuel scale charges', 'A set amount of output tax owed for private motoring, where the business reclaimed the VAT on the fuel', '2E'],
+              ['Flat rate percentages', 'The single percentage a small business on that scheme pays over, instead of working out each sale', '1E'],
+              ['Partial exemption de minimis limits', 'Two tests deciding whether a business making exempt sales may still reclaim all its input tax', '2D'],
+              ['Conditions for bad debt relief', 'When VAT already paid over on an invoice the customer never settled can be claimed back', '2E'],
+              ['Penalty points thresholds, and the £' + T.penalties.lateSubmission.penalty.value + ' penalty', 'How many returns may be filed late before a fixed charge starts arriving', '1F'],
+              ['Late payment percentages, and the days they run from', 'What paying late costs, and the day each charge begins', '1G'],
+              ['The interest rate, and the Bank of England base rate it is built on', 'What HMRC charges on tax held past its due date', '1G'],
+              ['Behaviour tables for errors and for failure to notify', 'How far a penalty falls for an honest mistake, and for owning up before HMRC asks', '1F and 3B'],
+            ],
+          },
           callout: { kind: 'tip', text: 'Figures are supplied; judgement is not. Revise which rule applies and how to apply it, rather than the numbers themselves.' },
         },
         {
@@ -818,7 +831,7 @@
             'The effect on the amount payable is identical. But the return asks for the two figures separately, and the boxes will not reconcile if it goes in the wrong place.',
           ],
           split: {
-            left: { title: 'Reduces what you owe', items: ['PPD taken by the customer — less output tax', 'Bad debt relief — more input tax'] },
+            left: { title: 'Reduces what you owe', items: ['A prompt payment discount (PPD) taken by the customer — less output tax', 'Bad debt relief — more input tax'] },
             right: { title: 'Increases what you owe', items: ['Fuel scale charge — more output tax', 'Gifts of goods past the £' + T.gifts.goodsLimit.value + ' limit — more output tax'] },
           },
         },
@@ -1043,7 +1056,7 @@
             'A **partially exempt** business, or one importing something on which input tax is blocked, still faces a real cost. The output tax entry stands in full while the input tax entry is restricted, and the difference is payable. Postponed VAT accounting changes when import VAT is paid, not whether it is due.',
             'Without postponed accounting the treatment differs in shape as well as timing. The import VAT appears as **input tax only**, evidenced by the C79 certificate, having already been paid in cash at the frontier.',
           ],
-          formula: 'PVA: import VAT added to output tax AND to input tax · net effect nil where input tax is fully recoverable · the value of the goods also enters total purchases',
+          formula: 'Postponed VAT accounting (PVA): import VAT added to output tax AND to input tax · net effect nil where input tax is fully recoverable · the value of the goods also enters total purchases',
           examtrap: 'PVA is not a relief and does not make import VAT disappear. It is a timing mechanism. The commonest error is entering it once rather than twice.',
         },
         {
@@ -1453,7 +1466,7 @@
             rows: [
               ['How long', T.records.retentionYears.value + ' years'],
               ['What', 'The VAT account, invoices issued and received, credit and debit notes, daybooks, cash books, till rolls, import and export documents, orders and correspondence'],
-              ['How', 'Paper or electronic; digitally in compatible software where MTD applies, with digital links'],
+              ['How', 'Paper or electronic; digitally in compatible software where Making Tax Digital applies (lesson 1D), with digital links'],
               ['Penalty for failure', '£' + T.records.penalty.value + ' — separate from any tax or payment penalty'],
             ],
           },
@@ -1491,7 +1504,7 @@
             { text: 'Under Making Tax Digital, records must be kept digitally with digital links between them.', answer: true },
             { text: 'HMRC must arrange an inspection visit in advance.', answer: false },
           ],
-          exp: 'Inspection and entry are statutory powers. The record-keeping duty is separate from the payment duty, so a correct payment is no defence to a records failure. MTD requires digital records and digital links — retyping a figure breaks the link. And while visits are usually arranged in advance, HMRC may visit unannounced.',
+          exp: 'Inspection and entry are statutory powers. The record-keeping duty is separate from the payment duty, so a correct payment is no defence to a records failure. Making Tax Digital, or MTD, requires digital records and digital links — retyping a figure breaks the link. And while visits are usually arranged in advance, HMRC may visit unannounced.',
         },
         {
           type: 'mcq',
@@ -1691,7 +1704,7 @@
           p: [
             'Returns must be submitted under **Making Tax Digital**. Lessons 0B and 1B have both gestured at it — this is where it is set out properly. It imposes two requirements, one about filing and one about records, both easy to state and easy to underestimate.',
             'The first is that the return must be filed from **functional compatible software** — software able to connect to HMRC’s systems directly, and authorised to do so. Typing figures into a web form is no longer an available route for a VAT-registered business. The authorisation step matters. Software must be linked to the business’s HMRC account before it can file. Doing that for the first time on the deadline day is a well-known way to miss it.',
-            'The second is the record-keeping requirement lesson 1B raised: the underlying **records must be kept digitally, with digital links between them**. A digital link is any transfer of data between systems without manual intervention — an export and import, a linked cell, an API call. Retyping a figure from one system into another is not a digital link. It makes no difference that the figure is typed correctly.',
+            'The second is the record-keeping requirement lesson 1B raised: the underlying **records must be kept digitally, with digital links between them**. A digital link is any transfer of data between systems without manual intervention — an export and import, a linked cell, one system calling another directly. Retyping a figure from one system into another is not a digital link. It makes no difference that the figure is typed correctly.',
             'The practical consequence deserves stating plainly, because it changes what carefulness means. Under the old regime a figure was seen by a person at least once, when the return was typed up, and an obvious absurdity might be caught there. Under MTD a figure entered wrongly at source flows through to submission untouched. Nobody is looking at it. That is why Outcome 3 — reviewing and verifying the return — exists as a separate learning outcome.',
           ],
           callout: { kind: 'warning', text: 'A digital link means no retyping. Copying a figure by hand between two systems breaks the link even when the figure is right.' },
@@ -2433,7 +2446,7 @@
           p: [
             'The value boxes are where returns most often go quietly wrong, because their contents are broader than intuition suggests.',
             '**Box 6** is the total **net value of ALL sales and other outputs**, excluding VAT. Everything turns on the word "all". It includes standard-rated and reduced-rated sales, and it also includes **zero-rated sales, exempt sales and exports** — supplies that contributed nothing whatever to Box 1. The instinct to leave out a sale that carried no VAT is exactly wrong, and it is what makes a Box 6 figure too small.',
-            '**Box 7** is the total **net value of all purchases and other inputs**, excluding VAT, including imports. It excludes things that are outside the scope of VAT altogether: **wages, PAYE and National Insurance, drawings**, and other non-business expenditure. A Box 7 figure that has swallowed the payroll is a large and obvious error, and it is one of the first things a reviewer checks.',
+            '**Box 7** is the total **net value of all purchases and other inputs**, excluding VAT, including imports. It excludes things that are outside the scope of VAT altogether: **wages, PAYE, National Insurance and drawings**, and other non-business expenditure. PAYE — Pay As You Earn — is the system that collects Income Tax from wages, and Outcome 4 deals with it. A Box 7 figure that has swallowed the payroll is a large and obvious error, and it is one of the first things a reviewer checks.',
             'Box 6 matters beyond the return itself. It is the figure the **1% error correction test** is measured against. A business that habitually understates Box 6 by omitting its zero-rated sales is shrinking, without realising it, the size of error it may correct on a future return.',
           ],
           examtrap: 'Box 6 includes zero-rated and exempt sales even though they added nothing to Box 1. Box 7 excludes wages, PAYE and drawings. Both are easy to get wrong in the same return.',
@@ -2841,7 +2854,7 @@
           h: 'Employee data is personal data',
           p: [
             'The specification asks specifically about **data protection as it applies to employees’ personal data**. It belongs here because payroll is where a business holds the most sensitive information about the people who work for it.',
-            'Consider what a payroll record actually contains. Name, address, date of birth, National Insurance number, bank details, salary. And, through sickness absence and statutory payments, information about health, pregnancy and family circumstances. Some of that is **special category data** under UK GDPR, subject to stricter conditions than ordinary personal data.',
+            'Consider what a payroll record actually contains. Name, address, date of birth, National Insurance number, bank details, salary. And, through sickness absence and statutory payments, information about health, pregnancy and family circumstances. Some of that is **special category data** under the UK GDPR, the General Data Protection Regulation as it applies here. That category carries stricter conditions than ordinary personal data.',
             'The principles that bear most directly on payroll are worth stating individually. Data must be processed **lawfully, fairly and transparently** — employees should know what is held and why. It must be collected for **specified purposes** and not reused for unrelated ones; payroll data gathered to pay people is not a marketing list. It must be **adequate and limited to what is necessary**, so collecting information the payroll does not need is itself a breach. It must be **accurate** and kept up to date. It must not be **kept longer than necessary**, which is where the three-year retention rule and data protection meet, and where they can pull in opposite directions. And it must be kept **secure**, with appropriate technical and organisational measures.',
             'The practical consequences are mundane, and they are exactly what an assessment would ask about. Payroll files are not left where colleagues can read them. Payslips are not distributed openly. Salary information is not discussed with people who have no need to know. Access to the payroll system is restricted to those who require it. And a breach — a payroll file emailed to the wrong recipient — has to be dealt with, not quietly hoped about.',
           ],
@@ -3150,7 +3163,7 @@
               ['P45', 'An employee leaves', 'On leaving'],
               ['P60', 'Employed on 5 April', '**31 May**'],
               ['P11D', 'Benefits not payrolled', '**6 July**'],
-              ['P11D(b)', 'Class 1A NIC declaration', '**6 July**; pay by **22 July**'],
+              ['P11D(b)', 'Class 1A National Insurance contributions (NIC) declaration', '**6 July**; pay by **22 July**'],
             ],
           },
         },
@@ -3244,7 +3257,7 @@
             'The consequence is that HMRC knows what each employee has earned within days rather than months. That is what makes real-time adjustment of tax codes possible, and it is what allows Universal Credit to respond to earnings as they change. It also means an employer\'s errors are visible almost immediately rather than at the year end.',
             'Two submissions do the work, and understanding what each is **for** makes the details follow.',
             'The **Full Payment Submission (FPS)** reports **what was paid**. For every employee paid in the period it gives gross pay, Income Tax, National Insurance, student loan and pension deductions, together with starters, leavers and changes of detail. It must be sent **on or before the date the employees are paid** — not afterwards, and not at the month end. This holds even for an employer paying HMRC quarterly, because the reporting cycle and the payment cycle are separate things.',
-            'The **Employer Payment Summary (EPS)** reports **why less is owed** than the FPS implies. That covers statutory pay recovered, the Employment Allowance, CIS deductions suffered, and a declaration that no employees were paid at all in a month. It is due by the **19th of the following tax month**, and is only sent when there is something to report.',
+            'The **Employer Payment Summary (EPS)** reports **why less is owed** than the FPS implies. That covers statutory pay recovered, the Employment Allowance, deductions suffered under the Construction Industry Scheme (CIS), and a declaration that no employees were paid at all in a month. It is due by the **19th of the following tax month**, and is only sent when there is something to report.',
           ],
           table: {
             headers: ['', 'FPS', 'EPS'],
@@ -3669,7 +3682,7 @@
           p: [
             'Tax changes every year. A technician working from what they learned when they qualified will be wrong within a couple of years, without ever noticing the moment it happened. So the specification asks **where to find information about changes to VAT and payroll law and practice**. "The HMRC website" is not a sufficient answer.',
             '**HMRC Agent Update** is published **monthly** and carries guidance and news for tax agents and advisers. **HMRC Employer Bulletin** is published **six times a year** and is the payroll equivalent — rate changes, RTI developments, deadline reminders. Both can be subscribed to by email, which converts keeping up to date from something you must remember to do into something that arrives.',
-            'Beneath those sit the **VAT notices and PAYE guidance on GOV.UK** themselves, updated continuously as the law changes. Then the **Finance Act** each year, which is where rates, thresholds and penalties actually move. Then **AAT’s own technical updates and CPD**, which interpret changes for members. And **software vendors’ release notes**, which describe the legislative changes built into a product.',
+            'Beneath those sit the **VAT notices and PAYE guidance on GOV.UK** themselves, updated continuously as the law changes. Then the **Finance Act** each year, which is where rates, thresholds and penalties actually move. Then **AAT’s own technical updates and continuing professional development (CPD)**, which interpret changes for members. And **software vendors’ release notes**, which describe the legislative changes built into a product.',
             'The practical point is that these are **push** rather than **pull** sources. A technician who relies on remembering to check will eventually not check during the month that mattered.',
           ],
           table: {
@@ -3679,7 +3692,7 @@
               ['HMRC Employer Bulletin', 'Payroll news — rates, RTI, deadlines', '**6 times a year**'],
               ['GOV.UK notices and guidance', 'The rules themselves', 'Continuous'],
               ['The Finance Act', 'Where rates and thresholds actually change', 'Annual'],
-              ['AAT technical updates and CPD', 'Interpretation for members', 'Continuous'],
+              ['AAT technical updates and CPD training', 'Interpretation for members', 'Continuous'],
               ['Software vendor release notes', 'Legislative changes built into the product', 'Per release'],
             ],
           },

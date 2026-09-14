@@ -480,7 +480,7 @@
               title: 'Marginal costing suits',
               items: [
                 'Short-term decisions — accept the order, drop the product',
-                'Break-even and CVP work',
+                'Break-even and cost-volume-profit (CVP) work',
                 'Any question where fixed costs will not change',
                 'Managers, because it cannot be flattered by producing for stock',
               ],
@@ -748,7 +748,7 @@
             'A month’s costs have to be shared between the units that were finished and the units still on the line. Share them over the finished units alone and every one of them is overstated. Share them over the total number of units and a half-built unit is treated as costing as much as a finished one. Neither is defensible.',
             'The answer is to convert the unfinished units into the number of **finished** units the same work would have produced. Eight hundred units a quarter of the way through are, in cost terms, two hundred finished units. That figure is an **equivalent unit**, and once every unit is expressed in the same terms the cost can simply be divided.',
           ],
-          formula: 'Equivalent units = units completed + (units in closing WIP × their percentage of completion)',
+          formula: 'Equivalent units = units completed + (units in closing work in progress, WIP, × their percentage of completion)',
         },
         {
           h: 'Materials and conversion move at different speeds',
@@ -1138,7 +1138,7 @@
             },
           },
           p: [
-            'Neither method claims to describe which physical units left the store. They are **pricing** conventions, and the choice between them changes the reported figures without changing a single unit or a single pound of cash. What FIFO assumes is that the oldest cost is used up first; what AVCO assumes is that one unit in the store is indistinguishable from another.',
+            'Neither method claims to describe which physical units left the store. They are **pricing** conventions, and the choice between them changes the reported figures without changing a single unit or a single pound of cash. What FIFO — first in, first out — assumes is that the oldest cost is used up first. What AVCO — average cost — assumes is that one unit in the store is indistinguishable from another.',
           ],
         },
         {
@@ -1800,7 +1800,7 @@
           ],
           callout: {
             kind: 'key',
-            text: 'The last row matters: ABC does not replace hours everywhere. Where a cost really is driven by volume, machine hours IS the right driver.',
+            text: 'The last row matters: activity based costing (ABC) does not replace hours everywhere. Where a cost really is driven by volume, machine hours IS the right driver.',
           },
         },
         {

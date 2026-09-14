@@ -134,7 +134,7 @@
               { text: 'The unit is based on a Finance Act and is reissued every year.', answer: false },
               { text: 'Depreciation and accruals are assumed knowledge carried over from Level 2.', answer: false },
             ],
-            exp: 'Computer marking gives no credit for method. Outcome 7 is 20% against Outcome 1\'s 5%. The Finance Act governs Tax Processes, not this unit, which rests on IAS 2, IAS 16 and double entry. Depreciation and accruals are new at Level 3 — Level 2 supplies debits, credits, daybooks and control accounts.',
+            exp: 'Computer marking gives no credit for method. Outcome 7 is 20% against Outcome 1\'s 5%. The Finance Act governs Tax Processes, not this unit, which rests on double entry and on two International Accounting Standards, IAS 2 and IAS 16. Depreciation and accruals are new at Level 3 — Level 2 supplies debits, credits, daybooks and control accounts.',
           },
         ],
       },
@@ -1202,7 +1202,7 @@
             table: {
               headers: ['Class', 'At the period end', 'Because'],
               rows: [
-                ['Income', 'Transferred to the SPL; account left at nil', 'It measures a period, and the period has ended'],
+                ['Income', 'Transferred to the statement of profit or loss (SPL); account left at nil', 'It measures a period, and the period has ended'],
                 ['Expenses', 'Transferred to the SPL; account left at nil', 'The same'],
                 ['Assets', 'Carried down and brought down', 'It measures a position, and the position persists'],
                 ['Liabilities', 'Carried down and brought down', 'The same'],
@@ -1615,7 +1615,7 @@
                 title: 'Expensing something capital',
                 items: [
                   'Profit this year understated',
-                  'Non-current assets understated on the SFP',
+                  'Non-current assets understated on the statement of financial position (SFP)',
                   'Later years\' profits overstated, because no depreciation follows',
                   'Capital employed understated for the rest of the asset\'s life',
                 ],
@@ -4952,7 +4952,7 @@
               },
             },
             p: [
-              'The specification excludes **completion of the ETB for partnerships** from this outcome. You will not be asked to extend one, total it and enter the appropriated shares, and practising that is time spent on a task the assessment does not set.',
+              'The specification excludes **completion of the extended trial balance (ETB) for partnerships** from this outcome. You will not be asked to extend one, total it and enter the appropriated shares, and practising that is time spent on a task the assessment does not set.',
               'Knowing the difference is assessed, which is a different thing and needs separating. A question can ask what changes and why; it will not hand you a partnership trial balance and ask for it filled in.',
               'The partnership work that is assessed lives in Outcome 7 — the appropriation account, the capital and current accounts, and the statement of financial position that presents them. What is excluded is bringing those into this particular document.',
             ],
@@ -5065,7 +5065,7 @@
             p: [
               'Profitability ratios pull from both statements at once, and the join between them is one figure: **profit for the year**.',
               'The statement of profit or loss works that figure out — revenue, less cost of sales, less expenses. The statement of financial position then receives it, because profit belongs to the owner and is added to capital. The same number ends one statement and moves the other.',
-              'That is why a ratio can take its top line from the SPL and its bottom line from the SFP without any sleight of hand. ROCE does exactly that: this year\'s profit over the capital that was available to earn it.',
+              'That is why a ratio can take its top line from the SPL and its bottom line from the SFP without any sleight of hand. Return on capital employed, or ROCE, does exactly that. It puts this year\'s profit over the capital that was available to earn it.',
             ],
             split: {
               left: { title: 'Statement of profit or loss', items: ['Revenue', 'Cost of sales', 'Gross profit', 'Expenses', '**Profit for the year**'] },

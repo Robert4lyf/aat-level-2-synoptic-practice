@@ -93,7 +93,7 @@
             'Almost every question here is a scenario. The marks are not for naming the concept — they are for **applying it to the business in front of you**. "Rising interest rates are an economic factor" is worth little. "Rising interest rates raise the cost of Ashgrove’s overdraft, which it uses every month between paying suppliers and being paid" is worth the mark.',
             'In a written task, the number of marks tells you how many separate points are wanted. Four marks is four points, not one point said four ways.',
           ],
-          examtrap: 'Listing the PESTLE letters, or the five ethical principles, without applying any of them. Recall is the cheap half of every question in this unit.',
+          examtrap: 'Listing the six PESTLE letters — political, economic, social, technological, legal, environmental — or the five ethical principles, without applying any of them. Recall is the cheap half of every question in this unit.',
         },
         {
           h: 'What this module does not do',
