@@ -52,7 +52,7 @@
       meta: '4 units · TPFB, FAPS, MATS and BUAW',
       tabs: ['home'],
       ui: 'AAT3_UI',
-      assets: ['aat3-syllabus.js', 'aat3-tax-data.js', 'aat3-learn-data.js', 'aat3-practice-data.js', 'aat3-faps-data.js', 'aat3-mats-data.js', 'aat3-buaw-data.js', 'aat3-glossary-data.js', 'aat3-ui.js'],
+      assets: ['aat3-syllabus.js', 'aat3-tax-data.js', 'aat3-learn-data.js', 'aat3-practice-data.js', 'aat3-faps-data.js', 'aat3-mats-data.js', 'aat3-buaw-data.js', 'aat3-glossary-data.js', 'aat3-misconceptions.js', 'aat3-ui.js'],
       styles: 'aat3-styles.css', /* lazy, same reasoning as Level 1's */
       activate() {
         /* No shared globals: Level 3 reads its own data directly. Empty values

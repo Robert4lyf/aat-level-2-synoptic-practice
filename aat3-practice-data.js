@@ -72,6 +72,7 @@
       type: 'numeric',
       q: 'A business has rolling 12-month sales of £96,000, of which £11,000 is exempt rental income. The rest is standard-rated. What is its taxable turnover for registration purposes, in pounds?',
       answer: 85000, unit: '£',
+      nearMiss: [{ value: 96000, why: 'exempt-in-taxable-turnover' }],
       exp: money(96000) + ' − ' + money(11000) + ' = ' + money(85000) + '. Only taxable supplies count, and exempt income never does. At ' + money(85000) + ' the business is below the ' + money(T.registration.threshold.value) + ' threshold and need not register — despite total income being above it.',
     },
     {
@@ -105,6 +106,10 @@
       type: 'numeric',
       q: 'A flat rate scheme business has a sector rate of 14.5% and standard-rated sales of £48,000 excluding VAT for the quarter. It is in its fifth year of registration. How much VAT is due to HMRC, in pounds?',
       answer: 8352, unit: '£',
+      nearMiss: [
+        { value: 6960, why: 'flat-rate-applied-to-wrong-turnover' },
+        { value: 7776, why: 'flat-rate-discount-misapplied' },
+      ],
       exp: money(48000) + ' × 1.20 = ' + money(57600) + ' VAT-inclusive turnover. ' + money(57600) + ' × 14.5% = £8,352. The flat rate applies to the GROSS figure; applying it to the net would give £6,960. No first-year discount applies in year five.',
     },
     {
@@ -162,6 +167,7 @@
       type: 'numeric',
       q: 'A business owes £24,000 of VAT and pays nothing until day 28 after the due date, when it settles in full. What is the total late payment penalty, in pounds? Ignore interest.',
       answer: 720, unit: '£',
+      nearMiss: [{ value: 1440, why: 'late-payment-penalty-elements-confused' }],
       exp: '£24,000 × ' + T.penalties.latePayment.firstPenaltyDay15.value + '% = £720. Day 28 is past the 15-day grace period, so the first element of the first penalty applies — but the debt was cleared before day 30, so the second element never arises and the second penalty, which starts at day 31, never begins.',
     },
     {
@@ -274,6 +280,10 @@
       type: 'numeric',
       q: 'In the 12 months to 30 September a business made standard-rated sales of £61,000, zero-rated sales of £24,000 and exempt sales of £14,000. What is its taxable turnover, in pounds?',
       answer: 85000,
+      nearMiss: [
+        { value: 99000, why: 'exempt-in-taxable-turnover' },
+        { value: 61000, why: 'zero-rated-left-out-of-taxable-turnover' },
+      ],
       unit: '£',
       exp: '£61,000 + £24,000 = £85,000. Zero-rated supplies are taxable and count in full; exempt supplies never do. Including the £14,000 would give £99,000 and a wrong conclusion about registration, which is the error this distinction exists to prevent.',
     },
@@ -282,6 +292,7 @@
       type: 'numeric',
       q: 'A business has taxable turnover of £92,400 in the rolling 12 months to 31 October. By how much has it exceeded the registration threshold, in pounds?',
       answer: 2400,
+      nearMiss: [{ value: 4400, why: 'wrong-vat-threshold-used' }],
       unit: '£',
       exp: '£92,400 − ' + money(T.registration.threshold.value) + ' = £2,400. The historic test is applied at the end of every month looking back over the previous twelve, not to a financial year — so a business can cross the line in a month it never thought to check.',
     },
@@ -394,6 +405,7 @@
       type: 'numeric',
       q: 'A limited cost business on the flat rate scheme has VAT-inclusive turnover of £48,000 for the quarter. What does it pay to HMRC, in pounds?',
       answer: 7920,
+      nearMiss: [{ value: 9504, why: 'flat-rate-applied-to-wrong-turnover' }],
       unit: '£',
       exp: '£48,000 × ' + T.schemes.flatRate.limitedCostBusiness.value + '% = £7,920. A limited cost business spends very little on goods, so it is given the highest rate in the scheme — which usually makes the flat rate scheme worse for it than normal VAT accounting.',
     },
@@ -424,6 +436,7 @@
       type: 'numeric',
       q: 'A business on the annual accounting scheme had a VAT liability of £24,000 last year and makes nine monthly interim payments at 10% each. What is each interim payment, in pounds?',
       answer: 2400,
+      nearMiss: [{ value: 6000, why: 'interim-payment-percentage-wrong' }],
       unit: '£',
       exp: '£24,000 × 10% = £2,400 a month. Nine payments come to £21,600, which is 90% of the estimate, and the balance is settled with the return two months after the year end.',
     },
@@ -445,6 +458,7 @@
       type: 'numeric',
       q: 'A business expects taxable turnover of £81,000 in the next 12 months. By how much is that below the deregistration threshold, in pounds?',
       answer: 7000,
+      nearMiss: [{ value: 9000, why: 'wrong-vat-threshold-used' }],
       unit: '£',
       exp: money(T.registration.deregistrationThreshold.value) + ' − £81,000 = £7,000. The deregistration threshold sits below the registration one on purpose, so a business trading around the line does not have to register and deregister repeatedly.',
     },
@@ -479,6 +493,7 @@
       type: 'numeric',
       q: 'A business still owes £36,000 of VAT at day 15 after the due date and £20,000 of it at day 30. What is the total first late payment penalty, in pounds?',
       answer: 1680,
+      nearMiss: [{ value: 2160, why: 'late-payment-penalty-elements-confused' }],
       unit: '£',
       exp: '£36,000 × ' + T.penalties.latePayment.firstPenaltyDay15.value + '% = £1,080, plus £20,000 × ' + T.penalties.latePayment.firstPenaltyDay30.value + '% = £600, giving £1,680. The second element is charged on what is STILL outstanding at day 30, so paying part of the debt in between reduces it.',
     },
@@ -756,6 +771,10 @@
       type: 'numeric',
       q: 'In the rolling 12 months to 31 May a business made standard-rated sales of £58,400, zero-rated sales of £19,300, exempt rental income of £14,200, and sold a delivery van for £9,000. What is its taxable turnover for the registration test, in pounds?',
       answer: 77700, unit: '£',
+      nearMiss: [
+        { value: 91900, why: 'exempt-in-taxable-turnover' },
+        { value: 58400, why: 'zero-rated-left-out-of-taxable-turnover' },
+      ],
       exp: 'Standard-rated and zero-rated sales both count, because both are TAXABLE supplies: £58,400 + £19,300 = £77,700. Exempt rent is not a taxable supply and is excluded. The van is a capital asset, not part of turnover, and is excluded too — including either would have pushed the figure to £91,900 and produced a registration obligation that does not exist.',
     },
     {
@@ -776,6 +795,7 @@
       type: 'numeric',
       q: 'A registered business expects taxable turnover of ' + money(79500) + ' in the next 12 months. By how many pounds is that below the deregistration threshold?',
       answer: 8500, unit: '£',
+      nearMiss: [{ value: 10500, why: 'wrong-vat-threshold-used' }],
       exp: money(T.registration.deregistrationThreshold.value) + ' − ' + money(79500) + ' = ' + money(8500) + '. The deregistration threshold sits below the registration threshold on purpose, so a business hovering around the line is not forced to register and deregister in alternate years. Deregistration here would be permitted, not required — the business may stay registered if it prefers.',
     },
     {
@@ -1059,6 +1079,10 @@
       type: 'numeric',
       q: 'A business on the flat rate scheme has a sector rate of 11% and is in its first year of VAT registration. Its VAT-inclusive turnover for the quarter is £54,000. How much VAT does it pay HMRC, in pounds?',
       answer: 5400, unit: '£',
+      nearMiss: [
+        { value: 5940, why: 'flat-rate-discount-misapplied' },
+        { value: 6480, why: 'flat-rate-applied-to-wrong-turnover' },
+      ],
       exp: 'The first-year discount takes ' + T.schemes.flatRate.firstYearDiscount.value + '% off the sector rate, so the rate is 11% − 1% = 10%. £54,000 × 10% = £5,400. Two errors are being tested at once: forgetting the discount gives £5,940, and applying the rate to a net figure grossed down would give less again. The discount runs only until the first anniversary of registration.',
     },
     {
@@ -1104,6 +1128,7 @@
       type: 'numeric',
       q: 'A business on annual accounting had a VAT liability of £36,000 last year and chooses quarterly interim payments. How much is each interim payment, in pounds?',
       answer: 9000, unit: '£',
+      nearMiss: [{ value: 3600, why: 'interim-payment-percentage-wrong' }],
       exp: 'Quarterly interim payments are three payments of 25% of the previous year’s liability: £36,000 × 25% = £9,000, due at the end of months 4, 7 and 10. The monthly alternative is nine payments of 10%, which would have been £3,600 each. Either way the balance is settled two months after the year end, once the actual liability is known.',
     },
     {
@@ -1274,6 +1299,7 @@
       type: 'numeric',
       q: 'A business owes £45,000 of VAT and has paid none of it by day 15 after the due date. What is the first late payment penalty at that point, in pounds?',
       answer: 1350, unit: '£',
+      nearMiss: [{ value: 2700, why: 'late-payment-penalty-elements-confused' }],
       exp: '£45,000 × 3% = £1,350 on the amount outstanding at day 15. A further 3% of whatever is still outstanding at day 30 follows, and from day 31 a second penalty accrues daily at ' + T.penalties.latePayment.secondPenaltyAnnualised.value + ' a year until the debt is cleared or a Time to Pay agreement is made.',
     },
     {
@@ -1332,6 +1358,7 @@
       type: 'numeric',
       q: 'Goods are sold for £2,148 including VAT at the standard rate. What is the VAT, in pounds?',
       answer: 358, unit: '£',
+      nearMiss: [{ value: 429.6, why: 'vat-rate-applied-to-a-gross-figure' }],
       exp: 'At 20% the VAT is one sixth of the gross: £2,148 ÷ 6 = £358. The net is £1,790, and £1,790 × 20% = £358 confirms it. Applying 20% to the gross figure instead would give £429.60 and is the error being tested.',
     },
     {
@@ -1376,6 +1403,7 @@
       type: 'numeric',
       q: 'A partially exempt business has total input tax of £7,500 for the quarter, of which £1,800 relates to exempt supplies. How much input tax is recoverable, in pounds?',
       answer: 7500, unit: '£',
+      nearMiss: [{ value: 5700, why: 'de-minimis-restriction-applied-anyway' }],
       exp: '£1,800 ÷ 3 = £600 a month, which is at or below the £' + T.partialExemption.deMinimisPerMonth.value + ' limit. £1,800 is 24% of £7,500, below 50%. BOTH limbs pass, so the business is de minimis and recovers everything — all £7,500.',
     },
     {
@@ -1383,6 +1411,7 @@
       type: 'numeric',
       q: 'An invoice is raised for £5,000 net with a 2% prompt payment discount, which the customer takes. What is the VAT finally due, in pounds?',
       answer: 980, unit: '£',
+      nearMiss: [{ value: 1000, why: 'discount-taken-but-vat-not-reduced' }],
       exp: '£5,000 × 2% = £100 discount, leaving £4,900 actually paid. £4,900 × 20% = £980. VAT follows the consideration actually received, so the £1,000 originally invoiced is reduced by £20.',
     },
     {
@@ -1403,6 +1432,10 @@
       type: 'numeric',
       q: 'A quarterly fuel scale charge of £402 applies. What amount is added to output tax, in pounds?',
       answer: 67, unit: '£',
+      nearMiss: [
+        { value: 402, why: 'scale-charge-added-in-full' },
+        { value: 80.4, why: 'scale-charge-treated-as-net' },
+      ],
       exp: 'The scale charge is VAT-inclusive, so the VAT is one sixth: £402 ÷ 6 = £67. It is added to output tax, increasing the VAT payable. The scale charge amounts themselves are supplied in the assessment’s reference material.',
     },
     {
@@ -1423,6 +1456,10 @@
       type: 'numeric',
       q: 'For a quarter: output tax on sales £27,400; credit notes issued carrying £900 of VAT; input tax on purchases £14,200, including £340 on client entertaining; bad debt relief £610. What is the VAT payable, in pounds?',
       answer: 12030, unit: '£',
+      nearMiss: [
+        { value: 11690, why: 'blocked-vat-left-in-the-claim' },
+        { value: 13830, why: 'adjustment-pushed-the-wrong-way' },
+      ],
       exp: 'A credit note issued reduces output tax, so £27,400 − £900 = £26,500. Input tax £14,200 − £340 blocked + £610 relief = £14,470. Payable = £26,500 − £14,470 = £12,030. The entertaining VAT comes out because it is already inside the purchases figure, and bad debt relief is added as input tax rather than deducted from output tax.',
     },
     {
@@ -1599,6 +1636,7 @@
       type: 'numeric',
       q: 'An invoice is raised for £4,000 net with a 2.5% prompt payment discount, which the customer takes. What does the customer pay in total, in pounds?',
       answer: 4680,
+      nearMiss: [{ value: 4800, why: 'discount-taken-but-vat-not-reduced' }],
       unit: '£',
       exp: '£4,000 × 2.5% = £100 discount, leaving a net of £3,900. VAT at ' + T.rates.standard.value + '% of £3,900 is £780, so £3,900 + £780 = £4,680 changes hands. Both halves move with the discount — the price and the tax on it.',
     },
@@ -1633,6 +1671,7 @@
       type: 'numeric',
       q: 'A partially exempt business has input tax of £9,000 for a quarter, of which £2,400 relates to exempt supplies — 26% of the total. How much input tax may it recover, in pounds?',
       answer: 6600,
+      nearMiss: [{ value: 9000, why: 'de-minimis-allowed-on-one-limb' }],
       unit: '£',
       exp: '£2,400 ÷ 3 = £800 a month, above the £' + T.partialExemption.deMinimisPerMonth.value + ' monthly limit, so the amount limb fails. De minimis needs BOTH limbs, so passing the ' + T.partialExemption.inputTaxProportion.value + '% proportion test at 26% does not save it: the exempt input tax is irrecoverable and £9,000 − £2,400 = £6,600 is recovered.',
     },
@@ -1668,6 +1707,7 @@
       type: 'numeric',
       q: 'A customer owed £9,600 including VAT at the standard rate, paid £3,600 of it, and the rest was written off more than six months after the due date. How much bad debt relief may be claimed, in pounds?',
       answer: 1000,
+      nearMiss: [{ value: 1920, why: 'vat-rate-applied-to-a-gross-figure' }],
       unit: '£',
       exp: '£9,600 − £3,600 = £6,000 still unpaid, and £6,000 ÷ 6 = £1,000. Relief is given on what was NOT received, so a part payment reduces the claim — claiming on the whole £9,600 would recover £1,600 of VAT on money that did arrive.',
     },
@@ -1702,6 +1742,7 @@
       type: 'numeric',
       q: 'A business supplies domestic fuel for a net £5,800 at the reduced rate. What is the total including VAT, in pounds?',
       answer: 6090,
+      nearMiss: [{ value: 6960, why: 'reduced-rate-supply-taxed-at-the-standard-rate' }],
       unit: '£',
       exp: '£5,800 × ' + T.rates.reduced.value + '% = £290 of VAT, so the total is £5,800 + £290 = £6,090. Applying the standard rate instead would give £6,960 — an overcharge of £870 on a supply that is taxable, but not at 20%.',
     },
@@ -1710,6 +1751,7 @@
       type: 'numeric',
       q: 'A supply is made for £13,536 including VAT at the standard rate. What is the VAT, in pounds?',
       answer: 2256,
+      nearMiss: [{ value: 2707.2, why: 'vat-rate-applied-to-a-gross-figure' }],
       unit: '£',
       exp: '£13,536 ÷ 6 = £2,256, because at ' + T.rates.standard.value + '% the VAT is one sixth of the gross. The net is £11,280 — and dividing by 5 instead of 6 would give £2,707.20, which is the VAT on a NET figure of £13,536.',
     },
@@ -1718,6 +1760,7 @@
       type: 'numeric',
       q: 'A supply is made for £6,930 including VAT at the reduced rate. What is the net amount, in pounds?',
       answer: 6600,
+      nearMiss: [{ value: 5775, why: 'reduced-rate-supply-taxed-at-the-standard-rate' }],
       unit: '£',
       exp: '£6,930 ÷ 1.05 = £6,600, so the VAT is £330 — one twenty-first of the gross. The gross multiplier changes with the rate, and using the standard-rate divisor here would understate the net by several hundred pounds.',
     },
@@ -1726,6 +1769,7 @@
       type: 'numeric',
       q: 'For a quarter: output tax £42,800; credit notes issued carrying £1,400 of VAT; input tax £26,300; credit notes received carrying £900 of VAT. What is payable to HMRC, in pounds?',
       answer: 16000,
+      nearMiss: [{ value: 14200, why: 'adjustment-pushed-the-wrong-way' }],
       unit: '£',
       exp: 'Output tax net of credit notes issued is £42,800 − £1,400 = £41,400. Input tax net of credit notes received is £26,300 − £900 = £25,400. £41,400 − £25,400 = £16,000. A credit note received reduces recoverable input tax, so it increases what is payable.',
     },
@@ -1742,6 +1786,10 @@
       type: 'numeric',
       q: 'Output tax before adjustments is £22,750. A fuel scale charge of £288 applies and bad debt relief of £1,140 is claimed. What is the adjusted output tax, in pounds?',
       answer: 22798,
+      nearMiss: [
+        { value: 23038, why: 'scale-charge-added-in-full' },
+        { value: 21658, why: 'adjustment-pushed-the-wrong-way' },
+      ],
       unit: '£',
       exp: 'The scale charge is a VAT-inclusive figure, so what it adds is one sixth of it: £288 ÷ 6 = £48. £22,750 + £48 = £22,798. Bad debt relief is claimed as input tax and does not touch output tax at all — which is why it is given here. Adding the whole £288 would give £23,038, which is the trap this question is built on.',
     },
@@ -1763,6 +1811,7 @@
       type: 'numeric',
       q: 'A business imports goods with a customs value of £34,500 and accounts for the import VAT under postponed accounting. What amount is declared in Box 1, in pounds?',
       answer: 6900,
+      nearMiss: [{ value: 5750, why: 'gross-fraction-used-on-a-net-figure' }],
       unit: '£',
       exp: '£34,500 × ' + T.rates.standard.value + '% = £6,900. Under postponed accounting the same £6,900 is recovered in Box 4 where the business is fully taxable, so the return nets to nil on the import while the cash never leaves the business.',
     },
@@ -1784,6 +1833,7 @@
       type: 'numeric',
       q: 'An invoice has two lines: £2,400 net at the standard rate and £900 net at the reduced rate. What is the total VAT, in pounds?',
       answer: 525,
+      nearMiss: [{ value: 660, why: 'one-rate-applied-across-a-mixed-invoice' }],
       unit: '£',
       exp: '£2,400 × ' + T.rates.standard.value + '% = £480 and £900 × ' + T.rates.reduced.value + '% = £45, giving £525. Each line carries its own rate; applying one rate to the combined £3,300 would give £660 and overstate the VAT by £135.',
     },
@@ -2127,6 +2177,10 @@
       type: 'numeric',
       q: 'A business has output tax of £19,450, input tax of £11,280 of which £340 is blocked, and issues credit notes carrying £610 of VAT. How much VAT is payable to HMRC, in pounds?',
       answer: 7900, unit: '£',
+      nearMiss: [
+        { value: 7560, why: 'blocked-vat-left-in-the-claim' },
+        { value: 9120, why: 'adjustment-pushed-the-wrong-way' },
+      ],
       exp: 'Output tax net of the credit notes is £19,450 − £610 = £18,840. Recoverable input tax is £11,280 − £340 = £10,940. £18,840 − £10,940 = £7,900. Credit notes reduce output tax rather than increasing input tax, and blocked VAT never enters Box 4 at all — treating either the wrong way round changes the answer without changing the arithmetic.',
     },
     {
@@ -2160,6 +2214,7 @@
       type: 'numeric',
       q: 'A supply is made for £1,000.75 including VAT at the standard rate. What is the VAT, rounded down to the nearest penny, in pounds and pence?',
       answer: 166.79, unit: '£',
+      nearMiss: [{ value: 200.15, why: 'vat-rate-applied-to-a-gross-figure' }],
       exp: '£1,000.75 ÷ 6 = £166.7916…, which rounds down to £166.79. The VAT fraction at the standard rate is one sixth of the gross, because the gross is 120% of the net. Rounding runs DOWN, in the taxpayer’s favour — rounding to nearest would have given £166.79 here too, but on a figure ending .795 the two rules part company.',
     },
     {
@@ -2167,6 +2222,7 @@
       type: 'numeric',
       q: 'An invoice is raised for £8,000 net with a 4% prompt payment discount, which the customer takes. What VAT is ultimately due on the supply, in pounds?',
       answer: 1536, unit: '£',
+      nearMiss: [{ value: 1600, why: 'discount-taken-but-vat-not-reduced' }],
       exp: 'VAT follows the amount actually received. The discounted net is £8,000 − £320 = £7,680, and £7,680 × 20% = £1,536. Charging VAT on the full £8,000 would give £1,600, which is what the supplier would have accounted for had the customer not taken the discount — the point of the rule is that the outcome is not known when the invoice is raised.',
     },
     {
@@ -2187,6 +2243,7 @@
       type: 'numeric',
       q: 'A customer is invoiced £6,400 net with a 1.5% prompt payment discount and does NOT take it, paying in full. How much VAT is due, in pounds?',
       answer: 1280, unit: '£',
+      nearMiss: [{ value: 1260.8, why: 'discount-refused-but-vat-reduced' }],
       exp: '£6,400 × 20% = £1,280. The discount was offered and refused, so VAT follows the amount actually received — the full net figure. The 1.5% is in the question to be ignored: applying it would give £1,260.80 on a discount the customer never took.',
     },
     {
@@ -2231,6 +2288,10 @@
       type: 'numeric',
       q: 'A business makes standard-rated supplies of £120,000, zero-rated supplies of £40,000 and exempt supplies of £30,000 in a year. What is its taxable turnover?',
       answer: 160000, unit: '£',
+      nearMiss: [
+        { value: 190000, why: 'exempt-in-taxable-turnover' },
+        { value: 120000, why: 'zero-rated-left-out-of-taxable-turnover' },
+      ],
       exp: 'Taxable turnover is standard-rated plus reduced-rated plus zero-rated: £120,000 + £40,000 = £160,000. Exempt supplies are excluded, which rules out £190,000. Excluding the zero-rated supplies as well would give £120,000 and is the more damaging error, since it understates turnover against the registration threshold.',
     },
     {
@@ -2238,6 +2299,7 @@
       type: 'numeric',
       q: 'A partially exempt business has total input tax of £8,400 for a quarter, of which £1,500 relates to exempt supplies. How much input tax may it recover, in pounds?',
       answer: 8400, unit: '£',
+      nearMiss: [{ value: 6900, why: 'de-minimis-restriction-applied-anyway' }],
       exp: '£1,500 ÷ 3 = £500 a month, which is at or under the ' + money(T.partialExemption.deMinimisPerMonth.value) + ' monthly limit, and £1,500 is 17.9% of £8,400, comfortably under the ' + T.partialExemption.inputTaxProportion.value + '% proportion limit. Both limbs are satisfied, so the business is de minimis and recovers ALL of its input tax — £8,400, including the exempt-related part. Answering £6,900 misses the point of the de minimis rules.',
     },
     {
@@ -2245,6 +2307,7 @@
       type: 'numeric',
       q: 'A partially exempt business has total input tax of £4,000 for a quarter, of which £2,200 relates to exempt supplies. How much input tax may it recover, in pounds?',
       answer: 1800, unit: '£',
+      nearMiss: [{ value: 4000, why: 'de-minimis-allowed-on-one-limb' }],
       exp: '£2,200 spread over three months averages more than ' + money(T.partialExemption.deMinimisPerMonth.value) + ' a month, so the amount limb fails, and £2,200 is 55% of £4,000, above the ' + T.partialExemption.inputTaxProportion.value + '% limit. BOTH limbs fail here, so there is no room for argument: the exempt input tax is irrecoverable and £4,000 − £2,200 = £1,800 is recovered.',
     },
     {
@@ -2324,6 +2387,10 @@
       type: 'numeric',
       q: 'Purchase invoices for a quarter carry £14,600 of input tax. This includes £310 on entertaining UK customers, £180 on a staff party and £940 on a car available for private use. How much input tax may be recovered, in pounds?',
       answer: 13350, unit: '£',
+      nearMiss: [
+        { value: 14600, why: 'blocked-vat-left-in-the-claim' },
+        { value: 13170, why: 'recoverable-vat-treated-as-blocked' },
+      ],
       exp: 'UK customer entertaining and the car are both blocked: £310 + £940 = £1,250 comes out. The staff party is recoverable and stays in. £14,600 − £1,250 = £13,350. Removing the staff party as well would give £13,170, which is the error of treating all entertaining alike.',
     },
     {
@@ -2331,6 +2398,10 @@
       type: 'numeric',
       q: 'A quarterly fuel scale charge of £486 applies to a company car. What amount is added to output tax, in pounds?',
       answer: 81, unit: '£',
+      nearMiss: [
+        { value: 486, why: 'scale-charge-added-in-full' },
+        { value: 97.2, why: 'scale-charge-treated-as-net' },
+      ],
       exp: 'The scale charge is a VAT-INCLUSIVE figure, so the VAT is one sixth: £486 ÷ 6 = £81, added to output tax. Treating the charge as a net figure and taking 20% would give £97.20, and treating the whole £486 as the VAT would be wilder still. The scale charge amounts are supplied in the assessment.',
     },
     {
@@ -2364,6 +2435,7 @@
       type: 'numeric',
       q: 'A business writes off a debt of £7,560 including VAT at the standard rate, more than six months overdue. How much bad debt relief may it claim, in pounds?',
       answer: 1260, unit: '£',
+      nearMiss: [{ value: 1512, why: 'vat-rate-applied-to-a-gross-figure' }],
       exp: '£7,560 ÷ 6 = £1,260, the VAT element of the written-off debt. It is claimed as INPUT TAX in Box 4 rather than as a reduction of output tax in Box 1 — the amount is the same either way, but the boxes are not, and a return that puts it in the wrong one misstates both Box 1 and Box 4.',
     },
     {
@@ -2396,6 +2468,7 @@
       type: 'numeric',
       q: 'A fully taxable business imports goods with a customs value of £52,000 and uses postponed VAT accounting. What is the net effect on the VAT payable for the period, in pounds?',
       answer: 0, unit: '£',
+      nearMiss: [{ value: 10400, why: 'declared-without-the-matching-recovery' }],
       exp: '£52,000 × 20% = £10,400 goes into Box 1 as output tax and the same £10,400 into Box 4 as input tax, so the net effect is £0. That is the whole point of postponing: the VAT is declared and recovered on the same return instead of being paid at the border and reclaimed later. For a business whose recovery is restricted, the two figures no longer cancel and a real cost appears.',
     },
     {
@@ -2415,6 +2488,7 @@
       type: 'numeric',
       q: 'An invoice has three lines: £3,200 net at the standard rate, £1,400 net at the reduced rate and £900 of zero-rated goods. What is the total VAT, in pounds?',
       answer: 710, unit: '£',
+      nearMiss: [{ value: 1100, why: 'one-rate-applied-across-a-mixed-invoice' }],
       exp: '£3,200 × 20% = £640 and £1,400 × 5% = £70, giving £640 + £70 = £710. The zero-rated line carries no VAT but is still part of the net total, so it belongs in Box 6 with everything else. Applying one blended rate to the whole £5,500 is the error the mixed invoice is designed to catch.',
     },
     {
@@ -2422,6 +2496,7 @@
       type: 'numeric',
       q: 'A business supplies installation of energy-saving materials in a home for a net £12,600 at the reduced rate. What is the total including VAT, in pounds?',
       answer: 13230, unit: '£',
+      nearMiss: [{ value: 15120, why: 'reduced-rate-supply-taxed-at-the-standard-rate' }],
       exp: '£12,600 × 1.05 = £13,230. At the reduced rate the gross is 105% of the net, so the multiplier is 1.05 rather than the 1.2 used at the standard rate — applying 1.2 here would give £15,120 and overstate the customer’s bill by £1,890.',
     },
     {
@@ -2442,6 +2517,7 @@
       type: 'numeric',
       q: 'A supply is made for £20,952 including VAT at the standard rate. What is the net amount, in pounds?',
       answer: 17460, unit: '£',
+      nearMiss: [{ value: 16761.6, why: 'vat-rate-applied-to-a-gross-figure' }],
       exp: '£20,952 ÷ 1.2 = £17,460. As a check, the VAT is £20,952 ÷ 6 = £3,492, and £17,460 + £3,492 = £20,952. Taking 20% off the gross instead would give £16,761.60, which is the classic error: 20% of the gross is not the same as 20% of the net.',
     },
     {
@@ -2449,6 +2525,7 @@
       type: 'numeric',
       q: 'A supply is made for £4,830 including VAT at the reduced rate. What is the VAT, in pounds?',
       answer: 230, unit: '£',
+      nearMiss: [{ value: 805, why: 'reduced-rate-supply-taxed-at-the-standard-rate' }],
       exp: '£4,830 ÷ 21 = £230. Checking backwards, the net is £4,830 − £230 = £4,600 and £4,600 × 5% = £230. Using the standard-rate fraction of one sixth would give £805, which is more than three times the right figure — the fraction has to match the rate on the supply.',
     },
     {
@@ -2469,6 +2546,10 @@
       type: 'numeric',
       q: 'For a quarter: output tax £38,900; a fuel scale charge adding £96; input tax £21,400 of which £700 is blocked; bad debt relief of £540. What is the VAT payable to HMRC, in pounds?',
       answer: 17756, unit: '£',
+      nearMiss: [
+        { value: 17056, why: 'blocked-vat-left-in-the-claim' },
+        { value: 18836, why: 'adjustment-pushed-the-wrong-way' },
+      ],
       exp: 'Output tax is £38,900 + £96 = £38,996, because the scale charge adds to output tax. Recoverable input tax is £21,400 − £700 + £540 = £21,240, since blocked VAT comes out and bad debt relief goes in. £38,996 − £21,240 = £17,756. Each of the four adjustments moves one side only: put the scale charge into input tax or the bad debt relief into output tax and the return still balances internally while being wrong by twice the adjustment.',
     },
     {
@@ -2476,6 +2557,7 @@
       type: 'numeric',
       q: 'For a quarter: output tax £14,200; input tax £19,850 of which £430 is blocked. What is the position with HMRC, in pounds?',
       answer: 5220, unit: '£',
+      nearMiss: [{ value: 5650, why: 'blocked-vat-left-in-the-claim' }],
       exp: 'Blocked VAT never enters Box 4, so recoverable input tax is £19,850 − £430 = £19,420. £19,420 − £14,200 = £5,220 repayable BY HMRC, because input tax exceeds output tax. The figure goes in Box 5 exactly as a payable one would — the box does not carry a sign, and it is the direction of the difference that tells the business which way the money moves.',
     },
     {
@@ -2495,6 +2577,10 @@
       type: 'numeric',
       q: 'Output tax before adjustments is £26,400. A fuel scale charge of £522 applies, and a credit note is issued carrying £780 of VAT. What is the adjusted output tax, in pounds?',
       answer: 25707, unit: '£',
+      nearMiss: [
+        { value: 26142, why: 'scale-charge-added-in-full' },
+        { value: 27267, why: 'adjustment-pushed-the-wrong-way' },
+      ],
       exp: 'The scale charge is VAT-inclusive, so the VAT it adds is £522 ÷ 6 = £87. The credit note issued comes off output tax rather than going into input tax, so output tax becomes £26,400 + £87 − £780 = £25,707. Adding the full £522 rather than its VAT element would give £26,142 — the scale charge figure is never itself the adjustment.',
     },
     {
@@ -2528,6 +2614,7 @@
       type: 'numeric',
       q: 'A UK business receives services from an overseas supplier valued at £16,500 and applies the reverse charge. It is fully taxable. What is the net effect on the VAT payable for the period, in pounds?',
       answer: 0, unit: '£',
+      nearMiss: [{ value: 3300, why: 'declared-without-the-matching-recovery' }],
       exp: '£16,500 × 20% = £3,300 is added to output tax in Box 1 and the same £3,300 recovered as input tax in Box 4, so the net effect is £0. The value also goes into Box 6 and Box 7. The mechanism is designed to be neutral for a fully taxable business — its purpose is to stop overseas suppliers having an advantage, not to raise tax from the customer.',
     },
     {
@@ -2549,6 +2636,7 @@
       type: 'numeric',
       q: 'A business finds it under-declared output tax by £11,800 and over-declared output tax by £3,100 in earlier periods. What is the net error, in pounds?',
       answer: 8700, unit: '£',
+      nearMiss: [{ value: 14900, why: 'error-pushed-the-wrong-way-when-netting' }],
       exp: '£11,800 owed to HMRC less £3,100 owed to the business = £8,700 net. That is below the ' + money(T.errorCorrection.netErrorLimit.value) + ' limit, so it may be corrected on the next return — even though the larger of the two errors was above it.',
     },
     {
@@ -2581,6 +2669,7 @@
       type: 'numeric',
       q: 'A purchase invoice for £8,400 including standard-rate VAT was omitted from a previous return. By how much does correcting it change the VAT payable, in pounds?',
       answer: 1400, unit: '£',
+      nearMiss: [{ value: 1680, why: 'vat-rate-applied-to-a-gross-figure' }],
       exp: '£8,400 ÷ 6 = £1,400 of input tax never reclaimed. Input tax was under-claimed, so the correction REDUCES the VAT payable by £1,400. A missed sales invoice of the same value would move it the other way.',
     },
     {
@@ -2638,6 +2727,10 @@
       type: 'numeric',
       q: 'A VAT control account shows a credit balance of £21,300. A fuel scale charge adding £96 of output tax was included in the return but never posted, and bad debt relief of £740 was claimed on the return but not posted. What should Box 5 show, in pounds?',
       answer: 20656, unit: '£',
+      nearMiss: [
+        { value: 21944, why: 'adjustment-pushed-the-wrong-way' },
+        { value: 21300, why: 'adjustment-never-brought-in' },
+      ],
       exp: '£21,300 + £96 − £740 = £20,656. The fuel scale charge is additional output tax and raises the liability; bad debt relief is claimed as input tax and reduces it. Both were on the return but not in the ledger.',
     },
     {
@@ -2697,6 +2790,7 @@
       type: 'numeric',
       q: 'A business finds a net error of £26,000. Its Box 6 figure for the period of discovery is £3,100,000. What is the reporting threshold for this business, in pounds?',
       answer: 31000,
+      nearMiss: [{ value: 10000, why: 'error-threshold-floor-and-percentage-confused' }],
       unit: '£',
       exp: '1% of £3,100,000 = £31,000, which is above the ' + money(T.errorCorrection.netErrorLimit.value) + ' floor and below the ' + money(T.errorCorrection.absoluteCeiling.value) + ' ceiling, so it is the threshold that applies. The £26,000 error falls under it and may go on the next return.',
     },
@@ -2739,6 +2833,7 @@
       type: 'numeric',
       q: 'A business under-declared output tax by £7,400, over-declared output tax by £2,150 and over-claimed input tax by £1,900 in earlier periods. What is the net error, in pounds?',
       answer: 7150,
+      nearMiss: [{ value: 3350, why: 'error-pushed-the-wrong-way-when-netting' }],
       unit: '£',
       exp: '£7,400 − £2,150 + £1,900 = £7,150 owed to HMRC. Over-claimed input tax pulls the same way as under-declared output tax: both left HMRC short, so they add rather than cancel. Only an over-declaration of output tax reduces the net error.',
     },
@@ -2747,6 +2842,7 @@
       type: 'numeric',
       q: 'A sales invoice for £18,600 including VAT at the standard rate was omitted from an earlier return. By how much was output tax under-declared, in pounds?',
       answer: 3100,
+      nearMiss: [{ value: 3720, why: 'vat-rate-applied-to-a-gross-figure' }],
       unit: '£',
       exp: '£18,600 ÷ 6 = £3,100 of VAT on a net £15,500. Only the VAT is the error for these purposes — the £15,500 affects Box 6, but the under-declaration that is measured against the threshold is the tax.',
     },
@@ -2879,6 +2975,10 @@
       type: 'numeric',
       q: 'A VAT control account shows a credit balance of £16,400. A fuel scale charge adding £240 of output tax has not been posted and blocked input tax of £860 was wrongly recovered. What should the balance be, in pounds?',
       answer: 17500,
+      nearMiss: [
+        { value: 15300, why: 'adjustment-pushed-the-wrong-way' },
+        { value: 16400, why: 'adjustment-never-brought-in' },
+      ],
       unit: '£',
       exp: '£16,400 + £240 + £860 = £17,500. Both adjustments increase what is owed: the scale charge adds output tax, and reversing blocked input tax that should never have been claimed removes a deduction.',
     },
@@ -2950,6 +3050,7 @@
       type: 'numeric',
       q: 'A business under-declared output tax by £5,900, over-declared output tax by £1,400 and under-claimed input tax by £800. What is the net error, in pounds?',
       answer: 3700, unit: '£',
+      nearMiss: [{ value: 5300, why: 'error-pushed-the-wrong-way-when-netting' }],
       exp: 'Under-declared output tax increases what is owed; over-declared output tax and under-claimed input tax both reduce it. £5,900 − £1,400 − £800 = £3,700 owed to HMRC. Netting is the whole point: three errors of £8,100 in total become one correction of £3,700, and it is the NET figure that is tested against the reporting threshold.',
     },
     {
@@ -2957,6 +3058,7 @@
       type: 'numeric',
       q: 'A business has a Box 6 figure of £1,600,000 for the period of discovery. What is its error reporting threshold, in pounds?',
       answer: 16000, unit: '£',
+      nearMiss: [{ value: 10000, why: 'error-threshold-floor-and-percentage-confused' }],
       exp: 'The threshold is the GREATER of the basic limit and ' + T.errorCorrection.turnoverPercentage.value + '% of Box 6, capped at the absolute ceiling. £1,600,000 × 1% = £16,000, which is above the basic limit and below the ceiling, so £16,000 is the threshold. A business with a small Box 6 falls back on the basic limit; one with a very large Box 6 is stopped by the ceiling.',
     },
     {
@@ -2964,6 +3066,7 @@
       type: 'numeric',
       q: 'A business has a Box 6 figure of £700,000 for the period of discovery. What is its error reporting threshold, in pounds?',
       answer: 10000, unit: '£',
+      nearMiss: [{ value: 7000, why: 'error-threshold-floor-and-percentage-confused' }],
       exp: '1% of £700,000 is £7,000, which is BELOW the basic limit — so the basic limit applies and the threshold is ' + money(T.errorCorrection.netErrorLimit.value) + '. The turnover percentage only helps a business big enough for it to exceed the floor. Taking the percentage in every case, without asking which is greater, halves the threshold here and forces a separate notification that is not required.',
     },
     {
@@ -3058,6 +3161,7 @@
       type: 'numeric',
       q: 'A sales invoice for £13,140 including VAT at the standard rate was omitted from an earlier return. By how much is output tax under-declared, in pounds?',
       answer: 2190, unit: '£',
+      nearMiss: [{ value: 2628, why: 'vat-rate-applied-to-a-gross-figure' }],
       exp: '£13,140 ÷ 6 = £2,190. The invoice was gross, so the VAT is one sixth rather than a fifth: taking 20% of £13,140 would give £2,628 and overstate the correction by £438. Only the VAT is the error — the £10,950 net belongs in Box 6 of the earlier period but has no effect on the tax.',
     },
     {
@@ -3065,6 +3169,7 @@
       type: 'numeric',
       q: 'A purchase invoice for £5,076 including standard-rate VAT was omitted from a previous return, and a sales credit note carrying £310 of VAT was also omitted. What is the net error, in pounds?',
       answer: 1156, unit: '£',
+      nearMiss: [{ value: 536, why: 'error-pushed-the-wrong-way-when-netting' }],
       exp: 'The missed purchase means input tax was under-claimed by £5,076 ÷ 6 = £846. The missed credit note means output tax was over-declared by £310. Both errors favour HMRC, so they add together: £846 + £310 = £1,156 owed BACK to the business. Netting does not mean the two always offset — here they point the same way.',
     },
     {
@@ -3085,6 +3190,7 @@
       type: 'numeric',
       q: 'A return before adjustment shows output tax of £29,400 and input tax of £18,200. A net under-declaration of £3,150 from an earlier period is corrected on it. What is the VAT payable, in pounds?',
       answer: 14350, unit: '£',
+      nearMiss: [{ value: 8050, why: 'adjustment-pushed-the-wrong-way' }],
       exp: '£29,400 − £18,200 = £11,200 before the correction, and £11,200 + £3,150 = £14,350 after it. An under-declaration means VAT was not paid when it should have been, so correcting it increases the current period’s liability. The cash effect lands entirely in this period even though the error belongs to another.',
     },
     {
@@ -3130,6 +3236,7 @@
       type: 'numeric',
       q: 'Box 1 is £52,300, Box 2 is nil, Box 4 is £31,940 and bad debt relief of £1,260 has not yet been included. What figure goes in Box 5, in pounds?',
       answer: 19100, unit: '£',
+      nearMiss: [{ value: 20360, why: 'adjustment-never-brought-in' }],
       exp: 'Bad debt relief is claimed as input tax, so Box 4 becomes £31,940 + £1,260 = £33,200. Box 3 is £52,300 and Box 5 is £52,300 − £33,200 = £19,100. Deducting the relief from Box 1 instead would give the same £19,100 here by coincidence of arithmetic, but it would misstate two boxes on the face of the return.',
     },
     {
@@ -3296,6 +3403,7 @@
       type: 'numeric',
       q: 'A wholly standard-rated trader has Box 6 of £268,000. What would you expect Box 1 to be, in pounds?',
       answer: 53600, unit: '£',
+      nearMiss: [{ value: 44666.67, why: 'gross-fraction-used-on-a-net-figure' }],
       exp: '£268,000 × 20% = £53,600. Box 6 is a NET figure, so the expected output tax is a fifth of it rather than a sixth — using the gross fraction would give £44,666.67 and wrongly suggest the return understated the tax. The check is an expectation, not a rule: a genuine mix of rates moves the answer.',
     },
     {
@@ -3328,6 +3436,10 @@
       type: 'numeric',
       q: 'A VAT control account shows a credit balance of £18,700. Bad debt relief of £460 has been claimed on the return but not yet posted to the control account. What should the return show as payable, in pounds?',
       answer: 18240, unit: '£',
+      nearMiss: [
+        { value: 18700, why: 'adjustment-never-brought-in' },
+        { value: 19160, why: 'adjustment-pushed-the-wrong-way' },
+      ],
       exp: '£18,700 − £460 = £18,240. Bad debt relief increases input tax, which reduces the amount owed, so the return is lower than the unadjusted control account. The reconciliation is only complete when the posting is made as well — an explained difference that is never cleared reappears next quarter looking like a new one.',
     },
     {
@@ -3335,6 +3447,10 @@
       type: 'numeric',
       q: 'A VAT control account shows a credit balance of £12,850. A fuel scale charge adding £78 of output tax has been included on the return but not posted. What should the return show as payable, in pounds?',
       answer: 12928, unit: '£',
+      nearMiss: [
+        { value: 12850, why: 'adjustment-never-brought-in' },
+        { value: 12772, why: 'adjustment-pushed-the-wrong-way' },
+      ],
       exp: '£12,850 + £78 = £12,928. The scale charge increases output tax and so increases the amount payable — the opposite direction from bad debt relief, which is why the two make a useful pair. Getting the direction wrong here gives £12,772 and a difference of twice the adjustment.',
     },
     {
@@ -3381,6 +3497,7 @@
       type: 'numeric',
       q: 'An employee has gross pay of £3,450 and contributes 6% of gross to a pension under a net pay arrangement. What is the taxable gross pay, in pounds?',
       answer: 3243, unit: '£',
+      nearMiss: [{ value: 3450, why: 'net-pay-arrangement-pension-mishandled' }],
       exp: '£3,450 × 6% = £207. £3,450 − £207 = £3,243. Only deductions made before tax is calculated reduce taxable gross pay — Income Tax, National Insurance and student loan repayments do not.',
     },
     {
@@ -3388,6 +3505,10 @@
       type: 'numeric',
       q: 'Gross pay is £2,880. Deductions are pension £144 (pre-tax), Income Tax £389, National Insurance £212, and a season ticket loan repayment of £75. What is the net pay, in pounds?',
       answer: 2060, unit: '£',
+      nearMiss: [
+        { value: 1916, why: 'net-pay-arrangement-pension-mishandled' },
+        { value: 2135, why: 'post-tax-deduction-left-out-of-net-pay' },
+      ],
       exp: '£2,880 − £144 − £389 − £212 − £75 = £2,060. Net pay is gross less every deduction, before or after tax. The pension comes off once — deducting it a second time is the classic error in this calculation.',
     },
     {
@@ -3395,6 +3516,7 @@
       type: 'numeric',
       q: 'A payroll shows PAYE £6,150, employee NI £2,780, employer NI £3,420, student loan repayments £185, and employee pension contributions £1,600. How much is due to HMRC, in pounds?',
       answer: 12535, unit: '£',
+      nearMiss: [{ value: 9115, why: 'employer-national-insurance-left-out' }],
       exp: '£6,150 + £2,780 + £3,420 + £185 = £12,535. Employer’s NI is included even though it never appears as a payslip deduction. The pension contributions go to the pension provider and are excluded.',
     },
     {
@@ -3525,6 +3647,7 @@
       type: 'numeric',
       q: 'A payroll shows PAYE £7,240, employee National Insurance £3,110, employer’s National Insurance £3,580 and a student loan deduction of £290. What is due to HMRC, in pounds?',
       answer: 14220,
+      nearMiss: [{ value: 10640, why: 'employer-national-insurance-left-out' }],
       unit: '£',
       exp: '£7,240 + £3,110 + £3,580 + £290 = £14,220. Everything owed to HMRC goes in, from whichever side it arose — the employee’s deductions and the employer’s own contribution are paid over together.',
     },
@@ -3533,6 +3656,10 @@
       type: 'numeric',
       q: 'An employee’s net pay is £3,011. The deductions were a pension of £246 under a net pay arrangement, income tax of £562 and National Insurance of £281. What was gross pay, in pounds?',
       answer: 4100,
+      nearMiss: [
+        { value: 1922, why: 'reconciled-to-gross-by-subtracting' },
+        { value: 3854, why: 'net-pay-arrangement-pension-mishandled' },
+      ],
       unit: '£',
       exp: '£3,011 + £246 + £562 + £281 = £4,100. Reconciling upwards is the check that the payslip hangs together: every deduction added back to net pay has to arrive at the gross figure, and a difference means one of them is wrong or missing.',
     },
@@ -3775,6 +3902,7 @@
       type: 'numeric',
       q: 'An employee has gross pay of £4,100 and pays 5% of gross into a pension under a net pay arrangement. What is the taxable gross pay, in pounds?',
       answer: 3895, unit: '£',
+      nearMiss: [{ value: 4100, why: 'net-pay-arrangement-pension-mishandled' }],
       exp: '£4,100 × 5% = £205, and £4,100 − £205 = £3,895. A net pay arrangement takes the pension contribution BEFORE tax, so it reduces the figure the tax code is applied to. National Insurance is a different matter — it is calculated on gross pay, and the pension does not reduce it.',
     },
     {
@@ -3795,6 +3923,7 @@
       type: 'numeric',
       q: 'Gross pay is £3,600. Deductions are a net pay arrangement pension of £180, Income Tax of £452, National Insurance of £248 and a union subscription of £16. What is the net pay, in pounds?',
       answer: 2704, unit: '£',
+      nearMiss: [{ value: 2720, why: 'post-tax-deduction-left-out-of-net-pay' }],
       exp: '£3,600 − £180 − £452 − £248 − £16 = £2,704. Every deduction comes off to reach net pay, whatever its character — the pre-tax and post-tax distinction affects what is TAXED, not what is received. Taxable gross pay here was £3,600 − £180 = £3,420, which is the figure the tax of £452 was worked out from.',
     },
     {
@@ -3890,6 +4019,7 @@
       type: 'numeric',
       q: 'For a month an employer owes PAYE of £11,400, employee National Insurance of £5,260 and employer’s National Insurance of £6,050. It has £1,900 of Employment Allowance left to use. How much must it pay HMRC, in pounds?',
       answer: 20810, unit: '£',
+      nearMiss: [{ value: 22710, why: 'employment-allowance-not-applied' }],
       exp: '£11,400 + £5,260 + £6,050 = £22,710 before the allowance, and £22,710 − £1,900 = £20,810. The Employment Allowance reduces EMPLOYER’s National Insurance only, so it is deducted from the total after all three are added — it never reduces the PAYE or the employee’s National Insurance, which are the employee’s money being passed on.',
     },
     {
@@ -3897,6 +4027,7 @@
       type: 'numeric',
       q: 'An employee works 148 hours at £14.50 an hour and 12 hours of overtime at double time. What is the gross pay, in pounds?',
       answer: 2494, unit: '£',
+      nearMiss: [{ value: 2320, why: 'overtime-paid-at-the-basic-rate' }],
       exp: '148 × £14.50 = £2,146 of basic pay. Overtime at double time is £14.50 × 2 = £29 an hour, so 12 × £29 = £348. £2,146 + £348 = £2,494. Paying the overtime at the basic rate would give £2,320, and treating "double time" as an extra payment on top of normal pay for those hours would double-count the basic element.',
     },
     {
@@ -3904,6 +4035,7 @@
       type: 'numeric',
       q: 'A payroll shows PAYE of £8,900, employee National Insurance of £4,050, employer’s National Insurance of £4,660 and student loan repayments of £520. How much is due to HMRC, in pounds?',
       answer: 18130, unit: '£',
+      nearMiss: [{ value: 13470, why: 'employer-national-insurance-left-out' }],
       exp: '£8,900 + £4,050 + £4,660 + £520 = £18,130. All four reach HMRC through the same monthly payment, including the student loan repayments — which HMRC passes on rather than the employer sending them anywhere else. The employer’s own National Insurance is a cost of employing rather than a deduction, but it is still paid over with everything else.',
     },
     {
@@ -3937,6 +4069,10 @@
       type: 'numeric',
       q: 'An employee’s net pay is £2,486. Deductions were a net pay arrangement pension of £190, Income Tax of £398 and National Insurance of £226. What was the gross pay, in pounds?',
       answer: 3300, unit: '£',
+      nearMiss: [
+        { value: 1672, why: 'reconciled-to-gross-by-subtracting' },
+        { value: 3110, why: 'net-pay-arrangement-pension-mishandled' },
+      ],
       exp: 'Reconciling backwards, gross pay is net pay plus every deduction: £2,486 + £190 + £398 + £226 = £3,300. The taxable gross pay was £3,300 − £190 = £3,110, since the pension came off before tax. Reconciliation in this direction is the check that a payslip hangs together, and it is why net pay alone is never enough to verify a payroll.',
     },
     {
@@ -4052,6 +4188,7 @@
       type: 'numeric',
       q: 'An employer’s Full Payment Submissions for a tax month total: PAYE £6,700, employee National Insurance £3,180, employer’s National Insurance £3,640. An Employer Payment Summary reports £940 of statutory pay recovered. How much must reach HMRC, in pounds?',
       answer: 12580, unit: '£',
+      nearMiss: [{ value: 13520, why: 'adjustment-never-brought-in' }],
       exp: '£6,700 + £3,180 + £3,640 = £13,520 from the FPS, less the £940 the EPS reports as recovered: £13,520 − £940 = £12,580. This is the pairing working as designed — the FPS states what was paid and the EPS states why less is owed than that implies. Ignoring the EPS overpays HMRC by £940 with nothing to show the employer why.',
     },
     /* ── Outcome 5 — reporting (10%) ───────────────────────────────────── */
@@ -4284,6 +4421,7 @@
       type: 'numeric',
       q: 'A business on annual accounting had a VAT liability of £42,000 last year and makes monthly interim payments. Its actual liability for this year is £47,400. What balancing payment is due with the annual return, in pounds?',
       answer: 9600, unit: '£',
+      nearMiss: [{ value: 15900, why: 'interim-payment-percentage-wrong' }],
       exp: 'Each interim payment is 10% of LAST year’s liability: £42,000 × 10% = £4,200. There are nine of them, at the end of months 4 to 12, so £4,200 × 9 = £37,800 is paid during the year. The balancing payment is what is left: £47,400 − £37,800 = £9,600, due with the return two months after the year end. The quarterly alternative is three payments of 25%, at the end of months 4, 7 and 10.',
     },
     {
@@ -4304,6 +4442,7 @@
       type: 'numeric',
       q: 'A business joins the flat rate scheme in its first year of VAT registration. Its sector rate is 12%. What percentage does it actually apply?',
       answer: 11, unit: '%',
+      nearMiss: [{ value: 12, why: 'flat-rate-discount-misapplied' }],
       exp: 'A 1% discount applies during the first year of VAT registration, so 12% − 1% = 11%. The discount runs until the first anniversary of registration, not the first anniversary of joining the scheme.',
     },
     {
@@ -4483,6 +4622,7 @@
       type: 'numeric',
       q: 'For the month an employer owes PAYE of £9,200, employee National Insurance of £4,100 and employer National Insurance of £6,300. It has £6,300 of Employment Allowance remaining. How much is due to HMRC, in pounds?',
       answer: 13300, unit: '£',
+      nearMiss: [{ value: 19600, why: 'employment-allowance-not-applied' }],
       exp: '£9,200 + £4,100 + £6,300 = £19,600 before the allowance. The allowance covers the employer’s National Insurance of £6,300 exactly, leaving £19,600 − £6,300 = £13,300. The PAYE and the employees’ National Insurance are not reduced by a penny of it.',
     },
     {
@@ -4535,6 +4675,7 @@
       type: 'numeric',
       q: 'Domestic fuel is supplied for a net £3,400 at the reduced rate. What is the VAT, in pounds?',
       answer: 170, unit: '£',
+      nearMiss: [{ value: 680, why: 'reduced-rate-supply-taxed-at-the-standard-rate' }],
       exp: '£3,400 × 5% = £170. The reduced rate applies to domestic fuel and power. Working forward from a net figure the rate applies directly — the one twenty-first fraction is only for extracting VAT from a gross amount.',
     },
     {
@@ -4542,6 +4683,7 @@
       type: 'numeric',
       q: 'A supply is made for £9,540 including VAT at the standard rate. What is the net value, in pounds?',
       answer: 7950, unit: '£',
+      nearMiss: [{ value: 7632, why: 'vat-rate-applied-to-a-gross-figure' }],
       exp: 'The VAT is one sixth of the gross: £9,540 ÷ 6 = £1,590. The net is £9,540 − £1,590 = £7,950. Checking backwards, £7,950 × 20% = £1,590, which confirms it.',
     },
     {
@@ -4586,6 +4728,10 @@
       type: 'numeric',
       q: 'Output tax before adjustments is £18,600. A fuel scale charge of £360 applies and a credit note carrying £540 of VAT was issued. What is the adjusted output tax, in pounds?',
       answer: 18120, unit: '£',
+      nearMiss: [
+        { value: 18420, why: 'scale-charge-added-in-full' },
+        { value: 19200, why: 'adjustment-pushed-the-wrong-way' },
+      ],
       exp: 'The scale charge is VAT-inclusive, so it adds £360 ÷ 6 = £60 of output tax. The credit note reduces output tax by £540. £18,600 + £60 − £540 = £18,120. Adding the whole £360 instead of its VAT element is the trap.',
     },
     {
@@ -4593,6 +4739,10 @@
       type: 'numeric',
       q: 'Purchase invoices carry £9,400 of input tax, including £220 on client entertaining and £180 on a van used solely for deliveries. How much input tax is recoverable, in pounds?',
       answer: 9180, unit: '£',
+      nearMiss: [
+        { value: 9400, why: 'blocked-vat-left-in-the-claim' },
+        { value: 9000, why: 'recoverable-vat-treated-as-blocked' },
+      ],
       exp: '£9,400 − £220 = £9,180. Client entertaining is blocked. The van is a commercial vehicle used only for business, so its £180 is recoverable and stays in — removing it as well would give £9,000 and is the error being tested.',
     },
     {
@@ -4600,6 +4750,7 @@
       type: 'numeric',
       q: 'A partially exempt business has total input tax of £5,400 for a quarter, of which £2,900 relates to exempt supplies. How much input tax is recoverable, in pounds?',
       answer: 2500, unit: '£',
+      nearMiss: [{ value: 5400, why: 'de-minimis-allowed-on-one-limb' }],
       exp: '£2,900 ÷ 3 = £966.67 a month, above the £' + T.partialExemption.deMinimisPerMonth.value + ' limit, so the first limb fails. It is also 53.7% of total input tax, so the second limb fails too. The exempt input tax is blocked: £5,400 − £2,900 = £2,500.',
     },
     {
@@ -4620,6 +4771,7 @@
       type: 'numeric',
       q: 'A business writes off a debt of £4,320 including VAT at the standard rate, more than six months overdue. How much bad debt relief may it claim, in pounds?',
       answer: 720, unit: '£',
+      nearMiss: [{ value: 864, why: 'vat-rate-applied-to-a-gross-figure' }],
       exp: '£4,320 ÷ 6 = £720. The relief is the VAT element of the written-off debt, and it is claimed as input tax rather than as a reduction of output tax. The debt must be at least ' + T.badDebtRelief.debtAgeMonths.value + ' months overdue and written off in the refunds for bad debts account.',
     },
     {
@@ -4640,6 +4792,10 @@
       type: 'numeric',
       q: 'Output tax £31,200; credit notes issued carrying £1,100 of VAT; input tax £16,800 including £460 blocked; bad debt relief £380. What is the VAT payable, in pounds?',
       answer: 13380, unit: '£',
+      nearMiss: [
+        { value: 12920, why: 'blocked-vat-left-in-the-claim' },
+        { value: 15580, why: 'adjustment-pushed-the-wrong-way' },
+      ],
       exp: 'Output tax £31,200 − £1,100 = £30,100, because a credit note issued cancels output tax already declared. Input tax £16,800 − £460 + £380 = £16,720: the blocked £460 is already inside the purchases figure and has to come back out, and bad debt relief is claimed as input tax. Payable = £30,100 − £16,720 = £13,380. Each of the three adjustments belongs to one side only — move the credit note into input tax or the relief into output tax and the answer is wrong by twice the adjustment.',
     },
     {
@@ -4647,6 +4803,7 @@
       type: 'numeric',
       q: 'An invoice for £7,500 net offers a 3% prompt payment discount. The customer does NOT take it and pays in full. What VAT is due, in pounds?',
       answer: 1500, unit: '£',
+      nearMiss: [{ value: 1455, why: 'discount-refused-but-vat-reduced' }],
       exp: '£7,500 × 20% = £1,500. VAT follows the consideration actually received, and the customer paid the full amount, so no adjustment arises. The discount only reduces the VAT if it is actually taken.',
     },
     {
@@ -4758,6 +4915,10 @@
       type: 'numeric',
       q: 'A VAT control account shows a credit balance of £7,900. Blocked input tax of £140 was debited to the account but correctly excluded from the return. What should Box 5 show, in pounds?',
       answer: 8040, unit: '£',
+      nearMiss: [
+        { value: 7760, why: 'adjustment-pushed-the-wrong-way' },
+        { value: 7900, why: 'adjustment-never-brought-in' },
+      ],
       exp: '£7,900 + £140 = £8,040. The blocked input tax wrongly reduced the ledger liability by £140, so reversing it raises the figure. Subtracting it instead is the classic direction error in this reconciliation.',
     },
 
@@ -4829,6 +4990,7 @@
       type: 'numeric',
       q: 'An employee works 150 hours at £13.20 and 8 hours of overtime at time and a half. What is the gross pay, in pounds?',
       answer: 2138.40, unit: '£',
+      nearMiss: [{ value: 2085.6, why: 'overtime-paid-at-the-basic-rate' }],
       exp: 'Basic: 150 × £13.20 = £1,980. Overtime: 8 × £13.20 × 1.5 = £158.40. Gross pay = £1,980 + £158.40 = £2,138.40. Overtime at time and a half means 1.5 times the basic hourly rate, not 1.5 times the hours.',
     },
     {
@@ -4876,6 +5038,7 @@
       type: 'numeric',
       q: 'A business sets aside VAT as it collects it. In a quarter it makes standard-rated sales of £240,000 excluding VAT. How much output tax should it have set aside, in pounds?',
       answer: 48000, unit: '£',
+      nearMiss: [{ value: 40000, why: 'gross-fraction-used-on-a-net-figure' }],
       exp: '£240,000 × 20% = £48,000. Setting it aside as it is collected is the practical defence against spending money that belongs to the Exchequer — the VAT sits in the current account looking exactly like the business’s own cash until the return falls due.',
     },
     {
