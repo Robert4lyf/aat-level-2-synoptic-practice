@@ -138,6 +138,62 @@ ok(covered >= 25,
   `only ${covered} of the declared abbreviations were found in the material, so most of this file ` +
   'checked nothing');
 
+/* ── A card never discusses figures the reader has not reached yet ────────
+   The renderer emits a card's blocks in a FIXED order — prose first, then
+   formula, split, table, example, flow — whatever order the author wrote them
+   in. Thirteen cards were written the other way round: the worked example
+   first, the commentary on it second. Rendered, the commentary came first, so
+   the reader met "the last line is the trap" and "the three contributions add
+   back to the £44,000 total" before seeing any line or any £44,000.
+
+   That is the same fault as an unexplained abbreviation, in figures: prose
+   that presupposes something the reader has not been given. Changing the
+   renderer to honour the authored order would fix these and break others,
+   because key order is not a reliable signal of intent — plenty of cards put a
+   table first and open with a lead-in that belongs before it. So the rule is
+   about the prose instead: where a card's prose quotes figures that exist only
+   in a block rendered BELOW it, the prose must send the reader there. */
+{
+  const RENDER = ['p', 'formula', 'split', 'table', 'example', 'flow', 'callout', 'examtrap'];
+  const DATA = ['table', 'example', 'formula', 'flow'];
+  /* NOT "opposite". On a phone nothing is opposite anything, and "the exact
+     opposite" in a reversal-of-entries card matched it — a false signpost that
+     let a real one be deleted without this file noticing. */
+  const SIGNPOST = /\b(below|that follows|following)\b/i;
+  /* Long numbers only: "20%" and "5 April" collide across unrelated cards, and
+     a three-digit-plus figure quoted in both places is the real signal. */
+  const figures = v => (JSON.stringify(v).match(/£?[\d][\d,]*(?:\.\d+)?%?/g) || [])
+    .map(x => x.replace(/[£,]/g, '')).filter(x => x.length > 2);
+
+  let examined = 0;
+  UNITS.forEach(([unit, file, key]) => {
+    require(path.join(ROOT, file))[key].forEach(o => (o.lessons || []).forEach(les => {
+      (les.cards || []).forEach((card, ci) => {
+        const declared = Object.keys(card).filter(k => RENDER.indexOf(k) !== -1);
+        if (declared.indexOf('p') === -1) return;
+        const moved = DATA.filter(d => declared.indexOf(d) !== -1 &&
+                                       declared.indexOf(d) < declared.indexOf('p'));
+        if (!moved.length) return;
+        const prose = (Array.isArray(card.p) ? card.p : [card.p]).join(' ');
+        const inProse = new Set(figures(prose));
+        moved.forEach(d => {
+          const inBlock = new Set(figures(card[d]));
+          const shared = [...inProse].filter(x => inBlock.has(x));
+          if (!shared.length) return;
+          examined++;
+          ok(SIGNPOST.test(prose),
+            `${unit} ${les.id} card ${ci} ("${card.h || ''}") discusses ${shared.slice(0, 3).join(', ')} ` +
+            `in prose, but those figures are in its ${d}, which the renderer puts BELOW the prose — ` +
+            'and nothing tells the reader to look down');
+        });
+      });
+    }));
+  });
+  ok(examined >= 12,
+    `only ${examined} cards were examined for figures quoted ahead of the block holding them, so this ` +
+    'section has stopped seeing its subjects');
+}
+
 console.log(failures
   ? `\n${RED}${BOLD}✗ ${failures} of ${checks} checks failed${RESET}`
   : `\n${GREEN}${BOLD}── Every abbreviation is explained where it is first met ✓${RESET}  ${DIM}(${checks} assertions)${RESET}`);

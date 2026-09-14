@@ -78,7 +78,7 @@
           },
           p: [
             'It is the only Level 3 unit that is **not** computer marked throughout. The human-marked part is most plausibly the spreadsheet work in Outcome 5. A machine cannot mark that for layout, or for whether a formula was used rather than a typed figure.',
-            'Two and a half hours against 120 guided learning hours makes this a paper you sit rather than one you sprint. The pass mark is the same 70% as every other Level 3 unit. But the arithmetic here is longer than in Tax Processes and less forgiving than in Business Awareness. A transposed figure early in an overhead schedule follows you down the page, and the marks lost are the ones the rest of the task depended on.',
+            'The table below gives the shape of it. Two and a half hours against 120 guided learning hours makes this a paper you sit rather than one you sprint. The pass mark is the same 70% as every other Level 3 unit. But the arithmetic here is longer than in Tax Processes and less forgiving than in Business Awareness. A transposed figure early in an overhead schedule follows you down the page, and the marks lost are the ones the rest of the task depended on.',
             'AAT publishes no task count for this unit, so none is quoted anywhere in this module. Where a figure is unknown it is left unknown rather than guessed at, because a made-up number a reader plans around is worse than no number at all.',
           ],
         },
@@ -239,7 +239,7 @@
             ],
           },
           p: [
-            'Contribution per unit is 25.00 − 14.00 = **£11.00**, and 4,000 × 11.00 = £44,000. That is the same figure reached from the top. Being able to move between the per-unit view and the total view, without recalculating from scratch, is most of the speed you need in the assessment.',
+            'In the statement below, contribution per unit is 25.00 − 14.00 = **£11.00**, and 4,000 × 11.00 = £44,000. That is the same figure reached from the top. Being able to move between the per-unit view and the total view, without recalculating from scratch, is most of the speed you need in the assessment.',
             'The layout is worth copying exactly. Revenue, then variable costs, then a ruled contribution line, then fixed costs, then profit — with the contribution line drawn even when the question has not asked for it. A statement that stops at profit and never shows contribution cannot be re-used when the next part of the task changes the volume, and re-using it is usually the point.',
           ],
         },
@@ -309,7 +309,7 @@
             ],
           },
           p: [
-            'Every product contributes, and the three contributions add back to the £44,000 total. Saws contribute least in pounds. But at 6,200 ÷ 16,000 that is a **38.8%** contribution to sales ratio, against chisels’ 45.0% and planes’ 45.0%. So the ranking by margin is not the ranking by size.',
+            'Every product contributes, and in the statement below the three contributions add back to the £44,000 total. Saws contribute least in pounds. But at 6,200 ÷ 16,000 that is a **38.8%** contribution to sales ratio, against chisels’ 45.0% and planes’ 45.0%. So the ranking by margin is not the ranking by size.',
             'That difference is what a segmented statement is for. Judged on contribution in pounds, saws look like the product to drop. Judged on the ratio, they are simply the smallest line on the page, and every pound of saw revenue still leaves 38.8p behind. Which reading matters depends on what is scarce — floor space, machine hours, or nothing at all.',
           ],
         },
@@ -562,7 +562,7 @@
             ],
           },
           p: [
-            'The last line is the trap. Selling and distribution is a real cost of £2.00 a unit and it is in **none** of the three figures, because all three are production costs. Full absorption cost is £14.75, not £16.75.',
+            'The last line of the build-up below is the trap. Selling and distribution is a real cost of £2.00 a unit and it is in **none** of the three figures, because all three are production costs. Full absorption cost is £14.75, not £16.75.',
           ],
           examtrap: 'A per-unit royalty is a DIRECT expense and belongs in prime cost. Direct expenses are rare enough that most students forget the category exists and drop the royalty into overhead, which understates prime cost and leaves the other two totals unchanged — so only one of the three answers is wrong, which makes it hard to spot.',
         },
@@ -1156,7 +1156,7 @@
             ],
           },
           p: [
-            'FIFO empties the 200 units at £5.00 first, then takes 200 of the £6.00 units. So the issue is 1,000 + 1,200 = **£2,200**, and the 100 units left are the newer ones at £6.00.',
+            'In the example below, FIFO empties the 200 units at £5.00 first, then takes 200 of the £6.00 units. So the issue is 1,000 + 1,200 = **£2,200**, and the 100 units left are the newer ones at £6.00.',
             'AVCO averages before it issues: 500 units holding £2,800 is £5.60 each. So the issue is 400 × £5.60 = **£2,240** and the 100 units left are worth £560. Both methods have accounted for the same £3,500 of purchases and opening stock. They have simply drawn the line between issue and balance in different places.',
           ],
         },
@@ -1640,7 +1640,7 @@
           },
           p: [
             'Service centres often serve each other: stores issues materials to maintenance, maintenance repairs the stores forklift. The **step-down** method deals with this in one direction only. Close the service centre that serves the most other service centres first. Spread it across everything it serves — production centres and the remaining service centres. Then close the next one **without sending anything back**.',
-            'So stores is closed first and its £30,000 goes to all three centres it serves, maintenance included. Maintenance then holds £18,000 + £6,000 = **£24,000**, and that whole figure is split 70/30 between the two production centres — nothing goes back to stores, which is already closed. Total: 115,800 + 72,200 = **£188,000**, the same as 84,000 + 56,000 + 18,000 + 30,000.',
+            'So in the working below, stores is closed first. Its £30,000 goes to all three centres it serves, maintenance included. Maintenance then holds £18,000 + £6,000 = **£24,000**, and that whole figure is split 70/30 between the two production centres — nothing goes back to stores, which is already closed. Total: 115,800 + 72,200 = **£188,000**, the same as 84,000 + 56,000 + 18,000 + 30,000.',
           ],
           examtrap: 'After the first service centre is closed, the second one is bigger than it started. Splitting the ORIGINAL £18,000 instead of the £24,000 it now holds leaves £6,000 stranded in a closed centre, and the production totals no longer add back to the original total — which is the check that catches it.',
         },
@@ -2373,7 +2373,7 @@
             ],
           },
           p: [
-            'The gap is 131,000 − 122,600 = **£8,400** adverse, and the five variances net to exactly that: 3,500 + 3,700 + 1,300 + 1,500 = £10,000 adverse against £1,600 favourable. Anyone reading it can see immediately that no single failure caused the month. Four modest adverse variances did, and the one department that beat its standard was labour.',
+            'In the reconciliation below, the gap is 131,000 − 122,600 = **£8,400** adverse. The five variances net to exactly that: 3,500 + 3,700 + 1,300 + 1,500 = £10,000 adverse against £1,600 favourable. Anyone reading it can see immediately that no single failure caused the month. Four modest adverse variances did, and the one department that beat its standard was labour.',
           ],
           callout: {
             kind: 'key',
@@ -3665,7 +3665,7 @@
             ],
           },
           p: [
-            'The two lines meet at 15,000 units and £600,000 of revenue, which is exactly what the calculation gives: £240,000 ÷ £16 = 15,000. A chart and a calculation are two views of the same arithmetic. If they disagree, one of them has been drawn or worked wrongly.',
+            'On the chart below, the two lines meet at 15,000 units and £600,000 of revenue, which is exactly what the calculation gives: £240,000 ÷ £16 = 15,000. A chart and a calculation are two views of the same arithmetic. If they disagree, one of them has been drawn or worked wrongly.',
             'The **margin of safety** is the horizontal distance from the break-even point to the budgeted volume — from 15,000 across to 20,000 on this chart. Read vertically at that budgeted point, the gap between the lines is the budgeted profit of £80,000.',
           ],
         },
@@ -3763,7 +3763,7 @@
             ],
           },
           p: [
-            'The variable cost stays at £24.00 in every row — that is what variable means. What moves is the **fixed cost per unit**, and it moves simply because the same £240,000 is being divided among more units. Every change in the profit per unit traces back to that one division.',
+            'In the example below, the variable cost stays at £24.00 in every row — that is what variable means. What moves is the **fixed cost per unit**, and it moves simply because the same £240,000 is being divided among more units. Every change in the profit per unit traces back to that one division.',
             'Notice the row at 15,000 units: the total cost per unit is exactly the selling price. That is another way of saying the business breaks even there. And notice that profit per unit **doubles** between 20,000 and 30,000 units while volume rises by only half. A small change in volume moves profit far more than proportionately, because the fixed costs do not move at all.',
           ],
         },

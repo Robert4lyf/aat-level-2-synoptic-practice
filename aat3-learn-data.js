@@ -80,7 +80,7 @@
             ],
           },
           p: [
-            'The unit divides into five learning outcomes, and they are not equally weighted. Knowing the split tells you where the marks are.',
+            'The unit divides into five learning outcomes, and they are not equally weighted. Knowing the split tells you where the marks are, and the table below sets it out.',
             'VAT dominates. Three of the five outcomes are VAT and nothing else, and together they carry 75% of the marks. Payroll is one outcome worth 15%, and it is about the employer\'s **obligations** rather than the tax computation. You are told what the deductions are, then asked to handle, reconcile and report them correctly. The last 10% sits across both: Outcome 5 is about telling the right person about VAT *and* payroll matters, in the right way.',
             '**This material covers all five outcomes.** Take them in order, because each depends on the one before.',
             'Outcome 1 sets out what VAT is, who must register, what must be filed and by when, and what happens when any of that goes wrong. Outcome 2 does the arithmetic those rules govern. Outcome 3 checks the result: verifying a return, reconciling it to the records, correcting it when it is wrong.',
