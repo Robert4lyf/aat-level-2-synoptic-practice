@@ -12,8 +12,8 @@ lets a wrong answer be named rather than merely marked.
 |---|---|
 | 1.1 Timing | **Built** — `check-aat3-pace.js`, 30 assertions, 10 mutations |
 | 1.2 Confidence | **Built** — `check-aat3-confidence.js`, 118 assertions, 20 mutations |
-| 2a Registry + TPFB numeric | **Built** — `check-aat3-misconceptions.js`, 1,237 assertions, 10 mutations |
-| 2b TPFB MCQ distractors | Planned |
+| 2a Registry + TPFB numeric | **Built** — `check-aat3-misconceptions.js`, 10 mutations |
+| 2b TPFB MCQ distractors | **Built** — same gate, now 3,713 assertions, 11 more mutations |
 | 2c Remaining units | Planned |
 | 3 Cover-the-options | **Built** — `check-aat3-covered.js`, 96 assertions, 13 mutations |
 | 4 Follow-through marking | Planned |
@@ -543,6 +543,51 @@ matched, and one a pound outside it is not. Without the second half, loosening
 the tolerance to anything at all passes — and a diagnosis that fires on a value
 near the predicted one is a guess wearing a name, which is worse than silence.
 
+### 4.2b What 2b changed about §4
+
+**The floor did not rise to three, and the reason is a measurement.** §4.2a said
+the two-use floor would rise "when 2b lands, which is the volume it was written
+for". That was a prediction about how 657 distractor tags would distribute, and
+it was wrong in a way only the work could show. Naming every distractor worth
+naming produced **311 distinct errors, 227 of which occur exactly once** — not
+because the errors are obscure, but because a well-written question varies its
+distractors on purpose, so tags spread rather than pool.
+
+Merging the near-synonyms into real families is the right answer to most of
+that, and it is what the registry header always asked for. After merging, a
+three-use floor would still delete **50 families and 37 questions' worth of
+feedback**, and among them the **eight entries 2a authored that are still used
+twice** — every one numeric-only, every one exactly what 2b was meant to rescue.
+It could not: the multiple choices in those areas test recognition, not the
+arithmetic slip. The floor stays at **two**, on the registry's own argument. A
+two-use entry can say "second time"; that is a category. A one-use entry can say
+nothing its question had not already said.
+
+**Coverage is 289 of 657 distractors, not 657.** Two rules decide it, and both
+are real rather than concessions:
+
+1. **A tag may not repeat inside a question.** Where two or three distractors
+   instantiate one error, naming it on one of them is a coin toss dressed as a
+   diagnosis, so none is named. This is common, and it is a sign of good
+   question design rather than bad tagging.
+2. **A named error used once is not named at all.** The floor applies to MCQ
+   tags exactly as it applies to numeric ones.
+
+43 multiple choices end up with no tag, each on an allowlist with a reason of
+one of those two shapes, checked for staleness in both directions.
+
+**The scope floors are a ratchet.** `MIN_TAGGED_MCQ` and `MIN_MCQ_TAGS` sit on
+today's exact counts, so adding a diagnosis is free and losing one fails the
+gate. A floor with slack cannot see a single tag going quietly to `null`, which
+is how this would actually decay — mutation testing showed exactly that, and the
+floors were tightened because of it.
+
+**Eleven of 2b's own tag explanations were decoration**, written with the
+question's `exp` open alongside and sharing 60 to 121 characters verbatim with
+it. The heuristic §4.2a added caught every one. It has also been moved out of
+the numeric branch it was written in, because it had never run on an MCQ tag —
+289 of them would have shipped unchecked.
+
 ### 4.3 Scale — be honest about it
 
 | Unit | MCQ | Distractors | Numeric |
@@ -935,7 +980,7 @@ smaller than", not as "about".**
 | 3 | Cover-the-options | 1 | Phase 1 (for the gap timing) | Yes | **Built** |
 | 2a | Misconception registry + TPFB numeric | 2 | — | Yes | **Built** |
 | 4 | Follow-through marking | 1–2 | — | Yes | Planned |
-| 2b | TPFB MCQ distractors | 4+ | 2a | Yes | Planned |
+| 2b | TPFB MCQ distractors | 4+ | 2a | Yes | **Built** |
 | 5 | Readiness + mastery | 2 | Phase 1 | Yes | Planned |
 | 6 | Diagnosis screen | 1 | 1, 2, 5 | Yes | Planned |
 | 2c | Remaining units | 6+ | 2b, and evidence it works | Yes | Planned |

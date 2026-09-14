@@ -20,14 +20,26 @@
  *     - every entry used by AT LEAST TWO questions, and none unused. An entry
  *       used once is that question's explanation wearing a category's clothes,
  *       and the app can never say "this is the fourth time" about it.
- *       (The plan set this floor at three. It is two here, deliberately: across
- *       107 numeric questions a floor of three forces genuinely distinct,
- *       specifically named errors — the Employment Allowance, the overtime
- *       multiplier — off the list entirely, which makes the feedback worse
- *       rather than better. The floor rises to three when 2b lands and the
- *       distractor tags supply the volume it was written for.)
  *
- *   The tags
+ *       THE FLOOR WAS TO RISE TO THREE WHEN 2b LANDED. IT DOES NOT, AND THE
+ *       REASON IS MEASURED RATHER THAN ARGUED. The plan expected 657 distractor
+ *       tags to supply the volume a three-use floor was written for. Tagging
+ *       them showed the opposite: 227 of the 311 nameable errors in the unit
+ *       occur exactly ONCE, because a well-written question varies its
+ *       distractors on purpose, so tags spread thinly rather than pooling.
+ *       Merging the near-synonyms into real families lifts most of that, and at
+ *       a floor of three what is left would still delete 50 genuine families
+ *       and 37 questions' worth of feedback — including eight entries 2a
+ *       authored, every one of them numeric-only, which 2b was supposed to
+ *       rescue and could not, because the distractors in those areas test
+ *       recognition rather than the arithmetic slip.
+ *
+ *       Two remains the right floor on the registry's own argument: a two-use
+ *       entry can say "second time", which is a category, and a one-use entry
+ *       cannot say anything its question did not already say.
+ *
+ *   The tags — 289 named distractors across 176 multiple choices, plus 2a's
+ *   116 near misses
  *     - every `why` id and every `nearMiss.why` exists in the registry
  *     - `why.length === opts.length`, and `why[ans]` is null — the key is not a
  *       misconception
@@ -41,9 +53,17 @@
  *       shares no long verbatim run with it. THIS ONE IS A HEURISTIC and
  *       carries an allowlist with a reason each, the way QUESTION_FLOORS and
  *       the plain-English gate do.
- *     - an allowlist of untagged numeric questions with a reason each, and a
- *       staleness check: an id on it that no longer exists, or that has since
- *       been tagged, is an error
+ *     - an allowlist of untagged numeric questions AND one of untagged multiple
+ *       choices, with a reason each, and a staleness check on both: an id on
+ *       either that no longer exists, or that has since been tagged, is an
+ *       error. 43 multiple choices are untagged, and the reasons fall into two
+ *       shapes. Either all three distractors instantiate ONE error — and a tag
+ *       may not repeat inside a question, so naming it on one of them would be
+ *       a coin toss dressed as a diagnosis — or each names a distinct error no
+ *       other question in the unit tests, which is a singleton by another route.
+ *     - a `why[]` may hold nulls but not only nulls: an array with nothing in
+ *       it is the allowlist's job, and left in the data it would look like
+ *       coverage
  *     - a SCOPE assertion: below a floor of tagged questions the file fails, so
  *       the content rules cannot silently stop seeing their subjects
  *
@@ -57,9 +77,10 @@
  *       `why` is indexed against the UNSHUFFLED options, and indexing it by
  *       screen position instead attaches every diagnosis to a different option
  *       on every run — which is worse than having none, and invisible from any
- *       single run. There are no tagged MCQs in the bank yet; the assertion is
- *       made against a synthetic one, deliberately, so that the machinery is
- *       proved BEFORE 2b authors six hundred of them.
+ *       single run. It is asserted twice: once on a synthetic question, which
+ *       is how it was proved before there was anything real to point at, and
+ *       once on a question lifted out of the bank untouched, because a
+ *       synthetic one can drift away from the shape the bank actually uses.
  *     - a lesson check banks into `lessonMisc` and leaves the practice record
  *       byte-identical
  *
@@ -77,7 +98,15 @@ const { fakeStore, fakeEl, nodes, click } = D;
 const STORE_KEY = 'prep_v2_aat3';
 const TOLERANCE = 0.005;          /* the figure gradeAnswer uses */
 const MIN_USES = 2;
-const MIN_TAGGED = 85;            /* the scope floor — 91 are tagged today */
+const MIN_TAGGED = 85;            /* numeric scope floor — 91 carry nearMiss today */
+/* THE MCQ FLOORS ARE A RATCHET, NOT A TOLERANCE. They sit on exactly today's
+   counts, so adding a diagnosis is free and losing one fails here. A floor with
+   slack in it cannot see a single tag going quietly to null, which is the way
+   this phase would actually decay — and mutation testing showed precisely that
+   before these were tightened. Removing a tag on purpose means editing this
+   line, which is the point. */
+const MIN_TAGGED_MCQ = 176;       /* multiple choices carrying why[] */
+const MIN_MCQ_TAGS = 289;         /* named distractors between them */
 const UNITS = ['tpfb', 'faps', 'mats', 'buaw'];
 
 const REGISTRY = require(path.join(ROOT, 'aat3-misconceptions.js')).AAT3_MISCONCEPTIONS;
@@ -108,6 +137,59 @@ const UNTAGGED = {
   'P-4-20':  'The cost of employing someone. "Left the employer contributions out of the cost" has one use.',
   'P-4-67':  'A late filing penalty band. Recall of a table, not a calculation.',
   'P-5-24':  'Setting cash aside. "Reserved the output tax without deducting input tax" has one use.',
+};
+
+const UNTAGGED_MCQ = {
+  /* SAME ERROR, THREE COSTUMES. Every distractor instantiates one error, and a
+     tag may not be repeated inside a question, so naming it on one option and
+     not the others would be a coin toss dressed as a diagnosis. */
+  'P-1-04':  'Three businesses selling to customers who cannot reclaim — one error, offered three times.',
+  'P-1-16':  'Three repayment traders. The error is the same in each: looking for the gain where the tax already flows outward.',
+  'P-1-25':  'Three bodies with real authority over a business, none of it over VAT. One error, three names.',
+  'P-1-26':  'Three ways of saying a registered business in the chain bears the tax, which is the same misreading each time.',
+  'P-1-36':  'Three businesses that each gain from registering, for three reasons. The error — not asking who the customer is — is one.',
+  'P-1-55':  'Three lookback periods, all of them the compliance period in disguise. The error is tying the lookback to filing frequency.',
+  'P-1-64':  'Three zero-rated items offered as exempt. One error, three instances, and no principled way to name it on just one.',
+  'P-1-65':  'Three categories offered for a receipt that is outside the scope. Each is the same failure to remember that a fourth possibility exists.',
+  'P-1-67':  'Three penalties from three wrong regimes. Naming one and not the others would be arbitrary; the regime-mixing error is already carried elsewhere.',
+  'P-1-68':  'Three things that share the name "account" and are not the VAT account. One error, three objects.',
+  'P-1-73':  'Three periods the business happens to use for something else, each anchoring a rolling test that is anchored to nothing.',
+  'P-1-85':  'Three businesses that gain from staying registered, for three reasons. The error behind picking any of them is one.',
+  'P-1-96':  'Three ordinary supplies that stay inside the scheme. The error is not knowing the exclusion list, which no single option names.',
+  'P-1-102': 'Three wrong spans for the interim payments. Each is the same error — starting them before the scheme does.',
+  'P-1-106': 'Three percentages from the same table, each the right figure for a different row. One error, three rows.',
+  'P-2-67':  'Three kinds of supply that all belong in the outputs figure. Excluding any of them is the same narrowing.',
+  'P-2-73':  'Three particulars required on a full invoice and a less detailed one alike. One error, three particulars.',
+  'P-3-06':  'Three purchases that all belong in the inputs figure. The error — leaving a purchase out — is one, offered three ways.',
+  'P-4-47':  'Three voluntary deductions offered as statutory. One error, three arrangements.',
+  'P-4-57':  'Three amounts that do travel to HMRC in the monthly payment. One error, three items.',
+  'P-5-09':  'Three fundamental principles, one of them the answer. Naming "the wrong principle" three separate ways would be three synonyms.',
+  'P-5-16':  'Three fundamental principles again, for a self-interest threat.',
+  'P-5-18':  'Three secondary sources offered in place of the primary one. One error, three sources.',
+  'P-5-33':  'Three secondary sources again — a summary, a forum and release notes.',
+  'P-5-38':  'Three fundamental principles again, for a question about truthful records.',
+
+  /* SINGLETONS. Each distractor names a real and distinct error, and no other
+     question in the unit tests it, so every name would be used exactly once —
+     which is the thing the registry exists to prevent. */
+  'P-1-60':  'A tribunal reached too early and a regulator with no VAT jurisdiction. Both appear once in the unit.',
+  'P-1-98':  'The capital goods exception is tested by this question alone, so naming it would create an entry of one.',
+  'P-2-11':  'Banked cash used in place of cash taken. The only question in the unit that turns on it.',
+  'P-2-66':  'Cut-off confused with preparing the return itself — a single occurrence.',
+  'P-2-69':  'Recovering on a doubtful invoice, and abandoning the recovery instead of querying it. One question each.',
+  'P-2-83':  'Integrity of content confused with keeping the invoice private. A single occurrence.',
+  'P-2-85':  'The input and output pairing broken, and goods for resale read as an output. One question each.',
+  'P-2-107': 'Leaving private fuel unadjusted, and borrowing the car-leasing proportion for fuel. One question each.',
+  'P-3-10':  'Checking content before the structure holds, and filing a known error. One question each.',
+  'P-3-38':  'Matching the control account to one side of the return, and to the bank payment. Both appear only here.',
+  'P-3-55':  'Leaving the customer holding a wrong document, and destroying it rather than correcting it. One question each.',
+  'P-3-79':  'A payment left unposted, and a balance expected to stand until the year end. Both appear only here.',
+  'P-4-35':  'Payroll thought to need more than one worker, and self assessment thought to displace the employer. One question each.',
+  'P-4-37':  'The employer thought to work out the code rather than operate the one it is given. A single occurrence.',
+  'P-4-43':  'A spreadsheet thought able to file, software thought to come only from HMRC, and an approval process that does not exist.',
+  'P-4-49':  'Statutory status judged by consent, and by where the deduction falls. Both appear only here.',
+  'P-4-66':  'A nil month reported on the wrong return, and not reported at all. One question each.',
+  'P-5-25':  'Monthly returns, deregistering and accepting a penalty — three distinct wrong remedies, each tested once.',
 };
 
 /* Tag explanations legitimately sharing a run of words with a question's own
@@ -157,19 +239,40 @@ REGISTRY.forEach(m => { byId[m.id] = m; });
 const uses = {};
 REGISTRY.forEach(m => { uses[m.id] = []; });
 
+/* THE DECORATION CHECK, and it runs on every tag of every kind. A tag that
+   restates the question's own explanation diagnoses nothing, and 289 of them
+   is how this whole phase turns into noise. It caught eleven of 2b's own
+   explanations, written with the question's `exp` open alongside. */
+function decoration(q, id) {
+  const m = byId[id];
+  if (!m || SHARED_WORDING[q.id + '|' + id]) return;
+  const a = norm(m.explain), b = norm(q.exp || '');
+  ok(b.indexOf(a) === -1,
+    `${q.id}: the tag "${id}" is a verbatim copy of the question's own explanation`);
+  const run = longestShared(a, b);
+  ok(run.length < 60,
+    `${q.id}: the tag "${id}" shares ${run.length} characters verbatim with the question's ` +
+    `explanation — "${run.slice(0, 50)}…"`);
+}
+
 function noteUse(id, qid) {
   if (!(id in uses)) uses[id] = [];
   uses[id].push(qid);
 }
 
 {
-  let tagged = 0, numeric = 0;
+  let tagged = 0, numeric = 0, taggedMcq = 0, mcqTags = 0, mcq = 0;
   BANK.forEach(q => {
     const t = q.type || 'mcq';
     if (t === 'numeric' && q.unitKey === 'tpfb') numeric++;
+    if (t === 'mcq' && q.unitKey === 'tpfb') mcq++;
 
     if (q.why) {
+      taggedMcq++;
+      mcqTags += q.why.filter(Boolean).length;
       ok(t === 'mcq', `${q.id} carries a why[] but is not a multiple choice`);
+      ok(q.why.some(Boolean),
+        `${q.id} carries a why[] with nothing in it — an all-null array is the untagged allowlist's job`);
       eq(q.why.length, (q.opts || []).length, `${q.id}'s why[] is not parallel to its options`);
       ok(q.why[q.ans] === null || q.why[q.ans] === undefined,
         `${q.id} tags its own key as a misconception`);
@@ -180,6 +283,7 @@ function noteUse(id, qid) {
         ok(!seen[id], `${q.id} tags two of its options with "${id}" — the same wrong answer written twice`);
         seen[id] = 1;
         noteUse(id, q.id);
+        decoration(q, id);
       });
     }
 
@@ -202,19 +306,7 @@ function noteUse(id, qid) {
         seenTag[nm.why] = 1;
         noteUse(nm.why, q.id);
 
-        /* THE DECORATION CHECK. A tag that restates the question's own
-           explanation diagnoses nothing, and a hundred of them is how this
-           whole phase turns into noise. */
-        const m = byId[nm.why];
-        if (m && !SHARED_WORDING[q.id + '|' + nm.why]) {
-          const a = norm(m.explain), b = norm(q.exp || '');
-          ok(b.indexOf(a) === -1,
-            `${q.id}: the tag "${nm.why}" is a verbatim copy of the question's own explanation`);
-          const run = longestShared(a, b);
-          ok(run.length < 60,
-            `${q.id}: the tag "${nm.why}" shares ${run.length} characters verbatim with the question's ` +
-            `explanation — "${run.slice(0, 50)}…"`);
-        }
+        decoration(q, nm.why);
       });
     }
   });
@@ -225,6 +317,12 @@ function noteUse(id, qid) {
     `only ${tagged} questions carry tags, below the floor of ${MIN_TAGGED} — either the phase went ` +
     'backwards or this file has stopped seeing its subjects');
   ok(numeric >= 100, `only ${numeric} TPFB numeric questions were found, so the bank is not being read`);
+  ok(taggedMcq >= MIN_TAGGED_MCQ,
+    `only ${taggedMcq} multiple choices carry tags, below the floor of ${MIN_TAGGED_MCQ}`);
+  ok(mcqTags >= MIN_MCQ_TAGS,
+    `only ${mcqTags} distractors are named, below the floor of ${MIN_MCQ_TAGS} — the questions may still ` +
+    'carry why[] arrays while the tags inside them have quietly gone');
+  ok(mcq >= 210, `only ${mcq} TPFB multiple choices were found, so the bank is not being read`);
 
   /* THE FLOOR. Both directions: nothing unused, nothing used once. */
   const unused = Object.keys(uses).filter(id => uses[id].length === 0);
@@ -247,6 +345,17 @@ function noteUse(id, qid) {
   Object.keys(UNTAGGED).forEach(id => {
     ok(UNTAGGED[id].length > 30, `the reason given for leaving ${id} untagged is not a reason`);
   });
+  const untaggedMcqNow = BANK
+    .filter(q => q.unitKey === 'tpfb' && (q.type || 'mcq') === 'mcq' && !q.why)
+    .map(q => q.id);
+  const missingMcq = untaggedMcqNow.filter(id => !(id in UNTAGGED_MCQ));
+  eq(missingMcq, [], 'multiple choices with no tags and no declared reason');
+  const staleMcq = Object.keys(UNTAGGED_MCQ).filter(id => untaggedMcqNow.indexOf(id) === -1);
+  eq(staleMcq, [], 'entries on the untagged multiple-choice allowlist that are now tagged, or no longer exist');
+  Object.keys(UNTAGGED_MCQ).forEach(id => {
+    ok(UNTAGGED_MCQ[id].length > 30, `the reason given for leaving ${id} untagged is not a reason`);
+  });
+
   const sharedStale = Object.keys(SHARED_WORDING).filter(k => {
     const qid = k.split('|')[0];
     return !BANK.some(q => q.id === qid);
@@ -479,6 +588,44 @@ try {
   click(badCtx.el, 'nextq');
   eq(((stored(badCtx).practice.units.tpfb || {}).misc || {}), {},
     'a right answer was counted against a named error');
+}
+
+/* ── 5b. THE SHUFFLE, ON A REAL QUESTION FROM THE BANK ──────────────────── */
+{
+  /* Section 5 proves the machinery on a synthetic question, which is what it
+     was for before there was anything real to point at. Now there is. A
+     synthetic question can drift away from the shape the bank actually uses —
+     a renderer that special-cased four plain options would pass it and fail
+     every real one — so the same assertion is made again on a question taken
+     out of the bank untouched, with every distractor it really carries. */
+  const real = BANK.find(q => q.why && q.why.filter(Boolean).length === 3);
+  ok(!!real, 'no bank question carries three named distractors, so this section has nothing to prove');
+  if (real) {
+    real.why.forEach((tag, i) => {
+      if (!tag) return;
+      let found = 0, seats = {};
+      for (let seed = 0; seed < 24 && found < 6; seed++) {
+        const ctx = open([real]);
+        startOn(ctx);
+        const target = nodes(ctx.el, 'ans').find(n => n.getAttribute('data-i') === String(i));
+        if (!target) continue;
+        seats[nodes(ctx.el, 'ans').indexOf(target)] = 1;
+        found++;
+        NOW += 3000;
+        target.fire('click');
+        eq(shownLabel(ctx.el), byId[tag].label,
+          `${real.id} option ${i} showed another option's diagnosis — on a real bank question, with real ` +
+          'tags, `why` is being read by screen position');
+        click(ctx.el, 'nextq');
+        eq(((stored(ctx).practice.units.tpfb || {}).misc || {}), { [tag]: 1 },
+          `${real.id} option ${i} counted the wrong named error`);
+      }
+      ok(found >= 4, `${real.id} option ${i} was reachable in only ${found} runs`);
+      ok(Object.keys(seats).length >= 2,
+        `${real.id} option ${i} sat in ${Object.keys(seats).length} screen position(s), so these runs ` +
+        'cannot tell a position index from an option index');
+    });
+  }
 }
 
 /* ── 6. A lesson check banks apart from the practice record ────────── */
