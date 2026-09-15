@@ -85,6 +85,8 @@ jobs:
 
       - name: Check Level 3 misconceptions (the taxonomy, the tags, the shuffle)
         run: npm run check:misconceptions
+      - name: Check Level 3 explains every abbreviation where it is first used
+        run: npm run check:first-use
       - name: Check no Level 3 question is answerable from option position
         run: npm run check:aat3-position
       - name: Check Level 3 multi-part tasks behave (grading, per-part feedback, no state leak)

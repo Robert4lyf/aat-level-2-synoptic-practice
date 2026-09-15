@@ -134,7 +134,7 @@
               { text: 'The unit is based on a Finance Act and is reissued every year.', answer: false },
               { text: 'Depreciation and accruals are assumed knowledge carried over from Level 2.', answer: false },
             ],
-            exp: 'Computer marking gives no credit for method. Outcome 7 is 20% against Outcome 1\'s 5%. The Finance Act governs Tax Processes, not this unit, which rests on IAS 2, IAS 16 and double entry. Depreciation and accruals are new at Level 3 — Level 2 supplies debits, credits, daybooks and control accounts.',
+            exp: 'Computer marking gives no credit for method. Outcome 7 is 20% against Outcome 1\'s 5%. The Finance Act governs Tax Processes, not this unit, which rests on double entry and on two International Accounting Standards, IAS 2 and IAS 16. Depreciation and accruals are new at Level 3 — Level 2 supplies debits, credits, daybooks and control accounts.',
           },
         ],
       },
@@ -1202,7 +1202,7 @@
             table: {
               headers: ['Class', 'At the period end', 'Because'],
               rows: [
-                ['Income', 'Transferred to the SPL; account left at nil', 'It measures a period, and the period has ended'],
+                ['Income', 'Transferred to the statement of profit or loss (SPL); account left at nil', 'It measures a period, and the period has ended'],
                 ['Expenses', 'Transferred to the SPL; account left at nil', 'The same'],
                 ['Assets', 'Carried down and brought down', 'It measures a position, and the position persists'],
                 ['Liabilities', 'Carried down and brought down', 'The same'],
@@ -1520,7 +1520,7 @@
               ],
             },
             p: [
-              'Capitalised: £19,500 + £250 + £600 = £20,350. Charged to profit this year: £320 + £780 + £60 = £1,160. The two together are the invoice total, and £20,350 + £1,160 = £21,510 is the check worth doing every time.',
+              'The invoice below splits like this. Capitalised: £19,500 + £250 + £600 = £20,350. Charged to profit this year: £320 + £780 + £60 = £1,160. The two together are the invoice total, and £20,350 + £1,160 = £21,510 is the check worth doing every time.',
               'Notice what separates the two columns. The licence, the insurance and the fuel all buy twelve months of something, and the vehicle would drive perfectly well without any of them. The signwriting is capital because the business wants a liveried van, and the van is not the asset management intended until it carries the livery.',
             ],
             examtrap: 'A single invoice mixing capital and revenue lines is one of the most reliable shapes in this unit. Post the whole invoice to the vehicle account and the asset is overstated by £1,160, profit is overstated by the same amount, and every depreciation charge for the next several years is wrong too.',
@@ -1615,7 +1615,7 @@
                 title: 'Expensing something capital',
                 items: [
                   'Profit this year understated',
-                  'Non-current assets understated on the SFP',
+                  'Non-current assets understated on the statement of financial position (SFP)',
                   'Later years\' profits overstated, because no depreciation follows',
                   'Capital employed understated for the rest of the asset\'s life',
                 ],
@@ -2815,7 +2815,7 @@
               ],
             },
             p: [
-              'The charge is £4,600 − £950 + £1,100 = £4,750, and each of the three lines earns its place. The payments include an amount that belonged to last year, so the reversal takes it out. The supply used at the end of this year has not been paid for, so the new accrual puts it in.',
+              'Take the account set out below. The charge is £4,600 − £950 + £1,100 = £4,750, and each of the three lines earns its place. The payments include an amount that belonged to last year, so the reversal takes it out. The supply used at the end of this year has not been paid for, so the new accrual puts it in.',
               'A prepayment runs the same way with the signs swapped. Last year\'s prepayment is reversed by debiting the expense — the cover was paid for last year and consumed in this one, so this year carries it.',
             ],
           },
@@ -3084,7 +3084,7 @@
             },
             p: [
               'The comparison of cost with net realisable value is made **on an individual item basis**. This is not a technicality. The two methods give different answers, and comparing totals always gives the higher one.',
-              'Item by item gives £2,400 + £2,550 + £2,400 = £7,350. Comparing the totals gives £7,800, because item A\'s unrealised gain of £600 has been allowed to hide item B\'s real loss of £450.',
+              'Item by item, the three lines below give £2,400 + £2,550 + £2,400 = £7,350. Comparing the totals gives £7,800, because item A\'s unrealised gain of £600 has been allowed to hide item B\'s real loss of £450.',
               'The difference of £7,800 − £7,350 = £450 is exactly the loss on B, and prudence is what forbids it being netted off. A fall in value that has happened is recognised; a rise that has not been realised is not.',
               'Accounting software will hold quantities, run the valuation and produce the figure. It cannot tell that line B is now unsaleable at cost, because nothing in the system knows the market moved — somebody has to enter the new net realisable value.',
             ],
@@ -4483,7 +4483,7 @@
               ],
             },
             p: [
-              'Every journal in that list has equal debits and credits, which is the point: the ledger balanced before the correction and balances after it. None of these corrections touches a suspense account, because there was never a difference for a suspense account to hold.',
+              'Every journal in the list below has equal debits and credits. That is the point: the ledger balanced before the correction and it balances after it. None of these corrections touches a suspense account, because there was never a difference for a suspense account to hold.',
               'The reversal repays slowing down for. The payment should have been Dr Payables £480 and Cr Bank £480; it went in as the exact opposite. Payables is therefore £480 too high **and** short of the £480 debit it should have received, so it is out by £960 — and the same on the bank. Correcting a reversal always takes twice the original figure, and using the original figure once leaves the accounts wrong by the same amount in the opposite direction.',
               'The original entry error takes only the difference. £742 − £472 = £270 was missing from both sides, so adding £270 to each is enough. Reversing the whole entry and reposting it gets to the same place with more writing.',
             ],
@@ -4781,7 +4781,7 @@
             },
             p: [
               'Income and expense accounts go to the profit columns; assets, liabilities, capital and drawings go to the position columns. That is the whole classification, and it is the one from lesson 2B rather than anything new.',
-              'The side is carried over unchanged. A debit stays a debit and a credit stays a credit — extending a figure moves it across the page, never across the columns. So wages of £48,000 + £1,200 = £49,200 goes to the profit **debit** column. Insurance of £3,600 − £900 = £2,700 goes to the same column, having been reduced rather than moved.',
+              'The side is carried over unchanged, as the extract below shows. A debit stays a debit and a credit stays a credit — extending a figure moves it across the page, never across the columns. So wages of £48,000 + £1,200 = £49,200 goes to the profit **debit** column. Insurance of £3,600 − £900 = £2,700 goes to the same column, having been reduced rather than moved.',
               'Two lines repay a second reading. Accumulated depreciation is a credit that grows: £12,000 + £3,000 = £15,000 to the position credit column. The charge that created it sits in the profit debit column as a separate line. And receivables of £26,000 − £1,000 = £25,000 shows an adjustment credit reducing a debit balance, which is the shape most write-offs and prepayment reversals take.',
             ],
           },
@@ -4952,7 +4952,7 @@
               },
             },
             p: [
-              'The specification excludes **completion of the ETB for partnerships** from this outcome. You will not be asked to extend one, total it and enter the appropriated shares, and practising that is time spent on a task the assessment does not set.',
+              'The specification excludes **completion of the extended trial balance (ETB) for partnerships** from this outcome. You will not be asked to extend one, total it and enter the appropriated shares, and practising that is time spent on a task the assessment does not set.',
               'Knowing the difference is assessed, which is a different thing and needs separating. A question can ask what changes and why; it will not hand you a partnership trial balance and ask for it filled in.',
               'The partnership work that is assessed lives in Outcome 7 — the appropriation account, the capital and current accounts, and the statement of financial position that presents them. What is excluded is bringing those into this particular document.',
             ],
@@ -5065,7 +5065,7 @@
             p: [
               'Profitability ratios pull from both statements at once, and the join between them is one figure: **profit for the year**.',
               'The statement of profit or loss works that figure out — revenue, less cost of sales, less expenses. The statement of financial position then receives it, because profit belongs to the owner and is added to capital. The same number ends one statement and moves the other.',
-              'That is why a ratio can take its top line from the SPL and its bottom line from the SFP without any sleight of hand. ROCE does exactly that: this year\'s profit over the capital that was available to earn it.',
+              'That is why a ratio can take its top line from the SPL and its bottom line from the SFP without any sleight of hand. Return on capital employed, or ROCE, does exactly that. It puts this year\'s profit over the capital that was available to earn it.',
             ],
             split: {
               left: { title: 'Statement of profit or loss', items: ['Revenue', 'Cost of sales', 'Gross profit', 'Expenses', '**Profit for the year**'] },

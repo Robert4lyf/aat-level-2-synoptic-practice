@@ -408,6 +408,11 @@
       label: 'Treated the timing as something to choose',
       explain: 'Which period a transaction falls in is settled by the rules, not by a consistent practice. Applying the same wrong treatment every time makes an error systematic; it does not make it acceptable.',
       units: ['tpfb'] },
+    { id: 'a-period-boundary-read-as-a-rate-boundary',
+      label: 'Thought crossing a period end changed the tax itself',
+      explain: 'Moving a supply from one return to the next changes when the tax is handed over, never how much of it there is. No rate changes at a quarter end, so nothing about the amount moves with the supply — only an actual change of rate gives the tax point two rates to choose between.',
+      units: ['tpfb'] },
+
     { id: 'input-tax-recovery-made-to-depend-on-the-tax-point',
       label: 'Made the customer’s recovery turn on the tax point',
       explain: 'What the customer may reclaim turns on holding a valid invoice and on the purchase being for the business, not on which side of a period end the supply fell. The tax point decides when the supplier accounts for it, and that is a cash-flow question rather than a question about entitlement.',
