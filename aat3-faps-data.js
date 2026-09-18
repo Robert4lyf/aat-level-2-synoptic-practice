@@ -4681,14 +4681,14 @@
             h: 'Placing a set of adjustments',
             worked: {
               title: 'Six adjustments, and a column total to prove',
-              problem: 'Closing inventory is £21,000. Fixtures cost £30,000 and are depreciated at 10% straight line; motor vehicles cost £24,000 with accumulated depreciation of £9,600 and are depreciated at 25% diminishing balance. Wages of £1,200 are accrued and insurance of £900 is prepaid. A debt of £1,000 is to be written off, and the allowance for doubtful receivables is to be 4% of the receivables that remain — trade receivables stand at £26,000 and the allowance brought forward is £900. What does each adjustments column total?',
+              problem: 'Closing inventory is £21,000. Fixtures cost £30,000 and are depreciated at 10% straight line; motor vehicles cost £25,600 with accumulated depreciation of £11,200 and are depreciated at 25% diminishing balance. Wages of £1,200 are accrued and insurance of £900 is prepaid. A debt of £1,000 is to be written off, and the allowance for doubtful receivables is to be 4% of the receivables that remain — trade receivables stand at £26,000 and the allowance brought forward is £900. What does each adjustments column total?',
               steps: [
                 {
                   do: 'Closing inventory: debit £21,000 and credit £21,000.',
                   why: 'One figure, both columns, two different accounts. It is the only adjustment that appears on both sides of its own line.',
                 },
                 {
-                  do: 'Depreciation: fixtures £30,000 × 10% = £3,000; vehicles on a carrying amount of £24,000 − £9,600 = £14,400, so £14,400 × 25% = £3,600. Debit the charge with £3,000 + £3,600 = £6,600.',
+                  do: 'Depreciation: fixtures £30,000 × 10% = £3,000; vehicles on a carrying amount of £25,600 − £11,200 = £14,400, so £14,400 × 25% = £3,600. Debit the charge with £3,000 + £3,600 = £6,600.',
                   why: 'Straight line runs on cost and diminishing balance on the carrying amount, so the accumulated depreciation is subtracted for one method and ignored for the other. The credits go to the two accumulated depreciation accounts separately.',
                 },
                 {
@@ -9528,7 +9528,7 @@
           title: 'Non-current assets at 1 January',
           headers: ['Asset', 'Cost £', 'Accumulated depreciation £', 'Method'],
           rows: [
-            ['Delivery van', '28,000.00', '12,600.00', 'Reducing balance, 25%'],
+            ['Delivery van', '32,000.00', '14,000.00', 'Reducing balance, 25%'],
             ['Packing machine', '16,500.00', '6,600.00', 'Straight line, 5 years, no residual value'],
             ['Office fit-out', '9,000.00', '3,600.00', 'Straight line, 5 years, no residual value'],
           ],
@@ -9537,8 +9537,8 @@
       parts: [
         {
           label: 'Depreciation charge on the delivery van',
-          type: 'numeric', unit: '£', answer: 3850,
-          exp: 'Reducing balance applies the rate to the CARRYING AMOUNT: 28,000.00 − 12,600.00 = 15,400.00, and 15,400.00 × 25% = £3,850.00. Applying 25% to the 28,000.00 cost gives 7,000.00, which is what this asset was charged in its first year and never again.',
+          type: 'numeric', unit: '£', answer: 4500,
+          exp: 'Reducing balance applies the rate to the CARRYING AMOUNT: 32,000.00 − 14,000.00 = 18,000.00, and 18,000.00 × 25% = £4,500.00. Applying 25% to the 32,000.00 cost gives 8,000.00, which is what this asset was charged in its first year and never again.',
         },
         {
           label: 'Depreciation charge on the packing machine',
@@ -9547,8 +9547,8 @@
         },
         {
           label: 'Total depreciation charge for the year',
-          type: 'numeric', unit: '£', answer: 8950,
-          exp: 'The office fit-out is 9,000.00 ÷ 5 = 1,800.00, so 3,850.00 + 3,300.00 + 1,800.00 = £8,950.00. Neither column of the table totals to this: the charge has to be worked out asset by asset, because the method differs by asset and not by business.',
+          type: 'numeric', unit: '£', answer: 9600,
+          exp: 'The office fit-out is 9,000.00 ÷ 5 = 1,800.00, so 4,500.00 + 3,300.00 + 1,800.00 = £9,600.00. Neither column of the table totals to this: the charge has to be worked out asset by asset, because the method differs by asset and not by business.',
         },
         {
           label: 'The van’s charge falls every year and the machine’s does not because:',
@@ -9563,7 +9563,7 @@
           exp: 'The rate is fixed under both methods; what differs is what it is applied TO. Reducing balance charges a constant percentage of a shrinking base, so the charge shrinks with it — which suits an asset that loses most of its value early, like a vehicle. Straight line charges a constant fraction of a fixed cost, which suits an asset consumed evenly. Cost never falls, so the second option describes something that cannot happen.',
         },
       ],
-      exp: 'One year, three assets, two methods — and the whole task turns on remembering which base each method uses. Total the cost column and you get 53,500.00; total the depreciation column and you get 22,800.00; neither is a step towards any of these answers.',
+      exp: 'One year, three assets, two methods — and the whole task turns on remembering which base each method uses. Total the cost column and you get 57,500.00; total the depreciation column and you get 24,200.00; neither is a step towards any of these answers.',
     },
     {
       id: 'F-5-91', unitKey: 'faps', lo: 5, criteria: ['FAPS-5.1.2', 'FAPS-5.1.4', 'FAPS-5.2.3'],
