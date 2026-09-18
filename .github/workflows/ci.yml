@@ -35,6 +35,8 @@ jobs:
         run: npm run check:integrity
       - name: Check every equation an explanation states actually computes
         run: npm run check:arithmetic
+      - name: Check every stated depreciation history is one the policy could produce
+        run: npm run check:depreciation
       - name: Check AAT Level 2 content quality (cues, explanations, depth, coverage)
         run: npm run check:aat2
       - name: Check AAT Level 1 syllabus integrity and coverage
