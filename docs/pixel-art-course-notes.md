@@ -28,15 +28,21 @@ things to make it mean anything:
 
 | File | What it holds |
 | --- | --- |
-| `pixel-syllabus.js` | 37 criteria in 6 units, in teaching order. The coverage spine. |
-| `pixel-learn-data.js` | 18 lessons, 65 cards, with pixel-grid figures written as rows of characters. |
-| `pixel-challenge-data.js` | 60 challenges, 10 per unit, each with 3 escalating hints. |
+| `pixel-syllabus.js` | 44 criteria in 7 units, in teaching order. The coverage spine. |
+| `pixel-learn-data.js` | 21 lessons, 77 cards, with pixel-grid figures written as rows of characters. |
+| `pixel-challenge-data.js` | 70 challenges, 10 per unit, each with 3 escalating hints. |
 | `pixel-ui.js` | The subject shell: three screens, the figure renderer, progress under `prep_v2_pixel`. |
 | `pixel-styles.css` | Scoped to `body[data-subject="pixel"]`. Themes everything except the art. |
 | `scripts/check-pixel-course.js` | Coverage, format, figure palette, cross-references, wiring. |
 
 The units are: the canvas and the pencil; lines and shapes; colour; light and
-form; reading at size; animation.
+form; reading at size; animation; tiles and environments.
+
+PX7 was added after the rest shipped, and appends rather than inserts — the
+teaching order is the order of the `UNITS` array, and renumbering six units to
+put tiles in the middle would have invalidated every stored completion. It
+brings a fifth strand, `E`, because a tile is not a small sprite: it is one
+whose four edges have to agree with their neighbours, including with itself.
 
 ## Two decisions worth writing down
 
@@ -71,9 +77,9 @@ stylesheet through the registry are held to it.
 
 ## Known gaps
 
-- **No tile or environment unit.** Aseprite's tilemap mode, seamless tiles and
-  tilesets are a substantial topic and are not covered. The syllabus is
-  arranged so a `PX7` could be added without renumbering anything.
+- **No autotiling rule set.** PX7 covers the thirteen-tile terrain set by
+  hand. The 47-tile blob set, and the bitmask an engine uses to pick a tile
+  automatically, are a level past what this course reaches.
 - **No reference layer or symmetry-mode coverage.** Both are useful Aseprite
   features and neither is load-bearing for the craft, so they were cut rather
   than given half a card.

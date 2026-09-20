@@ -750,6 +750,186 @@
         }
       ]
     }
+,
+
+    /* ═══ PX7 · Tiles and environments ══════════════════════════════════ */
+    {
+      id: 'px7-l1', unit: 'PX7', title: 'Working to a grid',
+      icon: '📏', criteria: ['PX7.grid', 'PX7.seam', 'PX7.repeat'],
+      summary: 'A tile has four edges that must agree with their neighbours, and with itself.',
+      cards: [
+        {
+          h: 'Pick a tile size first',
+          p: ['Sixteen pixels is the common tile, and everything else follows from it: the canvas is a whole number of tiles, the character is a whole number of tiles tall, the camera moves in tiles.',
+              'Set View ▸ Grid ▸ Grid Settings to your tile size and leave the grid on. Working to it from the start is cheaper than aligning afterwards.'],
+          exercises: [1, 2]
+        },
+        {
+          h: 'The seam is the edge you can see',
+          p: ['A tile with a dark border repeats into a lattice — the border becomes a line across the whole field, and it is the first thing anyone sees.',
+              'Take the frame off and let the texture run to all four edges. What ties tiles together is that nothing marks where one stops.'],
+          compare: {
+            cell: 11,
+            bad: { label: 'A bordered tile, repeated — a lattice', rows: [
+              'KKKKKKKKKKKKKKKK',
+              'KwwwwwwKKwwwwwwK',
+              'KwwxwwwKKwwxwwwK',
+              'KwwwwwwKKwwwwwwK',
+              'KwxwwwwKKwxwwwwK',
+              'KwwwwvwKKwwwwvwK',
+              'KwwwwwwKKwwwwwwK',
+              'KKKKKKKKKKKKKKKK',
+              'KKKKKKKKKKKKKKKK',
+              'KwwwwwwKKwwwwwwK',
+              'KwwxwwwKKwwxwwwK',
+              'KwwwwwwKKwwwwwwK',
+              'KwxwwwwKKwxwwwwK',
+              'KwwwwvwKKwwwwvwK',
+              'KwwwwwwKKwwwwwwK',
+              'KKKKKKKKKKKKKKKK'
+            ] },
+            good: { label: 'The same tile without its frame', rows: [
+              'wwxwwwwwwwxwwwww',
+              'wwwwwwwwwwwwwwww',
+              'wwwwwvwwwwwwwvww',
+              'vwwwwwwvvwwwwwwv',
+              'wwwwwwwwwwwwwwww',
+              'wxwwwwwwwxwwwwww',
+              'wwwwwwwwwwwwwwww',
+              'wwwwwwxwwwwwwwxw',
+              'wwxwwwwwwwxwwwww',
+              'wwwwwwwwwwwwwwww',
+              'wwwwwvwwwwwwwvww',
+              'vwwwwwwvvwwwwwwv',
+              'wwwwwwwwwwwwwwww',
+              'wxwwwwwwwxwwwwww',
+              'wwwwwwwwwwwwwwww',
+              'wwwwwwxwwwwwwwxw'
+            ] }
+          },
+          exercises: [2, 3]
+        },
+        {
+          h: 'Draw across the edge, not up to it',
+          p: ['View ▸ Tiled Mode ▸ Tiled in Both Axes repeats the canvas around itself while you draw. A stroke that leaves the right edge arrives at the left, so the wrap is something you can see rather than something you hope for.',
+              'Judge the tile in that view. Alone it will always look fine.'],
+          exercises: [3, 4]
+        },
+        {
+          h: 'A repeated feature is worse than a seam',
+          p: ['One distinctive mark — a flower, a bright stone, a crack — lands in the same place in every tile, and the field turns into a grid of flowers.',
+              'Keep the fill tile boring. Anything with a shape to it belongs in a separate decorative tile you place where you want it.'],
+          exercises: [4, 5]
+        }
+      ]
+    },
+    {
+      id: 'px7-l2', unit: 'PX7', title: 'A terrain set',
+      icon: '🧱', criteria: ['PX7.tileset', 'PX7.tilemap'],
+      summary: 'What it takes for one surface to meet another, and how Aseprite holds the set.',
+      cards: [
+        {
+          h: 'One fill, four edges, four corners',
+          p: ['The minimum set for grass meeting dirt is nine tiles: the fill, the four edges, and the four outer corners. That is what the figure shows, laid out with a gap so you can see where one tile stops.',
+              'Inner corners — where the terrain turns back on itself — are four more, and you will want them the first time you draw anything that is not a rectangle.'],
+          art: {
+            caption: 'Nine tiles of a grass-on-dirt set, with the tile boundaries opened out',
+            cell: 9,
+            rows: [
+              '77777777.77777777.77777777',
+              '77777777.78777777.77777777',
+              '76777777.77777777.77777777',
+              '77777777.77777777.77776777',
+              '77777xxx.xxxxxxxx.xxx77777',
+              '7777vwww.wwwwwwww.wwwv7787',
+              '7777vwww.wwwwwwww.wwwv7777',
+              '7776vwwx.wwwwwwww.wxwv7777',
+              '..........................',
+              '7777vwww.wwwwwwww.wwwv7777',
+              '7777vwww.wwwwxwww.wwwv7677',
+              '7777vwww.wwwwwwww.wwwv7777',
+              '7777vwww.wwwwwwww.wwwv7777',
+              '7777vwww.wwwwwwww.xwwv7777',
+              '7877vwxw.wwwwwwww.wwwv7777',
+              '7777vwww.wwwwwwww.wwwv7777',
+              '7777vwww.wxwwwwww.wwwv7777',
+              '..........................',
+              '7777vwww.wwwwwwww.wwwv7777',
+              '7777vwww.wwwwwwxw.wwwv7767',
+              '7777vwww.wwwwwwww.wwwv7777',
+              '77677vvv.vvvvvvvv.vvv77777',
+              '77777777.77777777.77777777',
+              '77777677.77777777.77677777',
+              '77777777.77777778.77777777',
+              '77777777.77777777.77777777'
+            ]
+          },
+          exercises: [5, 6]
+        },
+        {
+          h: 'The edges carry the read',
+          p: ['The fill tile is the one nobody looks at and the edges are where the work goes: a lit top lip where grass catches the light, a dark line where it overhangs the dirt.',
+              'That is unit PX4 applied to a surface. One light direction for the whole set, decided before the first edge tile.'],
+          exercises: [6, 7]
+        },
+        {
+          h: 'Tilemap layers',
+          p: ['Layer ▸ New ▸ New Tilemap Layer makes a layer that holds tile indices rather than pixels, with its own tileset beside the palette.',
+              'Draw on it and you place tiles; drawing a new pattern adds a tile to the set. The canvas still looks like pixels — the layer is what has changed.'],
+          exercises: [7, 8]
+        },
+        {
+          h: 'Edit once, change everywhere',
+          p: ['Open a tile from the tileset, change three pixels, and every placement of it on the map changes with it. That is the whole reason a tilemap layer exists.',
+              'It is also the trap: a tile you tweak to suit one spot moves everywhere it appears. If a spot needs its own version, make it its own tile.'],
+          exercises: [7, 8]
+        }
+      ]
+    },
+    {
+      id: 'px7-l3', unit: 'PX7', title: 'Making a scene',
+      icon: '🏞️', criteria: ['PX7.depth', 'PX7.deco'],
+      summary: 'Depth from contrast, and how to scatter things so they do not look scattered.',
+      cards: [
+        {
+          h: 'Depth is contrast, not outline',
+          p: ['Distance flattens. The far layer loses contrast and saturation and moves towards the sky colour; the near layer keeps the full range and the darkest dark.',
+              'Three copies of one shape, three contrast levels, and the eye reads three distances without a single line of perspective.'],
+          art: {
+            caption: 'One shape at three distances — nothing changes but contrast',
+            cell: 11,
+            rows: [
+              '..dd.......bb.......aa...',
+              '.dddd.....bbbb.....aaaa..',
+              'dddddd...bbbbbb...aaaaaa.',
+              '.dddd.....bbbb.....aaaa..',
+              '..dd.......bb.......aa...',
+              '..dd.......bb.......aa...',
+              '..dd.......bb.......aa...'
+            ]
+          },
+          exercises: [8, 9]
+        },
+        {
+          h: 'Detail goes where the player is',
+          p: ['The background gets shapes and no texture. The midground gets texture. The foreground gets the pixel-level work and the only hard outlines in the scene.',
+              'A background drawn as carefully as the foreground competes with it, and the player loses track of what they can walk on.'],
+          exercises: [9]
+        },
+        {
+          h: 'Scatter, do not sprinkle',
+          p: ['Decorative tiles placed one in every few look sown by a machine. Put them in uneven clumps with empty stretches between, and leave more empty than you want to.',
+              'Two or three together, then nothing for a screen width. That reads as a place rather than as a texture.'],
+          exercises: [9, 10]
+        },
+        {
+          h: 'Judge it at 100%, whole',
+          p: ['A scene is looked at all at once, from a distance, while something is happening in it. Zoom out, look at the whole screen, and check that the ground still reads as ground.',
+              'Anything you can only see by zooming in is not paying for the time it took.'],
+          exercises: [10]
+        }
+      ]
+    }
   ];
 
   function lesson(id) {

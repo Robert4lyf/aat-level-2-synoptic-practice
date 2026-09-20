@@ -654,6 +654,109 @@
         'Turn on "JSON Data" and pick Array or Hash. Tags are included, which is how an engine finds your run cycle by name.',
         'Watch the Trim and Border Padding options. Trimming makes cells different sizes, which most engines cannot use without the JSON.'
       ] }
+,
+
+    /* ── PX7 · Tiles and environments ────────────────────────────────────── */
+    { unit: 'PX7', n: 1, stage: 1, title: 'One tile, tiled',
+      brief: 'Draw a 16×16 grass tile. Then fill a 64×64 canvas with nine copies of it and look at the result rather than at the tile.',
+      canvas: '16×16 tile, 64×64 test · 3 colours · 20 minutes',
+      criteria: ['PX7.grid', 'PX7.seam'],
+      check: 'In the tiled field you cannot point at where one tile ends and the next begins.',
+      hints: [
+        'Set View ▸ Grid ▸ Grid Settings to 16×16 before you start, and leave the grid on.',
+        'Keep the texture quiet — a few single pixels a step either side of the base colour, no shapes.',
+        'Copy the tile and paste it eight times into a 64×64 file. Judging a tile on its own tells you nothing about how it repeats.'
+      ] },
+    { unit: 'PX7', n: 2, stage: 1, title: 'Kill the lattice',
+      brief: 'Take a tile with a dark border — draw one if you do not have one — and rework it so the border is gone and the surface still reads.',
+      canvas: '16×16 · 3 colours · 15 minutes',
+      criteria: ['PX7.seam', 'PX7.grid'],
+      check: 'Tiled, there is no grid of lines across the field, and the surface still reads as the material it is meant to be.',
+      hints: [
+        'The border is doing two jobs: marking the tile and describing the material. Only the second one is wanted.',
+        'Replace it with texture that runs off all four edges rather than stopping at them.',
+        'If the material genuinely needs edges — bricks, tiles, planks — offset them so they do not line up with the tile boundary.'
+      ] },
+    { unit: 'PX7', n: 3, stage: 1, title: 'Draw across the seam',
+      brief: 'Turn on Tiled Mode in both axes and draw a stone tile entirely inside that view, letting strokes run off one edge and back in the other.',
+      canvas: '16×16 · 4 colours · 20 minutes',
+      criteria: ['PX7.seam'],
+      check: 'Every stroke that leaves an edge continues correctly on the opposite one, and you did not have to fix the wrap afterwards.',
+      hints: [
+        'View ▸ Tiled Mode ▸ Tiled in Both Axes. The canvas repeats around itself while you work.',
+        'Zoom out far enough to see four copies at once. That is the view to judge in.',
+        'Start a crack near one edge on purpose and take it off the canvas — then find where it re-enters and carry it on.'
+      ] },
+    { unit: 'PX7', n: 4, stage: 2, title: 'Nothing to land on',
+      brief: 'Draw a 16×16 fill tile deliberately boring: texture with no landmark in it anywhere.',
+      canvas: '16×16 · 3 colours · 15 minutes',
+      criteria: ['PX7.repeat'],
+      check: 'Tiled across a screen, no single spot pulls the eye, and you cannot count the tiles by finding the same mark repeating.',
+      hints: [
+        'A landmark is anything with a shape: a flower, a bright stone, a crack with a direction.',
+        'Keep every texture pixel within one step of the base value. Contrast is what makes a mark a landmark.',
+        'Tile it, then defocus your eyes. Whatever you still see is the thing to remove.'
+      ] },
+    { unit: 'PX7', n: 5, stage: 2, title: 'Edges and corners',
+      brief: 'Build a nine-tile grass-on-dirt set — one fill, four edges, four outer corners — and assemble it into a rectangular patch.',
+      canvas: '16×16 tiles, 9 of them · 5 colours · 45 minutes',
+      criteria: ['PX7.tileset', 'PX7.grid'],
+      check: 'The patch has a continuous lit lip along its top and a continuous dark edge underneath, with no break where two tiles meet.',
+      hints: [
+        'Draw the top edge tile first. Every other edge is that one rotated or reworked, and it sets the thickness of the transition.',
+        'A corner tile is two edges meeting — the same lip, turning. Draw it from your edge tiles rather than from scratch.',
+        'Check the set by butting each pair together at 100%. A transition that steps by a pixel between neighbours shows up immediately.'
+      ] },
+    { unit: 'PX7', n: 6, stage: 2, title: 'Inner corners',
+      brief: 'Add the four inner corners to your set and build a shape that needs them — an L, or a patch with a bite out of it.',
+      canvas: '16×16 tiles, 13 of them · 5 colours · 35 minutes',
+      criteria: ['PX7.tileset'],
+      check: 'The L-shape has no gap or doubled edge at the concave corner, and the transition is the same thickness there as anywhere else.',
+      hints: [
+        'An inner corner is mostly fill with the transition cutting across one corner of it — the opposite of an outer corner.',
+        'The thing that goes wrong is thickness: the diagonal run is longer, so the same number of pixels looks thinner.',
+        'Build the L on paper first, marking which of the thirteen tiles goes in each cell. It is faster than discovering the missing one halfway through.'
+      ] },
+    { unit: 'PX7', n: 7, stage: 2, title: 'Paint with a tilemap layer',
+      brief: 'Put your set on a tilemap layer, paint a small map with it, then edit one tile in the tileset and watch every placement change.',
+      canvas: '160×160 map · 20 minutes',
+      criteria: ['PX7.tilemap'],
+      check: 'The map is made of tile references rather than pasted pixels, and a three-pixel edit to the fill tile changed everywhere it appears.',
+      hints: [
+        'Layer ▸ New ▸ New Tilemap Layer, and set its grid to your tile size.',
+        'The tileset panel sits beside the palette. Drawing a pattern that is not in it yet adds a tile.',
+        'If an edit only changed one spot, you pasted pixels rather than placing a tile. Check which layer you are drawing on.'
+      ] },
+    { unit: 'PX7', n: 8, stage: 3, title: 'A platform set',
+      brief: 'Three tiles: a platform top, a middle that repeats downward, and an end cap. Build a floating platform and a ledge from them.',
+      canvas: '16×16 tiles, 3 of them · 5 colours · 40 minutes',
+      criteria: ['PX7.tileset', 'PX7.tilemap', 'PX7.depth'],
+      check: 'The top reads as walkable at 100%, the middle repeats downward without banding, and the end cap closes the shape without looking cut off.',
+      hints: [
+        'The top tile is the only one a player reads while moving. Give it the lit lip and the occlusion line beneath it, and keep the middle plain.',
+        'A middle tile repeated four times is where banding shows. Vary it within one value step, or it stripes.',
+        'The end cap is the top tile turned through ninety degrees more often than it is a new drawing.'
+      ] },
+    { unit: 'PX7', n: 9, stage: 3, title: 'Three distances',
+      brief: 'A 160×120 scene in three layers: background, midground and foreground, separated by contrast and detail alone.',
+      canvas: '160×120 · 8 colours · 60 minutes',
+      criteria: ['PX7.depth', 'PX7.deco'],
+      check: 'Squinting, the three layers still separate, and the darkest and lightest pixels in the scene are both in the foreground.',
+      hints: [
+        'Give the background no colour the foreground does not also have, only lighter and flatter versions of them.',
+        'Outlines belong to the foreground only. An outlined background object jumps forward however pale it is.',
+        'Put the decorative tiles in uneven clumps — two or three together, then a long empty stretch.'
+      ] },
+    { unit: 'PX7', n: 10, stage: 3, title: 'A whole screen',
+      brief: 'One 320×180 screen: your terrain set on a tilemap layer, a platform or two, decorative tiles, three distances, one light direction throughout.',
+      canvas: '320×180 · 10 colours · 90 minutes',
+      criteria: ['PX7.grid', 'PX7.seam', 'PX7.repeat', 'PX7.tileset', 'PX7.tilemap', 'PX7.depth', 'PX7.deco'],
+      check: 'At 100%, looked at for a second, it reads as a place: the ground is obviously walkable, the background obviously is not, and no grid of repeated marks shows anywhere.',
+      hints: [
+        'Block the whole screen with flat colour first — where the ground is, where the sky is, where the player would stand. Tiles come after that.',
+        'The light direction has to be the same for the terrain edges, the platforms and the decorations. Decide it once and write it down.',
+        'Finish by taking every decoration out and putting half of them back. A first pass almost always over-populates.'
+      ] }
   ];
 
   function forUnit(unitId) {

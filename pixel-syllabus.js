@@ -32,8 +32,8 @@
   'use strict';
 
   /* Strands. T is the tool and the file, D is drawing, C is colour and light,
-     R is reading — how the thing looks to someone who is not you — and A is
-     animation. A criterion belongs to exactly one strand, and its id carries
+     R is reading — how the thing looks to someone who is not you, A is
+     animation, and E is the environment a sprite stands in. A criterion belongs to exactly one strand, and its id carries
      the unit rather than the strand, because the units are what a reader
      navigates. */
   var STRANDS = {
@@ -41,7 +41,8 @@
     D: { name: 'Drawing', desc: 'Where the pixels go' },
     C: { name: 'Colour', desc: 'Value, hue and light' },
     R: { name: 'Reading', desc: 'What someone else sees' },
-    A: { name: 'Animation', desc: 'What happens over time' }
+    A: { name: 'Animation', desc: 'What happens over time' },
+    E: { name: 'Environments', desc: 'What the world is built out of' }
   };
 
   /* stage is rough difficulty: 1 is a first sprite, 2 is someone with a few
@@ -132,7 +133,26 @@
     { id: 'PX6.cycle',   strand: 'A', stage: 3, unit: 'PX6',
       text: 'Build a walk cycle from its key poses, and keep the contact frames doing the work' },
     { id: 'PX6.export',  strand: 'A', stage: 2, unit: 'PX6',
-      text: 'Export a spritesheet with a frame order, a layout and a JSON the engine can read' }
+      text: 'Export a spritesheet with a frame order, a layout and a JSON the engine can read' },
+
+    /* ── PX7 · Tiles and environments ────────────────────────────────────
+       The first six units make a sprite. None of them make the thing a sprite
+       stands on, and a tile is not simply a small sprite: it is one whose four
+       edges have to agree with their neighbours, including with itself. */
+    { id: 'PX7.grid',    strand: 'E', stage: 1, unit: 'PX7',
+      text: 'Set a tile size, work to that grid, and keep every canvas a whole number of tiles' },
+    { id: 'PX7.seam',    strand: 'E', stage: 2, unit: 'PX7',
+      text: 'Draw a tile that repeats without a visible seam, testing it tiled rather than on its own' },
+    { id: 'PX7.repeat',  strand: 'E', stage: 2, unit: 'PX7',
+      text: 'Spot a repeated feature — a landmark that turns a field of tiles into a grid — and move it out' },
+    { id: 'PX7.tileset', strand: 'E', stage: 2, unit: 'PX7',
+      text: 'Build a terrain set: one fill, four edges, and the corners that let it meet another terrain' },
+    { id: 'PX7.tilemap', strand: 'E', stage: 2, unit: 'PX7',
+      text: 'Use an Aseprite tilemap layer and its tileset, so editing one tile changes every placement' },
+    { id: 'PX7.depth',   strand: 'E', stage: 3, unit: 'PX7',
+      text: 'Separate background, midground and foreground by contrast and detail rather than by outline' },
+    { id: 'PX7.deco',    strand: 'E', stage: 3, unit: 'PX7',
+      text: 'Break a field of tiles with decorative tiles placed in clumps rather than evenly' }
   ];
 
   /* Units, in teaching order. The order of this array IS the teaching order,
@@ -150,7 +170,9 @@
     { id: 'PX5', title: 'Reading at size',           strand: 'R', icon: '👁️', ready: true,
       blurb: 'A sprite is read in a fifth of a second, at 1:1, next to twenty others.' },
     { id: 'PX6', title: 'Animation',                 strand: 'A', icon: '🏃', ready: true,
-      blurb: 'Frames, timing and the two or three poses that carry the whole motion.' }
+      blurb: 'Frames, timing and the two or three poses that carry the whole motion.' },
+    { id: 'PX7', title: 'Tiles and environments',    strand: 'E', icon: '🧱', ready: true,
+      blurb: 'A tile is a sprite whose four edges have to agree with their neighbours — and with itself.' }
   ];
 
   function criteriaFor(unitId) {
