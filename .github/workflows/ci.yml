@@ -159,6 +159,8 @@ jobs:
         run: npm run check:guitar-handedness
       - name: Check the pixel art course, its challenges and its wiring
         run: npm run check:pixel
+      - name: Check no pixel art term is used before it is taught
+        run: npm run check:pixel-prereq
       - name: Check a subject waits for its stylesheet before mounting
         run: npm run check:subject-assets
       - name: Check the service worker's lazy cache survives a version bump

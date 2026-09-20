@@ -105,7 +105,7 @@
          the reason given on the guitar entry above. */
       id: 'pixel', name: 'Pixel Art', short: 'Pixel Art', flag: '🎨', color: '#c2255c',
       desc: 'Drawing and animating pixel art in Aseprite',
-      meta: '7 units · 21 lessons · 70 drawing challenges',
+      meta: '9 units · 27 lessons · 90 drawing challenges',
       tabs: ['home'],
       ui: 'PIXEL_UI',
       assets: ['pixel-syllabus.js', 'pixel-learn-data.js', 'pixel-challenge-data.js', 'pixel-ui.js'],

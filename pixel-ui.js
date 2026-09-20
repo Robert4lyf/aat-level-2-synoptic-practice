@@ -251,7 +251,7 @@
   function unitsHtml() {
     var out = '<div class="px-intro">' +
       '<h2 class="px-intro-h">Pixel art, in Aseprite</h2>' +
-      '<p class="px-intro-p">Seven units. Each one is a few short lessons and ten drawing ' +
+      '<p class="px-intro-p">Nine units. Each one is a few short lessons and ten drawing ' +
         'challenges that get harder as they go. Nothing here is marked — the challenges ' +
         'say what finished looks like, and you decide when you are there.</p>' +
     '</div>';
