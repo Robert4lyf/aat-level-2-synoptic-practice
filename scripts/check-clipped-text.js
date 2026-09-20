@@ -50,7 +50,7 @@ catch (e) {
   process.exit(0);
 }
 
-const SUBJECTS = ['aat1', 'aat', 'aat3', 'french', 'lsf', 'code-route', 'guitar'];
+const SUBJECTS = ['aat1', 'aat', 'aat3', 'french', 'lsf', 'code-route', 'guitar', 'pixel'];
 const WIDTHS = [320, 390];
 
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css',

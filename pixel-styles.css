@@ -1,0 +1,292 @@
+/* Pixel art module — screen styles.
+ *
+ * Scoped entirely under body[data-subject="pixel"], so nothing here can reach
+ * the other seven subjects.
+ *
+ * WHY THIS SHIPS WITH THE RENDERER RATHER THAN THE UI SHELL
+ *
+ * pixel-ui.js draws its figures as bare <rect> elements with literal fills and
+ * no other colour of its own: the background behind a transparent pixel, the
+ * grid lines between pixels and the border round a figure all come from this
+ * file. Without it a figure is not a plainer figure — it is a block of colour
+ * with nothing to count against, on a page with no panels. Renderer and
+ * stylesheet are one deliverable.
+ *
+ * THE ART COLOURS ARE NOT HERE, and that is deliberate. Everything in this
+ * file themes; the pixels inside a figure do not, because a figure teaching
+ * hue shifting is wrong if the theme moves its hues. Those live in PAL in
+ * pixel-ui.js. What this file owns is the surface the art sits on.
+ *
+ * THEME DISCIPLINE, done by hand
+ *
+ * scripts/check-theme-tokens.js reads only styles.css, so this file gets none
+ * of that protection. Every token is therefore declared in full on the light
+ * selector and redeclared in full on the dark one — no aliases to :root, and
+ * nothing whose only definition sits inside a dark block.
+ */
+
+body[data-subject="pixel"] {
+  --px-ink:        #1f2430;   /* body text */
+  --px-dim:        #656b7a;   /* summaries, captions, metadata */
+  --px-panel:      #ffffff;   /* card surface */
+  --px-panel-2:    #f5f4f8;   /* inset surface: hints, key caps, spec lines */
+  --px-line:       #e0dfe8;   /* card borders and rules */
+  --px-accent:     #c2255c;   /* the subject colour: buttons, markers, progress */
+  --px-accent-ink: #ffffff;   /* text on the accent */
+  --px-accent-bg:  rgba(194,37,92,.08);
+  /* The figure surface. It is a CANVAS, not a panel, and it stays light in
+     both themes — see the note under the dark block. */
+  --px-canvas:     #f4f4f7;   /* what a transparent pixel shows */
+  --px-grid:       rgba(21,19,28,.16);
+  --px-edge:       #c8c7d2;   /* the border round a figure */
+  --px-ok:         #157a4a;   /* a completed challenge */
+}
+
+body.dark[data-subject="pixel"] {
+  --px-ink:        #e7e7ee;
+  --px-dim:        #a0a0b0;
+  --px-panel:      #191a22;
+  --px-panel-2:    #22232d;
+  --px-line:       #32333f;
+  --px-accent:     #f472b6;
+  --px-accent-ink: #1a1018;
+  --px-accent-bg:  rgba(244,114,182,.12);
+  /* NOT darkened to match the page. The figures draw with literal colours —
+     a sprite's outline is near-black because that is what an outline is — and
+     on a near-black canvas a lit ball loses its whole shadow side and reads as
+     a bite taken out of it. So the canvas stays light and is only dimmed, the
+     way the artboard in an editor does not invert with the interface. */
+  --px-canvas:     #c6c6d0;
+  --px-grid:       rgba(21,19,28,.20);
+  --px-edge:       #7a7a88;
+  --px-ok:         #4ade80;
+}
+
+/* ── Frame ────────────────────────────────────────────────────────────────
+   The wrap exists so a phone gets a gutter the shared .container does not
+   always give a self-rendering subject, and so the bottom of the last card
+   clears the home indicator. */
+body[data-subject="pixel"] .px-wrap {
+  padding-bottom: 28px;
+  color: var(--px-ink);
+}
+
+body[data-subject="pixel"] .px-panel {
+  background: var(--px-panel);
+  border: 1px solid var(--px-line);
+  border-radius: 12px;
+  padding: 16px;
+  margin: 12px 0;
+}
+
+body[data-subject="pixel"] .px-intro { margin: 14px 0 4px; }
+body[data-subject="pixel"] .px-intro-h {
+  font-size: 1.15rem; font-weight: 700; margin: 0 0 4px; color: var(--px-ink);
+}
+body[data-subject="pixel"] .px-intro-p {
+  margin: 0; color: var(--px-dim); font-size: .92rem; line-height: 1.5;
+}
+
+/* ── The unit list ────────────────────────────────────────────────────────── */
+body[data-subject="pixel"] .px-unit-head {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 6px;
+}
+body[data-subject="pixel"] .px-unit-icon { font-size: 1.3rem; line-height: 1; }
+body[data-subject="pixel"] .px-unit-title { font-size: 1.02rem; font-weight: 700; }
+body[data-subject="pixel"] .px-unit-blurb {
+  margin: 0 0 8px; color: var(--px-dim); font-size: .9rem; line-height: 1.5;
+}
+body[data-subject="pixel"] .px-unit-meta {
+  margin: 0 0 10px; color: var(--px-dim); font-size: .8rem;
+  text-transform: uppercase; letter-spacing: .04em;
+}
+body[data-subject="pixel"] .px-empty {
+  margin: 0; color: var(--px-dim); font-size: .9rem;
+}
+
+body[data-subject="pixel"] .px-lessonlist { list-style: none; margin: 0; padding: 0; }
+body[data-subject="pixel"] .px-lessonbtn {
+  display: flex; align-items: center; gap: 10px; width: 100%;
+  background: none; border: 0; border-top: 1px solid var(--px-line);
+  padding: 11px 2px; text-align: left; cursor: pointer; color: inherit;
+  font: inherit; min-height: 44px;
+}
+body[data-subject="pixel"] .px-lessonbtn:hover { background: var(--px-accent-bg); }
+body[data-subject="pixel"] .px-lesson-icon { font-size: 1.1rem; width: 1.5rem; text-align: center; }
+body[data-subject="pixel"] .px-lesson-text { flex: 1; min-width: 0; }
+body[data-subject="pixel"] .px-lesson-title { display: block; font-weight: 600; font-size: .95rem; }
+body[data-subject="pixel"] .px-lesson-sum {
+  display: block; color: var(--px-dim); font-size: .82rem; line-height: 1.4; margin-top: 2px;
+}
+body[data-subject="pixel"] .px-lesson-state { color: var(--px-ok); font-weight: 700; width: 1rem; }
+
+body[data-subject="pixel"] .px-chalbtn {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  width: 100%; margin-top: 12px; padding: 12px 14px; min-height: 44px;
+  background: var(--px-accent); color: var(--px-accent-ink);
+  border: 0; border-radius: 10px; font: inherit; font-weight: 600; cursor: pointer;
+}
+body[data-subject="pixel"] .px-chal-count {
+  background: rgba(255,255,255,.22); border-radius: 999px; padding: 2px 9px;
+  font-size: .82rem; font-variant-numeric: tabular-nums;
+}
+
+/* ── The lesson player ────────────────────────────────────────────────────── */
+body[data-subject="pixel"] .px-lessonbar {
+  display: flex; align-items: center; gap: 10px; margin: 12px 0 0;
+}
+body[data-subject="pixel"] .px-lessonbar-title {
+  flex: 1; min-width: 0; font-weight: 600; font-size: .95rem;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+body[data-subject="pixel"] .px-lessonbar-count {
+  color: var(--px-dim); font-size: .85rem; font-variant-numeric: tabular-nums;
+}
+
+body[data-subject="pixel"] .px-btn {
+  background: var(--px-panel-2); color: var(--px-ink);
+  border: 1px solid var(--px-line); border-radius: 9px;
+  padding: 9px 13px; min-height: 40px; font: inherit; font-size: .88rem; cursor: pointer;
+}
+body[data-subject="pixel"] .px-btn:disabled { opacity: .45; cursor: default; }
+body[data-subject="pixel"] .px-next {
+  background: var(--px-accent); color: var(--px-accent-ink);
+  border: 0; border-radius: 9px; padding: 10px 20px; min-height: 44px;
+  font: inherit; font-weight: 600; cursor: pointer;
+}
+
+body[data-subject="pixel"] .px-dots { display: flex; gap: 5px; margin-bottom: 10px; }
+body[data-subject="pixel"] .px-dot {
+  width: 7px; height: 7px; border-radius: 2px; background: var(--px-line);
+}
+body[data-subject="pixel"] .px-dot.is-past { background: var(--px-dim); }
+body[data-subject="pixel"] .px-dot.is-here { background: var(--px-accent); }
+
+body[data-subject="pixel"] .px-h { font-size: 1.05rem; font-weight: 700; margin: 0 0 8px; }
+body[data-subject="pixel"] .px-p { margin: 0 0 10px; font-size: .95rem; line-height: 1.58; }
+
+body[data-subject="pixel"] .px-cardnav {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+}
+
+/* ── Figures ──────────────────────────────────────────────────────────────
+   A wide figure scrolls inside itself. The page body must never scroll
+   sideways, which on a phone is the difference between a usable diagram and a
+   broken layout. */
+body[data-subject="pixel"] .px-fig {
+  overflow-x: auto; max-width: 100%; margin: 12px 0;
+  -webkit-overflow-scrolling: touch;
+}
+body[data-subject="pixel"] .px-figrow {
+  display: flex; flex-wrap: wrap; gap: 14px; margin: 12px 0;
+}
+body[data-subject="pixel"] .px-figbox {
+  flex: 1 1 140px; min-width: 0; margin: 0;
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+}
+body[data-subject="pixel"] .px-figlabel {
+  margin-top: 5px; color: var(--px-dim); font-size: .78rem; line-height: 1.35;
+}
+body[data-subject="pixel"] .px-caption {
+  margin: 5px 0 0; color: var(--px-dim); font-size: .8rem;
+}
+body[data-subject="pixel"] .px-svg { display: block; height: auto; max-width: 100%; }
+body[data-subject="pixel"] .px-svg-bg   { fill: var(--px-canvas); }
+body[data-subject="pixel"] .px-svg-grid { stroke: var(--px-grid); stroke-width: 1; fill: none; }
+body[data-subject="pixel"] .px-svg-edge { stroke: var(--px-edge); stroke-width: 1; fill: none; }
+
+/* ── The Aseprite shortcut table ──────────────────────────────────────────── */
+body[data-subject="pixel"] .px-keys {
+  margin: 12px 0 4px; padding: 0;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 6px;
+}
+body[data-subject="pixel"] .px-key {
+  display: flex; align-items: baseline; gap: 8px;
+  background: var(--px-panel-2); border-radius: 7px; padding: 6px 9px;
+}
+body[data-subject="pixel"] .px-keycap {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .8rem; font-weight: 700; color: var(--px-accent); white-space: nowrap;
+}
+body[data-subject="pixel"] .px-keyname {
+  margin: 0; font-size: .82rem; color: var(--px-dim);
+}
+
+/* ── The link from a card to its challenges ───────────────────────────────── */
+body[data-subject="pixel"] .px-xref { margin: 12px 0 0; }
+body[data-subject="pixel"] .px-xref-btn {
+  background: var(--px-accent-bg); color: var(--px-accent);
+  border: 1px dashed var(--px-accent); border-radius: 9px;
+  padding: 9px 12px; min-height: 40px; width: 100%; text-align: left;
+  font: inherit; font-size: .86rem; font-weight: 600; cursor: pointer;
+}
+
+/* ── The challenges screen ────────────────────────────────────────────────── */
+body[data-subject="pixel"] .px-chalhead { margin-bottom: 8px; }
+body[data-subject="pixel"] .px-progress {
+  height: 6px; border-radius: 3px; background: var(--px-line); overflow: hidden; margin-top: 10px;
+}
+body[data-subject="pixel"] .px-progress-bar {
+  display: block; height: 100%; background: var(--px-accent);
+}
+
+body[data-subject="pixel"] .px-chal {
+  background: var(--px-panel); border: 1px solid var(--px-line);
+  border-radius: 11px; margin: 8px 0; overflow: hidden;
+}
+body[data-subject="pixel"] .px-chal.is-open { border-color: var(--px-accent); }
+body[data-subject="pixel"] .px-chal.is-done .px-chal-n {
+  background: var(--px-ok); color: var(--px-accent-ink);
+}
+body[data-subject="pixel"] .px-chal-head {
+  display: flex; align-items: center; gap: 11px; width: 100%;
+  background: none; border: 0; padding: 12px 14px; min-height: 48px;
+  text-align: left; font: inherit; color: inherit; cursor: pointer;
+}
+body[data-subject="pixel"] .px-chal-n {
+  flex: 0 0 auto; width: 26px; height: 26px; border-radius: 7px;
+  background: var(--px-panel-2); color: var(--px-dim);
+  display: flex; align-items: center; justify-content: center;
+  font-size: .82rem; font-weight: 700; font-variant-numeric: tabular-nums;
+}
+body[data-subject="pixel"] .px-chal-title { flex: 1; min-width: 0; font-weight: 600; font-size: .93rem; }
+body[data-subject="pixel"] .px-chal-state { color: var(--px-ok); font-weight: 700; }
+
+body[data-subject="pixel"] .px-chal-body { padding: 0 14px 14px; }
+body[data-subject="pixel"] .px-chal-brief { margin: 0 0 8px; font-size: .92rem; line-height: 1.55; }
+body[data-subject="pixel"] .px-chal-spec {
+  margin: 0 0 10px; padding: 7px 10px; border-radius: 7px;
+  background: var(--px-panel-2); color: var(--px-dim);
+  font-size: .8rem; letter-spacing: .02em;
+}
+body[data-subject="pixel"] .px-chal-check {
+  margin: 0 0 12px; font-size: .88rem; line-height: 1.5;
+  border-left: 3px solid var(--px-ok); padding-left: 10px;
+}
+body[data-subject="pixel"] .px-chal-checklabel {
+  display: block; color: var(--px-ok); font-size: .72rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .06em;
+}
+
+body[data-subject="pixel"] .px-hints { margin-bottom: 12px; }
+body[data-subject="pixel"] .px-hint {
+  margin: 0 0 7px; padding: 9px 11px; border-radius: 8px;
+  background: var(--px-panel-2); font-size: .87rem; line-height: 1.5;
+}
+body[data-subject="pixel"] .px-hint-n {
+  display: block; color: var(--px-dim); font-size: .72rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .06em; margin-bottom: 2px;
+}
+body[data-subject="pixel"] .px-hintbtn {
+  width: 100%; background: none; color: var(--px-accent);
+  border: 1px solid var(--px-line); border-radius: 9px;
+  padding: 10px; min-height: 44px; font: inherit; font-size: .85rem; font-weight: 600; cursor: pointer;
+}
+body[data-subject="pixel"] .px-donebtn {
+  width: 100%; background: var(--px-accent); color: var(--px-accent-ink);
+  border: 0; border-radius: 9px; padding: 11px; min-height: 44px;
+  font: inherit; font-size: .9rem; font-weight: 600; cursor: pointer;
+}
+body[data-subject="pixel"] .px-chal.is-done .px-donebtn {
+  background: var(--px-panel-2); color: var(--px-ok);
+}

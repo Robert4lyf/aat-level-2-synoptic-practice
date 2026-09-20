@@ -3,11 +3,12 @@
    Bump CACHE_VERSION whenever you want to force a clean refresh of cached files. */
 'use strict';
 
-var CACHE_VERSION = 'aat-l2-v253';
+var CACHE_VERSION = 'aat-l2-v254';
 
-/* Guitar's files are cached lazily, on first open, rather than precached with
-   everything else — its engine, renderer, audio and stylesheet are dead weight
-   in the offline install of somebody who only studies AAT.
+/* Guitar's and pixel art's files are cached lazily, on first open, rather than
+   precached with everything else — the guitar's engine, renderer, audio and
+   stylesheet, and pixel art's course, challenge bank and stylesheet, are dead
+   weight in the offline install of somebody who only studies AAT.
  *
  * They go in a SEPARATE, UNVERSIONED cache, and that detail is load-bearing.
  * The activate handler below deletes every cache whose key is not the current
@@ -21,7 +22,10 @@ var CACHE_VERSION = 'aat-l2-v253';
  * that a complete learner-facing module is exposed in the subject picker. */
 var LAZY_CACHE = 'guitar-lazy-v1';
 var KEEP_CACHES = [LAZY_CACHE];
-var LAZY_PATTERN = /\/guitar-[a-z-]+\.(js|css)$/;
+/* One cache for both lazy subjects. Its name is guitar's because renaming it
+   would orphan every existing reader's copy — the name is a storage key, not a
+   description, and the sweep exclusion above is what it is really for. */
+var LAZY_PATTERN = /\/(guitar|pixel)-[a-z-]+\.(js|css)$/;
 
 /* Course content — question banks, lessons, syllabus spines — for the
    precached subjects. Guitar's network-first lesson (see the long comment on

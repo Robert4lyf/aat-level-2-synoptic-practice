@@ -86,6 +86,7 @@ const JOURNEYS = [
   { id: 'aat3',   into: '[data-a3="openunit"]', what: 'a unit, then a lesson',
     then: '[data-a3="open"]', homeIsLanding: true },
   { id: 'guitar', into: '[data-lesson]',        what: 'a lesson', homeIsLanding: true },
+  { id: 'pixel',  into: '[data-lesson]',        what: 'a lesson', homeIsLanding: true },
   /* Level 2 is the control: it does not render itself and its Home button has
      always worked, so a failure here is a fault in this check rather than in
      the subject.

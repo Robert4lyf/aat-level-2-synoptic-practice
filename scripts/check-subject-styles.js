@@ -66,6 +66,19 @@ const MODULES = [
     ],
   },
   {
+    /* Pixel art renders its own screens, and its figures carry no colour of
+       their own beyond the art itself — the surface behind a transparent
+       pixel, the grid lines between pixels and the border round a figure all
+       come from its stylesheet. It builds no class names at runtime: the two
+       state classes it toggles are `is-open` and `is-done`, which are outside
+       the prefix and therefore outside this rule. */
+    name: 'Pixel Art',
+    css: 'pixel-styles.css',
+    js: 'pixel-ui.js',
+    prefix: 'px',
+    built: [],
+  },
+  {
     /* CIPS renders its own screens too, so the same rule applies to it. It was
        outside this gate until its quality pass, which is how it had come to
        carry a `.c2-reader-progress` nobody rendered and a `.c2-theme-i` nobody

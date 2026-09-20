@@ -97,6 +97,24 @@
       }
     },
     {
+      /* Pixel art renders itself, on the same terms as the guitar. Its data is
+         a course plus a bank of drawing challenges rather than a question
+         bank, so `activate()` has nothing to hand the shared player — it only
+         clears the globals so any incidental reference stays safe. The
+         stylesheet is injected here rather than linked from index.html, for
+         the reason given on the guitar entry above. */
+      id: 'pixel', name: 'Pixel Art', short: 'Pixel Art', flag: '🎨', color: '#c2255c',
+      desc: 'Drawing and animating pixel art in Aseprite',
+      meta: '6 units · 18 lessons · 60 drawing challenges',
+      tabs: ['home'],
+      ui: 'PIXEL_UI',
+      assets: ['pixel-syllabus.js', 'pixel-learn-data.js', 'pixel-challenge-data.js', 'pixel-ui.js'],
+      styles: 'pixel-styles.css',
+      activate() {
+        window.TOPICS = []; window.ALL_QUESTIONS = []; window.LEARN_PATH = []; window.SKILLS = { defs: [] };
+      }
+    },
+    {
       id: 'code-route', name: 'Code de la Route', short: 'Code de la Route', flag: '🚗', color: '#dc2626',
       desc: 'Préparez votre permis de conduire — théorie et panneaux',
       meta: '80+ questions · 5 leçons · examen officiel',
