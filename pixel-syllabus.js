@@ -152,7 +152,46 @@
     { id: 'PX7.depth',   strand: 'E', stage: 3, unit: 'PX7',
       text: 'Separate background, midground and foreground by contrast and detail rather than by outline' },
     { id: 'PX7.deco',    strand: 'E', stage: 3, unit: 'PX7',
-      text: 'Break a field of tiles with decorative tiles placed in clumps rather than evenly' }
+      text: 'Break a field of tiles with decorative tiles placed in clumps rather than evenly' },
+
+    /* ── PX8 · Proportion, projection and transforms ──────────────────────
+       The first seven units draw things flat and from one angle, and never
+       say how big a head is. This is the unit that was missing when someone
+       asked whether the course covered its ground. */
+    { id: 'PX8.proportion', strand: 'D', stage: 2, unit: 'PX8',
+      text: 'Build a figure on a head count you chose, and hold that count across every pose' },
+    { id: 'PX8.landmark',   strand: 'D', stage: 2, unit: 'PX8',
+      text: 'Place the eyeline, the shoulder line and the waist before any detail goes in' },
+    { id: 'PX8.views',      strand: 'D', stage: 3, unit: 'PX8',
+      text: 'Draw one object top-down, side-on and three-quarter, and keep the three agreeing' },
+    { id: 'PX8.iso',        strand: 'D', stage: 2, unit: 'PX8',
+      text: 'Work on a 2:1 isometric grid: what the ratio means in pixels, and the tile it makes' },
+    { id: 'PX8.isocube',    strand: 'D', stage: 3, unit: 'PX8',
+      text: 'Build a form on that grid whose three faces read as one solid under one light' },
+    { id: 'PX8.transform',  strand: 'T', stage: 2, unit: 'PX8',
+      text: 'Flip, turn by ninety degrees and stamp a selection, knowing which of those lose nothing' },
+    { id: 'PX8.symmetry',   strand: 'T', stage: 2, unit: 'PX8',
+      text: 'Use symmetry mode, then break the symmetry by hand so the result is not a mirror' },
+
+    /* ── PX9 · Effects and shipping ──────────────────────────────────────
+       PX6 gets a character walking. This is what a game actually needs next:
+       the frames that sell a hit, and the file an engine can anchor to. */
+    { id: 'PX9.anticipate', strand: 'A', stage: 2, unit: 'PX9',
+      text: 'Give an action an anticipation frame that moves opposite to the action' },
+    { id: 'PX9.impact',     strand: 'A', stage: 2, unit: 'PX9',
+      text: 'Build the one or two frames that sell a hit, and hold them longer than their neighbours' },
+    { id: 'PX9.smear',      strand: 'A', stage: 3, unit: 'PX9',
+      text: 'Carry fast motion with a smear that spans where the pose was and where it is going' },
+    { id: 'PX9.secondary',  strand: 'A', stage: 3, unit: 'PX9',
+      text: 'Let cloth, hair or a tail lag the body and settle after it has stopped' },
+    { id: 'PX9.particle',   strand: 'A', stage: 2, unit: 'PX9',
+      text: 'Animate a burst that grows and breaks up, rather than one that fades out' },
+    { id: 'PX9.pivot',      strand: 'T', stage: 2, unit: 'PX9',
+      text: 'Give every frame of a sequence one origin an engine can anchor to' },
+    { id: 'PX9.slice',      strand: 'T', stage: 2, unit: 'PX9',
+      text: 'Mark regions with slices, including a nine-slice panel, and export them with the sheet' },
+    { id: 'PX9.density',    strand: 'T', stage: 1, unit: 'PX9',
+      text: 'Keep one pixel density across a project, and scale only by whole numbers' }
   ];
 
   /* Units, in teaching order. The order of this array IS the teaching order,
@@ -172,7 +211,11 @@
     { id: 'PX6', title: 'Animation',                 strand: 'A', icon: '🏃', ready: true,
       blurb: 'Frames, timing and the two or three poses that carry the whole motion.' },
     { id: 'PX7', title: 'Tiles and environments',    strand: 'E', icon: '🧱', ready: true,
-      blurb: 'A tile is a sprite whose four edges have to agree with their neighbours — and with itself.' }
+      blurb: 'A tile is a sprite whose four edges have to agree with their neighbours — and with itself.' },
+    { id: 'PX8', title: 'Proportion and projection',  strand: 'D', icon: '📐', ready: true,
+      blurb: 'How big a head is, what the object looks like from the other side, and moving pixels without wrecking them.' },
+    { id: 'PX9', title: 'Effects and shipping',       strand: 'A', icon: '💥', ready: true,
+      blurb: 'The frames that sell a hit, and the file an engine can actually anchor to.' }
   ];
 
   function criteriaFor(unitId) {

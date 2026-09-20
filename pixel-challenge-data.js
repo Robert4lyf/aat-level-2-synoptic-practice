@@ -88,7 +88,7 @@
       brief: 'Rebuild the apple on three layers: outline, flat colour, and a background colour behind it. Hide and show each one in turn.',
       canvas: '16×16 · 3 colours · 15 minutes',
       criteria: ['PX1.layers'],
-      check: 'Hiding the flat-colour layer leaves a complete outline with nothing missing, and hiding the outline leaves a complete silhouette.',
+      check: 'Hiding the flat-colour layer leaves a complete outline with nothing missing, and hiding the outline leaves a solid shape with no holes in it.',
       hints: [
         'The timeline at the bottom is also the layer stack. The eye icon toggles visibility.',
         'Draw the outline on its own layer FIRST, then make a new layer beneath it for the fill. Filling on the layer below means you can be sloppy under the outline.',
@@ -756,6 +756,211 @@
         'Block the whole screen with flat colour first — where the ground is, where the sky is, where the player would stand. Tiles come after that.',
         'The light direction has to be the same for the terrain edges, the platforms and the decorations. Decide it once and write it down.',
         'Finish by taking every decoration out and putting half of them back. A first pass almost always over-populates.'
+      ] }
+,
+
+    /* ── PX8 · Proportion and projection ─────────────────────────────────── */
+    { unit: 'PX8', n: 1, stage: 1, title: 'Five heads, ticked',
+      brief: 'On a 24×40 canvas, mark five head units of eight pixels on a guide layer, then block a figure that fills them.',
+      canvas: '24×40 · 2 colours · 20 minutes',
+      criteria: ['PX8.proportion'],
+      check: 'The head occupies exactly one unit and the feet land on the last line, with no unit left half empty.',
+      hints: [
+        'Put the five lines down first, on their own layer, in a colour you will delete.',
+        'The hips land at roughly the halfway mark. Get that right and the legs look right by themselves.',
+        'If the figure runs out before the last line, the head is too big for the count you chose — change the count rather than stretching the legs.'
+      ] },
+    { unit: 'PX8', n: 2, stage: 1, title: 'Three lines before anything',
+      brief: 'Draw a 32×48 character, putting down only the eyeline, the shoulder line and the waist first. No detail until all three exist.',
+      canvas: '32×48 · 4 colours · 25 minutes',
+      criteria: ['PX8.landmark', 'PX8.proportion'],
+      check: 'You can point at all three lines in the finished sprite, and the head count matches the one you started with.',
+      hints: [
+        'The eyeline sits lower on the head than people expect — roughly halfway down it, not at the top.',
+        'Shoulders are wider than the head on an adult figure and barely wider on a child. That single choice does most of the characterisation.',
+        'Keep the guide layer. You will need it for the next pose, and that is the point of it.'
+      ] },
+    { unit: 'PX8', n: 3, stage: 1, title: 'Chibi and adult',
+      brief: 'Draw the same character twice: three heads tall and five heads tall. Same colours, same identity.',
+      canvas: '24×24 and 24×40 · 5 colours · 35 minutes',
+      criteria: ['PX8.proportion'],
+      check: 'Both read as the same character, and the short one has fewer parts rather than smaller ones.',
+      hints: [
+        'At three heads there is no neck and no waist. Removing them is the job, not shrinking them.',
+        'The head keeps almost all the identity — hair shape, eye position, hat. Spend the pixels there.',
+        'If the chibi looks like a squashed adult, you scaled instead of redrawing.'
+      ] },
+    { unit: 'PX8', n: 4, stage: 2, title: 'Two views that agree',
+      brief: 'Draw one object — a crate, a mug, a lantern — top-down and side-on, at the same scale.',
+      canvas: '32×32 twice · 5 colours · 30 minutes',
+      criteria: ['PX8.views'],
+      check: 'Measure the object in both: width matches width, and anything visible in both is the same number of pixels across.',
+      hints: [
+        'Write the key measurements down before drawing the second view.',
+        'Draw the two on one canvas with the grid on, so the measurements line up visually rather than by memory.',
+        'Where they disagree, the side-on view is usually the honest one. Fix the top-down to match it.'
+      ] },
+    { unit: 'PX8', n: 5, stage: 2, title: 'The three-quarter view',
+      brief: 'Add a three-quarter view of the same object to the pair you just drew.',
+      canvas: '32×32 · 5 colours · 35 minutes',
+      criteria: ['PX8.views'],
+      check: 'Placed beside the other two, it reads as the same object turned, not as a third design.',
+      hints: [
+        'The three-quarter view borrows its height from the side view and its depth from the top-down. Nothing in it is new.',
+        'Foreshortening at this size is one or two pixels. Resist making it more.',
+        'Draw the silhouette first and compare it against the other two before any detail.'
+      ] },
+    { unit: 'PX8', n: 6, stage: 2, title: 'The 2:1 tile',
+      brief: 'Draw a 16×8 isometric floor tile by hand — runs of two, all four edges — then tile it three by three.',
+      canvas: '16×8 tile · 3 colours · 20 minutes',
+      criteria: ['PX8.iso'],
+      check: 'Tiled, the diamonds interlock with no gap and no overlap, and every edge run is exactly two pixels.',
+      hints: [
+        'The widest row is the full sixteen, and there are two of them — the diamond is even, not pointed at the middle.',
+        'Draw one quarter and mirror it twice; a hand-drawn diamond is almost never symmetrical.',
+        'If tiling leaves gaps, your diamond is nine rows rather than eight. Count them.'
+      ] },
+    { unit: 'PX8', n: 7, stage: 2, title: 'A cube on the grid',
+      brief: 'Build a cube on your tile: top face, two side faces, three distinct values, one light direction.',
+      canvas: '16×20 · 4 colours · 25 minutes',
+      criteria: ['PX8.isocube', 'PX8.iso'],
+      check: 'The three faces are three clearly different values, and it reads as solid rather than as a hexagon.',
+      hints: [
+        'Extend the tile\'s two lower edges straight down and cap them. The vertical edges are vertical — only the top is on the diagonal.',
+        'Top lightest, then the side facing the light, then the other. Do not make the two sides the same value.',
+        'Check it at 100%. If it flattens, the two side values are too close.'
+      ] },
+    { unit: 'PX8', n: 8, stage: 3, title: 'An isometric crate and barrel',
+      brief: 'Two objects on the same isometric grid, standing on a 3×3 tile floor, lit from the same direction.',
+      canvas: '64×64 · 8 colours · 60 minutes',
+      criteria: ['PX8.isocube', 'PX8.iso'],
+      check: 'Both objects sit flat on the tiles, share one light, and the barrel reads as round while the crate reads as square.',
+      hints: [
+        'A barrel is a cylinder on the iso grid: its top is an ellipse matching the tile\'s diamond width, its sides curve in value.',
+        'Objects touch the floor on the tile\'s diamond, not on a horizontal line. Check the contact shadow follows it.',
+        'Draw the crate first. It is the one that proves the grid is right.'
+      ] },
+    { unit: 'PX8', n: 9, stage: 3, title: 'Half the work, twice',
+      brief: 'Build a symmetrical 32×32 object from one quarter using selection, flip and stamp — then break the symmetry by hand.',
+      canvas: '32×32 · 6 colours · 35 minutes',
+      criteria: ['PX8.transform', 'PX8.symmetry'],
+      check: 'The construction was mirrored, and at least a dozen pixels are now deliberately not mirrored.',
+      hints: [
+        'M selects, arrow keys nudge, and the selection stamps where you drop it. Nothing here needs the mouse to be accurate.',
+        'Symmetry mode in the tool options does the same job live while you draw.',
+        'Break it where the light hits, where something is worn, or where a strap sits. Random noise is not asymmetry.'
+      ] },
+    { unit: 'PX8', n: 10, stage: 3, title: 'Rotate, then decide',
+      brief: 'Take a sprite with clean lines, rotate it 45° with the tool, and look at what happened. Then either repair it or redraw it over the result.',
+      canvas: '32×32 · 6 colours · 40 minutes',
+      criteria: ['PX8.transform'],
+      check: 'You can name three specific things the rotation destroyed, and you can say which of repair or redraw was faster and why.',
+      hints: [
+        'Look at the runs first: what was 2,2,2,2 will have become something with no pattern in it.',
+        'Set the rotated copy to low opacity on its own layer and draw over it rather than inside it.',
+        'One-pixel details are simply gone. Decide what they become before you start repairing around them.'
+      ] },
+
+    /* ── PX9 · Effects and shipping ──────────────────────────────────────── */
+    { unit: 'PX9', n: 1, stage: 1, title: 'Density audit',
+      brief: 'Put two sprites you drew at different times side by side at 100%. Work out which has the larger pixels, and redraw one to match the other.',
+      canvas: 'any · 25 minutes',
+      criteria: ['PX9.density'],
+      check: 'Measured against each other, one detail — an eye, an outline, a plank — is the same number of pixels in both.',
+      hints: [
+        'Zoom to 100% and put them touching. The difference is obvious there and invisible at 800%.',
+        'Compare the outline: a one-pixel outline on one sprite and a two-pixel outline on the other is the same defect.',
+        'Match to the smaller density. Adding pixels is drawing; removing them is deciding what goes, which is the useful exercise.'
+      ] },
+    { unit: 'PX9', n: 2, stage: 1, title: 'Wind up, hit, recover',
+      brief: 'Three frames of a simple action — a box being knocked, a lever pulled: one frame moving the wrong way, one at the extreme, one settling.',
+      canvas: '32×32 · 3 frames · 25 minutes',
+      criteria: ['PX9.anticipate', 'PX9.impact'],
+      check: 'Played on loop it reads as a hit rather than a wobble, and the anticipation frame clearly moves opposite to the action.',
+      hints: [
+        'The anticipation is bigger than you think — as far back as the action goes forward.',
+        'Hold the anticipation and the extreme longer than the recovery.',
+        'If it reads as a wobble, the extreme is not extreme enough. Push it past where the object would really go.'
+      ] },
+    { unit: 'PX9', n: 3, stage: 2, title: 'One frame that breaks the rules',
+      brief: 'Add an impact frame to that action: maximum contrast at the contact point, a flash of the lightest colour, a shape that exists for one frame only.',
+      canvas: '32×32 · 4 frames · 25 minutes',
+      criteria: ['PX9.impact'],
+      check: 'Paused on that frame it looks wrong; played at speed it is the frame that sells the hit.',
+      hints: [
+        'Go off-model. Stretch the limb, flatten the object, add a hard white shape that is gone next frame.',
+        'Give it a longer duration than the frames either side — 80–100ms against 50.',
+        'If it does not read, the frames around it are too similar to it. Make them calmer, not it louder.'
+      ] },
+    { unit: 'PX9', n: 4, stage: 2, title: 'The frame you cannot draw',
+      brief: 'Two poses of a swing, far enough apart that the motion snaps. Put one smear frame between them.',
+      canvas: '32×32 · 3 frames · 30 minutes',
+      criteria: ['PX9.smear'],
+      check: 'The smear spans both positions, its leading edge is sharp, and the snap is gone at full speed.',
+      hints: [
+        'Draw the area the pose crossed, not a blurry copy of the pose.',
+        'Leading edge in the sprite\'s own colours; the trail one or two values lighter or darker.',
+        'Check it at the real frame rate. A smear judged frame-by-frame always looks like a mistake.'
+      ] },
+    { unit: 'PX9', n: 5, stage: 2, title: 'A six-frame swing',
+      brief: 'A full sword or club swing: anticipation, smear, impact, and two frames of recovery.',
+      canvas: '48×48 · 6 frames · 60 minutes',
+      criteria: ['PX9.anticipate', 'PX9.impact', 'PX9.smear'],
+      check: 'Each of the four beats is identifiable as its own frame, and the durations are not all the same.',
+      hints: [
+        'Plan the four beats as thumbnails before drawing a single frame properly.',
+        'The body leads the weapon on the wind-up and lags it on the follow-through.',
+        'Two recovery frames is enough. A long recovery reads as tiredness, which may not be what you want.'
+      ] },
+    { unit: 'PX9', n: 6, stage: 2, title: 'Dust on landing',
+      brief: 'A five-frame dust puff under a character landing: low, spreading sideways, breaking up.',
+      canvas: '48×24 · 5 frames · 35 minutes',
+      criteria: ['PX9.particle'],
+      check: 'It spreads outward and comes apart into separate pixels, and no frame uses a part-transparent colour to fade.',
+      hints: [
+        'Dust stays near the ground and moves sideways more than up.',
+        'Frames four and five are mostly gaps. Take pixels away rather than lightening them.',
+        'Asymmetry matters here — a symmetrical puff reads as a graphic rather than as dust.'
+      ] },
+    { unit: 'PX9', n: 7, stage: 3, title: 'The cape arrives late',
+      brief: 'Animate a character stopping, with a cape or tail that lags two frames behind and settles after the body has stopped.',
+      canvas: '32×48 · 8 frames · 60 minutes',
+      criteria: ['PX9.secondary'],
+      check: 'The body is still for the last three frames while the cape is not, and the cape overshoots once before settling.',
+      hints: [
+        'Animate the body all the way through first, then go back and do the cape against it.',
+        'Offset the cape by two frames at the start of the motion and let it run two frames past the end.',
+        'The overshoot is two or three pixels past the resting position, for one frame only.'
+      ] },
+    { unit: 'PX9', n: 8, stage: 3, title: 'A spark burst',
+      brief: 'An eight-frame hit spark: grows for two frames, holds one, breaks into pieces travelling outward, gone.',
+      canvas: '32×32 · 8 frames · 45 minutes',
+      criteria: ['PX9.particle'],
+      check: 'The pieces travel on their own paths rather than all shrinking together, and the last frame is one or two pixels.',
+      hints: [
+        'Plot where each piece goes before drawing: four to six paths, different lengths.',
+        'Fast means wide gaps between frames — a spark can cross half the canvas in one.',
+        'Keep it to two colours. A many-coloured spark looks soft, and this is the sharpest thing in the scene.'
+      ] },
+    { unit: 'PX9', n: 9, stage: 3, title: 'One origin',
+      brief: 'Take a run cycle and give every frame the same anchor point. Prove it by turning onion skinning on for all frames at once.',
+      canvas: '32×32 × 8 frames · 25 minutes',
+      criteria: ['PX9.pivot'],
+      check: 'With every frame onion-skinned together, the anchor point does not move, and the character does not drift sideways across the loop.',
+      hints: [
+        'Mark the origin on its own layer as a single pixel, and keep that layer through the whole cycle.',
+        'For a walk or run, the origin usually sits between the feet at ground level.',
+        'Drift is easiest to see on the first and last frames alone. Compare those two before checking the rest.'
+      ] },
+    { unit: 'PX9', n: 10, stage: 3, title: 'A panel the engine can stretch',
+      brief: 'Draw a nine-slice UI panel, mark its slices in Aseprite, and export the sheet with its JSON. Then check the corners.',
+      canvas: '24×24 panel · 4 colours · 40 minutes',
+      criteria: ['PX9.slice', 'PX9.density'],
+      check: 'The JSON names your slice with its centre bounds, and stretching the panel in any direction leaves the four corners untouched.',
+      hints: [
+        'Sprite ▸ Slices, then set the nine-slice centre on the slice\'s properties. The centre rectangle is what stretches.',
+        'Make the corners plain. A corner with a gradient or a diagonal in it will not survive being butted against a stretched edge.',
+        'Test it by scaling the exported panel by whole numbers only. Anything else reintroduces the density problem from challenge 1.'
       ] }
   ];
 

@@ -49,13 +49,45 @@
         {
           h: 'Pick the size before you pick the subject',
           p: ['Canvas size is the first real decision and the one beginners skip. 16×16 is an inventory item. 32×32 is a character who can have a face. 64×64 is a portrait or a boss.',
-              'Bigger is not safer. A canvas larger than the subject needs fills with detail that adds nothing and takes four times as long to animate.'],
+              'Bigger is not safer. A canvas larger than the subject needs fills with detail that adds nothing and takes four times as long to animate.',
+              'The two below are the same mushroom. The small one gets three shapes; the large one earns spots, a lit rim and a stem with sides.'],
+          art: {
+            caption: 'One subject, 8×8 and 16×16. The second is a redraw, not a resize.',
+            cell: 11,
+            rows: [
+              '...........................',
+              '...........................',
+              '...........................',
+              '...........................',
+              '...........................',
+              '...........................',
+              '...........................',
+              '...........................',
+              '..KKKK.......KKKKKK........',
+              '.K3353K....KK333333KK......',
+              'K333533K..K3335533333K.....',
+              'K333333K.K333555333333K....',
+              '.KWWWWK..K333555333553K....',
+              '..KWWK..K33333333355533K...',
+              '..KWWK..K33553333333333K...',
+              '...KK...K33553333333333K...',
+              '.........KKKKKKKKKKKKKK....',
+              '............KWWWWWWWWK.....',
+              '............KWWWWWWWWK.....',
+              '.............KWWWWWWK......',
+              '.............KWWWWWWK......',
+              '.............KWWWWWWK......',
+              '.............KWWWWWWK......',
+              '..............KKKKKK.......'
+            ]
+          },
           exercises: [1, 6]
         },
         {
           h: 'One pixel, hard edges, full opacity',
           p: ['Four settings decide whether you are drawing pixel art at all: pencil size 1, anti-aliasing off, opacity 100, no blending mode.',
-              'Aseprite ships with all four correct. Any of them changed produces soft edges and half-transparent pixels that look fine zoomed in and turn to mush at 100%.'],
+              'Anti-aliasing is softening the tool adds along an edge by inventing part-transparent pixels. Unit PX5 covers putting it in by hand, where you choose every pixel; you do not want a tool doing it for you.',
+              'Aseprite ships with all four correct. Any of them changed looks fine zoomed in and turns to mush at 100%.'],
           exercises: [1, 2]
         },
         {
@@ -107,13 +139,27 @@
       cards: [
         {
           h: 'Outline up, fill down',
+          art: {
+            caption: 'Outline layer, colour layer, and the two together. The colour runs under the outline.',
+            cell: 11,
+            rows: [
+              '..KKKK.....3333.....KKKK..',
+              '.K....K...333333...K3353K.',
+              'K......K..333333..K333533K',
+              'K......K..333333..K333333K',
+              '.K....K...WWWWWW...KWWWWK.',
+              '..K..K.....WWWW.....KWWK..',
+              '..K..K.....WWWW.....KWWK..',
+              '...KK.......WW.......KK...'
+            ]
+          },
           p: ['Put the outline on its own layer and the flat colour on a layer beneath it. Then you can fill sloppily — past where the outline sits — and nothing shows.',
-              'It also lets you hide the outline to check the silhouette, and move the whole sprite without smearing one part against another.'],
+              'It also lets you hide either one to see what the other is doing on its own, and move the whole sprite without smearing one part against another.'],
           exercises: [5, 8]
         },
         {
           h: 'Two files, two jobs',
-          p: ['The .aseprite file keeps layers, frames, tags and palette. The exported PNG keeps none of that. Save the first with Ctrl+S; make the second with File ▸ Export.',
+          p: ['The .aseprite file keeps your layers, your frames and your palette. The exported PNG keeps none of that. Save the first with Ctrl+S; make the second with File ▸ Export.',
               'Never work on the PNG. Every re-export is free; re-deriving layers from a flattened image is not.'],
           exercises: [7]
         },
@@ -272,8 +318,8 @@
         },
         {
           h: 'Shape before anything inside it',
-          p: ['Block the subject in one flat colour first and make that shape right. Detail cannot rescue a bad silhouette; it only delays your noticing.',
-              'If a one-colour blob does not read as the thing, no amount of shading will make it read. Go back and change the outer shape.'],
+          p: ['Block the subject in one flat colour first and make that outer shape right. The outer shape has a name — the silhouette — and it is what a viewer reads before anything else.',
+              'If a one-colour blob does not read as the thing, no amount of shading will make it read. Go back and change the outline. Unit PX5 turns that into a test you can run on any sprite.'],
           exercises: [9, 10]
         }
       ]
@@ -927,6 +973,315 @@
           p: ['A scene is looked at all at once, from a distance, while something is happening in it. Zoom out, look at the whole screen, and check that the ground still reads as ground.',
               'Anything you can only see by zooming in is not paying for the time it took.'],
           exercises: [10]
+        }
+      ]
+    }
+,
+
+    /* ═══ PX8 · Proportion and projection ═══════════════════════════════ */
+    {
+      id: 'px8-l1', unit: 'PX8', title: 'Proportion and landmarks',
+      icon: '🧍', criteria: ['PX8.proportion', 'PX8.landmark'],
+      summary: 'How big a head is, and the three lines that go down before any detail.',
+      cards: [
+        {
+          h: 'Count in heads',
+          p: ['A figure is measured in head heights. Three heads is a chibi or a mascot; five is a stylised adult; seven or eight is realistic and needs more pixels than most sprites have.',
+              'Pick the count before you draw, and give the head a whole number of pixels — six, seven, eight — so the rest divides cleanly.'],
+          art: {
+            caption: 'Three heads and five heads, ticked off in head units. Same character, different species.',
+            cell: 9,
+            rows: [
+              '.................R....KKKK.....',
+              '......................KKKK.....',
+              '......................KKKK.....',
+              '......................KKKK.....',
+              '......................KKKK.....',
+              '.......................KK......',
+              '.................R...KKKKKK....',
+              '...................K.KKKKKK.K..',
+              '...................K.KKKKKK.K..',
+              '...................K.KKKKKK.K..',
+              '...................K.KKKKKK.K..',
+              '...................K.KKKKKK.K..',
+              'R....KKKK........R.K.KKKKKK.K..',
+              '.....KKKK..........K.KKKKKK.K..',
+              '.....KKKK............KKKKKK....',
+              '.....KKKK............KK..KK....',
+              '.....KKKK............KK..KK....',
+              '......KK.............KK..KK....',
+              'R...KKKKKK.......R...KK..KK....',
+              '..K.KKKKKK.K.........KK..KK....',
+              '..K.KKKKKK.K.........KK..KK....',
+              '..K.KKKKKK.K.........KK..KK....',
+              '..K.KKKKKK.K.........KK..KK....',
+              '....KKKKKK...........KK..KK....',
+              'R...KK..KK.......R...KK..KK....',
+              '....KK..KK...........KK..KK....',
+              '....KK..KK...........KK..KK....',
+              '....KK..KK...........KK..KK....',
+              '....KK..KK...........KK..KK....',
+              '....KK..KK...........KK..KK....'
+            ]
+          },
+          exercises: [1, 3]
+        },
+        {
+          h: 'Three lines before any detail',
+          p: ['Eyeline, shoulder line, waist. Put those three down as single rows of a marker colour on their own layer and the proportions are decided before a single feature exists.',
+              'Everything after that is placing shapes against lines you have already agreed with yourself.'],
+          exercises: [2]
+        },
+        {
+          h: 'The count has to survive the pose',
+          p: ['A character who is five heads standing and four heads running has changed species between animations. Keep the guide layer and check every new pose against it.',
+              'The eyeline is the one that slips. Watch it when the head tilts.'],
+          exercises: [2, 3]
+        },
+        {
+          h: 'Small figures get fewer parts, not smaller parts',
+          p: ['At three heads the body is one shape and the legs are two. There is no room for a neck, a waist or a separate upper arm, so do not draw them thinner — leave them out.',
+              'That is why a chibi reads at 16 pixels and a realistic figure does not.'],
+          exercises: [1, 3]
+        }
+      ]
+    },
+    {
+      id: 'px8-l2', unit: 'PX8', title: 'Three views, and the 2:1 grid',
+      icon: '🧊', criteria: ['PX8.views', 'PX8.iso', 'PX8.isocube'],
+      summary: 'The same object from three angles, and the one ratio isometric pixel art is built on.',
+      cards: [
+        {
+          h: 'Three views that agree',
+          p: ['Draw the object top-down, side-on and three-quarter, and check one thing across all three: the measurements. If the handle is four pixels on the side view it is four on the others.',
+              'Disagreement here is why a set of props looks like it came from three different games.'],
+          exercises: [4, 5]
+        },
+        {
+          h: 'Two across, one down',
+          p: ['Isometric pixel art is drawn at 2:1 — every step is two pixels across and one down. That is not true isometry, it is the ratio that gives clean lines, and every tile set you have seen uses it.',
+              'A 2:1 floor tile is sixteen wide and eight tall: a diamond made of runs of two.'],
+          exercises: [6]
+        },
+        {
+          h: 'The cube, and its three faces',
+          p: ['Extend the tile\'s two lower edges straight down and cap them, and you have a cube: a top face and two sides. The top is lightest, and the two sides take different values even though both face away.',
+              'Give the three faces three distinct values or the cube flattens into a hexagon.'],
+          art: {
+            caption: 'A cube on the 2:1 grid: the tile as its top face, and two sides that meet at the near edge.',
+            cell: 12,
+            rows: [
+              '......LLLL......',
+              '....LLLLLLLL....',
+              '..LLLLLLLLLLLL..',
+              'LLLLLLLLLLLLLLLL',
+              'LLLLLLLLLLLLLLLL',
+              'DDLLLLLLLLLLLLMM',
+              'DDDDLLLLLLLLMMMM',
+              'DDDDDDLLLLMMMMMM',
+              'DDDDDDDDMMMMMMMM',
+              'DDDDDDDDMMMMMMMM',
+              'DDDDDDDDMMMMMMMM',
+              'DDDDDDDDMMMMMMMM',
+              'DDDDDDDDMMMMMMMM',
+              '..DDDDDDMMMMMM..',
+              '....DDDDMMMM....',
+              '......DDMM......'
+            ]
+          },
+          exercises: [7]
+        },
+        {
+          h: 'One light for the whole grid',
+          p: ['Every object in an isometric scene shares the light, so the left face is the dark one on all of them, always. Decide it once for the tile set and never revisit it.',
+              'Objects lit differently from the floor they stand on read as cut out and pasted in.'],
+          exercises: [7, 8]
+        }
+      ]
+    },
+    {
+      id: 'px8-l3', unit: 'PX8', title: 'Moving pixels without wrecking them',
+      icon: '✂️', criteria: ['PX8.transform', 'PX8.symmetry'],
+      summary: 'Which transforms are free, which are destructive, and what symmetry mode leaves you to do.',
+      cards: [
+        {
+          h: 'Free: flip, quarter turn, move',
+          p: ['Mirroring and turning by ninety degrees move every pixel to another whole pixel, so nothing is invented and nothing is lost. Use them constantly — half of a symmetrical object is drawn once.',
+              'Select with M, move with the arrow keys, and the selection stamps where you drop it.'],
+          exercises: [9]
+        },
+        {
+          h: 'Not free: any other angle, any fractional scale',
+          p: ['Rotate by forty-five degrees and the program has to guess: runs that were clean become ragged, and one-pixel details disappear.',
+              'Use the result as a guide on a low-opacity layer and redraw over it. Nine times in ten that is faster than repairing what came out.'],
+          exercises: [10]
+        },
+        {
+          h: 'Scaling is the same problem',
+          p: ['Doubling is exact — every pixel becomes four. Anything that is not a whole multiple invents pixels, and a 1.5× sprite has rows that are two pixels tall next to rows that are one.',
+              'Scale by whole numbers or redraw at the new size.'],
+          exercises: [10]
+        },
+        {
+          h: 'Symmetry mode, then break it',
+          p: ['The symmetry toggle in the tool options mirrors your strokes live, which halves the work on a face or a front-facing sprite.',
+              'Then turn it off and move a dozen pixels by hand. A perfectly symmetrical character looks manufactured, and the asymmetry is what makes it look drawn.'],
+          exercises: [9, 10]
+        }
+      ]
+    },
+
+    /* ═══ PX9 · Effects and shipping ════════════════════════════════════ */
+    {
+      id: 'px9-l1', unit: 'PX9', title: 'Anticipation, impact, smear',
+      icon: '💥', criteria: ['PX9.anticipate', 'PX9.impact', 'PX9.smear'],
+      summary: 'Three frames do almost all the work in any action, and none of them is the middle of it.',
+      cards: [
+        {
+          h: 'Wind up the other way',
+          p: ['Before anything moves forward it moves back. A sword lifts, a body crouches, a fist pulls in. Two or three frames, held long enough to be read.',
+              'Without it an action starts from nowhere, and the hit that follows has nothing behind it.'],
+          exercises: [2, 5]
+        },
+        {
+          h: 'The impact frame',
+          p: ['One frame does the hit: everything at its extreme, the contact point at maximum contrast, often a flash of the lightest colour in the palette.',
+              'It can break the rules the rest of the animation follows — go off-model, stretch the limb, add a shape that exists for one frame only.'],
+          exercises: [2, 3, 5]
+        },
+        {
+          h: 'Hold the extremes, rush the middles',
+          p: ['Give the anticipation and the impact longer durations than the frames between them. The in-betweens are what the eye skips.',
+              'A hit that reads as weak is nearly always one where every frame is the same length.'],
+          exercises: [3]
+        },
+        {
+          h: 'Smear the frame you cannot draw',
+          p: ['When a pose travels too far in one frame, draw the space it crossed: the leading edge sharp, the trail behind it a midtone.',
+              'It looks wrong held still and correct at speed, which is the whole trick.'],
+          compare: {
+            cell: 11,
+            bad: { label: 'Two poses, nothing between — it snaps', rows: [
+              '....................',
+              '....................',
+              '....................',
+              '....................',
+              '..KKKKKK.....K......',
+              '..............K.....',
+              '...............KK...',
+              '.................K..',
+              '..................K.'
+            ] },
+            good: { label: 'Pose, smear, pose — the sweep reads', rows: [
+              '...............................',
+              '...............................',
+              '...............................',
+              '...............................',
+              '..KKKKKK.....KMMMMM.....K......',
+              '..............KMMMM......K.....',
+              '...............KKMM.......KK...',
+              '.................KM.........K..',
+              '..................K..........K.'
+            ] }
+          },
+          exercises: [4, 5]
+        }
+      ]
+    },
+    {
+      id: 'px9-l2', unit: 'PX9', title: 'What happens after',
+      icon: '🌬️', criteria: ['PX9.secondary', 'PX9.particle'],
+      summary: 'Cloth that lags the body, and a burst that breaks up instead of fading.',
+      cards: [
+        {
+          h: 'Everything loose arrives late',
+          p: ['A cape, a tail, hair, a scarf: they follow the body by a frame or two and keep going after it stops.',
+              'Animate the body to completion first, then the loose parts, offset. Moving them in step with the body is what makes a sprite look stiff.'],
+          exercises: [7]
+        },
+        {
+          h: 'And it settles rather than stopping',
+          p: ['After the body halts, the cloth overshoots once and comes back. Two frames of settle is usually enough, and it is the difference between a character stopping and a character being paused.',
+              'The overshoot is small — two or three pixels past where it ends up.'],
+          exercises: [7]
+        },
+        {
+          h: 'A burst grows, then breaks up',
+          p: ['Dust, sparks and impacts get bigger for a frame or two, then come apart into separate pixels and vanish. They do not fade: a half-transparent pixel is not a pixel-art effect.',
+              'Three to five frames is plenty, and the last one should be almost nothing.'],
+          art: {
+            caption: 'Three frames of a spark: a cross, a star, then pieces.',
+            cell: 11,
+            rows: [
+              '..........................5....',
+              '...............H.......5.....5.',
+              '.............5.H.5.............',
+              '....H..........H...............',
+              '...HHH......HHHHHHH...5.......5',
+              '....H..........H...............',
+              '.............5.H.5.............',
+              '...............H.......5.....5.',
+              '..........................5....'
+            ]
+          },
+          exercises: [6, 8]
+        },
+        {
+          h: 'Dust is slow and low, sparks are fast and everywhere',
+          p: ['A landing puff sits on the ground, spreads sideways and takes five or six frames. A hit spark goes in every direction and is gone in three.',
+              'Using the same timing for both is the most common reason an effect reads as generic.'],
+          exercises: [6]
+        }
+      ]
+    },
+    {
+      id: 'px9-l3', unit: 'PX9', title: 'Handing it to an engine',
+      icon: '📦', criteria: ['PX9.pivot', 'PX9.slice', 'PX9.density'],
+      summary: 'The origin, the slices and the one thing that ruins a whole project\'s art.',
+      cards: [
+        {
+          h: 'One origin, every frame',
+          p: ['An engine anchors a sprite at a point. If that point wanders between frames the character jitters, and no amount of animating fixes it.',
+              'Pick it — usually between the feet — and draw every frame around it. Onion skinning all frames at once shows you whether it moved.'],
+          exercises: [9]
+        },
+        {
+          h: 'Slices mark what the code needs',
+          p: ['A slice is a named rectangle over part of the sprite, exported with the sheet: a hitbox, a place to attach a weapon, or a nine-slice panel that stretches without distorting its corners.',
+              'For a nine-slice, the centre stretches, the edges stretch one way, and the four corners never stretch at all.'],
+          exercises: [10]
+        },
+        {
+          h: 'One pixel size, or none of it works',
+          p: ['If one sprite is drawn at twice the pixel size of another, they cannot share a screen. The eye reads the bigger pixels as a mistake immediately.',
+              'Decide the density at the start of the project and hold every asset to it.'],
+          art: {
+            caption: 'The same shape at two pixel densities. In one scene, the right-hand one is broken.',
+            cell: 9,
+            rows: [
+              '.KK..KK......KKKK....KKKK..',
+              'KHHKKHHK.....KKKK....KKKK..',
+              'KHHHHHHK...KKHHHHKKKKHHHHKK',
+              'KHHHHHHK...KKHHHHKKKKHHHHKK',
+              '.KHHHHK....KKHHHHHHHHHHHHKK',
+              '..KHHK.....KKHHHHHHHHHHHHKK',
+              '...KK......KKHHHHHHHHHHHHKK',
+              '...........KKHHHHHHHHHHHHKK',
+              '.............KKHHHHHHHHKK..',
+              '.............KKHHHHHHHHKK..',
+              '...............KKHHHHKK....',
+              '...............KKHHHHKK....',
+              '.................KKKK......',
+              '.................KKKK......'
+            ]
+          },
+          exercises: [1]
+        },
+        {
+          h: 'And scale by whole numbers only',
+          p: ['×2, ×3, ×4. A game window that scales the art by 2.5 produces exactly the mess above, across every sprite at once, and players will see it as bad art rather than bad settings.',
+              'Pick window sizes that are whole multiples of your resolution.'],
+          exercises: [1, 10]
         }
       ]
     }
