@@ -5510,6 +5510,7 @@ body[data-subject="french"]     { --subj: #00267a; --subj-rgb: 0,38,122;   --sub
 body[data-subject="lsf"]        { --subj: #7c3aed; --subj-rgb: 124,58,237; --subj-light: rgba(124,58,237,.08); }
 body[data-subject="code-route"] { --subj: #b91c1c; --subj-rgb: 185,28,28;  --subj-light: rgba(185,28,28,.08);  }
 body[data-subject="guitar"]     { --subj: #b45309; --subj-rgb: 180,83,9;   --subj-light: rgba(180,83,9,.08);   }
+body[data-subject="pixel"]      { --subj: #c2255c; --subj-rgb: 194,37,92;  --subj-light: rgba(194,37,92,.08);  }
 
 body.dark[data-subject="aat"]        { --subj: #60a5fa; --subj-rgb: 96,165,250;  --subj-light: rgba(96,165,250,.12);  }
 body.dark[data-subject="aat1"]       { --subj: #2dd4bf; --subj-rgb: 45,212,191;  --subj-light: rgba(45,212,191,.12);  }
@@ -5518,12 +5519,14 @@ body.dark[data-subject="french"]     { --subj: #93b4ff; --subj-rgb: 147,180,255;
 body.dark[data-subject="lsf"]        { --subj: #c4b5fd; --subj-rgb: 196,181,253; --subj-light: rgba(196,181,253,.10); }
 body.dark[data-subject="code-route"] { --subj: #f87171; --subj-rgb: 248,113,113; --subj-light: rgba(248,113,113,.10); }
 body.dark[data-subject="guitar"]     { --subj: #fbbf24; --subj-rgb: 251,191,36;  --subj-light: rgba(251,191,36,.10); }
+body.dark[data-subject="pixel"]      { --subj: #f472b6; --subj-rgb: 244,114,182; --subj-light: rgba(244,114,182,.12); }
 
 /* Per-subject card accent colours used in the subject picker */
 .subject-card[data-switch-subject="aat"]        { --card-subj: #2563eb; --card-subj-light: rgba(37,99,235,.09);  }
 .subject-card[data-switch-subject="aat1"]       { --card-subj: #0d8a7a; --card-subj-light: rgba(13,138,122,.09); }
 .subject-card[data-switch-subject="aat3"]       { --card-subj: #4f46e5; --card-subj-light: rgba(79,70,229,.09);  }
 .subject-card[data-switch-subject="guitar"]     { --card-subj: #b45309; --card-subj-light: rgba(180,83,9,.09);   }
+.subject-card[data-switch-subject="pixel"]      { --card-subj: #c2255c; --card-subj-light: rgba(194,37,92,.09);  }
 .subject-card[data-switch-subject="french"]     { --card-subj: #00267a; --card-subj-light: rgba(0,38,122,.09);   }
 .subject-card[data-switch-subject="lsf"]        { --card-subj: #7c3aed; --card-subj-light: rgba(124,58,237,.09); }
 .subject-card[data-switch-subject="code-route"] { --card-subj: #b91c1c; --card-subj-light: rgba(185,28,28,.09);  }
@@ -5534,6 +5537,7 @@ body.dark[data-subject="guitar"]     { --subj: #fbbf24; --subj-rgb: 251,191,36; 
 .dark .subject-card[data-switch-subject="french"]     { --card-subj: #93b4ff; --card-subj-light: rgba(147,180,255,.10); }
 .dark .subject-card[data-switch-subject="lsf"]        { --card-subj: #c4b5fd; --card-subj-light: rgba(196,181,253,.10); }
 .dark .subject-card[data-switch-subject="code-route"] { --card-subj: #f87171; --card-subj-light: rgba(248,113,113,.10); }
+.dark .subject-card[data-switch-subject="pixel"]      { --card-subj: #f472b6; --card-subj-light: rgba(244,114,182,.12); }
 
 /* Nav tab active pill: uses the active subject colour */
 .nav-tab.active {

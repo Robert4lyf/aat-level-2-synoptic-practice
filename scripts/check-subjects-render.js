@@ -74,7 +74,12 @@ const SUBJECTS = [
   { id: 'french',     name: 'Français' },
   { id: 'lsf',        name: 'Langue des Signes Française' },
   { id: 'code-route', name: 'Code de la Route' },
-  { id: 'guitar',     name: 'Fingerstyle Guitar' }
+  /* `panel` names a class only this subject's own stylesheet styles. The two
+     subjects that ship a stylesheet through the registry's `styles` field are
+     the two whose first paint could arrive unstyled, and this is what the
+     delayed-stylesheet probe below samples. */
+  { id: 'guitar',     name: 'Fingerstyle Guitar', panel: 'gtr-panel' },
+  { id: 'pixel',      name: 'Pixel Art',          panel: 'px-panel' }
 ];
 
 const MIME = {
@@ -89,7 +94,7 @@ const MIME = {
    that a real network would lose? Delaying it by a fifth of a second turns a
    coin-flip into a deterministic answer. */
 const CSS_DELAY_MS = 200;
-const DELAYED = /guitar-styles\.css$/;
+const DELAYED = /(guitar|pixel)-styles\.css$/;
 
 function serve() {
   return new Promise((resolve) => {
@@ -145,14 +150,15 @@ function serve() {
          Reading it after the page settles answers a different and much easier
          question — by then a delayed stylesheet has arrived anyway, and the
          check passes whether or not mount() waited for it. */
-      await page.addInitScript(() => {
+      await page.addInitScript((cls) => {
         window.__mountCss = null;
+        if (!cls) return;
         new MutationObserver((records, obs) => {
           for (const r of records) {
             for (const n of r.addedNodes) {
               if (n.nodeType !== 1) continue;
-              const el = n.classList && n.classList.contains('gtr-panel')
-                ? n : (n.querySelector && n.querySelector('.gtr-panel'));
+              const el = n.classList && n.classList.contains(cls)
+                ? n : (n.querySelector && n.querySelector('.' + cls));
               if (!el) continue;
               const cs = getComputedStyle(el);
               window.__mountCss = { border: cs.borderTopWidth, radius: cs.borderTopLeftRadius };
@@ -161,7 +167,7 @@ function serve() {
             }
           }
         }).observe(document, { childList: true, subtree: true });
-      });
+      }, subj.panel || null);
 
       await page.goto(base, { waitUntil: 'load' });
       /* The shell renders, then a self-rendering subject swaps itself in on the
@@ -315,22 +321,22 @@ function serve() {
         errors.push(`${subj.id}: var(--subj, var(--accent)) resolves to nothing, so its chrome has no colour.`);
       }
       if (!seen.subjToken) fallbackSubjects.push(subj.id);
-      /* Only guitar ships its own stylesheet through the registry's `styles`
-         field, so it is the only subject this applies to. The others link
-         theirs from index.html. */
-      if (subj.id === 'guitar') {
+      /* The subjects that ship their own stylesheet through the registry's
+         `styles` field are the only ones this applies to; the others link
+         theirs from index.html and cannot mount before it. */
+      if (subj.panel) {
         if (!seen.moduleCss) {
-          errors.push(`${subj.id}: no .gtr-panel ever entered the document, so the stylesheet timing ` +
+          errors.push(`${subj.id}: no .${subj.panel} ever entered the document, so the stylesheet timing ` +
                       `could not be sampled. Either the shell markup changed or the subject did not mount.`);
         } else if (!(parseFloat(seen.moduleCss.border) > 0)) {
-          errors.push(`${subj.id}: guitar-styles.css was not in effect when the UI mounted — .gtr-panel ` +
+          errors.push(`${subj.id}: its stylesheet was not in effect when the UI mounted — .${subj.panel} ` +
                       `had no border (${seen.moduleCss.border}) at the instant it entered the document. ` +
                       `mount() is not waiting for the stylesheet, so on any connection slower than ` +
-                      `localhost the first paint is unstyled: the mask behind every tab digit defaults ` +
-                      `to opaque black and hides the number it exists to reveal.`);
+                      `localhost the first paint is unstyled: guitar's tab digits are masked by opaque ` +
+                      `black, and pixel art's figures lose the grid you count runs against.`);
         } else {
-          notes.push(`guitar      stylesheet already in effect when the UI mounted, with the file held ` +
-                     `back ${CSS_DELAY_MS}ms (.gtr-panel border ${seen.moduleCss.border})`);
+          notes.push(`${subj.id.padEnd(11)} stylesheet already in effect when the UI mounted, with the file held ` +
+                     `back ${CSS_DELAY_MS}ms (.${subj.panel} border ${seen.moduleCss.border})`);
         }
       }
       if (consoleErrors.length) {

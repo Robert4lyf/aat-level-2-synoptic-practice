@@ -83,7 +83,7 @@ function serve() {
    Every pattern is a thing being TAUGHT — a formula, a posting rule, a rate —
    not a word that might appear in a sentence marking a boundary. */
 const OFFERED = ['aat1', 'aat', 'aat3'];
-const WITHHELD = ['french', 'lsf', 'guitar', 'code-route'];
+const WITHHELD = ['french', 'lsf', 'guitar', 'code-route', 'pixel'];
 
 const FORBIDDEN = {
   /* Level 2's own drawer, which until now had no rules because it was the only
