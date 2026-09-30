@@ -245,6 +245,69 @@ body.dark[data-subject="cips2"] .c2-primary { color: #062019; }
 .c2-keypoints { display:grid; gap:9px; margin:24px 0 0; padding:18px 18px 18px 38px; border-left:4px solid var(--c2-brand); border-radius:8px; background:var(--c2-brand-soft); }
 .c2-keypoints li { line-height:1.5; }
 .c2-note { margin-top:22px; padding:14px 16px; border:1px solid color-mix(in srgb,var(--c2-warn) 35%,var(--c2-line)); border-radius:10px; color:var(--c2-warn); background:color-mix(in srgb,var(--c2-warn) 7%,var(--c2-paper)); }
+
+/* ── Concept diagrams ──────────────────────────────────────────────────────
+   Drawn by diagram-figure.js from data on a card's `diagram`. Six shapes, and
+   the shape is half the meaning: a cycle has to look like it returns, a
+   spectrum like a range, a stack like precedence. Everything here follows the
+   theme tokens, because unlike a road sign or an Aseprite panel nothing about
+   these is a picture of an external thing — they are this course talking.
+
+   Boxes and CSS rather than SVG, except the hub. Labels here are English
+   phrases and SVG text does not wrap, so "Total cost of ownership" in a drawn
+   box runs off the edge of the drawing. Boxes reflow on a phone.            */
+.c2-dia { margin:24px 0 0; padding:18px 16px 16px; border:1px solid var(--c2-line); border-radius:12px; background:var(--c2-wash); }
+.c2-dia-title { display:block; font-size:.74rem; font-weight:800; letter-spacing:.09em; text-transform:uppercase; color:var(--c2-muted); margin:0 0 14px; }
+.c2-dia-note { margin:14px 0 0; padding-top:11px; border-top:1px dashed var(--c2-line); font-size:.88rem; line-height:1.55; color:var(--c2-ink); }
+.c2-dia-label { display:block; font-weight:700; line-height:1.35; color:var(--c2-ink); }
+.c2-dia-sub { display:block; font-size:.82rem; line-height:1.45; color:var(--c2-muted); margin-top:2px; }
+
+/* cycle — numbered steps that wrap, then say where they go back to */
+.c2-dia-is-cycle .c2-dia-body { list-style:none; margin:0; padding:0; display:grid; gap:8px; }
+.c2-dia-step { display:flex; gap:10px; align-items:flex-start; padding:9px 11px; border:1px solid var(--c2-line); border-radius:9px; background:var(--c2-paper); }
+.c2-dia-n { flex:0 0 auto; width:22px; height:22px; border-radius:50%; background:var(--c2-brand); color:var(--c2-paper); font-size:.76rem; font-weight:800; display:grid; place-items:center; }
+.c2-dia-back { margin:10px 0 0; padding-left:32px; font-size:.84rem; font-weight:700; color:var(--c2-brand); }
+.c2-dia-back::before { content:"↺ "; }
+
+/* chain — parties in order, scrolling sideways if the row will not fit */
+.c2-dia-is-chain .c2-dia-body { display:flex; align-items:stretch; gap:6px; overflow-x:auto; -webkit-overflow-scrolling:touch; padding-bottom:4px; }
+.c2-dia-is-chain .c2-dia-step { flex:1 0 128px; }
+.c2-dia-arrow { flex:0 0 auto; display:grid; place-items:center; color:var(--c2-brand); font-weight:800; padding:0 2px; min-width:54px; text-align:center; }
+
+/* hub — the one drawn shape, and so the one that cannot reflow. Below about
+   300px the ring's labels stop being legible, so it scrolls sideways rather
+   than shrinking into an unreadable diagram that still technically fits. */
+.c2-dia-is-hub { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+.c2-dia-svg { display:block; width:100%; min-width:290px; max-width:360px; height:auto; margin:0 auto; }
+.c2-dia-svg .c2-dia-arrow { stroke:var(--c2-line); stroke-width:2; }
+.c2-dia-svg .c2-dia-n { fill:var(--c2-brand); }
+.c2-dia-svg .c2-dia-label { fill:var(--c2-paper); font-size:13px; font-weight:800; }
+.c2-dia-svg .c2-dia-step { fill:var(--c2-paper); stroke:var(--c2-line); stroke-width:1.5; }
+.c2-dia-svg .c2-dia-sub { fill:var(--c2-ink); font-size:12px; font-weight:700; }
+
+/* spectrum — two named ends, and things placed between them */
+.c2-dia-scale { display:grid; grid-template-columns:auto 1fr auto; gap:10px; align-items:center; }
+.c2-dia-bar { height:8px; border-radius:4px; background:linear-gradient(90deg,var(--c2-brand),var(--c2-warn)); }
+.c2-dia-end { max-width:9em; font-size:.76rem; font-weight:700; color:var(--c2-muted); line-height:1.3; }
+.c2-dia-end:last-child { text-align:right; }
+.c2-dia-is-spectrum .c2-dia-body { list-style:none; margin:14px 0 0; padding:0; display:grid; gap:8px; }
+.c2-dia-pin { position:relative; padding:9px 11px 9px 14px; border:1px solid var(--c2-line); border-left:4px solid var(--c2-brand); border-radius:9px; background:var(--c2-paper); }
+/* The position along the range, as a bar the width of that position. Drawn
+   rather than stated, so a reader sees the order at a glance and does not
+   have to read five percentages. */
+.c2-dia-pin::after { content:""; display:block; height:4px; width:var(--at); margin-top:8px; border-radius:2px; background:var(--c2-brand); opacity:.5; }
+
+/* stack — the top layer wins */
+.c2-dia-is-stack .c2-dia-body { list-style:none; margin:0; padding:0; display:grid; gap:6px; }
+.c2-dia-layer { display:flex; gap:10px; align-items:flex-start; padding:9px 11px; border:1px solid var(--c2-line); border-radius:9px; background:var(--c2-paper); }
+.c2-dia-rank { flex:0 0 auto; width:22px; height:22px; border-radius:6px; background:var(--c2-brand-soft); color:var(--c2-brand-strong); font-size:.76rem; font-weight:800; display:grid; place-items:center; }
+
+/* matrix — two axes, four quadrants */
+.c2-dia-grid { display:grid; grid-template-columns:auto 1fr; grid-template-rows:1fr auto; gap:8px; }
+.c2-dia-is-matrix .c2-dia-body { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.c2-dia-cell { padding:11px; border:1px solid var(--c2-line); border-radius:9px; background:var(--c2-paper); min-height:62px; }
+.c2-dia-axis { grid-column:2; display:flex; justify-content:space-between; font-size:.76rem; font-weight:700; color:var(--c2-muted); }
+.c2-dia-axis-y { display:flex; flex-direction:column; justify-content:space-between; font-size:.76rem; font-weight:700; color:var(--c2-muted); writing-mode:vertical-rl; transform:rotate(180deg); }
 .c2-kind-scenario { border-top:4px solid #7c3aed; }
 .c2-kind-process { border-top:4px solid #2563eb; }
 .c2-kind-compare { border-top:4px solid #b45309; }

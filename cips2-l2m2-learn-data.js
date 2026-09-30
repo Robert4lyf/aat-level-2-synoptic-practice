@@ -453,6 +453,77 @@
     ['Supplier database','A record of suppliers holding approval status, categories, expiries, performance and risk information.']
   ];
 
+
+  /* ── Diagrams ──────────────────────────────────────────────────────────────
+     This course teaches shapes and printed every one of them as a paragraph:
+     a sourcing sequence that comes back round, tiers on both sides of the
+     organisation, five rights held against each other. A reader can follow
+     "the process returns to the beginning" and never see that it is a loop.
+
+     Attached by card heading rather than passed into card(), so a diagram sits
+     in one readable block instead of a seventh argument nobody can scan past.
+     Rename a heading and the diagram silently stops appearing, which is why
+     scripts/check-diagram-figures.js requires every key here to match exactly
+     one card. */
+  var DIAGRAMS = {
+    'Tall and flat, centralised and devolved': {
+      kind: 'matrix',
+      title: 'What the structure does to a buyer',
+      x: ['Devolved buying', 'Centralised buying'],
+      y: ['Flat structure', 'Tall structure'],
+      cells: [
+        { q: 'tl', label: 'Many approvers, many buyers', sub: 'Tall and devolved — long chains and no single view of spend' },
+        { q: 'tr', label: 'Slow, but consistent', sub: 'Tall and centralised — one policy, several layers to get through it' },
+        { q: 'bl', label: 'Fast, and fragmented', sub: 'Flat and devolved — decisions land quickly and nobody aggregates them' },
+        { q: 'br', label: 'Fast, and aggregated', sub: 'Flat and centralised — short chains with buying power pooled' }
+      ],
+      note: 'Neither axis is a verdict. A flat devolved structure suits an organisation buying many small different things; the same structure buying one large repeated thing gives away its leverage without noticing.'
+    },
+
+    'Frameworks, blanket orders and panels': {
+      kind: 'chain',
+      title: 'Where the commitment actually happens',
+      items: [
+        { label: 'Framework agreed', sub: 'Terms, prices, suppliers', flow: 'no obligation yet' },
+        { label: 'Call-off placed', sub: 'Against the framework', flow: 'now committed' },
+        { label: 'Goods or service delivered', sub: 'Under the framework terms', flow: 'evidence of receipt' },
+        { label: 'Invoice matched', sub: 'To the call-off, not the framework' }
+      ],
+      note: 'A framework is an agreement about how business will be done if it is done. Nothing is bought and nothing is owed until a call-off is placed, which is the point candidates most often get the wrong way round.'
+    },
+
+    'Sorting the five apart': {
+      kind: 'spectrum',
+      title: 'Who carries the cost risk',
+      ends: ['The supplier carries it', 'The buyer carries it'],
+      items: [
+        { label: 'Fixed or lump-sum price', at: 0.02, sub: 'The price is the price. If the work costs more, that is the supplier\'s problem — and they have priced that risk in.' },
+        { label: 'Variable pricing', at: 0.35, sub: 'The price moves with a stated index or input cost, so both sides carry part of the movement.' },
+        { label: 'Target pricing', at: 0.55, sub: 'A target cost with a share of the saving or the overrun, which is the risk deliberately split.' },
+        { label: 'Risk-and-reward', at: 0.7, sub: 'Payment tied to outcomes, so the supplier carries performance risk and the buyer carries more of the cost.' },
+        { label: 'Cost-reimbursable or cost-plus', at: 0.98, sub: 'The buyer pays what it costs plus a fee. The supplier is nearly indifferent to the cost, which is exactly the problem.' }
+      ],
+      note: 'The five are not five levels of generosity. They are five places to put the same risk, and the right one depends on how well the requirement can be defined before the work starts.'
+    },
+
+    'What is in the contract pack': {
+      kind: 'stack',
+      title: 'Which document wins when two disagree',
+      items: [
+        { label: 'The signed agreement', sub: 'What both parties actually put their names to' },
+        { label: 'Special conditions', sub: 'Terms negotiated for this contract, which override the standard ones' },
+        { label: 'Standard terms and conditions', sub: 'The organisation\'s usual terms, where nothing has displaced them' },
+        { label: 'The specification', sub: 'What is to be supplied, and how conformity is judged' },
+        { label: 'The supplier\'s quotation', sub: 'Their offer, to the extent it was accepted' },
+        { label: 'Correspondence', sub: 'Emails and letters — evidence of intention, not terms' }
+      ],
+      note: 'A contract pack is not a pile of equal papers. Order of precedence is stated in the contract itself precisely so that a conflict between the specification and an email has a settled answer.'
+    }
+  };
+  LESSONS.forEach(function (l) {
+    (l.cards || []).forEach(function (c) { if (DIAGRAMS[c.h]) c.diagram = DIAGRAMS[c.h]; });
+  });
+
   var byId = {};
   LESSONS.forEach(function (l) { byId[l.id] = l; });
   var api = {
