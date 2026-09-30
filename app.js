@@ -108,7 +108,7 @@
       meta: '9 units · 27 lessons · 90 drawing challenges',
       tabs: ['home'],
       ui: 'PIXEL_UI',
-      assets: ['pixel-syllabus.js', 'pixel-learn-data.js', 'pixel-challenge-data.js', 'pixel-ui.js'],
+      assets: ['pixel-syllabus.js', 'pixel-learn-data.js', 'pixel-challenge-data.js', 'pixel-panels.js', 'pixel-ui.js'],
       styles: 'pixel-styles.css',
       activate() {
         window.TOPICS = []; window.ALL_QUESTIONS = []; window.LEARN_PATH = []; window.SKILLS = { defs: [] };

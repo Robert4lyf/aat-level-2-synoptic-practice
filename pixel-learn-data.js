@@ -98,6 +98,26 @@
         },
         {
           h: 'RGB now, indexed later',
+          /* THE DIALOG ITSELF. The course is taught in Aseprite and had never
+             shown a single one of its panels: it named the Color Mode
+             dropdown and left a reader who has not opened the program to
+             guess where it is. */
+          panel: {
+            kind: 'dialog', title: 'File ▸ New Sprite',
+            rows: [
+              ['①Width', 'field', '32'],
+              ['①Height', 'field', '32'],
+              ['②Color Mode', 'radios', 'RGB*|Grayscale|Indexed'],
+              ['③Background', 'select', 'Transparent'],
+              ['', 'button', 'OK'],
+            ],
+            marks: [
+              ['①', 'Small. 32×32 is a generous first canvas — every pixel you add is one more to place deliberately.'],
+              ['②', 'RGB now. Indexed is the one that restricts you to a palette, and PX3 is where that becomes useful rather than limiting.'],
+              ['③', 'Transparent, not white. A white background is a colour you will spend the next unit trying to delete.'],
+            ],
+            note: 'This dialog is where a sprite\'s two hardest-to-change decisions get made in four seconds.',
+          },
           p: ['New files default to RGB colour mode, which lets you use any colour. Indexed mode restricts you to a palette and makes that palette editable as a unit.',
               'Start in RGB. Unit PX3 covers indexed mode and what it buys you, which is considerable — but not while you are still learning where pixels go.'],
           exercises: [2]
@@ -124,6 +144,14 @@
         },
         {
           h: 'Four keys and one modifier',
+          panel: {
+            kind: 'toolbar', title: 'Tools',
+            tools: [['B', '①Pencil', true], ['E', 'Eraser'], ['I', 'Eyedropper'], ['G', 'Bucket'], ['M', 'Marquee']],
+            marks: [
+              ['①', 'The key is the tool. Nobody working at speed clicks the toolbar, and the shortcut is the same on every install until you change it.'],
+            ],
+            note: 'The highlighted cell is the active tool. Alt held down turns whatever is selected into the eyedropper until you let go — which is why I is the key you will press least.',
+          },
           p: ['B is the pencil, E the eraser, I the eyedropper, X swaps foreground and background colour. Alt held down turns any tool into an eyedropper until you let go.',
               'That last one is the whole trick: pick a colour off your own sprite without changing tools, without moving to the palette, without losing your place.',
               'These are the shipped defaults. Edit ▸ Keyboard Shortcuts lists whatever yours actually are.'],
@@ -165,12 +193,35 @@
         },
         {
           h: 'Scale in the export dialog',
+          panel: {
+            kind: 'dialog', title: 'File ▸ Export',
+            rows: [
+              ['File name', 'field', 'hero.png'],
+              ['①Resize', 'select', '600%'],
+              ['②Apply pixel ratio', 'check', 'on'],
+              ['Area', 'select', 'Whole canvas'],
+              ['', 'button', 'Export'],
+            ],
+            marks: [
+              ['①', 'A whole-number percentage, always. 600% puts each pixel in a clean 6×6 block; 550% puts some in 5×6 and the sprite develops a limp.'],
+              ['②', 'Aseprite scales by nearest neighbour here. It is the program you export INTO that smooths, which is why the scaling has to happen in this dialog and not afterwards.'],
+            ],
+          },
           p: ['The export dialog has a Resize field. ×6 there uses nearest-neighbour scaling, which keeps pixels square.',
               'Scaling afterwards in a program that smooths gives you a blurred sprite with a grey halo. If an export looks soft, something interpolated it.'],
           exercises: [7, 8]
         },
         {
           h: 'Transparency is a layer decision',
+          panel: {
+            kind: 'layers', title: 'Layers',
+            items: [['②Layer 1', true, false], ['①Background', true, true]],
+            marks: [
+              ['①', 'The Background layer, locked, at the bottom. It cannot hold a transparent pixel: erasing on it paints the background colour instead of removing anything.'],
+              ['②', 'An ordinary layer, which can. Right-click Background and convert it — deleting it instead takes your sprite with it.'],
+            ],
+            note: 'The circle is visibility and the square is the lock. A sprite that will not erase is almost always a sprite still sitting on its Background layer.',
+          },
           p: ['A new file starts with a Background layer that cannot hold transparency. Right-click it in the timeline and convert it to an ordinary layer; delete it instead and the sprite is cut out.',
               'Check the result on two different background colours. A white fringe means an anti-aliased tool edge got in somewhere.'],
           exercises: [8, 9, 10]
@@ -398,6 +449,16 @@
         },
         {
           h: 'Indexed mode makes the palette real',
+          panel: {
+            kind: 'palette', title: 'Palette — ①indexed',
+            per: 8,
+            colours: ['#1a1c2c', '#5d275d', '#b13e53', '#ef7d57', '#ffcd75', '#a7f070', '#38b764', '#257179',
+                      '#29366f', '#3b5dc9', '#41a6f6', '#73eff7', '#f4f4f4', '#94b0c2', '#566c86', '#333c57'],
+            marks: [
+              ['①', 'The number under each swatch is what the file stores once the sprite is indexed — not the colour, the slot. Change the colour in slot 4 and every pixel holding slot 4 changes with it, live, without a single stroke.'],
+            ],
+            note: 'That is how a day palette becomes a night one in thirty seconds, and how you test a colour decision before committing to it.',
+          },
           p: ['Sprite ▸ Color Mode ▸ Indexed binds every pixel to a palette slot. Edit the slot and every pixel using it changes at once, live.',
               'That is how a day palette becomes a night one in thirty seconds, and how you test a colour decision without repainting anything.'],
           exercises: [7, 8]
@@ -690,12 +751,32 @@
         },
         {
           h: 'Onion skinning',
+          panel: {
+            kind: 'timeline', title: 'Timeline',
+            frames: 8,
+            onion: [3, 5], onionLabel: '①onion',
+            layers: [['Body', '########'], ['Effects', '..##....']],
+            marks: [
+              ['①', 'The shaded band is what onion skinning shows: the frames either side of the current one, tinted behind it. The icon that switches it on sits at the top left of the timeline.'],
+            ],
+            note: 'Draw the extremes first — frame 3 and frame 5 here — then the in-between with both of them showing through. Animating straight through from frame 1 with the onion off is how a walk drifts.',
+          },
           p: ['The onion icon at the top of the timeline shows the neighbouring frames tinted behind the current one. Set how many either side.',
               'Draw the key frames first and the in-betweens second, sitting between the two tints. Animating straight through from frame 1 drifts.'],
           exercises: [3]
         },
         {
           h: 'Tags name a sequence',
+          panel: {
+            kind: 'timeline', title: 'Timeline',
+            frames: 8,
+            tag: [1, 4, '①run'],
+            layers: [['Body', '########']],
+            marks: [
+              ['①', 'A tag is a named frame range with a colour and a loop direction, and it lives on its own bar ABOVE the frame numbers — which is why a reader looking at the frames never finds it.'],
+            ],
+            note: 'Select frames 1 to 4, right-click, New Tag. The name travels into the exported JSON, so "run" in this file is "run" in the engine.',
+          },
           p: ['Select a frame range, right-click, New Tag. A tag has a name, a colour and a loop direction, and can be previewed on its own.',
               'Tags are also what an exported JSON hands the game engine, so "run" in your file becomes "run" in the code.'],
           exercises: [2, 6]
@@ -790,6 +871,21 @@
         },
         {
           h: 'Exporting a sheet',
+          panel: {
+            kind: 'dialog', title: 'File ▸ Export Sprite Sheet',
+            rows: [
+              ['①Sheet type', 'select', 'Horizontal strip'],
+              ['②Trim cels', 'check', 'off'],
+              ['Border padding', 'field', '0'],
+              ['③JSON Data', 'check', 'on'],
+              ['', 'button', 'Export'],
+            ],
+            marks: [
+              ['①', 'A strip, not a packed sheet. Packed is smaller and nearly impossible to read when a frame comes out in the wrong place.'],
+              ['②', 'Off. Trimming gives every cel a different size, and most engines cannot use that without reading the JSON for each one.'],
+              ['③', 'On. This is what carries the tags across; without it the engine gets a picture and no idea where "run" starts.'],
+            ],
+          },
           p: ['File ▸ Export Sprite Sheet. Start with a horizontal strip — packed layouts are harder to debug — and turn on JSON Data so tags travel with the frames.',
               'Watch Trim and Border Padding: trimming makes cells different sizes, which most engines cannot use without reading the JSON.'],
           exercises: [10]

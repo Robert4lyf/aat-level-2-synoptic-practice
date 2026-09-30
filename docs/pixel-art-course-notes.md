@@ -35,6 +35,8 @@ things to make it mean anything:
 | `pixel-styles.css` | Scoped to `body[data-subject="pixel"]`. Themes everything except the art. |
 | `scripts/check-pixel-course.js` | Coverage, format, figure palette, cross-references, wiring. |
 | `scripts/check-pixel-prerequisites.js` | No term used before the unit that teaches it. |
+| `pixel-panels.js` | Diagrams of Aseprite's own interface: the five panels the course names. |
+| `scripts/check-pixel-panels.js` | Every panel points at a control, and every mark has a legend. |
 
 The units are: the canvas and the pencil; lines and shapes; colour; light and
 form; reading at size; animation; tiles and environments; proportion and
@@ -59,6 +61,17 @@ cannot drift out of step with what it claims to show, and a diff to a figure is
 readable. `check-pixel-course.js` reads the allowed character set straight out
 of the renderer's palette, so a character with no colour behind it — which
 would render as a hole that looks deliberate — fails the build.
+
+**The program is drawn, not screenshotted.** The course is taught in Aseprite
+and named the Color Mode dropdown, the onion-skin buttons and the tag bar
+without showing any of them. `pixel-panels.js` draws five kinds of panel —
+dialog, toolbar, timeline, layers, palette — from data. A screenshot of
+Aseprite is somebody else's copyright, somebody else's version number and
+somebody else's theme; a diagram is none of those, and it is the only one of
+the two a check can read. Each panel carries marks written into its own labels
+and a legend under it, and `check-pixel-panels.js` requires the two sets to
+agree in both directions: a legend entry explaining a mark the drawing never
+prints sends a reader hunting for something that is not there.
 
 **The art does not theme.** Everything else in `pixel-styles.css` has a light
 and a dark value. The pixels inside a figure are literal hex in `pixel-ui.js`,
@@ -89,6 +102,10 @@ stylesheet through the registry are held to it.
   automatically, are a level past what this course reaches.
 - **No pixel fonts, UI layout or HUD work.** PX9 covers the nine-slice panel
   an interface is built from, and stops there.
+- **Eight interface panels, not a tour.** The diagrams cover the controls the
+  cards already named. The brush settings, the gradient tool, the tile editor
+  and the shading mode are not drawn, because no card asks the reader to find
+  them.
 - **One light, always.** Rim light, coloured light and a second source are not
   covered anywhere; PX4 and PX7 both assume a single white key light.
 - **No reference layer or symmetry-mode coverage.** Both are useful Aseprite

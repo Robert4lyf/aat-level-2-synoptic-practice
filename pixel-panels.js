@@ -108,14 +108,33 @@
         button    a push button */
   function dialog(p) {
     var rows = p.rows || [];
-    var W = 300, rh = 26, top = 30;
+    var rh = 26, top = 30;
+    /* The window is sized to its contents rather than fixed. A fixed 300px
+       clipped "Indexed" off the end of the colour-mode row and cut "Apply
+       pixel ratio" in half — and a diagram of a dialog whose labels do not
+       fit is a diagram of nothing. Monospace throughout, so a character is
+       0.6 of its size and the arithmetic below is exact enough. */
+    var ch = 6.6;
+    var labelW = 110;
+    var ctrlW = 170;
+    rows.forEach(function (r) {
+      labelW = Math.max(labelW, String(r[0]).length * ch + 16);
+      if (r[1] === 'radios') {
+        var w = 0;
+        String(r[2]).split('|').forEach(function (o) { w += 16 + o.replace(/\*$/, '').length * ch + 14; });
+        ctrlW = Math.max(ctrlW, w);
+      } else if (r[1] === 'check') {
+        ctrlW = Math.max(ctrlW, 22 + String(r[2]).replace(/^(on|off)\s*/, '').length * ch + 14);
+      }
+    });
+    var W = Math.max(300, Math.round(labelW + ctrlW + 24));
     var H = top + rows.length * rh + 14;
     var out = box(0, 0, W, H, U.panel, U.line);
     out += box(0, 0, W, 22, U.bg) + tx(9, 12, p.title || 'Dialog', U.ink, { weight: 700 });
     rows.forEach(function (r, i) {
       var y = top + i * rh, cy = y + 11;
       out += tx(10, cy, r[0], U.dim);
-      var cx = 118, cw = W - cx - 12;
+      var cx = Math.round(labelW + 10), cw = W - cx - 12;
       if (r[1] === 'field') {
         out += box(cx, y, cw, 20, U.sunken, U.line) + tx(cx + 7, cy, r[2], U.ink);
       } else if (r[1] === 'select') {
@@ -136,7 +155,7 @@
             '" stroke="' + U.line + '"/>';
           if (sel) out += '<circle cx="' + (ox + 6) + '" cy="' + cy + '" r="3" fill="' + U.accent + '"/>';
           out += tx(ox + 16, cy, lab, sel ? U.ink : U.dim);
-          ox += 16 + lab.length * 6.4 + 12;
+          ox += 16 + lab.length * ch + 14;
         });
       } else if (r[1] === 'button') {
         out += box(cx, y, 74, 20, U.bg, U.line) + tx(cx + 37, cy, r[2], U.ink, { anchor: 'middle' });

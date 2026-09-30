@@ -191,6 +191,40 @@ body[data-subject="pixel"] .px-caption {
   margin: 5px 0 0; color: var(--px-dim); font-size: .8rem;
 }
 body[data-subject="pixel"] .px-svg { display: block; height: auto; max-width: 100%; }
+
+/* ── Interface panels ─────────────────────────────────────────────────────
+   Diagrams of Aseprite's own interface, from pixel-panels.js. Everything
+   INSIDE the drawing is a literal colour and stays Aseprite's dark grey in
+   either theme, because a panel repainted white stops looking like the
+   program the reader has open. The surround, the legend and the note are this
+   app's and follow the theme like everything else.
+
+   The svg scrolls inside its figure rather than shrinking. A dialog at 40%
+   width is a dialog whose labels cannot be read, and the reader needs the
+   labels more than they need the whole window at once. */
+body[data-subject="pixel"] .px-panel {
+  margin: 12px 0; max-width: 100%; overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+body[data-subject="pixel"] .px-panel-svg {
+  display: block; height: auto; max-width: 100%;
+  border-radius: 6px;
+}
+body[data-subject="pixel"] .px-panel-legend {
+  list-style: none; margin: 10px 0 0; padding: 10px 12px;
+  border: 1px dashed var(--px-line); border-radius: 8px;
+  background: var(--px-panel-2); display: grid; gap: 6px;
+}
+body[data-subject="pixel"] .px-panel-legend li {
+  display: flex; gap: 8px; align-items: baseline;
+  font-size: .83rem; line-height: 1.5; color: var(--px-ink);
+}
+body[data-subject="pixel"] .px-panel-mark {
+  flex: 0 0 auto; font-weight: 700; color: var(--px-accent);
+}
+body[data-subject="pixel"] .px-panel-note {
+  margin: 8px 0 0; color: var(--px-dim); font-size: .8rem; line-height: 1.5;
+}
 body[data-subject="pixel"] .px-svg-bg   { fill: var(--px-canvas); }
 body[data-subject="pixel"] .px-svg-grid { stroke: var(--px-grid); stroke-width: 1; fill: none; }
 body[data-subject="pixel"] .px-svg-edge { stroke: var(--px-edge); stroke-width: 1; fill: none; }

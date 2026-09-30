@@ -84,6 +84,10 @@ const MODULES = [
     name: 'Pixel Art',
     css: 'pixel-styles.css',
     js: 'pixel-ui.js',
+    /* The interface diagrams are drawn by pixel-panels.js on pixel-ui.js's
+       behalf, and spell their classes out there. Reading only pixel-ui.js
+       would report every .px-panel rule as styling nothing. */
+    also: ['pixel-panels.js'],
     prefix: 'px',
     built: [],
   },

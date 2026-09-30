@@ -210,6 +210,11 @@
         (card.art.caption ? '<p class="px-caption">' + esc(card.art.caption) + '</p>' : '') +
       '</div>';
     }
+    /* A diagram of Aseprite's own interface, from pixel-panels.js. The other
+       figures on this course teach what to draw; this one teaches where the
+       control is, which the course had been naming — the tag bar, the onion
+       buttons, the Color Mode dropdown — without ever showing. */
+    if (card.panel && root.PixelPanels) return root.PixelPanels.html(card.panel);
     return '';
   }
 
