@@ -53,6 +53,15 @@ const MODULES = [
       'a1-kind-',      // 'a1-rung-kind a1-kind-' + kind
       'a1-mc',         // 'a1-mc' + index, the matching-pair colours
     ],
+    /* Level 1's documents are drawn by doc-figure.js, shared with Levels 2 and
+       3, under a stem Level 1 passes in. So no `.a1-doc-*` class appears
+       literally in aat1-ui.js any more, and reading only that file would
+       report twenty live rules as dead. The module reports the class names it
+       can emit for a stem, and they are checked BOTH ways below — a rule for a
+       part the renderer dropped still fails, and a part with no rule fails
+       too. A regex over doc-figure.js would have guessed at this; asking it
+       cannot be wrong. */
+    stems: ['a1-doc'],
   },
   {
     name: 'AAT Level 3',
@@ -97,6 +106,8 @@ const MODULES = [
 ];
 
 const errors = [];
+const DocFigure = require(path.join(ROOT, 'doc-figure.js'));
+
 const notes = [];
 
 MODULES.forEach((mod) => {
@@ -132,7 +143,9 @@ MODULES.forEach((mod) => {
 
   /* ── 2. Every styled class is one the renderer can produce ──────────────── */
   const styled = [...new Set([...css.matchAll(CLASS)].map(m => m[1]))].sort();
-  const dead = styled.filter(c => js.indexOf(c) === -1 && !mod.built.some(p => c.startsWith(p)));
+  const fromDoc = new Set([].concat(...(mod.stems || []).map(st => DocFigure.classes(st))));
+  const dead = styled.filter(c => js.indexOf(c) === -1 && !fromDoc.has(c)
+    && !mod.built.some(p => c.startsWith(p)));
   dead.forEach(c => {
     const line = css.slice(0, css.indexOf('.' + c)).split('\n').length;
     errors.push(`${mod.css}:${line}: .${c} is styled but nothing renders it.`);
@@ -146,8 +159,10 @@ MODULES.forEach((mod) => {
   [...js.matchAll(/class="([^"'+]*)"/g)].forEach(m => {
     m[1].split(/\s+/).forEach(c => { if (RENDERED.test(c)) rendered.add(c); });
   });
+  fromDoc.forEach(c => rendered.add(c));
   const unstyled = [...rendered].filter(c => css.indexOf('.' + c) === -1).sort();
-  unstyled.forEach(c => errors.push(`${mod.name}: .${c} is rendered by ${mod.js} but the stylesheet never mentions it.`));
+  unstyled.forEach(c => errors.push(`${mod.name}: .${c} is rendered by ${fromDoc.has(c) ? 'doc-figure.js' : mod.js}` +
+    ` but the stylesheet never mentions it.`));
 
   /* ── 4. The design tokens are used, not just declared ───────────────────── */
   /* A scale nobody reaches for is a scale that has already been abandoned. */

@@ -7192,6 +7192,13 @@
       <span class="story-audio-hint">🗣️ Tap any line to hear it on its own.</span>
     </div>` : '';
     const visualHtml = card.visual ? `${storyAudioBar}<div class="lesson-visual${isStoryCard ? ' story-readable' : ''}">${card.visual}</div>` : '';
+    /* A source document, drawn from data by doc-figure.js. Level 2 spends
+       forty-one of its sixty-eight lessons working from invoices, credit notes
+       and statements and, until this existed here, never showed one: the
+       renderer was a local function inside aat1-ui.js that nothing else could
+       reach. `visual` could have carried the same picture as raw HTML, but an
+       invoice written as HTML is an invoice whose VAT nothing can check. */
+    const docHtml = (card.doc && window.DocFigure) ? window.DocFigure.html(card.doc) : '';
     const paraHtml = (card.p || []).map(p => `<p class="lesson-card-p">${mdBold(p)}</p>`).join('');
     const flowHtml = card.flow ? `<div class="lesson-flow">${card.flow.map((f,i) => `<span class="lesson-flow-step">${escapeHtml(f)}</span>${i < card.flow.length-1 ? '<span class="lesson-flow-arrow">→</span>' : ''}`).join('')}</div>` : '';
     const exHtml = card.example ? `<div class="lesson-example">
@@ -7297,7 +7304,7 @@
         <div class="lesson-card fade-in${def.isSheet ? ' lesson-card-sheet' : ''}">
           <h2 class="lesson-card-h">${escapeHtml(card.h || card.title || '')}</h2>
           ${card.body ? `<div class="lesson-card-body">${sanitizeCardBody(card.body)}</div>` : ''}
-          ${visualHtml}${paraHtml}${flowHtml}${formulaHtml}${workedHtml}${exHtml}${tableHtml}${splitHtml}${calloutHtml}${examtrapHtml}
+          ${visualHtml}${paraHtml}${docHtml}${flowHtml}${formulaHtml}${workedHtml}${exHtml}${tableHtml}${splitHtml}${calloutHtml}${examtrapHtml}
         </div>
         <div class="lesson-nav">
           ${cardIdx > 0 ? `<button class="btn-secondary" id="lessonBackBtn" type="button">← Back</button>` : '<span></span>'}

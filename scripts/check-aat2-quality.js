@@ -344,14 +344,21 @@ const CARD_SHAPE = {
     title: 'str?', problem: 'str', answer: 'str',
     steps: [{ do: 'str', why: 'str?' }],
     tryIt: { q: 'str', answer: 'num', unit: 'str?', hint: 'str?', exp: 'str?' }
-  }
+  },
+  /* A source document, drawn by doc-figure.js. Deliberately not described
+     further here: its shape, its arithmetic and its annotations are the whole
+     subject of scripts/check-doc-figures.js, and a second half-description of
+     it in this file would be the one that went stale. */
+  doc: 'any'
 };
 function isPrim(v) { return typeof v === 'string' || typeof v === 'number'; }
 function checkShape(val, spec, where) {
   if (val === undefined || val === null) return;
   if (typeof spec === 'string') {
     const base = spec.endsWith('?') ? spec.slice(0, -1) : spec;
-    if (base === 'str') {
+    if (base === 'any') {
+      return;                    // checked in full elsewhere — see CARD_SHAPE
+    } else if (base === 'str') {
       if (!isPrim(val)) errors.push(`${where}: must be text, but is ${Array.isArray(val) ? 'an array' : typeof val} — it would render as "[object Object]".`);
     } else if (base === 'num') {
       if (!Number.isFinite(val)) errors.push(`${where}: must be a finite number.`);

@@ -20,13 +20,19 @@
  * The second reason is vocabulary. Level 1 is overwhelmingly about documents —
  * invoices, credit notes, daybooks, cash books, bank statements — and about
  * meeting perhaps sixty pieces of jargon for the first time. So this player
- * adds two card elements Level 3 has no use for (`doc`, which draws a document
+ * adds two card elements Level 3 had no use for (`doc`, which draws a document
  * facsimile, and `terms`, which sets out key terms as a glossary strip) and two
  * question types (`match` and `ordering`) that suit recognition and sequence
  * work far better than a four-option multiple choice does.
  *
  * Sharing a renderer would have meant either bending Level 3's to fit, or
  * shipping a Level 1 that teaches documents without ever showing one.
+ *
+ * `doc` is no longer Level 1's alone. The drawing of it moved to
+ * doc-figure.js so that Levels 2 and 3 could show documents too — they teach
+ * from them just as hard and had never shown one — and this file now calls
+ * that module with Level 1's own prefix. The ladder, the question types and
+ * everything else above still stand.
  *
  * Progress lives under its own key, so nothing here can disturb Level 2 or 3.
  */
@@ -828,53 +834,15 @@
     return h;
   }
 
+  /* Documents are rendered by doc-figure.js, shared with Levels 2 and 3. This
+     file used to hold the only copy, which is why the other two levels went
+     six hundred cards without showing a single invoice. The prefix and the
+     table class keep Level 1's four existing documents looking exactly as
+     they did; everything else calls it with the defaults. */
   function docHtml(d) {
-    var h = '<div class="a1-doc a1-doc-' + esc(d.kind || 'generic') + '">';
-    h += '<div class="a1-doc-top"><span class="a1-doc-kind">' + esc(d.title || 'Document') + '</span>' +
-      (d.tag ? '<span class="a1-doc-tag">' + esc(d.tag) + '</span>' : '') + '</div>';
-
-    if (d.from || d.to) {
-      h += '<div class="a1-doc-parties">' +
-        ['from', 'to'].map(function (side) {
-          var lines = d[side];
-          if (!lines || !lines.length) return '';
-          return '<div class="a1-doc-party"><div class="a1-doc-party-l">' +
-            esc(side === 'from' ? (d.fromLabel || 'From') : (d.toLabel || 'To')) + '</div>' +
-            lines.map(function (x) { return '<div>' + md(x) + '</div>'; }).join('') + '</div>';
-        }).join('') + '</div>';
-    }
-
-    if (d.fields && d.fields.length) {
-      h += '<div class="a1-doc-fields">' + d.fields.map(function (f) {
-        return '<div class="a1-doc-field"><span class="a1-doc-field-l">' + esc(f[0]) + '</span>' +
-          '<span class="a1-doc-field-v">' + md(f[1]) + '</span></div>';
-      }).join('') + '</div>';
-    }
-
-    if (d.table) {
-      h += '<div class="a1-tablewrap"><table class="a1-table a1-doc-table">';
-      if (d.table.headers) {
-        h += '<thead><tr>' + d.table.headers.map(function (x, i) {
-          return '<th' + (i ? ' class="a1-num"' : '') + '>' + md(x) + '</th>';
-        }).join('') + '</tr></thead>';
-      }
-      h += '<tbody>' + (d.table.rows || []).map(function (r) {
-        return '<tr>' + r.map(function (x, i) {
-          return '<td' + (i ? ' class="a1-num"' : '') + '>' + md(x) + '</td>';
-        }).join('') + '</tr>';
-      }).join('') + '</tbody></table></div>';
-    }
-
-    if (d.totals && d.totals.length) {
-      h += '<div class="a1-doc-totals">' + d.totals.map(function (t, i) {
-        var last = i === d.totals.length - 1;
-        return '<div class="a1-doc-total' + (last ? ' is-final' : '') + '">' +
-          '<span>' + md(t[0]) + '</span><span class="a1-num">' + md(t[1]) + '</span></div>';
-      }).join('') + '</div>';
-    }
-
-    if (d.foot) h += '<div class="a1-doc-foot">' + md(d.foot) + '</div>';
-    return h + '</div>';
+    var D = root.DocFigure;
+    if (!D) return '';
+    return D.html(d, { prefix: 'a1', stem: 'a1-doc', tableClass: 'a1-table' });
   }
 
   function workedHtml(w) {

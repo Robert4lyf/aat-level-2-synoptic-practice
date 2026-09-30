@@ -1547,6 +1547,12 @@
           return '<tr>' + r.map(function (x) { return '<' + tag + '>' + md(x) + '</' + tag + '>'; }).join('') + '</tr>';
         }).join('') + '</tbody></table></div></div>';
     }
+    /* A source document, drawn from data by doc-figure.js — shared with
+       Levels 1 and 2. Level 3 assessments hand the candidate a supplier
+       statement and ask which items reconcile; a course that only describes
+       one is not preparing them for that. Uses the shared .doc-* styling in
+       styles.css rather than a third copy under an a3- prefix. */
+    if (c.doc && root.DocFigure) h += root.DocFigure.html(c.doc);
     if (c.flow) {
       h += '<div class="a3-flow">' + c.flow.map(function (f, i) {
         return '<span class="a3-flow-step">' + esc(f) + '</span>' +
@@ -4978,6 +4984,15 @@
     /* Announced, in the order they appear on the card, so "there is more here"
        arrives at the point the eye would reach it. */
     if (c.formula) say('There is a formula on screen.');
+    /* Announced but not read out — a document is a grid of figures and reading
+       one aloud has the same problem a table does. Named rather than called
+       "a document", and worded exactly as Level 1 words it, because a listener
+       moving between the two levels should not have to learn two phrasings for
+       the same thing. scripts/check-speech.js holds both to it. */
+    if (c.doc) {
+      say('There is a ' + String(c.doc.title || c.doc.tag || 'document').toLowerCase() +
+        ' on screen to look at.');
+    }
     if (c.split) say('There are two lists on screen to compare.');
     /* TABLES ARE PASSED OVER IN SILENCE, not announced. Reading one aloud is
        worse than useless — a four-column grid becomes a stream of unanchored
