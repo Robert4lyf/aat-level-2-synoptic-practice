@@ -115,6 +115,8 @@ jobs:
         run: npm run check:aat2-sheets
       - name: Check each self-rendering stylesheet matches its screens (no dead rules, no unstyled classes)
         run: npm run check:styles
+      - name: Check every source document on a lesson card adds up
+        run: npm run check:docs
       - name: Check written tasks (model hidden until earned, rubric marks at the pass mark)
         run: npm run check:written
       - name: Check retiring a question retires it (and that a mock still asks it)

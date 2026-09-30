@@ -3,7 +3,7 @@
    Bump CACHE_VERSION whenever you want to force a clean refresh of cached files. */
 'use strict';
 
-var CACHE_VERSION = 'aat-l2-v256';
+var CACHE_VERSION = 'aat-l2-v257';
 
 /* Guitar's and pixel art's files are cached lazily, on first open, rather than
    precached with everything else — the guitar's engine, renderer, audio and
@@ -102,6 +102,7 @@ var CORE_ASSETS = [
   './nav-history.js',
   './chrome-offset.js',
   './question-grid.js',
+  './doc-figure.js',
   './spaced.js',
   './sound.js',
   './celebrate.js',

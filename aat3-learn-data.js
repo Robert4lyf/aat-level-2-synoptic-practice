@@ -458,6 +458,48 @@
         },
         {
           h: 'What a VAT invoice must carry, and its variants',
+          /* THE INVOICE ITSELF, with the nine required particulars marked one
+             by one — including the three the card says candidates leave out.
+             It is mixed-rated on purpose, because the card ends by saying a
+             blended total makes such an invoice invalid, and the only honest
+             way to show that is to show one that is not blended. */
+          doc: {
+            kind: 'invoice', title: 'Full VAT invoice', tag: 'Mixed-rated',
+            from: ['②**Calderbrook Supplies Ltd**', '12 Wharf Road, Sheffield S3 8TG', 'VAT registration GB 337 1902 44'],
+            to: ['③**Kelso Ltd**', 'Brunton Works, Derby DE1 2QR'],
+            fields: [
+              ['Invoice number', '①CS-20418'],
+              ['Tax point', '④12 Oct 20X4'],
+              ['Date of issue', '17 Oct 20X4'],
+            ],
+            table: {
+              headers: ['⑤Description', 'Qty', '⑥Unit price £', 'VAT', '⑦Amount £'],
+              align: ['text', 'num', 'num', 'num', 'num'],
+              rows: [
+                ['Printed brochures, A5 full colour', '2,000', '0.45', '20%', '900.00'],
+                ['Children\'s activity books', '500', '1.20', '0%', '600.00'],
+              ],
+            },
+            totals: [
+              ['Standard-rated supplies', '900.00', 'memo'],
+              ['Zero-rated supplies', '600.00', 'memo'],
+              ['Goods total, excluding VAT', '1,500.00'],
+              ['VAT at 20% on the standard-rated supplies', '⑨180.00', 900],
+              ['Total due', '1,680.00'],
+            ],
+            foot: 'Cash discount of ⑧2% if settled within 10 days of the tax point. Registered in England, number 04188221.',
+            annotations: [
+              ['①', 'A **unique sequential number**. A gap in the sequence is the first thing an inspection looks for.'],
+              ['②', 'The supplier\'s **name, address and VAT registration number**. Missing the VAT number is not an irregularity to be overlooked — the document is then not evidence of input tax at all.'],
+              ['③', 'The **customer\'s name and address**. A simplified invoice may leave this out; a full one may not.'],
+              ['④', 'The **tax point**, with the date of issue shown separately because they differ. The tax point is the one that decides the period.'],
+              ['⑤', '**Description, quantity and VAT rate** for each supply — three requirements in one column each.'],
+              ['⑥', 'The **unit price**, because these goods are countable. One of the three particulars most often left off.'],
+              ['⑦', 'The **net amount for each supply**, and a goods total excluding VAT. The two rates are kept apart, which is what lets the customer establish how much VAT was charged at which rate.'],
+              ['⑧', 'The **rate of the cash discount offered**, whether or not anybody takes it. The second of the three most often left off.'],
+              ['⑨', 'The **total VAT chargeable, in sterling**. Every other money figure here could be in another currency; this one could not.'],
+            ],
+          },
           split: {
             left: { title: 'Full VAT invoice', items: ['Unique sequential number', 'Supplier name, address and VAT number', 'Customer name and address', 'Tax point, and the date of issue where it differs', 'Description, quantity and VAT rate for each supply', 'Net amount for each supply, and the gross total excluding VAT', '**The rate of any cash discount offered**', '**The unit price**, where the items are countable', 'Total VAT chargeable — **in sterling**'] },
             right: { title: 'Variants', items: ['**Simplified** — for small retail supplies; less detail, no customer details, VAT-inclusive amounts', '**Modified** — for higher-value retail; shows VAT-inclusive totals with the VAT separately stated', '**Mixed-rated** — must show each rate separately, not one blended total'] },
@@ -2433,6 +2475,46 @@
         },
         {
           h: 'The VAT boxes: 1, 3, 4 and 5',
+          /* THE RETURN. Four lessons discuss what goes in which box and none
+             of them had ever shown the boxes. Boxes 3 and 5 are declared as
+             derived rows, so scripts/check-doc-figures.js works them out the
+             way the return does — a printed box 5 that does not equal box 3
+             less box 4 is the worst single thing this course could show. */
+          doc: {
+            kind: 'vatreturn', title: 'VAT return', tag: 'Kelso Ltd · quarter to 31 Dec 20X4',
+            fromLabel: 'Registration', toLabel: 'Period',
+            from: ['GB 337 1902 44', 'Kelso Ltd'],
+            to: ['1 Oct to 31 Dec 20X4', 'Due, with payment, by 7 Feb 20X5'],
+            table: {
+              headers: ['Box', 'What it is', 'Figure £'],
+              align: ['text', 'text', 'num'],
+              /* Box 3 = box 1 + box 2; box 5 = box 3 − box 4. Rows are counted
+                 from zero, so boxes 1, 2, 3, 4 and 5 are rows 0 to 4. */
+              derived: [
+                { col: 2, row: 2, is: [0, '+', 1] },
+                { col: 2, row: 4, is: [2, '-', 3] },
+              ],
+              rows: [
+                ['1', '①VAT due on sales and other outputs', '24,310.00'],
+                ['2', 'VAT due on acquisitions from Northern Ireland', '0.00'],
+                ['3', '②Total VAT due — boxes 1 and 2 added', '24,310.00'],
+                ['4', '③VAT reclaimed on purchases and other inputs', '17,884.00'],
+                ['5', '②Net VAT to pay HMRC — the difference between 3 and 4', '6,426.00'],
+                ['6', '④Total value of sales and all other outputs, excluding VAT', '138,500.00'],
+                ['7', '⑤Total value of purchases and all other inputs, excluding VAT', '96,420.00'],
+                ['8', 'Value of goods supplied to Northern Ireland', '0.00'],
+                ['9', 'Value of acquisitions from Northern Ireland', '0.00'],
+              ],
+            },
+            foot: 'Box 2 is nil because Kelso makes no acquisitions from Northern Ireland, which is why box 3 here is simply box 1 over again.',
+            annotations: [
+              ['①', '**Output tax.** Not only sales invoices: the fuel scale charge, VAT on gifts once £50 has gone to one person in a year, and import VAT under postponed accounting all land here too.'],
+              ['②', '**Calculated, not entered.** Box 3 is boxes 1 and 2; box 5 is box 3 less box 4. Where box 4 is the larger, box 5 still carries a positive figure — HMRC says expressly that no minus sign goes in it — and the return is a repayment.'],
+              ['③', '**Input tax**, including import VAT reclaimed under postponed accounting and bad debt relief. It excludes client entertaining, cars available for private use, and anything with no valid VAT invoice behind it.'],
+              ['④', '**All** outputs, net. Zero-rated, exempt and export sales belong here even though they added nothing to box 1, and leaving them out is what makes this figure too small — which also shrinks the 1% test a future error correction is measured against.'],
+              ['⑤', 'All inputs, net, **including imports** — and excluding wages, PAYE — Pay As You Earn, the system that collects Income Tax from wages — National Insurance and drawings, all of which are outside the scope of VAT. A box 7 that has swallowed the payroll is among the first things a reviewer looks for.'],
+            ],
+          },
           p: [
             '**Box 1** is output tax: the VAT due on everything supplied in the period. It is not only sales invoices. It also picks up three adjustments taught in Outcome 2. The **fuel scale charge**. VAT on **gifts of goods once more than £' + T.gifts.goodsLimit.value + ' has gone to one person in a year** (lesson 2E). And **import VAT declared under postponed accounting**. Zero-rated, exempt and outside-the-scope supplies add nothing here, because no VAT arises on them.',
             '**Box 4** is input tax: VAT recoverable on purchases. It includes **import VAT reclaimed under postponed accounting** — the same figure that went into Box 1. It also includes **bad debt relief**, which is claimed as input tax rather than as a reduction of output tax. It excludes everything blocked: client entertaining, cars available for private use, and anything for which the business does not hold a valid VAT invoice.',
@@ -3035,6 +3117,47 @@
         },
         {
           h: 'Working out the monthly payment',
+          /* The list of figures the worked example sorts through, drawn as the
+             payroll summary it would arrive on. Four marks, one per decision.
+             The total is a derived row, so the £17,210 on it is checked
+             against the four lines above rather than asserted. */
+          doc: {
+            kind: 'payslip', title: 'Payroll summary', tag: 'Kelso Ltd · month 7',
+            fields: [
+              ['Employer PAYE reference', '083/KL4471'],
+              ['Accounts Office reference', '083PA00219406'],
+              ['Month', '7 · to 5 Nov 20X4'],
+              ['Employees paid', '26'],
+            ],
+            table: {
+              headers: ['Item', 'Amount £', 'Goes to'],
+              align: ['text', 'num', 'text'],
+              /* The payment is the four HMRC lines — rows 2, 3, 4 and 5 —
+                 added. Gross pay on row 1 is the figure they came out of and
+                 is not part of it. */
+              derived: [
+                { col: 1, row: 8, is: [1, '+', 2, '+', 3, '+', 4] },
+              ],
+              rows: [
+                ['Gross pay', '48,000.00', 'The employees'],
+                ['①PAYE Income Tax deducted', '7,900.00', 'HMRC'],
+                ['①Employee National Insurance', '3,850.00', 'HMRC'],
+                ['②Employer National Insurance', '5,120.00', 'HMRC'],
+                ['①Student loan repayments', '340.00', 'HMRC'],
+                ['③Employee pension contributions', '2,400.00', 'The pension provider'],
+                ['③Employer pension contributions', '1,440.00', 'The pension provider'],
+                ['④Union subscriptions', '85.00', 'The union'],
+                ['**Due to HMRC for month 7**', '**17,210.00**', 'HMRC'],
+              ],
+            },
+            foot: 'Payable by 22 November if paying electronically, or 19 November by post.',
+            annotations: [
+              ['①', '**Deducted from employees and owed to HMRC.** Income Tax, employee National Insurance and student loan repayments are all collected through PAYE, and none of the money was ever the employer\'s.'],
+              ['②', '**The employer\'s own liability**, deducted from nobody, and it goes to HMRC in the same payment. Leaving it out is the single most common error in this calculation.'],
+              ['③', 'Pension money goes to the **pension provider**, both the employee\'s share and the employer\'s. It appears on a payslip and it is not owed to HMRC.'],
+              ['④', 'A **non-statutory deduction**. The £85 belongs to the union and has nothing to do with the tax system at all.'],
+            ],
+          },
           p: [
             'Questions here typically give a list of figures, some of which belong in the payment and some of which do not. The work is in classification rather than arithmetic — decide who each amount belongs to before adding anything.',
           ],

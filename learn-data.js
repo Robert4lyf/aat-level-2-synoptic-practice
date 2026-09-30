@@ -442,6 +442,46 @@ window.LEARN_PATH = [
           },
           {
             h: 'What each document does',
+            /* THE INVOICE ITSELF. This lesson names seven documents in a table
+               and, for six years, showed none of them. A reader who has never
+               seen an invoice cannot tell it from a delivery note however
+               clearly the table describes the difference. */
+            doc: {
+              kind: 'invoice', title: 'Sales invoice', tag: 'What is on one',
+              from: ['Marchmont Design Ltd', 'Unit 4, Foundry Park, Leeds LS11 9UT', 'VAT registration ④GB 418 2277 61'],
+              to: ['Norbridge Joinery Ltd', '2 Dobson Street, Wakefield WF1 2LS'],
+              fields: [
+                ['Invoice number', '①INV-4417'],
+                ['Invoice date / tax point', '②14 Jun 20X4'],
+                ['Your order', 'PO-2291'],
+                ['Account', '③NOR-08'],
+              ],
+              table: {
+                headers: ['Description', 'Qty', 'Unit price £', 'Amount £'],
+                rows: [
+                  ['Recycled copier paper, A4 — box of 5 reams', '12', '6.50', '⑤78.00'],
+                  ['Toner cartridge, TN-2420', '4', '38.00', '152.00'],
+                  ['Box files, foolscap', '10', '2.70', '27.00'],
+                ],
+              },
+              totals: [
+                ['Goods total', '257.00'],
+                ['Trade discount 10%', '(25.70)'],
+                ['Net total', '⑥231.30'],
+                ['VAT at 20%', '46.26'],
+                ['Total due', '277.56'],
+              ],
+              foot: 'Terms: ⑦payment within 30 days of the invoice date. Please quote the invoice number when you pay.',
+              annotations: [
+                ['①', 'The **invoice number**. Unique, unbroken, and the reference the customer quotes on their remittance advice — which is what lets you allocate their payment later.'],
+                ['②', 'The **tax point**. It fixes which VAT period the sale falls in, and it is the date the payment terms run from.'],
+                ['③', 'The customer\'s **account code** in our receivables ledger. This is what gets written in the daybook, not the name.'],
+                ['④', 'Our **VAT registration number**. Without it the document is not a valid VAT invoice and the customer cannot reclaim the £46.26.'],
+                ['⑤', 'The **line extension** — 12 × £6.50. Check every one of these yourself; a wrongly extended line is the most common fault on an invoice.'],
+                ['⑥', 'The **net** figure, after trade discount. VAT is charged on this, never on the £257.00 list total.'],
+                ['⑦', 'The **terms**. An invoice demanding seven days when thirty was agreed is wrong even though every figure on it adds up.'],
+              ],
+            },
             p: [
               'Each document answers a different question, and that is how you tell them apart: who asked for what, what actually arrived, and what is owed.',
               'A delivery note is never a demand for money, and an invoice is never proof of delivery. Confusing the two is the most common error in this task.',
@@ -463,6 +503,40 @@ window.LEARN_PATH = [
           },
           {
             h: 'The three-way match',
+            /* The middle document, the one the card argues cannot be left out.
+               Its figures are the same order that the faulty invoice in
+               "Checking a supplier invoice" bills for — 40 reams and 12 boxes,
+               of which 10 arrived — so the two lessons tell one story. */
+            doc: {
+              kind: 'grn', title: 'Goods received note', tag: 'The middle document',
+              fromLabel: 'Supplier', toLabel: 'Received at',
+              from: ['Kesgrave Papers Ltd'],
+              to: ['Marchmont Design Ltd — goods inwards bay'],
+              fields: [
+                ['GRN number', '0884'],
+                ['Date received', '11 Jun 20X4'],
+                ['Our order', 'PO-3310'],
+                ['Their delivery note', '5521'],
+              ],
+              table: {
+                headers: ['Description', '①Ordered', '②Delivered', 'Condition'],
+                align: ['text', 'num', 'num', 'text'],
+                rows: [
+                  ['Copier paper, A4 — ream', '40', '40', 'Accepted'],
+                  ['Box files, foolscap — box of 10', '12', '10', '2 boxes short'],
+                ],
+              },
+              sig: [
+                ['③Checked by', 'R. Oyelaran'],
+                ['Date', '11 Jun 20X4'],
+              ],
+              foot: 'Two boxes short on delivery. The supplier invoice must be checked against this note before it is authorised for payment.',
+              annotations: [
+                ['①', 'Copied from the **purchase order**. It is what we asked for.'],
+                ['②', 'Counted **on the bay**, and this is the whole value of the document: it records what arrived, not what the supplier\'s delivery note claimed was sent.'],
+                ['③', 'A **signature**, from the person who counted. Without it the note asserts something nobody is accountable for.'],
+              ],
+            },
             p: [
               'Before a purchase invoice is authorised for payment, it is checked against two other documents:',
               '**Purchase order** — were these goods actually ordered, at this price?',
@@ -476,6 +550,41 @@ window.LEARN_PATH = [
           },
           {
             h: 'Invoice or credit note?',
+            /* The credit note that reduces the invoice on the card two before
+               this one. Same customer, same account code, same discount rate —
+               because the card's point is that a credit note mirrors an
+               invoice in every respect except direction. */
+            doc: {
+              kind: 'creditnote', title: 'Credit note', tag: 'It reduces, never cancels',
+              from: ['Marchmont Design Ltd', 'Unit 4, Foundry Park, Leeds LS11 9UT', 'VAT registration GB 418 2277 61'],
+              to: ['Norbridge Joinery Ltd', '2 Dobson Street, Wakefield WF1 2LS'],
+              fields: [
+                ['Credit note number', 'CN-0311'],
+                ['Date', '28 Jun 20X4'],
+                ['Against invoice', '①INV-4417'],
+                ['Account', 'NOR-08'],
+                ['Reason', 'Goods returned — damaged'],
+              ],
+              table: {
+                headers: ['Description', 'Qty', 'Unit price £', 'Amount £'],
+                rows: [
+                  ['Box files, foolscap — returned damaged', '4', '2.70', '10.80'],
+                ],
+              },
+              totals: [
+                ['Goods returned', '10.80'],
+                ['Trade discount 10%', '②(1.08)'],
+                ['Net credit', '9.72'],
+                ['VAT at 20%', '1.94'],
+                ['Total credit', '③11.66'],
+              ],
+              foot: 'Your account has been reduced by £11.66. Invoice INV-4417 remains in our records and in yours.',
+              annotations: [
+                ['①', 'A credit note **names the invoice it relates to**. That reference is what makes the pair traceable, and it is why the invoice is never deleted: there would be nothing left to point at.'],
+                ['②', 'The **same 10% trade discount** as the invoice. Credit a return at full list price and you hand back more than was ever charged.'],
+                ['③', 'This figure comes **off** what the customer owes — Dr Sales returns, Cr Trade receivables — and it goes in the sales returns day book, not the sales day book.'],
+              ],
+            },
             p: [
               'A credit note is not a cancelled invoice. It is a separate document that reduces a balance already recorded, and the original invoice stays in the records.',
               'Issue one when goods are returned, when an overcharge is found, or when a price is reduced after the event.',
@@ -730,6 +839,40 @@ window.LEARN_PATH = [
           },
           {
             h: 'VAT records and daybooks',
+            /* The card ends by saying a receipt showing only a total is not
+               enough to reclaim input tax. What IS enough is worth showing,
+               with the particulars HMRC requires marked on it one by one. */
+            doc: {
+              kind: 'invoice', title: 'VAT invoice', tag: 'Why this one is valid',
+              from: ['Wrenford Office Supplies Ltd', '18 Carr Lane, Hull HU1 3RQ', 'VAT registration ①GB 221 4480 03'],
+              to: ['Marchmont Design Ltd', 'Unit 4, Foundry Park, Leeds LS11 9UT'],
+              fields: [
+                ['Invoice number', '②WOS-10442'],
+                ['Tax point', '③9 Jun 20X4'],
+                ['Your order', 'PO-3318'],
+              ],
+              table: {
+                headers: ['④Description', 'Qty', 'Unit price £', 'Amount £'],
+                rows: [
+                  ['Printer paper, A4 white — box of 5 reams', '6', '21.50', '129.00'],
+                  ['Toner cartridge, TN-2420', '2', '38.00', '76.00'],
+                ],
+              },
+              totals: [
+                ['Net total', '⑤205.00'],
+                ['VAT at ⑥20%', '41.00'],
+                ['Total due', '246.00'],
+              ],
+              foot: 'Without these particulars the document is not a VAT invoice, and the input tax on it cannot be reclaimed however genuine the purchase.',
+              annotations: [
+                ['①', 'The supplier\'s **VAT registration number**. A till receipt from a shop that is not registered carries no reclaimable VAT at all.'],
+                ['②', 'A **unique invoice number**, from an unbroken sequence.'],
+                ['③', 'The **tax point**, which decides the period the input tax belongs to.'],
+                ['④', 'A **description** of what was supplied. "Sundries £246.00" would not do.'],
+                ['⑤', 'The **net amount** charged, which is the figure the VAT is worked on. An invoice showing a gross total and no net does not let the customer separate the two.'],
+                ['⑥', 'The **rate and the amount** of VAT, shown separately. This £41.00 is the figure that goes in the purchases daybook VAT column and, from there, into input tax on the return.'],
+              ],
+            },
             p: [
               'Businesses record VAT in the **sales daybook** and **purchases daybook** — each has columns for net, VAT, and gross.',
               'The VAT figures from these books are posted to the **VAT control account** in the general ledger.',
@@ -840,6 +983,37 @@ window.LEARN_PATH = [
           },
           {
             h: 'Inside the sales daybook',
+            /* The first invoice in the daybook below, drawn out in full. Four
+               marks, one per column of the daybook entry, because the point of
+               the card is which figure off the document goes where. */
+            doc: {
+              kind: 'invoice', title: 'Sales invoice', tag: 'The SL001 entry below',
+              from: ['Marchmont Design Ltd', 'VAT registration GB 418 2277 61'],
+              to: ['Ahmed Ltd', '55 Kirkgate, Bradford BD1 5EQ'],
+              fields: [
+                ['Invoice number', '①SL001'],
+                ['Invoice date', '1 Jun 20X4'],
+                ['Account', 'AHM-04'],
+              ],
+              table: {
+                headers: ['Description', 'Qty', 'Rate £', 'Amount £'],
+                rows: [
+                  ['Brand identity work, May — design hours', '20', '50.00', '1,000.00'],
+                ],
+              },
+              totals: [
+                ['Net total', '②1,000.00'],
+                ['VAT at 20%', '③200.00'],
+                ['Total due', '④1,200.00'],
+              ],
+              foot: 'Terms: payment within 30 days.',
+              annotations: [
+                ['①', 'Goes in the daybook\'s **invoice number** column.'],
+                ['②', 'Goes in the **net** column, and ends up as Cr Sales.'],
+                ['③', 'Goes in the **VAT** column, and ends up as Cr VAT control. It never belonged to the business.'],
+                ['④', 'Goes in the **total** column, and ends up as Dr SLCA. Cross-cast to prove it: ② + ③ = ④, on every line and in the totals.'],
+              ],
+            },
             p: [
               'The daybook lists each invoice across net, VAT and gross columns. Only the **totals** are posted to the ledger, which is exactly what makes daybooks efficient.',
               'Cross-cast before posting: net plus VAT must equal gross on every line and in the totals, and the gross total is the figure that goes to the SLCA.',
@@ -1270,6 +1444,37 @@ window.LEARN_PATH = [
           },
           {
             h: 'The documents and records used',
+            /* The £1,050 remittance advice the prose describes. It is the one
+               document in the lesson a reader is unlikely to have seen, and
+               the one the whole allocation turns on. */
+            doc: {
+              kind: 'remittance', title: 'Remittance advice', tag: 'Sent by the customer',
+              fromLabel: 'From (the payer)', toLabel: 'To',
+              from: ['Marchmont Design Ltd'],
+              to: ['Halden Inks Ltd', 'Accounts receivable'],
+              fields: [
+                ['Advice number', 'RA-2208'],
+                ['Date', '26 Jun 20X4'],
+                ['Your account', 'MAR-11'],
+                ['Paid by', 'BACS, value 26 Jun'],
+              ],
+              table: {
+                headers: ['Document', 'Date', 'Amount £'],
+                align: ['text', 'text', 'num'],
+                rows: [
+                  ['Invoice 4501', '12 Jun 20X4', '1,200.00'],
+                  ['②Credit note CN-118', '19 Jun 20X4', '(150.00)'],
+                ],
+              },
+              totals: [
+                ['Total remitted', '①1,050.00'],
+              ],
+              foot: 'Invoice 4501 is settled in full by this payment.',
+              annotations: [
+                ['①', 'This figure **matches no single document**. It is the invoice less the credit note, and without the advice you could not tell whether invoice 4501 was settled or £150 short — two readings that lead to opposite actions.'],
+                ['②', 'The credit note, **named**. This is what a remittance advice does that a cheque or a BACS notification cannot: it states the purpose of the money, not just the amount.'],
+              ],
+            },
             table: {
               headers: ['Source', 'What it tells you'],
               rows: [
@@ -1382,6 +1587,44 @@ window.LEARN_PATH = [
           },
           {
             h: 'What can be wrong',
+            /* AN INVOICE THAT IS WRONG ON PURPOSE. Three faults, one from each
+               of the three groups the card separates — a line extended wrongly,
+               a total that does not add, and terms that do not match the order.
+               `planted` records that the arithmetic failure is intentional;
+               scripts/check-doc-figures.js requires that the document really
+               does fail, so the note cannot outlive the errors it describes. */
+            doc: {
+              kind: 'invoice', title: 'Purchase invoice', tag: 'Three faults',
+              planted: 'The first line extends 25 × £8.40 as £215.00 when it is £210.00, and the goods total adds the two lines as £337.00 when they come to £332.00. Everything below the goods total is then correctly worked from a wrong figure, which is what makes it convincing.',
+              from: ['Kesgrave Papers Ltd', 'VAT registration GB 221 4480 03'],
+              to: ['Marchmont Design Ltd'],
+              fields: [
+                ['Invoice number', 'K-7690'],
+                ['Invoice date', '6 Jun 20X4'],
+                ['Your order', 'PO-3296'],
+                ['Terms', '③7 days'],
+              ],
+              table: {
+                headers: ['Description', 'Qty', 'Unit price £', 'Amount £'],
+                rows: [
+                  ['Copier paper, A4 — ream', '25', '8.40', '①215.00'],
+                  ['Ink cartridge, black', '6', '19.50', '117.00'],
+                ],
+              },
+              totals: [
+                ['Goods total', '②337.00'],
+                ['Trade discount 10%', '(33.70)'],
+                ['Net total', '303.30'],
+                ['VAT at 20%', '60.66'],
+                ['Total due', '363.96'],
+              ],
+              foot: 'Payment due within 7 days of the invoice date.',
+              annotations: [
+                ['①', '25 × £8.40 is **£210.00**, not £215.00. A line extended wrongly — and you need nothing but the invoice to find it.'],
+                ['②', 'The two lines come to **£332.00**. Every figure below this one is worked correctly from a wrong starting point, which is exactly why a total that does not add is worth checking rather than assuming.'],
+                ['③', 'Seven days, where the purchase order agreed **thirty**. Terms can be wrong on an invoice whose every figure is right.'],
+              ],
+            },
             p: [
               'The specification lists the discrepancies to look for, and they fall into three groups worth keeping separate because each is found by a different document.',
               '**Goods that did not arrive as billed.** Non-delivery of goods altogether, or the incorrect type or quantity of goods. Only the goods received note reveals these: an invoice can match the purchase order exactly and still bill for a delivery that was short, because the order says what was wanted rather than what came.',
@@ -1413,6 +1656,37 @@ window.LEARN_PATH = [
           },
           {
             h: 'Worked: checking an invoice line by line',
+            /* The invoice the worked example checks. Note what is NOT wrong
+               with it: every figure on it adds up, and it agrees with the
+               purchase order. It is wrong only against the goods received
+               note, which is the card's whole argument and the reason the
+               match is three-way rather than two. */
+            doc: {
+              kind: 'invoice', title: 'Purchase invoice', tag: 'Check it before reading on',
+              from: ['Kesgrave Papers Ltd', '7 Sandy Lane, Ipswich IP4 2QR', 'VAT registration GB 221 4480 03'],
+              to: ['Marchmont Design Ltd', 'Unit 4, Foundry Park, Leeds LS11 9UT'],
+              fields: [
+                ['Invoice number', 'K-7712'],
+                ['Invoice date', '14 Jun 20X4'],
+                ['Your order', 'PO-3310'],
+                ['Delivery note', '5521'],
+              ],
+              table: {
+                headers: ['Description', 'Qty', 'Unit price £', 'Amount £'],
+                rows: [
+                  ['Copier paper, A4 — ream', '40', '6.50', '260.00'],
+                  ['Box files, foolscap — box of 10', '12', '14.00', '168.00'],
+                ],
+              },
+              totals: [
+                ['Goods total', '428.00'],
+                ['Trade discount 10%', '(42.80)'],
+                ['Net total', '385.20'],
+                ['VAT at 20%', '77.04'],
+                ['Total due', '462.24'],
+              ],
+              foot: 'Terms: payment within 30 days. Goods received note 0884 refers to this delivery.',
+            },
             worked: {
               title: 'An invoice with two errors',
               problem: 'Kesgrave Papers invoices 40 reams at £6.50 and 12 boxes at £14.00, showing a line total of £260.00 for the reams and £168.00 for the boxes, a 10% trade discount, and VAT at 20%. Our purchase order agreed £6.50 and £14.00 with 10% trade discount. The goods received note records 40 reams and 10 boxes. Check the invoice.',
@@ -1496,6 +1770,37 @@ window.LEARN_PATH = [
           },
           {
             h: 'The statement of account, and why it disagrees',
+            /* The Halden Inks statement the worked example two cards on
+               reconciles. It carries all three of its items: invoice 8891 that
+               is not in our ledger, invoice 8874 charged twice, and the £900
+               payment that is nowhere on it because it is still in transit. */
+            doc: {
+              kind: 'statement', title: 'Statement of account', tag: 'As the supplier sees it',
+              fromLabel: 'From (the supplier)', toLabel: 'Account',
+              from: ['Halden Inks Ltd', 'Statement to 31 May 20X4'],
+              to: ['Marchmont Design Ltd', 'Account MAR-11'],
+              table: {
+                headers: ['Date', 'Details', 'Charges £', 'Payments £', 'Balance £'],
+                align: ['text', 'text', 'num', 'num', 'num'],
+                running: { add: 2, sub: 3, balance: 4 },
+                rows: [
+                  ['1 May', 'Balance brought forward', '', '', '2,900.00'],
+                  ['6 May', '②Invoice 8874', '340.00', '', '3,240.00'],
+                  ['9 May', '②Invoice 8874', '340.00', '', '3,580.00'],
+                  ['13 May', 'Credit note CN-205', '', '120.00', '3,460.00'],
+                  ['17 May', '③Payment received — thank you', '', '800.00', '2,660.00'],
+                  ['22 May', 'Invoice 8886', '1,760.00', '', '4,420.00'],
+                  ['29 May', '①Invoice 8891', '600.00', '', '5,020.00'],
+                  ['31 May', 'Balance now due', '', '', '5,020.00'],
+                ],
+              },
+              foot: 'Payments received after 31 May 20X4 are not shown on this statement.',
+              annotations: [
+                ['①', 'Invoice 8891 is on **their** record and not on ours. An omission on our side, and not a timing difference: it needs entering.'],
+                ['②', 'Invoice 8874 appears **twice**, on 6 and 9 May. Their error, so their balance is £340 too high — query it, do not adjust our own books for it.'],
+                ['③', 'The only payment they have recorded. Ours of £900, sent on 28 May, is not here at all: a timing difference, needing no entry from either side.'],
+              ],
+            },
             p: [
               'A **statement of account** is sent by the supplier and lists the transactions on the account as *they* see it: invoices issued, credit notes raised, payments received, and the balance they believe is outstanding.',
               'It will regularly disagree with our own payables ledger, and the specification asks you to identify why. The differences fall into two kinds, and telling them apart decides what to do.',
@@ -1755,6 +2060,40 @@ window.LEARN_PATH = [
           },
           {
             h: 'What the vouchers protect against',
+            /* The stationery voucher from the worked example on the card
+               before this one — £32.40 including £5.40 of VAT. Shown here
+               because the card argues the voucher is a control, and a control
+               is easier to believe when you can see the two signatures on it. */
+            doc: {
+              kind: 'voucher', title: 'Petty cash voucher', tag: 'A control, not paperwork', stamp: 'PAID',
+              fields: [
+                ['Voucher number', '214'],
+                ['Date', '18 Jun 20X4'],
+                ['Paid to', 'R. Oyelaran'],
+                ['Analysis column', 'Stationery'],
+              ],
+              table: {
+                headers: ['Description', 'Net £', 'VAT £', 'Total £'],
+                rows: [
+                  ['Printer paper and envelopes — Wrenford Office', '27.00', '②5.40', '32.40'],
+                ],
+              },
+              totals: [
+                ['Net', '27.00'],
+                ['VAT', '5.40'],
+                ['Total paid from the tin', '32.40'],
+              ],
+              sig: [
+                ['Claimed by', 'R. Oyelaran'],
+                ['①Authorised by', 'T. Whelan'],
+              ],
+              foot: '③Receipt attached — Wrenford Office Supplies, 18 Jun 20X4.',
+              annotations: [
+                ['①', 'A **second person** authorises it. That is what turns a withdrawal from an anonymous event into an attributable one, and it is the reason the claimant cannot be the authoriser.'],
+                ['②', 'VAT **split out**, so the £5.40 of input tax can be reclaimed. A voucher recording only £32.40 loses it.'],
+                ['③', 'The **receipt**. Without it the voucher is an assertion; with it the voucher is evidence. A tin of vouchers and no receipts reconciles perfectly and proves nothing.'],
+              ],
+            },
             p: [
               'Petty cash is the most easily misused money in a business, because it is physical, it is small, and each individual amount is too trivial to attract attention. The controls are correspondingly simple, and they make more sense as controls than as paperwork.',
               'The **voucher** requires that somebody says what the money was for and somebody authorises it. That turns a withdrawal from an anonymous event into an attributable one.',
@@ -2750,6 +3089,40 @@ window.LEARN_PATH = [
           },
           {
             h: 'A payroll calculation',
+            /* Priya's payslip, with the figures the example below works with.
+               The employer's costs are deliberately NOT on it, in a footnote
+               saying so, because the card's argument is that gross-to-net and
+               cost-to-employer run in opposite directions from the same
+               figure — and a payslip is the document that shows only one. */
+            doc: {
+              kind: 'payslip', title: 'Payslip', tag: 'What Priya receives',
+              fields: [
+                ['Employee', 'Priya Raman'],
+                ['Works number', 'E-044'],
+                ['Period', 'Month 3 · June 20X4'],
+                ['Tax code', '1257L'],
+                ['NI category', 'A'],
+              ],
+              table: {
+                headers: ['Payments', 'Amount £'],
+                rows: [
+                  ['Basic salary, month 3', '2,000.00'],
+                ],
+              },
+              totals: [
+                ['Gross pay', '①2,000.00'],
+                ['PAYE income tax', '(190.00)'],
+                ['Employee National Insurance', '②(120.00)'],
+                ['Employee pension contribution', '(100.00)'],
+                ['Net pay', '③1,590.00'],
+              ],
+              foot: 'Employer National Insurance of £200.00 and employer pension of £60.00 are **not** deductions from this pay and do not appear on a payslip. The employer pays them on top of the £2,000.00.',
+              annotations: [
+                ['①', '**Gross pay.** Both answers start here and then go opposite ways: deductions come off it to reach net pay, employer contributions go on top of it to reach the cost to the business.'],
+                ['②', 'The **employee\'s** National Insurance. The employer\'s £200.00 is a different figure entirely and swapping the two is the commonest error in this task — which is why every figure gets labelled before any of it is used.'],
+                ['③', '**Net pay**, and the only figure on this document that reaches Priya\'s bank account.'],
+              ],
+            },
             p: ['Meet Priya. Her gross pay this month is £2,000.',
               'Work down the figures in order and label each one as you go, because the numbers look similar and the two National Insurance figures are easy to swap.',
               'Start from gross pay. Subtract the employee’s deductions one at a time to reach net pay — that is the payment the employee receives. Then, separately, add the employer’s contributions to gross pay to reach the total cost to the business. The two answers come from the same starting figure but move in opposite directions.',
@@ -3590,6 +3963,37 @@ window.LEARN_PATH = [
           },
           {
             h: 'Items on the bank statement not in the cashbook',
+            /* A bank statement carrying one of each item the card lists. The
+               annotations say which way each one is entered in the cash book,
+               because "debit receipts, credit payments" is the sentence
+               readers reverse. */
+            doc: {
+              kind: 'banking', title: 'Bank statement', tag: 'Four items the cash book is missing',
+              fromLabel: 'Bank', toLabel: 'Account',
+              from: ['Wyvern Bank plc', 'Statement 41 · June 20X4'],
+              to: ['Marchmont Design Ltd', 'Current account 40-11-08  62119374'],
+              table: {
+                headers: ['Date', 'Detail', 'Paid out £', 'Paid in £', 'Balance £'],
+                align: ['text', 'text', 'num', 'num', 'num'],
+                running: { sub: 2, add: 3, balance: 4 },
+                rows: [
+                  ['1 Jun', 'Balance brought forward', '', '', '3,420.00'],
+                  ['4 Jun', 'Cheque 100482', '412.00', '', '3,008.00'],
+                  ['9 Jun', '①BACS — Ahmed Ltd', '', '1,050.00', '4,058.00'],
+                  ['14 Jun', '②Direct debit — Ashvale Insurance', '186.50', '', '3,871.50'],
+                  ['21 Jun', '③Cheque returned unpaid — Delaney & Co', '264.00', '', '3,607.50'],
+                  ['28 Jun', '④Bank charges', '32.80', '', '3,574.70'],
+                  ['30 Jun', 'Balance carried forward', '', '', '3,574.70'],
+                ],
+              },
+              foot: 'Cheque 100495 for £780.00, written on 27 June, is not on this statement. That one IS a timing difference: the cash book is early, not wrong, so it belongs in the reconciliation statement and not in a correcting entry.',
+              annotations: [
+                ['①', 'A **direct credit** from a customer. Money in, so **debit** the cash book — and credit the SLCA.'],
+                ['②', 'A **direct debit** nobody entered. Money out, so **credit** the cash book.'],
+                ['③', 'A **dishonoured cheque**. It was recorded as a receipt and the bank refused it, so the receipt is reversed: credit the cash book, debit the SLCA. Delaney & Co still owe the £264.00.'],
+                ['④', '**Bank charges.** Money out, so credit the cash book. The cash book here is *wrong* rather than early, which is the test that separates all four of these from a timing difference.'],
+              ],
+            },
             p: [
               'Direct debits, standing orders, bank charges, bank interest credited, and BACS receipts may appear on the bank statement before they are entered in the cashbook. When discovered, the cashbook must be **updated** before the reconciliation statement is prepared.',
               'To update: receipts (bank interest, BACS customer payments) are debited in the cashbook; payments (direct debits, standing orders, bank charges) are credited in the cashbook.',

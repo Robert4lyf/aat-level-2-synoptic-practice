@@ -4004,6 +4004,265 @@ body:not([data-subject="aat"]):not([data-subject="aat1"]):not([data-subject="aat
   line-height: 1.4;
 }
 
+/* ── Source documents ─────────────────────────────────────────────────────────
+   Drawn by doc-figure.js from data on a lesson card's `doc`. Shared by Level 2,
+   Level 3 and every other subject that renders through app.js's lesson player;
+   Level 1 has its own set under .a1-doc-*, in aat1-styles.css, because its
+   design predates this and is built from tokens only that stylesheet has.
+
+   Everything here is in global tokens, so it follows dark mode without a
+   single .dark override. The one deliberate exception is the paper: a document
+   is a piece of paper and it stays the surface colour rather than becoming a
+   dark card, because the whole point is that it looks like the thing the
+   reader will be handed in an assessment.
+
+   The kinds differ only in the colour of the top strip. That is enough to tell
+   an invoice from the credit note that cancels it at a glance, which is the
+   one visual discrimination these documents have to support.               */
+.doc {
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--card);
+  overflow: hidden;
+  margin: 2px 0 16px;
+  box-shadow: var(--shadow-sm);
+}
+.doc-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 13px;
+  background: var(--card-muted);
+  border-bottom: 2px solid var(--border-strong);
+}
+.doc-kind {
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--text-strong);
+}
+.doc-tag {
+  font-size: .68rem;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 2px 9px;
+  background: var(--card);
+  border: 1px solid var(--border-strong);
+  color: var(--subtext);
+}
+/* Pushed to the far end of the strip, where a rubber stamp would land. */
+.doc-stamp {
+  margin-left: auto;
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--danger-600);
+  border: 2px solid var(--danger-500);
+  border-radius: 4px;
+  padding: 1px 7px;
+  transform: rotate(-3deg);
+}
+/* --danger-600 is a light-mode red and is not redeclared for dark, where it
+   comes out as a bruise on a near-black card. A stamp has to read as a stamp
+   or it is not one. */
+.dark .doc-stamp { color: #f87171; border-color: #f87171; }
+.doc-invoice .doc-top    { box-shadow: inset 0 3px 0 var(--brand-500); }
+.doc-creditnote .doc-top { box-shadow: inset 0 3px 0 var(--danger-500); }
+.doc-statement .doc-top  { box-shadow: inset 0 3px 0 var(--brand-700); }
+.doc-remittance .doc-top { box-shadow: inset 0 3px 0 var(--success-500); }
+.doc-order .doc-top      { box-shadow: inset 0 3px 0 var(--warning-500); }
+.doc-grn .doc-top        { box-shadow: inset 0 3px 0 var(--warning-600); }
+.doc-voucher .doc-top    { box-shadow: inset 0 3px 0 #7c3aed; }
+.doc-payslip .doc-top    { box-shadow: inset 0 3px 0 #0891b2; }
+.doc-vatreturn .doc-top  { box-shadow: inset 0 3px 0 var(--brand-800); }
+.doc-banking .doc-top    { box-shadow: inset 0 3px 0 var(--success-700); }
+.doc-generic .doc-top    { box-shadow: inset 0 3px 0 var(--border-strong); }
+
+.doc-parties {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 13px;
+}
+@media (max-width: 560px) { .doc-parties { grid-template-columns: 1fr; } }
+.doc-party { font-size: .85rem; color: var(--text); line-height: 1.5; }
+.doc-party-l {
+  font-size: .64rem;
+  font-weight: 800;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--subtext);
+  margin-bottom: 3px;
+}
+.doc-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px 14px;
+  padding: 0 13px 13px;
+}
+.doc-field { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.doc-field-l {
+  font-size: .64rem;
+  font-weight: 800;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--subtext);
+}
+.doc-field-v {
+  font-size: .9rem;
+  font-weight: 700;
+  color: var(--text-strong);
+  font-family: var(--font-mono);
+  overflow-wrap: break-word;
+}
+/* The table is the one part that can be wider than a phone — four money
+   columns will not fold — so it scrolls on its own rather than stretching the
+   document or clipping the last column off the right edge. */
+/* A four-column invoice is wider than a phone and there is no honest way
+   around that, so it scrolls — and says so. The two radial gradients are
+   pinned to the viewport while the two flat ones scroll with the content, so
+   a shadow appears at whichever edge still has something behind it and
+   disappears when there is nothing more that way. No script, no measuring. */
+.doc-tablewrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  background:
+    linear-gradient(to right, var(--card) 40%, rgba(255, 255, 255, 0)) left center,
+    linear-gradient(to left, var(--card) 40%, rgba(255, 255, 255, 0)) right center,
+    radial-gradient(farthest-side at 0 50%, rgba(15, 23, 42, .18), rgba(255, 255, 255, 0)) left center,
+    radial-gradient(farthest-side at 100% 50%, rgba(15, 23, 42, .18), rgba(255, 255, 255, 0)) right center;
+  background-size: 26px 100%, 26px 100%, 11px 100%, 11px 100%;
+  background-repeat: no-repeat;
+  background-attachment: local, local, scroll, scroll;
+}
+.dark .doc-tablewrap {
+  background-image:
+    linear-gradient(to right, var(--card) 40%, rgba(0, 0, 0, 0)),
+    linear-gradient(to left, var(--card) 40%, rgba(0, 0, 0, 0)),
+    radial-gradient(farthest-side at 0 50%, rgba(0, 0, 0, .5), rgba(0, 0, 0, 0)),
+    radial-gradient(farthest-side at 100% 50%, rgba(0, 0, 0, .5), rgba(0, 0, 0, 0));
+}
+.doc-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-top: 1px solid var(--border);
+}
+.doc-table th, .doc-table td {
+  padding: 7px 13px;
+  font-size: .85rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+.doc-table th {
+  font-size: .64rem;
+  font-weight: 800;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--subtext);
+  background: var(--card-muted);
+}
+.doc-table tr:last-child td { border-bottom: 0; }
+/* The description wraps; the figures do not. Holding every column on one line
+   put an invoice's money columns off the right of a 360px screen, where the
+   table scrolls sideways and a reader has no reason to think there is
+   anything there. Letting the one column that can afford to wrap do so fits
+   a three-line invoice on a phone with the amounts visible. */
+.doc-table th:first-child, .doc-table td:first-child {
+  white-space: normal; min-width: 7.5em;
+}
+@media (max-width: 480px) {
+  .doc-table th, .doc-table td { padding: 7px 8px; font-size: .8rem; }
+  .doc-table th:first-child, .doc-table td:first-child { min-width: 5.5em; }
+  .doc-top, .doc-parties, .doc-totals, .doc-sig, .doc-foot, .doc-legend { padding-left: 10px; padding-right: 10px; }
+  .doc-fields { padding-left: 10px; padding-right: 10px; }
+}
+.doc-table th.doc-num, .doc-table td.doc-num { text-align: right; }
+.doc-num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.doc-totals { padding: 9px 13px 11px; border-top: 1px solid var(--border-strong); }
+.doc-total {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 3px 0;
+  font-size: .88rem;
+  color: var(--text);
+}
+.doc-total .doc-num { font-weight: 700; }
+.doc-total.is-final {
+  border-top: 2px solid var(--border-strong);
+  margin-top: 4px;
+  padding-top: 7px;
+  font-weight: 800;
+  color: var(--text-strong);
+  font-size: .98rem;
+}
+/* Authorisation lines. A ruled blank is drawn even where the value is a name,
+   because half the lesson about a petty cash voucher is that two different
+   people sign it. */
+.doc-sig {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px 14px;
+  padding: 11px 13px;
+  border-top: 1px dashed var(--border-strong);
+}
+.doc-sigline { display: flex; flex-direction: column; gap: 2px; }
+.doc-sig-l {
+  font-size: .64rem;
+  font-weight: 800;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--subtext);
+}
+.doc-sig-v {
+  font-size: .85rem;
+  color: var(--text);
+  border-bottom: 1px solid var(--border-strong);
+  padding-bottom: 3px;
+  min-height: 1.3em;
+}
+.doc-foot {
+  padding: 9px 13px;
+  border-top: 1px dashed var(--border-strong);
+  font-size: .79rem;
+  color: var(--subtext);
+  line-height: 1.5;
+}
+/* A mark printed on the document, and the same mark in the legend beneath it.
+   Tinted and sized here so a circled digit inside a money column cannot come
+   out either invisible or twice the height of the row, which is what it does
+   when it falls through to whichever font happens to carry the glyph. */
+.doc-mark {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: .95em;
+  font-weight: 700;
+  color: var(--accent);
+  margin-right: 3px;
+}
+.doc-legend {
+  list-style: none;
+  margin: -8px 0 16px;
+  padding: 11px 13px;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--card-muted);
+  display: grid;
+  gap: 6px;
+}
+.doc-legend li {
+  display: flex;
+  gap: 7px;
+  align-items: baseline;
+  font-size: .84rem;
+  line-height: 1.5;
+  color: var(--text);
+}
+.doc-legend .doc-mark { flex: 0 0 auto; margin-right: 0; }
+
 /* ── Lesson flow diagram ── */
 .lesson-flow {
   display: flex;

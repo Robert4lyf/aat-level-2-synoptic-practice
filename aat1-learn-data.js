@@ -1802,25 +1802,41 @@
             kind: 'invoice',
             title: 'Invoice',
             tag: 'Sales invoice',
+            /* Stamped because it is the seller's file copy. A reader meeting
+               documents for the first time will see COPY on half the paper in
+               a real office, and needs to know it is not a second sale. */
+            stamp: 'COPY',
             fromLabel: 'From',
             from: ['**Marlow Print Supplies Ltd**', '22 Foundry Lane, Derby DE1 3PQ', 'VAT registration 341 9922 07'],
             toLabel: 'Invoice to',
             to: ['**Ashcroft Design Studio**', 'Unit 4, Canal Wharf', 'Nottingham NG1 7FF'],
             fields: [
-              ['Invoice number', '4417'],
-              ['Invoice date', '14 May'],
-              ['Customer reference', 'ADS-PO-2290'],
-              ['Payment terms', '30 days'],
+              ['Invoice number', '①4417'],
+              ['Invoice date', '②14 May'],
+              ['Customer reference', '③ADS-PO-2290'],
+              ['Payment terms', '④30 days'],
             ],
             table: {
               headers: ['Description', 'Code', 'Qty', 'Unit price', 'Amount'],
               rows: [
-                ['A4 card, white, 250gsm (pack of 100)', 'CRD-A4-W', '12', '£8.50', '£102.00'],
+                ['A4 card, white, 250gsm (pack of 100)', 'CRD-A4-W', '12', '£8.50', '⑤£102.00'],
                 ['Ring binder, A4, blue', 'BND-A4-BL', '20', '£3.20', '£64.00'],
               ],
             },
-            totals: [['Net', '£166.00'], ['VAT at ' + VAT, '£33.20'], ['Total due', '£199.20']],
-            foot: 'Every detail here has a source: the customer name, address and reference from the sales order; the quantities from the delivery note; the unit prices from the price list; the invoice number and date added when the invoice is raised.',
+            totals: [['Net', '⑥£166.00'], ['VAT at ' + VAT, '£33.20'], ['Total due', '£199.20']],
+            foot: 'Every detail here has a source: the customer name, address and reference from the sales order; the quantities from the delivery note; the unit prices from the price list; the invoice number and date added when the invoice is raised. ⑦This one is the seller\'s file copy.',
+            /* The marks are the lesson. A picture of an invoice is decoration;
+               an invoice with "① one invoice, one number, and the sequence
+               never breaks" beside it is the card. */
+            annotations: [
+              ['①', 'The **invoice number**. One invoice, one number, and the sequence never breaks — a gap in it is the first thing an inspection asks about.'],
+              ['②', 'The **invoice date**. It starts the payment terms running, and it decides which VAT period the sale falls in.'],
+              ['③', 'The **customer\'s own reference**, copied from their purchase order. It is on here for their benefit: it is how they match this invoice to the order they raised.'],
+              ['④', 'The **payment terms**. Thirty days from the invoice date, so this one falls due on 13 June.'],
+              ['⑤', 'The **line amount**: 12 × £8.50. Every line on every invoice is quantity times unit price, and checking them is a habit worth forming now rather than later.'],
+              ['⑥', '**Net, then VAT, then total** — always that order, because the VAT is worked out from the net and the total is the two of them added.'],
+              ['⑦', '**COPY.** The top copy went to the customer and this one stays in the seller\'s file. Two pieces of paper, one sale.'],
+            ],
           },
           p: [
             'Work down the invoice and notice that nothing on it is invented. The only two details that originate with the invoice itself are its number and its date — everything else is carried across from a document that already existed.',
@@ -2106,6 +2122,11 @@
             kind: 'invoice',
             title: 'Invoice received',
             tag: 'Purchase invoice',
+            /* Wrong on purpose — the card asks the reader to find the faults.
+               scripts/check-doc-figures.js reads this note as licence for the
+               arithmetic below to fail, and fails the build if it stops
+               failing, so the note cannot outlive the errors it describes. */
+            planted: 'The foam board line extends 10 × £7.50 as £82.50 rather than £75.00. The net, the VAT and the total are then each worked correctly from that wrong line, so the invoice looks internally consistent and still overcharges by £9.00 plus VAT.',
             fromLabel: 'From',
             from: ['**Kesgrave Papers Ltd**', '8 Sandy Lane, Ipswich IP4 2LL'],
             toLabel: 'Invoice to',
@@ -2836,18 +2857,33 @@
             to: ['1 June to 30 June', 'Statement 114'],
             table: {
               headers: ['Date', 'Detail', 'Paid out', 'Paid in', 'Balance'],
+              /* The detail column reads left. Everything but the first column
+                 is a money column by default, which had this one right-aligned
+                 against the figures and hard to scan down. */
+              align: ['text', 'text', 'num', 'num', 'num'],
+              /* Which way each column moves the balance, declared rather than
+                 guessed from the heading: money paid out of a bank account
+                 reduces it, while on the supplier statement in Level 2 a
+                 charge increases what is owed. Same shape, opposite signs. */
+              running: { sub: 2, add: 3, balance: 4 },
               rows: [
-                ['1 Jun', 'Opening balance', '', '', '1,910.00'],
-                ['4 Jun', 'Counter credit', '', '504.00', '2,414.00'],
+                ['1 Jun', '①Opening balance', '', '', '1,910.00'],
+                ['4 Jun', '②Counter credit', '', '504.00', '2,414.00'],
                 ['7 Jun', 'BACS — Kesgrave Papers', '349.20', '', '2,064.80'],
                 ['12 Jun', 'Standing order — rent', '144.00', '', '1,920.80'],
                 ['18 Jun', 'BACS — wages', '680.00', '', '1,240.80'],
                 ['26 Jun', 'Direct Debit — insurance', '58.00', '', '1,182.80'],
-                ['29 Jun', 'Bank charges', '14.50', '', '1,168.30'],
-                ['30 Jun', 'Bank interest received', '', '2.15', '1,170.45'],
+                ['29 Jun', '③Bank charges', '14.50', '', '1,168.30'],
+                ['30 Jun', '③Bank interest received', '', '2.15', '1,170.45'],
               ],
             },
-            foot: 'Closing balance at 30 June: £1,170.45. Note the last two entries — neither originated with the business, so neither is in the cash book yet.',
+            foot: '④Closing balance at 30 June: £1,170.45. Note the last two entries — neither originated with the business, so neither is in the cash book yet.',
+            annotations: [
+              ['①', 'The **opening balance**, which is last month\'s closing balance. A statement always begins where the one before it ended.'],
+              ['②', '**Paid in** — money arriving. It is on the left of the cash book, the receipts side, and the bank shows it as a credit because the bank owes it to the business.'],
+              ['③', 'Neither of these **started with the business**: the bank took its charges and paid its interest without being asked. They are on the statement and not in the cash book, so the cash book is the one that has to change.'],
+              ['④', 'The **closing balance**, and the figure a reconciliation begins from. Read down the middle column first and the whole month is a story: money in, money out, and what is left.'],
+            ],
           },
           p: [
             'Two things to take from this statement.',
