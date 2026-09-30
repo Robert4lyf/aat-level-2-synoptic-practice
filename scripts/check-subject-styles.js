@@ -61,7 +61,7 @@ const MODULES = [
        part the renderer dropped still fails, and a part with no rule fails
        too. A regex over doc-figure.js would have guessed at this; asking it
        cannot be wrong. */
-    stems: ['a1-doc'],
+    stems: [{ from: 'doc-figure.js', stem: 'a1-doc' }],
   },
   {
     name: 'AAT Level 3',
@@ -84,6 +84,10 @@ const MODULES = [
     name: 'Pixel Art',
     css: 'pixel-styles.css',
     js: 'pixel-ui.js',
+    /* The interface diagrams are drawn by pixel-panels.js on pixel-ui.js's
+       behalf, and spell their classes out there. Reading only pixel-ui.js
+       would report every .px-panel rule as styling nothing. */
+    also: ['pixel-panels.js'],
     prefix: 'px',
     built: [],
   },
@@ -98,6 +102,9 @@ const MODULES = [
     css: 'cips2-styles.css',
     js: 'cips2-page.js',
     also: ['cips2.html'],
+    /* Concept diagrams are drawn by diagram-figure.js on this page's behalf,
+       under a stem CIPS chooses — exactly as Level 1's documents are. */
+    stems: [{ from: 'diagram-figure.js', stem: 'c2-dia' }],
     prefix: 'c2',
     built: [
       'c2-kind-',      // 'c2-reading-card c2-kind-' + kind
@@ -106,8 +113,6 @@ const MODULES = [
 ];
 
 const errors = [];
-const DocFigure = require(path.join(ROOT, 'doc-figure.js'));
-
 const notes = [];
 
 MODULES.forEach((mod) => {
@@ -143,7 +148,12 @@ MODULES.forEach((mod) => {
 
   /* ── 2. Every styled class is one the renderer can produce ──────────────── */
   const styled = [...new Set([...css.matchAll(CLASS)].map(m => m[1]))].sort();
-  const fromDoc = new Set([].concat(...(mod.stems || []).map(st => DocFigure.classes(st))));
+  /* Classes a SHARED renderer emits on this subject's behalf, under a stem the
+     subject chooses. The module reports them for a stem, so both directions
+     below hold without this file guessing at a regular expression: a rule for
+     a part the renderer dropped fails, and a part with no rule fails too. */
+  const fromDoc = new Set([].concat(...(mod.stems || []).map(
+    (st) => require(path.join(ROOT, st.from)).classes(st.stem))));
   const dead = styled.filter(c => js.indexOf(c) === -1 && !fromDoc.has(c)
     && !mod.built.some(p => c.startsWith(p)));
   dead.forEach(c => {
@@ -161,7 +171,11 @@ MODULES.forEach((mod) => {
   });
   fromDoc.forEach(c => rendered.add(c));
   const unstyled = [...rendered].filter(c => css.indexOf('.' + c) === -1).sort();
-  unstyled.forEach(c => errors.push(`${mod.name}: .${c} is rendered by ${fromDoc.has(c) ? 'doc-figure.js' : mod.js}` +
+  const drawnBy = (c) => {
+    const st = (mod.stems || []).find((x) => require(path.join(ROOT, x.from)).classes(x.stem).indexOf(c) !== -1);
+    return st ? st.from : mod.js;
+  };
+  unstyled.forEach(c => errors.push(`${mod.name}: .${c} is rendered by ${drawnBy(c)}` +
     ` but the stylesheet never mentions it.`));
 
   /* ── 4. The design tokens are used, not just declared ───────────────────── */

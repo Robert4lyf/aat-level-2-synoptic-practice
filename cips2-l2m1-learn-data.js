@@ -450,6 +450,85 @@
     ['Bonded labour','Work where coercive debt or related restriction prevents a worker from freely leaving employment.']
   ];
 
+
+  /* ── Diagrams ──────────────────────────────────────────────────────────────
+     This course teaches shapes and printed every one of them as a paragraph:
+     a sourcing sequence that comes back round, tiers on both sides of the
+     organisation, five rights held against each other. A reader can follow
+     "the process returns to the beginning" and never see that it is a loop.
+
+     Attached by card heading rather than passed into card(), so a diagram sits
+     in one readable block instead of a seventh argument nobody can scan past.
+     Rename a heading and the diagram silently stops appearing, which is why
+     scripts/check-diagram-figures.js requires every key here to match exactly
+     one card. */
+  var DIAGRAMS = {
+    'Read an end-to-end chain': {
+      kind: 'chain',
+      title: 'One chain, read from one reference point',
+      items: [
+        { label: 'Tier 2 supplier', sub: 'Raw material', flow: 'components' },
+        { label: 'Tier 1 supplier', sub: 'Sub-assembly', flow: 'parts' },
+        { label: 'Our organisation', sub: 'The reference point', flow: 'finished goods' },
+        { label: 'Distributor', sub: 'Our customer', flow: 'stock' },
+        { label: 'Consumer', sub: 'End user' }
+      ],
+      note: 'Upstream and downstream only mean anything relative to one organisation. Move the reference point to the distributor and our organisation becomes its upstream tier 1 — the chain has not changed, the reading of it has.'
+    },
+
+    'The Five Rights are a balance, not five separate targets': {
+      kind: 'hub',
+      title: 'Five rights, one value',
+      centre: 'Value',
+      items: [
+        { label: 'Quality' },
+        { label: 'Quantity' },
+        { label: 'Time' },
+        { label: 'Place' },
+        { label: 'Price' }
+      ],
+      note: 'Every spoke runs through the centre, which is the whole argument: a right is not a target of its own. Pull one out as far as it goes and the others come under strain — the cheapest price bought at the cost of quality has moved value, not created it.'
+    },
+
+    'The sequence is a control in itself': {
+      kind: 'cycle',
+      title: 'Need to review, and round again',
+      items: [
+        { label: 'Identify the need', sub: 'and test that it is real' },
+        { label: 'Specify', sub: 'what success looks like' },
+        { label: 'Invite quotations', sub: 'from a suitable field' },
+        { label: 'Receive and open', sub: 'under a controlled process' },
+        { label: 'Evaluate', sub: 'against the stated criteria' },
+        { label: 'Recommend', sub: 'with the reasoning recorded' },
+        { label: 'Authorise', sub: 'by someone with the authority' },
+        { label: 'Place the order', sub: 'the commitment is made here' },
+        { label: 'Expedite', sub: 'act before the date slips' },
+        { label: 'Receive and check', sub: 'against the order' },
+        { label: 'Match and pay', sub: 'order, receipt, invoice' },
+        { label: 'Review', sub: 'performance, and what to change' }
+      ],
+      returns: 'the review feeds the next need, which is why this is a cycle and not a queue',
+      note: 'Taking a stage out of order is the failure this sequence exists to prevent. Authorising after the order has gone is not authorisation; specifying after quotations are in means the quotations answered different questions.'
+    },
+
+    'Good controls are risk-based, not slow by default': {
+      kind: 'matrix',
+      title: 'How much control a commitment deserves',
+      x: ['Low value', 'High value'],
+      y: ['Low risk', 'High risk'],
+      cells: [
+        { q: 'tl', label: 'Check, but quickly', sub: 'High risk, low value — a single approver who understands the risk, not a chain of them' },
+        { q: 'tr', label: 'Full approval chain', sub: 'High risk, high value — separation of duties, delegated limits, the decision recorded' },
+        { q: 'bl', label: 'Delegate and sample', sub: 'Low risk, low value — devolve it, and audit a sample afterwards' },
+        { q: 'br', label: 'Authorise on value', sub: 'Low risk, high value — the limit does the work; more process buys nothing' }
+      ],
+      note: 'Control that does not vary with risk is not control, it is delay. The organisation pays for it twice: once in the time, and again when people route round it.'
+    }
+  };
+  LESSONS.forEach(function (l) {
+    (l.cards || []).forEach(function (c) { if (DIAGRAMS[c.h]) c.diagram = DIAGRAMS[c.h]; });
+  });
+
   var byId = {};
   LESSONS.forEach(function (l) { byId[l.id] = l; });
   var api = {

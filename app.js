@@ -108,7 +108,7 @@
       meta: '9 units · 27 lessons · 90 drawing challenges',
       tabs: ['home'],
       ui: 'PIXEL_UI',
-      assets: ['pixel-syllabus.js', 'pixel-learn-data.js', 'pixel-challenge-data.js', 'pixel-ui.js'],
+      assets: ['pixel-syllabus.js', 'pixel-learn-data.js', 'pixel-challenge-data.js', 'pixel-panels.js', 'pixel-ui.js'],
       styles: 'pixel-styles.css',
       activate() {
         window.TOPICS = []; window.ALL_QUESTIONS = []; window.LEARN_PATH = []; window.SKILLS = { defs: [] };
@@ -7199,6 +7199,13 @@
        reach. `visual` could have carried the same picture as raw HTML, but an
        invoice written as HTML is an invoice whose VAT nothing can check. */
     const docHtml = (card.doc && window.DocFigure) ? window.DocFigure.html(card.doc) : '';
+    /* A row of road signs, drawn from data by sign-figure.js. The Code de la
+       route course asked seventeen questions about the shape and colour of
+       French signs and had never shown one: it described a triangle and left
+       the reader to picture it. A photograph of a real sign belongs to
+       whoever took it; these are built from the regulation's own shapes and
+       colours, which also makes them checkable. */
+    const signsHtml = (card.signs && window.SignFigure) ? window.SignFigure.html(card.signs) : '';
     const paraHtml = (card.p || []).map(p => `<p class="lesson-card-p">${mdBold(p)}</p>`).join('');
     const flowHtml = card.flow ? `<div class="lesson-flow">${card.flow.map((f,i) => `<span class="lesson-flow-step">${escapeHtml(f)}</span>${i < card.flow.length-1 ? '<span class="lesson-flow-arrow">→</span>' : ''}`).join('')}</div>` : '';
     const exHtml = card.example ? `<div class="lesson-example">
@@ -7304,7 +7311,7 @@
         <div class="lesson-card fade-in${def.isSheet ? ' lesson-card-sheet' : ''}">
           <h2 class="lesson-card-h">${escapeHtml(card.h || card.title || '')}</h2>
           ${card.body ? `<div class="lesson-card-body">${sanitizeCardBody(card.body)}</div>` : ''}
-          ${visualHtml}${paraHtml}${docHtml}${flowHtml}${formulaHtml}${workedHtml}${exHtml}${tableHtml}${splitHtml}${calloutHtml}${examtrapHtml}
+          ${visualHtml}${paraHtml}${docHtml}${signsHtml}${flowHtml}${formulaHtml}${workedHtml}${exHtml}${tableHtml}${splitHtml}${calloutHtml}${examtrapHtml}
         </div>
         <div class="lesson-nav">
           ${cardIdx > 0 ? `<button class="btn-secondary" id="lessonBackBtn" type="button">← Back</button>` : '<span></span>'}

@@ -117,6 +117,12 @@ jobs:
         run: npm run check:styles
       - name: Check every source document on a lesson card adds up
         run: npm run check:docs
+      - name: Check every road sign is the shape and colour its lesson says
+        run: npm run check:signs
+      - name: Check every Aseprite panel diagram points at a control and explains it
+        run: npm run check:panels
+      - name: Check every concept diagram obeys the rules of its own shape
+        run: npm run check:diagrams
       - name: Check written tasks (model hidden until earned, rubric marks at the pass mark)
         run: npm run check:written
       - name: Check retiring a question retires it (and that a mock still asks it)

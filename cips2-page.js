@@ -393,6 +393,12 @@
       '<article class="c2-reading-card c2-kind-' + esc(c.kind) + '">' +
         '<div class="c2-card-label">' + esc(cardKindLabel(c.kind)) + '</div><h1 id="c2PageTitle">' + esc(c.h) + '</h1>' +
         (c.p || []).map(function (p) { return '<p>' + esc(p) + '</p>'; }).join('') +
+        /* A concept diagram, from diagram-figure.js. This course teaches
+           shapes — a cycle that returns to its start, tiers either side of the
+           organisation, five rights held against each other — and printed
+           every one of them as a paragraph. A reader can follow "the process
+           returns to the beginning" and never see that it is a loop. */
+        (c.diagram && root.DiagramFigure ? root.DiagramFigure.html(c.diagram, { stem: 'c2-dia' }) : '') +
         ((c.points || []).length ? '<ul class="c2-keypoints">' + c.points.map(function (p) { return '<li>' + esc(p) + '</li>'; }).join('') + '</ul>' : '') +
         (c.note ? '<aside class="c2-note">' + esc(c.note) + '</aside>' : '') +
       '</article>' +
