@@ -126,6 +126,35 @@ Object.keys(SignFigure.FAMILIES).forEach((f) => {
   if (!fam.teaches) errors.push(`sign-figure.js: family ${f} does not say what it teaches.`);
 });
 
+/* ── Detail cannot touch the outline ──────────────────────────────────────── */
+/* The promise that a pictogram never runs into its own red border is kept by
+   construction: every shape declares a safe region and every glyph is drawn
+   through it as a clip path. That makes it a property of the renderer rather
+   than of each of twenty-two drawings, and this asserts the property is still
+   there — a clip quietly dropped would not fail anything else, and nobody
+   would notice until a sign looked wrong.
+
+   It cannot tell whether a glyph is being CUT by that clip rather than fitting
+   inside it. Only rendering it with the region showing does that, which is how
+   every one of them was checked. */
+Object.keys(SignFigure.SHAPES).forEach((k) => {
+  if (!SignFigure.SHAPES[k].safe) errors.push(`sign-figure.js: the "${k}" outline declares no safe region, so anything drawn in it is unclipped.`);
+});
+const drawn = SignFigure.signSvg({ family: 'danger', glyph: 'bend', label: 'x' });
+if (!/<clipPath id="[^"]+"><path d="[^"]+"\/><\/clipPath>/.test(drawn) || !/<g clip-path="url\(#[^)]+\)">/.test(drawn)) {
+  errors.push('sign-figure.js no longer clips a sign\'s contents to its safe region — the one thing that stops a pictogram running into the border.');
+}
+/* Two signs on one page must not share a clip id, or the second silently
+   takes the first's region. */
+const two = SignFigure.html({ items: [
+  { family: 'danger', glyph: 'bend', label: 'a', means: 'x'.repeat(25) },
+  { family: 'circle' in SignFigure.SHAPES ? 'interdiction' : 'danger', glyph: 'text', text: '50', label: 'b', means: 'x'.repeat(25) }
+] });
+const ids = [...two.matchAll(/<clipPath id="([^"]+)"/g)].map((m) => m[1]);
+if (new Set(ids).size !== ids.length) {
+  errors.push('sign-figure.js gives two signs on the same page the same clip id, so one is clipped to the other\'s shape.');
+}
+
 /* ── The families the questions ask about are families the course draws ───── */
 /* Seventeen questions in cr-panneaux turn on shape and colour. If one asks
    about a family no card draws, the course is still answering it in words. */

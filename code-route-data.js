@@ -664,7 +664,7 @@ window.CR_LEARN_PATH = [
                 { family: 'interdiction', glyph: 'bar', label: 'Sens interdit', means: 'Ne vous engagez pas : la circulation vient en face' },
                 { family: 'interdiction', glyph: 'text', text: '70', label: 'Limitation de vitesse', means: '70 km/h au maximum jusqu\'au panneau de fin' },
                 { family: 'interdiction', glyph: 'overtake', label: 'Interdiction de dépasser', means: 'Aucun dépassement d\'un véhicule à moteur' },
-                { family: 'stationnement', glyph: 'text', text: 'P', bar: true, label: 'Stationnement interdit', means: 'Vous pouvez vous arrêter, pas stationner' },
+                { family: 'stationnement', glyph: 'blank', bar: true, label: 'Stationnement interdit', means: 'Vous pouvez vous arrêter, pas stationner' },
               ],
               note: 'Le dernier n\'a pas le fond blanc des trois autres : les interdictions de stationner sont bleues sous leur anneau rouge. C\'est l\'exception à retenir.',
             },
@@ -1005,10 +1005,10 @@ window.CR_LEARN_PATH = [
             signs: {
               title: 'Arrêt ou stationnement : deux panneaux, deux interdits',
               items: [
-                { family: 'stationnement', glyph: 'text', text: 'P', bar: true, label: 'Stationnement interdit', means: 'Un arrêt reste possible : vous restez au volant, prêt à repartir' },
+                { family: 'stationnement', glyph: 'blank', bar: true, label: 'Stationnement interdit', means: 'Un arrêt reste possible : vous restez au volant, prêt à repartir' },
                 { family: 'stationnement', glyph: 'cross', label: 'Arrêt et stationnement interdits', means: 'Vous ne vous immobilisez pas du tout, même une minute' },
               ],
-              note: 'Une barre interdit de rester ; la croix interdit de s\'arrêter. C\'est exactement la distinction de la carte précédente, en deux dessins.',
+              note: 'Ni l\'un ni l\'autre ne porte de lettre P : le panneau français est un disque bleu cerclé de rouge, et rien d\'autre. Une barre interdit de rester ; la croix interdit de s\'arrêter.',
             },
             p: [
               "Interdit : à moins de 5 m d'un carrefour ou passage piéton, devant un garage, sur un passage piéton, près d'une bouche d'incendie.",
@@ -1027,7 +1027,7 @@ window.CR_LEARN_PATH = [
             },
             p: [
               "Zone bleue : utilisez un disque de stationnement (disque bleu) indiquant votre heure d'arrivée.",
-              "Lignes jaunes au sol = interdiction d'arrêt et de stationnement. Panneau P barré = stationnement interdit.",
+              "Lignes jaunes au sol = interdiction d'arrêt et de stationnement. Le panneau de stationnement interdit ne porte aucune lettre : c'est un disque bleu cerclé de rouge, barré une fois.",
             ],
           },
         ],

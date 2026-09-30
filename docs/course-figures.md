@@ -30,7 +30,11 @@ check scripts ask them on every build:
   declare it; for those the check inverts.
 - **Signs** — a sign declares only its family, and the family table decides
   its outline and every colour, so the card that teaches "rond rouge =
-  interdiction" cannot quietly contain a triangle.
+  interdiction" cannot quietly contain a triangle. Each outline also declares
+  a **safe region**, and every pictogram is drawn through it as a clip path,
+  so detail cannot run into the border however badly a glyph is written. The
+  clip makes the overlap impossible; it does not make a glyph fit, so each one
+  was rendered with the region showing and looked at.
 - **Panels** — a tag that runs past the last frame, a radio group with nothing
   selected, a palette with one colour in two slots.
 - **Diagrams** — a cycle that does not return, a spectrum whose ends are never
