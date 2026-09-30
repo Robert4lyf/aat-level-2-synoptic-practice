@@ -631,8 +631,26 @@ window.CR_LEARN_PATH = [
             h: 'Panneaux de danger (triangle)',
             p: [
               "Les panneaux triangulaires à bordure rouge signalent un danger ou un avertissement à l'avance.",
-              'Exemples : virage dangereux, passage piéton, passage à niveau, animaux sur la route.',
+              'Exemples : virage dangereux, passage piéton, enfants, passage à niveau, animaux sur la route, chaussée glissante, travaux, carrefour à sens giratoire.',
             ],
+            /* HUIT PANNEAUX, PAS HUIT MOTS. Cette leçon posait dix-sept
+               questions sur la forme et la couleur des panneaux sans jamais en
+               montrer un seul. La phrase ci-dessus suffit pour répondre à une
+               question ; elle ne suffit pas au carrefour. */
+            signs: {
+              title: 'Le triangle rouge : un danger devant',
+              items: [
+                { family: 'danger', glyph: 'bend', label: 'Virage à gauche', means: 'Un virage dangereux : ralentissez avant, pas dedans' },
+                { family: 'danger', glyph: 'pedestrian', label: 'Passage pour piétons', means: 'Un passage protégé : le piéton engagé est prioritaire' },
+                { family: 'danger', glyph: 'children', label: 'Endroit fréquenté par des enfants', means: 'École ou aire de jeux : un enfant peut surgir' },
+                { family: 'danger', glyph: 'crossing', label: 'Passage à niveau avec barrières', means: 'Une voie ferrée : ne vous engagez jamais si vous ne pouvez pas dégager' },
+                { family: 'danger', glyph: 'animals', label: 'Passage d\'animaux sauvages', means: 'Gibier : freinez, ne braquez pas' },
+                { family: 'danger', glyph: 'slippery', label: 'Chaussée glissante', means: 'Adhérence réduite : allongez les distances' },
+                { family: 'danger', glyph: 'roadworks', label: 'Travaux', means: 'Chantier : vitesse réduite et personnel sur la voie' },
+                { family: 'danger', glyph: 'roundabout', label: 'Carrefour à sens giratoire', means: 'Un rond-point approche : préparez-vous à céder le passage' },
+              ],
+              note: 'La forme dit la catégorie, le dessin dit le danger. Apprenez la forme en premier : elle est lisible de loin, le dessin ne l\'est pas.',
+            },
           },
           {
             h: "Panneaux d'interdiction (rond rouge)",
@@ -640,6 +658,16 @@ window.CR_LEARN_PATH = [
               "Les panneaux ronds à bordure rouge indiquent une interdiction : vous ne devez PAS faire quelque chose.",
               'Exemples : sens interdit, limitation de vitesse (le chiffre dans un cercle rouge), interdiction de dépasser.',
             ],
+            signs: {
+              title: 'Le rond rouge : quelque chose vous est interdit',
+              items: [
+                { family: 'interdiction', glyph: 'bar', label: 'Sens interdit', means: 'Ne vous engagez pas : la circulation vient en face' },
+                { family: 'interdiction', glyph: 'text', text: '70', label: 'Limitation de vitesse', means: '70 km/h au maximum jusqu\'au panneau de fin' },
+                { family: 'interdiction', glyph: 'overtake', label: 'Interdiction de dépasser', means: 'Aucun dépassement d\'un véhicule à moteur' },
+                { family: 'stationnement', glyph: 'text', text: 'P', bar: true, label: 'Stationnement interdit', means: 'Vous pouvez vous arrêter, pas stationner' },
+              ],
+              note: 'Le dernier n\'a pas le fond blanc des trois autres : les interdictions de stationner sont bleues sous leur anneau rouge. C\'est l\'exception à retenir.',
+            },
           },
           {
             h: "Panneaux d'obligation (rond bleu)",
@@ -647,6 +675,17 @@ window.CR_LEARN_PATH = [
               "Les panneaux ronds à fond bleu indiquent une obligation : vous DEVEZ faire quelque chose.",
               'Exemples : sens obligatoire, voie réservée aux cycles, feux de croisement obligatoires.',
             ],
+            signs: {
+              title: 'Le rond bleu : quelque chose vous est imposé',
+              items: [
+                { family: 'obligation', glyph: 'arrowup', label: 'Sens obligatoire tout droit', means: 'Vous devez continuer tout droit' },
+                { family: 'obligation', glyph: 'arrowleft', label: 'Obligation de tourner à gauche', means: 'La seule direction autorisée est la gauche' },
+                { family: 'obligation', glyph: 'arrowright', label: 'Obligation de tourner à droite', means: 'Le même panneau, l\'autre sens : c\'est la flèche qui change, jamais la règle' },
+                { family: 'obligation', glyph: 'bicycle', label: 'Piste cyclable obligatoire', means: 'Réservée aux cycles : les autres véhicules n\'y entrent pas' },
+                { family: 'obligation', glyph: 'headlights', label: 'Feux de croisement obligatoires', means: 'Allumez les feux : tunnel ou visibilité réduite' },
+              ],
+              note: 'Rouge et bleu tiennent la même place sur le rond : le rouge interdit, le bleu impose. Un panneau rond sans rouge ne vous défend jamais rien.',
+            },
           },
           {
             h: "Panneaux d'information (rectangles bleus)",
@@ -654,6 +693,16 @@ window.CR_LEARN_PATH = [
               "Les panneaux rectangulaires bleus donnent des informations : directions, distances, services.",
               "Le panneau STOP et le 'cédez le passage' (triangle inversé rouge) sont des cas particuliers à bien mémoriser.",
             ],
+            signs: {
+              title: 'Le bleu rectangulaire, et les deux formes uniques',
+              items: [
+                { family: 'indication', glyph: 'text', text: 'P', label: 'Parking', means: 'Stationnement autorisé' },
+                { family: 'indication', glyph: 'motorway', label: 'Autoroute', means: 'Début des règles autoroutières' },
+                { family: 'stop', glyph: 'stopword', label: 'STOP', means: 'Arrêt complet, même si la route paraît libre' },
+                { family: 'cedez', glyph: 'blank', label: 'Cédez le passage', means: 'Ralentissez et laissez passer : arrêt seulement s\'il le faut' },
+              ],
+              note: 'Ces deux-là ne ressemblent à aucun autre panneau, et c\'est voulu : leur forme se reconnaît de dos, sous la neige, et de nuit.',
+            },
           },
         ],
         check: [
@@ -705,6 +754,15 @@ window.CR_LEARN_PATH = [
           },
           {
             h: 'Route prioritaire',
+            signs: {
+              title: 'Qui passe le premier',
+              items: [
+                { family: 'priorite', glyph: 'blank', label: 'Route prioritaire', means: 'Vous gardez la priorité aux carrefours suivants' },
+                { family: 'cedez', glyph: 'blank', label: 'Cédez le passage', means: 'Ce que voit le conducteur de la voie secondaire' },
+                { family: 'stop', glyph: 'stopword', label: 'STOP', means: 'Le même devoir, avec en plus l\'arrêt complet' },
+              ],
+              note: 'Le losange jaune n\'a pas de dessin : c\'est la forme entière qui est le message. Aucun autre panneau français n\'est un losange.',
+            },
             p: [
               "Le panneau losange jaune indique que vous êtes sur une route prioritaire : vous avez la priorité sur les voies secondaires.",
               "Les véhicules sur les voies secondaires doivent céder le passage (panneau triangulaire 'cédez le passage').",
@@ -712,6 +770,14 @@ window.CR_LEARN_PATH = [
           },
           {
             h: 'Ronds-points',
+            signs: {
+              title: "Ce que vous voyez en arrivant sur un rond-point",
+              items: [
+                { family: 'danger', glyph: 'roundabout', label: 'Carrefour à sens giratoire', means: 'Annonce le rond-point, à distance' },
+                { family: 'cedez', glyph: 'blank', label: 'Cédez le passage', means: 'À l\'entrée : les véhicules déjà engagés passent d\'abord' },
+              ],
+              note: 'Les deux vont ensemble et dans cet ordre. Un giratoire annoncé sans « cédez le passage » à l\'entrée est un carrefour à priorité à droite, ce qui est l\'ancienne règle et l\'inverse de celle-ci.',
+            },
             p: [
               "Sur les ronds-points modernes en France, les véhicules déjà engagés dans le rond-point ont la priorité.",
               "Les véhicules qui entrent doivent céder le passage — c'est l'inverse de l'ancienne règle !",
@@ -767,6 +833,16 @@ window.CR_LEARN_PATH = [
         cards: [
           {
             h: 'Vitesses en agglomération et hors agglomération',
+            signs: {
+              title: 'Les limites que vous verrez le plus',
+              items: [
+                { family: 'agglo', glyph: 'text', text: 'Rouen', label: 'Entrée d\'agglomération', means: 'Le 50 km/h commence ici — aucun panneau de vitesse ne l\'annonce' },
+                { family: 'interdiction', glyph: 'text', text: '50', label: 'Limitation à 50', means: 'En agglomération, ou là où la route l\'exige' },
+                { family: 'interdiction', glyph: 'text', text: '80', label: 'Limitation à 80', means: 'Route à chaussée unique hors agglomération' },
+                { family: 'fin', glyph: 'text', text: '80', label: 'Fin de limitation à 80', means: 'La limite précédente cesse : la limite générale reprend' },
+              ],
+              note: 'Le panneau d\'entrée d\'agglomération est une limitation de vitesse déguisée, et c\'est le piège le plus courant de cette leçon : personne ne vous montrera un « 50 » à l\'entrée du village.',
+            },
             p: [
               "En agglomération : 50 km/h (défaut). Hors agglomération sur route à chaussée unique : 80 km/h (depuis 2018).",
               "Sur route à deux chaussées séparées (hors autoroute) : 110 km/h par temps sec.",
@@ -774,6 +850,14 @@ window.CR_LEARN_PATH = [
           },
           {
             h: 'Autoroute',
+            signs: {
+              title: "L'autoroute et ses deux vitesses",
+              items: [
+                { family: 'indication', glyph: 'motorway', label: 'Autoroute', means: 'Les règles autoroutières commencent : 130 par temps sec' },
+                { family: 'interdiction', glyph: 'text', text: '110', label: 'Limitation à 110', means: 'Par temps de pluie, et pour les trois ans de période probatoire' },
+                { family: 'interdiction', glyph: 'text', text: '130', label: 'Limitation à 130', means: 'Le maximum, jamais une consigne : par mauvais temps il tombe seul' },
+              ],
+            },
             p: [
               "Sur autoroute par temps sec : 130 km/h. Par temps de pluie : 110 km/h.",
               "Les conducteurs en période probatoire (3 ans) : 110 km/h maxi sur autoroute.",
@@ -850,6 +934,19 @@ window.CR_LEARN_PATH = [
           },
           {
             h: 'Drogues et médicaments',
+            /* Ce ne sont pas des panneaux routiers mais les pictogrammes des
+               boîtes de médicaments. Ils sont dessinés ici parce que la carte
+               les décrit par leur couleur, et qu\'une couleur décrite est une
+               couleur qu\'on confond. */
+            signs: {
+              title: 'Les trois niveaux, sur la boîte',
+              items: [
+                { family: 'medicament', glyph: 'car', tint: 'yellow', label: 'Niveau 1 — soyez prudent', means: 'Lisez la notice avant de prendre le volant' },
+                { family: 'medicament', glyph: 'car', tint: 'orange', label: 'Niveau 2 — soyez très prudent', means: 'Ne conduisez pas sans l\'avis d\'un médecin ou d\'un pharmacien' },
+                { family: 'medicament', glyph: 'car', tint: 'red', label: 'Niveau 3 — attention danger', means: 'Ne conduisez pas : reprise seulement sur avis médical' },
+              ],
+              note: 'Le triangle est le même ; seule la couleur change, et c\'est elle qui porte toute l\'information. Un médicament sans pictogramme n\'est pas pour autant sans effet.',
+            },
             p: [
               "Conduire sous l'emprise de stupéfiants est illégal — même si vous ne ressentez plus les effets.",
               "Les médicaments avec un triangle rouge : conduite interdite. Triangle orange : prudence. Triangle jaune : attention requise.",
@@ -905,6 +1002,14 @@ window.CR_LEARN_PATH = [
           },
           {
             h: 'Interdictions courantes',
+            signs: {
+              title: 'Arrêt ou stationnement : deux panneaux, deux interdits',
+              items: [
+                { family: 'stationnement', glyph: 'text', text: 'P', bar: true, label: 'Stationnement interdit', means: 'Un arrêt reste possible : vous restez au volant, prêt à repartir' },
+                { family: 'stationnement', glyph: 'cross', label: 'Arrêt et stationnement interdits', means: 'Vous ne vous immobilisez pas du tout, même une minute' },
+              ],
+              note: 'Une barre interdit de rester ; la croix interdit de s\'arrêter. C\'est exactement la distinction de la carte précédente, en deux dessins.',
+            },
             p: [
               "Interdit : à moins de 5 m d'un carrefour ou passage piéton, devant un garage, sur un passage piéton, près d'une bouche d'incendie.",
               "Interdit aussi : en double file, du côté gauche sur une voie à double sens (sauf indication), sur les trottoirs.",
@@ -912,6 +1017,14 @@ window.CR_LEARN_PATH = [
           },
           {
             h: 'Zones bleues et marquages',
+            signs: {
+              title: 'La zone bleue',
+              items: [
+                { family: 'indication', glyph: 'disc', label: 'Zone bleue', means: 'Stationnement gratuit à durée limitée, disque obligatoire' },
+                { family: 'indication', glyph: 'text', text: 'P', label: 'Parking', means: 'Stationnement autorisé, sans disque sauf mention contraire' },
+              ],
+              note: 'Le disque indique votre heure d\'arrivée, pas votre heure de départ. C\'est l\'erreur qui coûte l\'amende.',
+            },
             p: [
               "Zone bleue : utilisez un disque de stationnement (disque bleu) indiquant votre heure d'arrivée.",
               "Lignes jaunes au sol = interdiction d'arrêt et de stationnement. Panneau P barré = stationnement interdit.",
