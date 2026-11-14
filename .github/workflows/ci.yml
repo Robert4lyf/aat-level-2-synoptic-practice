@@ -91,6 +91,8 @@ jobs:
         run: npm run check:first-use
       - name: Check no Level 3 question is answerable from option position
         run: npm run check:aat3-position
+      - name: Check no Level 2 lesson check is answerable from option position
+        run: npm run check:aat2-lesson-position
       - name: Check Level 3 multi-part tasks behave (grading, per-part feedback, no state leak)
         run: npm run check:aat3-task
       - name: Check Level 3 mistake memory (recorded, served, cleared, merges between devices)
