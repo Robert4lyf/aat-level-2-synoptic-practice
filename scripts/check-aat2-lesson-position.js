@@ -18,6 +18,9 @@
  *
  * Math.random is seeded per render, so the result is the same on every run.
  *
+ * It also asserts that a fresh reader can open every Level 2 lesson: none of
+ * them waits on the one before it.
+ *
  * Run: node scripts/check-aat2-lesson-position.js   (exit 1 on any failure)
  */
 'use strict';
@@ -98,6 +101,28 @@ function serve() {
   samples.forEach(s => { positions[s.id] = []; });
 
   try {
+    /* Every lesson is open to a fresh reader: no rail position is locked. */
+    {
+      const ctx = await browser.newContext({ viewport: { width: 390, height: 800 } });
+      const page = await ctx.newPage();
+      await page.addInitScript(() => {
+        localStorage.setItem('multisubject_active', 'aat');
+        if (!localStorage.getItem('aatPrep_v2')) {
+          localStorage.setItem('aatPrep_v2', JSON.stringify({ settings: { seenSplash: true } }));
+        }
+      });
+      await page.goto(`http://127.0.0.1:${port}/index.html`, { waitUntil: 'networkidle' });
+      await page.locator('[data-tab="learn"]').first().click();
+      await page.waitForSelector('.journey-node', { timeout: 10000 });
+      const total = LP.reduce((n, u) => n + (u.lessons || []).length, 0);
+      const open = await page.locator('.journey-node[data-lesson]:not([disabled])').count();
+      const locked = await page.locator('.journey-node.node-locked').count();
+      ok(open === total && locked === 0,
+        `fresh reader: ${open} of ${total} lessons can be opened and ${locked} are locked — ` +
+        `every Level 2 lesson should be open without completing the one before it`);
+      await ctx.close();
+    }
+
     for (let r = 0; r < RENDERS; r++) {
       const ctx = await browser.newContext({ viewport: { width: 390, height: 800 } });
       const page = await ctx.newPage();

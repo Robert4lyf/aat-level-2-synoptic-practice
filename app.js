@@ -6804,12 +6804,17 @@
         </div>`;
       }
 
+      /* Level 2 opens every lesson: a learner revising for a unit assessment
+         goes straight to the topic they are weak on, and walking them through
+         every earlier lesson first is a chore, not a curriculum. Other subjects
+         keep the step-by-step rail. */
+      const allLessonsOpen = _activeSubjectId === 'aat';
       let unlockedSoFar = true;
       const lessonsHtml = unit.lessons.map((L) => {
         const rec = Storage.lessonRec(L.id);
         const done = !!(rec && rec.best >= 50);
         const stars = rec ? rec.stars : 0;
-        const locked = !unlockedSoFar;
+        const locked = !allLessonsOpen && !unlockedSoFar;
         if (!done) unlockedSoFar = false;
         const starRow = [1,2,3].map(s => `<span class="journey-star ${stars >= s ? 'lit' : ''}" aria-hidden="true">★</span>`).join('');
         const xpLabel = done ? `+${stars * 10} XP` : `+20 XP`;
