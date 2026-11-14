@@ -247,8 +247,9 @@ function serve() {
   });
 }
 
-/* Level 2 unlocks each unit behind the one before it, so a fresh reader has one
-   topic and no choice to make. This is the reader three units in. */
+/* Level 2 opens every unit from the start, so this seeding is no longer what
+   makes the picker appear. It is kept so the reload assertions below run
+   against a reader with real progress rather than an empty store. */
 function unlockLevel2() {
   const lp = window.AAT_LEARN_PATH || window.LEARN_PATH || [];
   const lessons = {}, unitTests = {};
@@ -363,9 +364,11 @@ function unlockLevel2() {
 
     /* ── Level 2 ──────────────────────────────────────────────────────────── */
     {
-      /* THE PICKER IS NOT THERE WHEN THERE IS NOTHING TO PICK. A fresh Level 2
-         reader has one unit unlocked, so "several together" is not a thing that
-         can be done, and a control offering it would be a lie. */
+      /* EVERY UNIT IS OPEN TO A FRESH READER. Level 2 used to lock each unit
+         behind the one before it, so a fresh reader had one topic and no
+         picker. The four units are assessed separately and the gate was
+         removed, so a reader with no progress at all must be able to pick any
+         of them — and, with four to choose from, must be offered the picker. */
       const ctx0 = await browser.newContext({ viewport: { width: 390, height: 800 } });
       const p0 = await ctx0.newPage();
       await p0.addInitScript(() => {
@@ -384,12 +387,11 @@ function unlockLevel2() {
       await p0.locator('[data-tab="home"]').first().click();
       await p0.waitForTimeout(300);
       const fresh = await p0.evaluate(() => window.__AAT2_PRACTICE.pickableTopics());
-      ok(fresh.length === 1,
+      ok(JSON.stringify(fresh) === JSON.stringify(['itbk', 'pobc', 'poc', 'besy']),
         `L2 screen: a fresh reader has ${fresh.length} pickable topics (${JSON.stringify(fresh)}) — ` +
-        `if the unlock gate has changed, the assertion below no longer tests what it says`);
-      ok(await p0.locator('.topic-pick').count() === 0,
-        'L2 screen: the picker is offered to a reader with only one topic unlocked, ' +
-        'where "several together" is not a thing that can be done');
+        `every Level 2 unit should be open without completing the one before it`);
+      ok(await p0.locator('.topic-pick').count() > 0,
+        'L2 screen: a fresh reader with all four units open is not offered the picker');
       await ctx0.close();
 
       const ctx = await browser.newContext({ viewport: { width: 390, height: 800 } });

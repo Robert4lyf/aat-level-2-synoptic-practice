@@ -268,6 +268,11 @@
      have every lesson done AND its unit quiz passed — mirroring frLevelUnlocked(). */
   function isUnitUnlocked(unitId) {
     if (_activeSubjectId === 'french') return true; // French uses frLevelUnlocked instead
+    /* Level 2's four units are separate qualifications' worth of material, not
+       a ladder: ITBK, POBC, POC and BESY are each assessed on their own, and
+       a learner revising costing has no reason to finish bookkeeping first.
+       Every unit is open from the start. */
+    if (_activeSubjectId === 'aat') return true;
     const lp = window.LEARN_PATH || [];
     const key = u => u.unit || u.id;
     const idx = lp.findIndex(u => key(u) === unitId);
@@ -3037,7 +3042,18 @@
     playClick();
     State.screen = 'lesson';
     const existingRec = Storage.lessonRec(found.lesson.id);
-    State.lesson = { unit: found.unit, def: found.lesson, phase: 'teach', cardIdx: 0,
+    /* THE CHECK IS PRESENTED, NOT DRAWN AS AUTHORED. Every practice route
+       already passes its questions through presentQuestion(); the lesson
+       check did not, so its options appeared in authored order — and authored
+       order puts the key first (Level 2: 156 of 285 multiple-choice keys at A,
+       every gap-fill key first). "Always pick A" passed most lesson checks.
+       Shuffled once per start, on a copy, so a retry reshuffles and every
+       later read of def.check (grading, the wrong-answer review) sees the same
+       order the learner did. */
+    const def = found.lesson.check
+      ? { ...found.lesson, check: found.lesson.check.map(presentQuestion) }
+      : found.lesson;
+    State.lesson = { unit: found.unit, def, phase: 'teach', cardIdx: 0,
       qIdx: 0, qAnswered: null, qScore: 0, prevStars: existingRec ? (existingRec.stars || 0) : 0,
       worked: newWorkedState(), checkDraft: newCheckDraft() };
     render();
@@ -6788,12 +6804,17 @@
         </div>`;
       }
 
+      /* Level 2 opens every lesson: a learner revising for a unit assessment
+         goes straight to the topic they are weak on, and walking them through
+         every earlier lesson first is a chore, not a curriculum. Other subjects
+         keep the step-by-step rail. */
+      const allLessonsOpen = _activeSubjectId === 'aat';
       let unlockedSoFar = true;
       const lessonsHtml = unit.lessons.map((L) => {
         const rec = Storage.lessonRec(L.id);
         const done = !!(rec && rec.best >= 50);
         const stars = rec ? rec.stars : 0;
-        const locked = !unlockedSoFar;
+        const locked = !allLessonsOpen && !unlockedSoFar;
         if (!done) unlockedSoFar = false;
         const starRow = [1,2,3].map(s => `<span class="journey-star ${stars >= s ? 'lit' : ''}" aria-hidden="true">★</span>`).join('');
         const xpLabel = done ? `+${stars * 10} XP` : `+20 XP`;
